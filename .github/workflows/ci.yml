@@ -1,0 +1,30 @@
+name: CI
+
+# Автозапуск выключен: Actions в организации хакатона не оплачены, и каждый PR получал бы красный крестик.
+# Перед PR запускайте те же проверки локально: make check. Если Actions заработают, верните триггеры:
+#   push:
+#     branches: [main]
+#   pull_request:
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.2
+        with:
+          version: "0.12.10"
+          working-directory: backend
+      - run: bash scripts/check.sh lint test
+
+  compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: bash scripts/check.sh smoke

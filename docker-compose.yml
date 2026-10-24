@@ -1,0 +1,11 @@
+services:
+  agent:
+    build: ./backend
+    env_file:
+      - path: .env
+        required: false # без .env агент работает на фейковой модели
+    ports:
+      - "${AGENT_PORT:-8000}:8000"
+    restart: unless-stopped
+
+  # web: интерфейс появится в U1 (#6)

@@ -2,7 +2,47 @@
 
 Репозиторий команды «На Мальдивы» на Ostrovok Hackathon 2026.
 
-Пока здесь план работ и порядок взятия задач. Описание архитектуры и запуска появится по задаче [#34](https://github.com/ostrovok-hackathon-2026/na-maldivy/issues/34) A9, тогда этот раздел переедет в `CONTRIBUTING.md`.
+Пока здесь запуск, план работ и порядок взятия задач. Полное описание архитектуры появится по задаче [#34](https://github.com/ostrovok-hackathon-2026/na-maldivy/issues/34) A9, тогда план переедет в `CONTRIBUTING.md`.
+
+## Запуск
+
+Нужен только Docker. Без `.env` агент работает на фейковой модели, которая повторяет сообщение. Этого хватает, чтобы собирать интерфейс и инструменты без ключей.
+
+```bash
+cp .env.example .env        # необязательно: ключ и модели LLM
+docker compose up --build   # агент на http://localhost:8000, документация API на /docs
+curl localhost:8000/health
+curl -N localhost:8000/api/chat -H 'Content-Type: application/json' -d '{"message": "Хочу на море в ноябре"}'
+```
+
+`POST /api/chat` отвечает потоком SSE: события `delta` с кусками текста `{"text": "..."}`, в конце `done` или `error` с `{"message": "..."}`. Формат временный, до контрактов O1.
+
+**Настоящая модель.** Подходит любой OpenAI-совместимый API: OpenAI, OpenRouter, YandexGPT, vLLM. В `.env` задайте `LLM_PROVIDER=openai`, `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL_MAIN` и при желании `LLM_MODEL_FAST`.
+
+**LLM-клиент в коде** лежит в `backend/app/llm`: `complete()` возвращает ответ целиком, вместе с вызовами инструментов и `json_mode`; `stream()` отдаёт текст по кускам; `tier="fast"` выбирает быструю модель. В тестах используйте `FakeLLMClient` с заготовленными ответами, сеть не нужна. Любая ошибка провайдера (таймаут, сеть, 5xx, битый ответ) приходит как `LLMError`.
+
+**Бэкенд без Docker** (нужен [uv](https://docs.astral.sh/uv/)):
+
+```bash
+cd backend
+uv sync
+uv run uvicorn app.main:create_app --factory --reload
+uv run pytest
+uv run ruff check . && uv run ruff format .
+```
+
+То же самое через `make dev`, `make test`, `make lint`, `make fmt`.
+
+**Проверки перед PR.** Actions в организации хакатона не оплачены, поэтому автоматический CI выключен, а проверки запускаем у себя:
+
+```bash
+make check        # линтер, тесты, docker compose и смоук /health и /api/chat
+make check-fast   # то же без Docker
+```
+
+Без `make` то же самое делает `bash scripts/check.sh`. Смоук поднимается отдельным проектом на порту 18000, так что уже запущенный `make up` он не трогает. Если Actions заработают, верните триггеры в `.github/workflows/ci.yml`: workflow вызывает тот же скрипт.
+
+## Задачи и метки
 
 Все 47 задач лежат в [Issues](https://github.com/ostrovok-hackathon-2026/na-maldivy/issues). У каждой задачи три метки: приоритет, день и зона.
 
@@ -39,7 +79,7 @@
    gh issue edit 8 --add-assignee @me --add-label "в работе"
    ```
 4. Создай ветку от `main` с ID задачи в имени: `D2-flights`, `R1-tripstate`.
-5. Открой PR, в описании напиши `Closes #8`. На ревью позови того, кто стоит в колонке «Блокирует»: он будет пользоваться твоим кодом. Если там пусто, позови любого.
+5. Запусти `make check`, пока всё не пройдёт. Потом открой PR и в описании напиши `Closes #8`, шаблон PR подставится сам. На ревью позови того, кто стоит в колонке «Блокирует»: он будет пользоваться твоим кодом. Если там пусто, позови любого.
 6. После мержа issue закроется сам. Бери следующую задачу.
 
 Правила:
