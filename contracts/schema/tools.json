@@ -1,0 +1,867 @@
+{
+  "$defs": {
+    "DayPrice": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        },
+        "is_synthetic": {
+          "title": "Is Synthetic",
+          "type": "boolean"
+        },
+        "price_rub": {
+          "description": "Минимальная цена перелёта за всю группу в одну сторону",
+          "minimum": 0,
+          "title": "Price Rub",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "date",
+        "price_rub",
+        "is_synthetic"
+      ],
+      "title": "DayPrice",
+      "type": "object"
+    },
+    "Destination": {
+      "additionalProperties": false,
+      "properties": {
+        "air_temperature_c": {
+          "title": "Air Temperature C",
+          "type": "number"
+        },
+        "country": {
+          "title": "Country",
+          "type": "string"
+        },
+        "estimated_total_price_rub": {
+          "minimum": 0,
+          "title": "Estimated Total Price Rub",
+          "type": "integer"
+        },
+        "flight_duration_minutes": {
+          "exclusiveMinimum": 0,
+          "title": "Flight Duration Minutes",
+          "type": "integer"
+        },
+        "is_synthetic": {
+          "title": "Is Synthetic",
+          "type": "boolean"
+        },
+        "month": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Month",
+          "type": "integer"
+        },
+        "place": {
+          "$ref": "#/$defs/Place"
+        },
+        "risks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Risks",
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "visa_required": {
+          "title": "Visa Required",
+          "type": "boolean"
+        },
+        "water_temperature_c": {
+          "title": "Water Temperature C",
+          "type": "number"
+        }
+      },
+      "required": [
+        "place",
+        "country",
+        "month",
+        "air_temperature_c",
+        "water_temperature_c",
+        "flight_duration_minutes",
+        "visa_required",
+        "estimated_total_price_rub",
+        "is_synthetic"
+      ],
+      "title": "Destination",
+      "type": "object"
+    },
+    "DestinationQuery": {
+      "additionalProperties": false,
+      "properties": {
+        "budget_rub": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Budget Rub"
+        },
+        "min_water_temperature_c": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Water Temperature C"
+        },
+        "month": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Month",
+          "type": "integer"
+        },
+        "nights": {
+          "default": 7,
+          "minimum": 1,
+          "title": "Nights",
+          "type": "integer"
+        },
+        "origin": {
+          "default": "SVO",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Origin",
+          "type": "string"
+        },
+        "travelers": {
+          "$ref": "#/$defs/Travelers"
+        },
+        "visa_free_only": {
+          "default": false,
+          "title": "Visa Free Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "month"
+      ],
+      "title": "DestinationQuery",
+      "type": "object"
+    },
+    "Flight": {
+      "additionalProperties": false,
+      "properties": {
+        "arrival_at": {
+          "format": "date-time",
+          "title": "Arrival At",
+          "type": "string"
+        },
+        "baggage_price_rub": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Baggage Price Rub",
+          "type": "integer"
+        },
+        "carrier": {
+          "title": "Carrier",
+          "type": "string"
+        },
+        "departure_at": {
+          "format": "date-time",
+          "title": "Departure At",
+          "type": "string"
+        },
+        "destination": {
+          "$ref": "#/$defs/Place"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "is_overnight": {
+          "default": false,
+          "title": "Is Overnight",
+          "type": "boolean"
+        },
+        "is_synthetic": {
+          "title": "Is Synthetic",
+          "type": "boolean"
+        },
+        "origin": {
+          "$ref": "#/$defs/Place"
+        },
+        "price_rub": {
+          "description": "Цена за всю группу в одну сторону",
+          "minimum": 0,
+          "title": "Price Rub",
+          "type": "integer"
+        },
+        "stops": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Stops",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "origin",
+        "destination",
+        "departure_at",
+        "arrival_at",
+        "price_rub",
+        "is_synthetic",
+        "carrier"
+      ],
+      "title": "Flight",
+      "type": "object"
+    },
+    "FlightSearch": {
+      "additionalProperties": false,
+      "properties": {
+        "departure_date": {
+          "format": "date",
+          "title": "Departure Date",
+          "type": "string"
+        },
+        "destination": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Destination",
+          "type": "string"
+        },
+        "direct_only": {
+          "default": false,
+          "title": "Direct Only",
+          "type": "boolean"
+        },
+        "max_price_rub": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Price Rub"
+        },
+        "origin": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Origin",
+          "type": "string"
+        },
+        "travelers": {
+          "$ref": "#/$defs/Travelers"
+        }
+      },
+      "required": [
+        "origin",
+        "destination",
+        "departure_date"
+      ],
+      "title": "FlightSearch",
+      "type": "object"
+    },
+    "HotelOffer": {
+      "additionalProperties": false,
+      "properties": {
+        "adults_only": {
+          "default": false,
+          "title": "Adults Only",
+          "type": "boolean"
+        },
+        "check_in": {
+          "format": "date",
+          "title": "Check In",
+          "type": "string"
+        },
+        "check_in_time": {
+          "default": "14:00:00",
+          "format": "time",
+          "title": "Check In Time",
+          "type": "string"
+        },
+        "check_out": {
+          "format": "date",
+          "title": "Check Out",
+          "type": "string"
+        },
+        "check_out_time": {
+          "default": "12:00:00",
+          "format": "time",
+          "title": "Check Out Time",
+          "type": "string"
+        },
+        "early_check_in_price_rub": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Early Check In Price Rub"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "is_synthetic": {
+          "title": "Is Synthetic",
+          "type": "boolean"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "pets_allowed": {
+          "default": false,
+          "title": "Pets Allowed",
+          "type": "boolean"
+        },
+        "place": {
+          "$ref": "#/$defs/Place"
+        },
+        "price_rub": {
+          "description": "Полная стоимость за все ночи и всю группу",
+          "minimum": 0,
+          "title": "Price Rub",
+          "type": "integer"
+        },
+        "rating": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Rating",
+          "type": "number"
+        },
+        "reception_closes_at": {
+          "anyOf": [
+            {
+              "format": "time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reception Closes At"
+        },
+        "refundable": {
+          "default": true,
+          "title": "Refundable",
+          "type": "boolean"
+        },
+        "stars": {
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Stars",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "place",
+        "check_in",
+        "check_out",
+        "price_rub",
+        "stars",
+        "rating",
+        "is_synthetic"
+      ],
+      "title": "HotelOffer",
+      "type": "object"
+    },
+    "HotelSearch": {
+      "additionalProperties": false,
+      "properties": {
+        "check_in": {
+          "format": "date",
+          "title": "Check In",
+          "type": "string"
+        },
+        "check_out": {
+          "format": "date",
+          "title": "Check Out",
+          "type": "string"
+        },
+        "destination": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Destination",
+          "type": "string"
+        },
+        "max_price_rub": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Price Rub"
+        },
+        "min_stars": {
+          "default": 0,
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Min Stars",
+          "type": "integer"
+        },
+        "refundable_only": {
+          "default": false,
+          "title": "Refundable Only",
+          "type": "boolean"
+        },
+        "travelers": {
+          "$ref": "#/$defs/Travelers"
+        }
+      },
+      "required": [
+        "destination",
+        "check_in",
+        "check_out"
+      ],
+      "title": "HotelSearch",
+      "type": "object"
+    },
+    "Place": {
+      "additionalProperties": false,
+      "properties": {
+        "iata": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Iata",
+          "type": "string"
+        },
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "timezone": {
+          "description": "Часовой пояс IANA, например Europe/Moscow",
+          "title": "Timezone",
+          "type": "string"
+        }
+      },
+      "required": [
+        "iata",
+        "name",
+        "latitude",
+        "longitude",
+        "timezone"
+      ],
+      "title": "Place",
+      "type": "object"
+    },
+    "PriceCalendarQuery": {
+      "additionalProperties": false,
+      "properties": {
+        "destination": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Destination",
+          "type": "string"
+        },
+        "month": {
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+          "title": "Month",
+          "type": "string"
+        },
+        "origin": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Origin",
+          "type": "string"
+        },
+        "travelers": {
+          "$ref": "#/$defs/Travelers"
+        }
+      },
+      "required": [
+        "origin",
+        "destination",
+        "month"
+      ],
+      "title": "PriceCalendarQuery",
+      "type": "object"
+    },
+    "Train": {
+      "additionalProperties": false,
+      "properties": {
+        "arrival_at": {
+          "format": "date-time",
+          "title": "Arrival At",
+          "type": "string"
+        },
+        "departure_at": {
+          "format": "date-time",
+          "title": "Departure At",
+          "type": "string"
+        },
+        "destination": {
+          "$ref": "#/$defs/Place"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "is_synthetic": {
+          "title": "Is Synthetic",
+          "type": "boolean"
+        },
+        "number": {
+          "title": "Number",
+          "type": "string"
+        },
+        "origin": {
+          "$ref": "#/$defs/Place"
+        },
+        "price_rub": {
+          "description": "Цена за всю группу в одну сторону",
+          "minimum": 0,
+          "title": "Price Rub",
+          "type": "integer"
+        },
+        "seat_class": {
+          "enum": [
+            "platzkart",
+            "coupe",
+            "sv",
+            "seated"
+          ],
+          "title": "Seat Class",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "origin",
+        "destination",
+        "departure_at",
+        "arrival_at",
+        "price_rub",
+        "is_synthetic",
+        "number",
+        "seat_class"
+      ],
+      "title": "Train",
+      "type": "object"
+    },
+    "TrainSearch": {
+      "additionalProperties": false,
+      "properties": {
+        "departure_date": {
+          "format": "date",
+          "title": "Departure Date",
+          "type": "string"
+        },
+        "destination": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Destination",
+          "type": "string"
+        },
+        "origin": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Origin",
+          "type": "string"
+        },
+        "seat_class": {
+          "default": "coupe",
+          "enum": [
+            "platzkart",
+            "coupe",
+            "sv",
+            "seated"
+          ],
+          "title": "Seat Class",
+          "type": "string"
+        },
+        "travelers": {
+          "$ref": "#/$defs/Travelers"
+        }
+      },
+      "required": [
+        "origin",
+        "destination",
+        "departure_date"
+      ],
+      "title": "TrainSearch",
+      "type": "object"
+    },
+    "Transfer": {
+      "additionalProperties": false,
+      "properties": {
+        "destination": {
+          "$ref": "#/$defs/Place"
+        },
+        "duration_minutes": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Minutes",
+          "type": "integer"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "is_synthetic": {
+          "title": "Is Synthetic",
+          "type": "boolean"
+        },
+        "mode": {
+          "default": "taxi",
+          "enum": [
+            "taxi",
+            "shuttle",
+            "bus"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "origin": {
+          "$ref": "#/$defs/Place"
+        },
+        "pickup_at": {
+          "format": "date-time",
+          "title": "Pickup At",
+          "type": "string"
+        },
+        "price_rub": {
+          "description": "Цена за всю группу, без умножения на число пассажиров",
+          "minimum": 0,
+          "title": "Price Rub",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "origin",
+        "destination",
+        "pickup_at",
+        "duration_minutes",
+        "price_rub",
+        "is_synthetic"
+      ],
+      "title": "Transfer",
+      "type": "object"
+    },
+    "TransferQuery": {
+      "additionalProperties": false,
+      "properties": {
+        "destination": {
+          "$ref": "#/$defs/Place"
+        },
+        "origin": {
+          "$ref": "#/$defs/Place"
+        },
+        "pickup_at": {
+          "format": "date-time",
+          "title": "Pickup At",
+          "type": "string"
+        },
+        "travelers": {
+          "$ref": "#/$defs/Travelers"
+        }
+      },
+      "required": [
+        "origin",
+        "destination",
+        "pickup_at"
+      ],
+      "title": "TransferQuery",
+      "type": "object"
+    },
+    "Travelers": {
+      "additionalProperties": false,
+      "properties": {
+        "adults": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Adults",
+          "type": "integer"
+        },
+        "children_ages": {
+          "items": {
+            "maximum": 17,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "title": "Children Ages",
+          "type": "array"
+        },
+        "pets": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Pets",
+          "type": "integer"
+        }
+      },
+      "title": "Travelers",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "get_transfer": {
+      "additionalProperties": false,
+      "description": "Синтетический трансфер только между точками демо-каталога",
+      "properties": {
+        "input": {
+          "$ref": "#/$defs/TransferQuery"
+        },
+        "output": {
+          "$ref": "#/$defs/Transfer"
+        }
+      },
+      "required": [
+        "input",
+        "output"
+      ],
+      "type": "object"
+    },
+    "price_calendar": {
+      "additionalProperties": false,
+      "description": "Синтетические минимальные цены перелётов на каждый день месяца",
+      "properties": {
+        "input": {
+          "$ref": "#/$defs/PriceCalendarQuery"
+        },
+        "output": {
+          "items": {
+            "$ref": "#/$defs/DayPrice"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "input",
+        "output"
+      ],
+      "type": "object"
+    },
+    "search_flights": {
+      "additionalProperties": false,
+      "description": "Синтетические перелёты SVO/LED ↔ AYT/DXB/MLE",
+      "properties": {
+        "input": {
+          "$ref": "#/$defs/FlightSearch"
+        },
+        "output": {
+          "items": {
+            "$ref": "#/$defs/Flight"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "input",
+        "output"
+      ],
+      "type": "object"
+    },
+    "search_hotels": {
+      "additionalProperties": false,
+      "description": "Синтетические отели AYT/DXB/MLE за весь срок",
+      "properties": {
+        "input": {
+          "$ref": "#/$defs/HotelSearch"
+        },
+        "output": {
+          "items": {
+            "$ref": "#/$defs/HotelOffer"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "input",
+        "output"
+      ],
+      "type": "object"
+    },
+    "search_trains": {
+      "additionalProperties": false,
+      "description": "Синтетические поезда Москва ↔ Санкт-Петербург",
+      "properties": {
+        "input": {
+          "$ref": "#/$defs/TrainSearch"
+        },
+        "output": {
+          "items": {
+            "$ref": "#/$defs/Train"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "input",
+        "output"
+      ],
+      "type": "object"
+    },
+    "suggest_destinations": {
+      "additionalProperties": false,
+      "description": "Синтетический справочник трёх направлений по месяцу",
+      "properties": {
+        "input": {
+          "$ref": "#/$defs/DestinationQuery"
+        },
+        "output": {
+          "items": {
+            "$ref": "#/$defs/Destination"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "input",
+        "output"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "search_flights",
+    "search_hotels",
+    "search_trains",
+    "get_transfer",
+    "suggest_destinations",
+    "price_calendar"
+  ],
+  "title": "D1 travel tool contracts v0 (draft for O1)",
+  "type": "object"
+}

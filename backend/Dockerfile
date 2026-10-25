@@ -7,16 +7,27 @@ ENV UV_COMPILE_BYTECODE=1 \
     UV_PYTHON_DOWNLOADS=never \
     UV_PROJECT_ENVIRONMENT=/opt/venv \
     PATH="/opt/venv/bin:$PATH" \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    DESTINATIONS_DATA_PATH=/app/data/destinations.yaml \
+    NA_MALDIVY_DATA_DIR=/app/data
 
 WORKDIR /app
 
-COPY pyproject.toml uv.lock ./
+COPY backend/pyproject.toml backend/uv.lock ./
 RUN uv sync --locked --no-dev
 
-COPY app ./app
+COPY backend/app ./app
+COPY data/destinations.yaml data/ATTRIBUTION.md ./data/
+COPY data/sources/airports-MIT-LICENSE.txt ./data/sources/airports-MIT-LICENSE.txt
+COPY data/routes ./data/routes
+COPY data/trains ./data/trains
+COPY data/hotels ./data/hotels
+COPY data/hotel_reviews ./data/hotel_reviews
+COPY data/hotel_profiles ./data/hotel_profiles
+COPY data/cache ./data/cache
 
-RUN useradd --create-home --uid 1000 agent
+RUN useradd --create-home --uid 1000 agent \
+    && chown -R agent:agent /app/data/cache
 USER agent
 
 EXPOSE 8000

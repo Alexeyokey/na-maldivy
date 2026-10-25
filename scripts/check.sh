@@ -3,6 +3,10 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Проверки не используют внешний LLM и не записывают новые ответы поставщиков.
+export CACHE_MODE=replay
+export LLM_PROVIDER=fake
+
 steps=("$@")
 if [ ${#steps[@]} -eq 0 ]; then
   steps=(lint test smoke)

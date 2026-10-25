@@ -1,0 +1,79 @@
+{
+  "request_url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=T2M%2CPRECTOTCORR&community=AG&longitude=109.4120025635&latitude=18.3029003143&start=1991&end=2020&format=JSON",
+  "retrieved_at": "2026-10-25",
+  "response": {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        109.412,
+        18.303,
+        265.47
+      ]
+    },
+    "properties": {
+      "parameter": {
+        "PRECTOTCORR": {
+          "JAN": 0.62,
+          "FEB": 0.59,
+          "MAR": 1.02,
+          "APR": 2.5,
+          "MAY": 4.7,
+          "JUN": 6.29,
+          "JUL": 7.94,
+          "AUG": 8.08,
+          "SEP": 9.92,
+          "OCT": 11.39,
+          "NOV": 3.26,
+          "DEC": 1.25,
+          "ANN": 4.82
+        },
+        "T2M": {
+          "JAN": 19.24,
+          "FEB": 20.83,
+          "MAR": 23.45,
+          "APR": 25.86,
+          "MAY": 26.93,
+          "JUN": 26.91,
+          "JUL": 26.58,
+          "AUG": 26.46,
+          "SEP": 26.03,
+          "OCT": 24.24,
+          "NOV": 22.14,
+          "DEC": 19.58,
+          "ANN": 24.03
+        }
+      }
+    },
+    "header": {
+      "title": "NASA/POWER Source Native Resolution Climatology Climatologies",
+      "api": {
+        "version": "v2.10.1",
+        "name": "POWER Climatology API"
+      },
+      "sources": [
+        "MERRA2"
+      ],
+      "fill_value": -999.0,
+      "time_standard": "LST",
+      "range": "30-year Meteorological and Solar Monthly & Annual Climatologies (January 1991 - December 2020)"
+    },
+    "messages": [
+      "The requested parameters are computed for a custom climatological period (January 1991 - December 2020)"
+    ],
+    "parameters": {
+      "PRECTOTCORR": {
+        "units": "mm/day",
+        "longname": "Precipitation Corrected"
+      },
+      "T2M": {
+        "units": "C",
+        "longname": "Temperature at 2 Meters"
+      }
+    },
+    "times": {
+      "data": 0.113,
+      "process": 0.06
+    }
+  }
+}

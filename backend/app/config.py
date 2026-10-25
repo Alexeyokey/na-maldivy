@@ -1,5 +1,6 @@
 """Настройки сервиса: переменные окружения и .env (образец — .env.example в корне репозитория)."""
 
+from pathlib import Path
 from typing import Literal
 
 from pydantic import SecretStr, model_validator
@@ -12,6 +13,12 @@ class Settings(BaseSettings):
 
     log_level: str = "INFO"
     cors_origins: str = "http://localhost:5173,http://localhost:3000"
+    tools_mode: Literal["stub", "real"] = "stub"
+    cache_mode: Literal["record", "replay", "live"] = "replay"
+    data_cache_dir: Path | None = None
+    data_seed: int = 42
+    travelpayouts_token: SecretStr | None = None
+    yandex_rasp_api_key: SecretStr | None = None
 
     llm_provider: Literal["fake", "openai"] = "fake"
     llm_base_url: str | None = None

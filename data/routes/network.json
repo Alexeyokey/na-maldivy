@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-26",
+  "scope": "Small observed route network; route evidence does not assert availability on a requested date.",
+  "sources": {
+    "svo-ayt": {"title": "Sheremetyevo official historical SU2144 flight page", "url": "https://www.svo.aero/ru/timetable/departure/flight/9644648/info", "evidence": "Airport flight page identifies Antalya as destination of Aeroflot SU2144.", "access": "Official indexed flight-page excerpt; current dynamic page may show only airport shell."},
+    "svo-dxb": {"title": "Sheremetyevo official historical SU520 flight page", "url": "https://www.svo.aero/en/timetable/departure/flight/9694787", "evidence": "Airport flight page identifies Dubai (Dubai) as destination of SU520.", "access": "Official indexed flight-page excerpt; current dynamic page may show only airport shell."},
+    "svo-mle": {"title": "Sheremetyevo official historical SU320 flight page", "url": "https://www.svo.aero/en/timetable/departure/flight/9561197/info", "evidence": "Airport flight page identifies Male (Velana International) as destination of Aeroflot SU320.", "access": "Official indexed flight-page excerpt; current dynamic page may show only airport shell."},
+    "led-ayt": {"title": "Pulkovo official Antalya route schedule", "url": "https://pulkovoairport.ru/passengers/destinations/flight_schedule/?city=%D0%90%D0%BD%D1%82%D0%B0%D0%BB%D1%8C%D1%8F", "evidence": "Airport schedule lists flights in both directions between Saint Petersburg and Antalya; selected dates are not imported.", "access": "Official indexed route schedule."},
+    "led-dxb": {"title": "Emirates Saint Petersburg to Dubai", "url": "https://www.emirates.com/ru/english/destinations/led/dxb/flights-from-saint-petersburg-to-dubai/", "evidence": "Carrier advertises flights between LED and DXB.", "access": "Carrier route page."},
+    "led-mle": {"title": "Emirates Saint Petersburg to Male", "url": "https://www.emirates.com/ru/english/destinations/led/mle/flights-from-saint-petersburg-to-male/", "evidence": "Carrier advertises LED to MLE itineraries. Demo models a connection through its Dubai hub; not a direct flight.", "access": "Carrier route page."},
+    "dxb-mle": {"title": "Emirates Dubai to Male", "url": "https://www.emirates.com/ae/english/destinations/dxb/mle/flights-from-dubai-to-male/", "evidence": "Carrier route page identifies Dubai International (DXB) and Velana International (MLE), with inbound and outbound services.", "access": "Carrier route page."}
+  },
+  "airports": {
+    "SVO": {"iata": "SVO", "name": "Москва, Шереметьево", "latitude": 55.9726, "longitude": 37.4146, "timezone": "Europe/Moscow"},
+    "LED": {"iata": "LED", "name": "Санкт-Петербург, Пулково", "latitude": 59.8003, "longitude": 30.2625, "timezone": "Europe/Moscow"},
+    "AYT": {"iata": "AYT", "name": "Анталья", "latitude": 36.8987, "longitude": 30.8005, "timezone": "Europe/Istanbul"},
+    "DXB": {"iata": "DXB", "name": "Дубай, Dubai International", "latitude": 25.2532, "longitude": 55.3657, "timezone": "Asia/Dubai"},
+    "MLE": {"iata": "MLE", "name": "Мале, Велана", "latitude": 4.1918, "longitude": 73.5291, "timezone": "Indian/Maldives"}
+  },
+  "coordinate_note": "Rounded gateway coordinates from the existing D1 draft, not station or hotel coordinates.",
+  "routes": [
+    {"origin": "SVO", "destination": "AYT", "stops": 0, "via": [], "sources": ["svo-ayt"], "synthetic_duration_minutes": 300, "synthetic_base_price_rub": 18000},
+    {"origin": "SVO", "destination": "DXB", "stops": 0, "via": [], "sources": ["svo-dxb"], "synthetic_duration_minutes": 390, "synthetic_base_price_rub": 26000},
+    {"origin": "SVO", "destination": "MLE", "stops": 0, "via": [], "sources": ["svo-mle"], "synthetic_duration_minutes": 540, "synthetic_base_price_rub": 42000},
+    {"origin": "LED", "destination": "AYT", "stops": 0, "via": [], "sources": ["led-ayt"], "synthetic_duration_minutes": 360, "synthetic_base_price_rub": 20000},
+    {"origin": "LED", "destination": "DXB", "stops": 0, "via": [], "sources": ["led-dxb"], "synthetic_duration_minutes": 425, "synthetic_base_price_rub": 28000},
+    {"origin": "LED", "destination": "MLE", "stops": 1, "via": ["DXB"], "sources": ["led-mle", "led-dxb", "dxb-mle"], "synthetic_duration_minutes": 765, "synthetic_base_price_rub": 46000}
+  ],
+  "synthetic_policy": {
+    "reverse_routes": "Demo reverses this observed network for round trips; reverse availability is synthetic and is not separately verified for a date.",
+    "departures": ["09:00", "23:30"],
+    "pricing": "One seat per adult/child; all ages use the same synthetic fare. Pets 1500 RUB each, baggage 2000 RUB per person separately. Month, date, variant and seed affect synthetic prices. No real fares or timetable are copied from source pages."
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "request_url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=T2M%2CPRECTOTCORR&community=AG&longitude=28.0307006836&latitude=53.8824996948&start=1991&end=2020&format=JSON",
+  "retrieved_at": "2026-10-25",
+  "response": {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        28.031,
+        53.882,
+        199.24
+      ]
+    },
+    "properties": {
+      "parameter": {
+        "PRECTOTCORR": {
+          "JAN": 1.57,
+          "FEB": 1.53,
+          "MAR": 1.47,
+          "APR": 1.69,
+          "MAY": 2.53,
+          "JUN": 2.72,
+          "JUL": 3.12,
+          "AUG": 2.26,
+          "SEP": 1.83,
+          "OCT": 1.92,
+          "NOV": 1.79,
+          "DEC": 1.6,
+          "ANN": 2.01
+        },
+        "T2M": {
+          "JAN": -7.57,
+          "FEB": -6.37,
+          "MAR": -1.56,
+          "APR": 5.98,
+          "MAY": 12.34,
+          "JUN": 16.26,
+          "JUL": 18.49,
+          "AUG": 17.7,
+          "SEP": 12.26,
+          "OCT": 5.67,
+          "NOV": -0.3,
+          "DEC": -5.42,
+          "ANN": 5.68
+        }
+      }
+    },
+    "header": {
+      "title": "NASA/POWER Source Native Resolution Climatology Climatologies",
+      "api": {
+        "version": "v2.10.1",
+        "name": "POWER Climatology API"
+      },
+      "sources": [
+        "MERRA2"
+      ],
+      "fill_value": -999.0,
+      "time_standard": "LST",
+      "range": "30-year Meteorological and Solar Monthly & Annual Climatologies (January 1991 - December 2020)"
+    },
+    "messages": [
+      "The requested parameters are computed for a custom climatological period (January 1991 - December 2020)"
+    ],
+    "parameters": {
+      "PRECTOTCORR": {
+        "units": "mm/day",
+        "longname": "Precipitation Corrected"
+      },
+      "T2M": {
+        "units": "C",
+        "longname": "Temperature at 2 Meters"
+      }
+    },
+    "times": {
+      "data": 0.109,
+      "process": 0.06
+    }
+  }
+}

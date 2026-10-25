@@ -1,0 +1,26 @@
+# Только приложение и автономные данные; .env, .git и сырые снимки не передаются.
+**
+!backend/
+!backend/pyproject.toml
+!backend/uv.lock
+!backend/app/
+!backend/app/**
+!data/
+!data/destinations.yaml
+!data/ATTRIBUTION.md
+!data/sources/
+!data/sources/airports-MIT-LICENSE.txt
+!data/routes/
+!data/routes/**
+!data/trains/
+!data/trains/**
+!data/hotels/
+!data/hotels/**
+!data/hotel_reviews/
+!data/hotel_reviews/**
+!data/hotel_profiles/
+!data/hotel_profiles/**
+!data/cache/
+!data/cache/**
+**/__pycache__/
+**/*.pyc

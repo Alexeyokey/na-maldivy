@@ -1,0 +1,833 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-10-25T21:18:21Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 1658427163,
+  "lat": 4.2168765,
+  "lon": 73.5454861,
+  "timestamp": "2012-03-04T01:16:20Z",
+  "version": 1,
+  "changeset": 10864105,
+  "user": "Dimitri_Junker",
+  "uid": 15686,
+  "tags": {
+    "name": "Fuana Inn",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3848614960,
+  "lat": 4.2086799,
+  "lon": 73.5423392,
+  "timestamp": "2015-11-21T09:41:14Z",
+  "version": 1,
+  "changeset": 35482778,
+  "user": "oeoeoe",
+  "uid": 178837,
+  "tags": {
+    "internet_access": "wlan",
+    "internet_access:fee": "yes",
+    "name": "UI Hotel",
+    "operator": "UI Hotels",
+    "smoking": "no",
+    "tourism": "hotel",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 3909276657,
+  "lat": 4.1766136,
+  "lon": 73.5135335,
+  "timestamp": "2024-10-02T09:06:27Z",
+  "version": 3,
+  "changeset": 157366440,
+  "user": "dhoru",
+  "uid": 21936107,
+  "tags": {
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Sala Boutique Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111150885"
+  }
+},
+{
+  "type": "node",
+  "id": 4059946979,
+  "lat": 4.2176539,
+  "lon": 73.5456261,
+  "timestamp": "2022-09-26T21:30:11Z",
+  "version": 4,
+  "changeset": 126672740,
+  "user": "IknowJoseph",
+  "uid": 30587,
+  "tags": {
+    "addr:city": "Hulhumale",
+    "addr:housenumber": "10094",
+    "addr:postcode": "22000",
+    "addr:street": "Dhigga Magu",
+    "name": "Planktons Beach",
+    "tourism": "hotel",
+    "wikidata": "Q111150891"
+  }
+},
+{
+  "type": "node",
+  "id": 4564069589,
+  "lat": 4.2200196,
+  "lon": 73.5459171,
+  "timestamp": "2026-05-19T00:39:01Z",
+  "version": 8,
+  "changeset": 182856419,
+  "user": "swimdb",
+  "uid": 231017,
+  "tags": {
+    "addr:housenumber": "10026",
+    "addr:postcode": "23000",
+    "addr:street": "Nirolhu Magu",
+    "email": "sales@maakanaalodge.com",
+    "internet_access": "wlan",
+    "name": "Maakanaa Lodge",
+    "name:en": "Maakanaa Lodge",
+    "opening_hours": "Mo-Su 07:00-23:00",
+    "operator": "Maakanaa Investments Pvt. Ltd.",
+    "phone": "+9607785560",
+    "tourism": "hotel",
+    "website": "http://www.maakanaalodgemaldives.mv"
+  }
+},
+{
+  "type": "node",
+  "id": 5135518957,
+  "lat": 4.2176498,
+  "lon": 73.5451878,
+  "timestamp": "2017-09-28T14:49:42Z",
+  "version": 1,
+  "changeset": 52447132,
+  "user": "mapmeld",
+  "uid": 401297,
+  "tags": {
+    "name": "Sunset Royal",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5355241555,
+  "lat": 4.1766160,
+  "lon": 73.5154029,
+  "timestamp": "2018-01-22T19:29:44Z",
+  "version": 1,
+  "changeset": 55664347,
+  "user": "estrulian",
+  "uid": 7512888,
+  "tags": {
+    "addr:city": "Male",
+    "addr:street": "Kaani Goalhi",
+    "name": "Kaani Lodge",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5780125753,
+  "lat": 4.2101280,
+  "lon": 73.5432777,
+  "timestamp": "2018-07-23T20:12:44Z",
+  "version": 1,
+  "changeset": 60998479,
+  "user": "Avocadough!",
+  "uid": 6967122,
+  "tags": {
+    "email": "sales@dhonmanikbeachview.com",
+    "name": "Dhon Manik Beach View Hotel",
+    "phone": "+960 335 6668",
+    "tourism": "hotel",
+    "website": "http://dhonmanikbeachview.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 5893296891,
+  "lat": 4.1770751,
+  "lon": 73.5054147,
+  "timestamp": "2018-09-08T18:34:44Z",
+  "version": 1,
+  "changeset": 62408811,
+  "user": "Jesus Tudela",
+  "uid": 2461216,
+  "tags": {
+    "addr:city": "Malé",
+    "addr:postcode": "20288",
+    "addr:street": "Kulhidhoshu Magu",
+    "email": "reservations@somerset-inn.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Somerset Inn",
+    "phone": "+9603322133",
+    "rooms": "32",
+    "tourism": "hotel",
+    "website": "http://www.somerset-inn.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 6083399518,
+  "lat": 4.1778583,
+  "lon": 73.5093473,
+  "timestamp": "2018-11-22T19:07:40Z",
+  "version": 1,
+  "changeset": 64791952,
+  "user": "ToJocham",
+  "uid": 4952192,
+  "tags": {
+    "name": "Novina",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6292959096,
+  "lat": 4.1748153,
+  "lon": 73.5164425,
+  "timestamp": "2019-02-21T11:36:30Z",
+  "version": 2,
+  "changeset": 67425977,
+  "user": "DemoLogin",
+  "uid": 1709753,
+  "tags": {
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "The Melrose",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "phone": "+960 330 0484",
+    "smoking": "outside",
+    "stars": "3",
+    "tourism": "hotel",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 8284491717,
+  "lat": 4.1758057,
+  "lon": 73.5175961,
+  "timestamp": "2026-10-13T07:52:53Z",
+  "version": 4,
+  "changeset": 190437724,
+  "user": "carlosassuncao92",
+  "uid": 6251065,
+  "tags": {
+    "name": "Samann Grand",
+    "stars": "4",
+    "tourism": "hotel",
+    "wikidata": "Q111150888"
+  }
+},
+{
+  "type": "node",
+  "id": 8515728825,
+  "lat": 4.2499832,
+  "lon": 73.5446415,
+  "timestamp": "2022-09-26T21:30:09Z",
+  "version": 2,
+  "changeset": 126672740,
+  "user": "IknowJoseph",
+  "uid": 30587,
+  "tags": {
+    "brand": "Sheraton",
+    "brand:wikidata": "Q634831",
+    "brand:wikipedia": "en:Sheraton Hotels and Resorts",
+    "name": "Sheraton Maldives Full Moon Resort & Spa",
+    "tourism": "hotel",
+    "wikidata": "Q111150880"
+  }
+},
+{
+  "type": "node",
+  "id": 10910869688,
+  "lat": 4.2257231,
+  "lon": 73.5204046,
+  "timestamp": "2023-05-19T08:05:42Z",
+  "version": 1,
+  "changeset": 136286718,
+  "user": "Daneel76",
+  "uid": 9057313,
+  "tags": {
+    "name": "Reception",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 11182077737,
+  "lat": 4.1780219,
+  "lon": 73.5135874,
+  "timestamp": "2026-10-13T07:47:43Z",
+  "version": 5,
+  "changeset": 190437520,
+  "user": "carlosassuncao92",
+  "uid": 6251065,
+  "tags": {
+    "name": "JEN",
+    "stars": "4",
+    "swimming_pool": "outdoor",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 11182440938,
+  "lat": 4.1774304,
+  "lon": 73.5170919,
+  "timestamp": "2026-10-13T07:49:56Z",
+  "version": 6,
+  "changeset": 190437606,
+  "user": "carlosassuncao92",
+  "uid": 6251065,
+  "tags": {
+    "air_conditioning": "yes",
+    "name": "Maagiri Hotel",
+    "sauna": "no",
+    "stars": "4",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 11182577537,
+  "lat": 4.1771222,
+  "lon": 73.5170077,
+  "timestamp": "2026-10-13T07:49:30Z",
+  "version": 3,
+  "changeset": 190437591,
+  "user": "carlosassuncao92",
+  "uid": 6251065,
+  "tags": {
+    "name": "Mookai Hotel",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 11183603946,
+  "lat": 4.2135371,
+  "lon": 73.5445360,
+  "timestamp": "2025-12-28T07:41:38Z",
+  "version": 2,
+  "changeset": 176515769,
+  "user": "aecepoglu",
+  "uid": 1198924,
+  "tags": {
+    "name": "aina residency",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 11185404546,
+  "lat": 4.1757285,
+  "lon": 73.5177285,
+  "timestamp": "2026-10-13T07:52:33Z",
+  "version": 3,
+  "changeset": 190437715,
+  "user": "carlosassuncao92",
+  "uid": 6251065,
+  "tags": {
+    "name": "Unima Grand",
+    "stars": "4",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 12032998414,
+  "lat": 4.2105100,
+  "lon": 73.5433691,
+  "timestamp": "2024-07-19T08:21:32Z",
+  "version": 2,
+  "changeset": 154132252,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "tags": {
+    "addr:city": "Hulhumale",
+    "addr:housenumber": "Lot 10805,",
+    "addr:postcode": "23000",
+    "addr:street": "16 Nirolhu Magu, 20057",
+    "brand": "LE three",
+    "email": "hello@lethree.com",
+    "name": "Le Three",
+    "phone": "9821676",
+    "tourism": "hotel",
+    "website": "https://lethree.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 12860284401,
+  "lat": 4.2182683,
+  "lon": 73.5455275,
+  "timestamp": "2025-05-24T07:34:27Z",
+  "version": 1,
+  "changeset": 166683729,
+  "user": "Slavyanin50",
+  "uid": 14546695,
+  "tags": {
+    "name": "Coconut tree Hulhuvilla Beach",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13430567837,
+  "lat": 4.2111893,
+  "lon": 73.5438638,
+  "timestamp": "2026-01-04T15:40:07Z",
+  "version": 1,
+  "changeset": 176824252,
+  "user": "aecepoglu",
+  "uid": 1198924,
+  "tags": {
+    "name": "hathaa beach maldives",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13430567838,
+  "lat": 4.2109564,
+  "lon": 73.5437644,
+  "timestamp": "2026-01-04T15:40:09Z",
+  "version": 1,
+  "changeset": 176824252,
+  "user": "aecepoglu",
+  "uid": 1198924,
+  "tags": {
+    "name": "blue crystal view",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13430590901,
+  "lat": 4.2127207,
+  "lon": 73.5443202,
+  "timestamp": "2026-01-04T15:40:04Z",
+  "version": 1,
+  "changeset": 176824252,
+  "user": "aecepoglu",
+  "uid": 1198924,
+  "tags": {
+    "name": "acacra beach hoted",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13432927102,
+  "lat": 4.2130588,
+  "lon": 73.5438156,
+  "timestamp": "2026-01-05T17:20:22Z",
+  "version": 1,
+  "changeset": 176871470,
+  "user": "aecepoglu",
+  "uid": 1198924,
+  "tags": {
+    "name": "newtown inn",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13651846501,
+  "lat": 4.2075616,
+  "lon": 73.5420693,
+  "timestamp": "2026-03-16T09:48:03Z",
+  "version": 1,
+  "changeset": 179940432,
+  "user": "silvan h",
+  "uid": 4562806,
+  "tags": {
+    "check_date": "2026-03-15",
+    "name": "Terminal 27 Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13923790801,
+  "lat": 4.2256194,
+  "lon": 73.5204335,
+  "timestamp": "2026-06-09T17:42:27Z",
+  "version": 1,
+  "changeset": 183887227,
+  "user": "Kram_xfly",
+  "uid": 24187720,
+  "tags": {
+    "addr:postcode": "08340",
+    "addr:street": "Reethigas Magu",
+    "check_date": "2026-06-09",
+    "name": "Kurumba Maldives",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14002278195,
+  "lat": 4.2260601,
+  "lon": 73.5209606,
+  "timestamp": "2026-07-10T10:28:15Z",
+  "version": 1,
+  "changeset": 185465681,
+  "user": "mathavan2307",
+  "uid": 10289230,
+  "tags": {
+    "addr:place": "Vihamanaafushi",
+    "addr:postcode": "08340",
+    "name": "Niva Kurumba Maldives",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14019271501,
+  "lat": 4.2128792,
+  "lon": 73.4846136,
+  "timestamp": "2026-07-16T06:16:56Z",
+  "version": 2,
+  "changeset": 185825736,
+  "user": "Lada1969",
+  "uid": 24282887,
+  "tags": {
+    "name": "Dusit2",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14142306301,
+  "lat": 4.1777189,
+  "lon": 73.5164791,
+  "timestamp": "2026-10-13T07:45:34Z",
+  "version": 2,
+  "changeset": 190437412,
+  "user": "carlosassuncao92",
+  "uid": 6251065,
+  "tags": {
+    "name": "Barceló Nasandhura Hotel",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14290550902,
+  "lat": 4.2225374,
+  "lon": 73.5392101,
+  "timestamp": "2026-10-16T15:12:11Z",
+  "version": 1,
+  "changeset": 190612645,
+  "user": "silvan h",
+  "uid": 4562806,
+  "tags": {
+    "check_date": "2026-10-16",
+    "name": "Manhattan Grand Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 19881993,
+  "timestamp": "2024-06-29T10:59:21Z",
+  "version": 22,
+  "changeset": 153327124,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "center": {
+    "lat": 4.2263711,
+    "lon": 73.5196797
+  },
+  "nodes": [
+    208525694,
+    208525869,
+    6586620272,
+    208525870,
+    7081744709,
+    7081744715,
+    208525880,
+    10918351062,
+    208525873,
+    6586620273,
+    208525874,
+    208525875,
+    208525670,
+    10912552986,
+    1641912989,
+    1641912991,
+    208525674,
+    9037658049,
+    1641912994,
+    9037658047,
+    1641912992,
+    9037658045,
+    9037658043,
+    208525677,
+    9037658041,
+    9037658039,
+    208525671,
+    8821213857,
+    208525672,
+    10912552846,
+    208525685,
+    9037658037,
+    208525679,
+    9037658034,
+    9037658032,
+    208525683,
+    9037658030,
+    208525686,
+    10912552923,
+    9037658027,
+    6586620277,
+    9037658025,
+    6586620276,
+    6586620275,
+    6586620274,
+    1641912987,
+    208525680,
+    208525693,
+    10909204937,
+    208525694
+  ],
+  "tags": {
+    "access": "customers",
+    "alt_name": "Kurumba",
+    "alt_name:en": "Kurumba Village",
+    "name": "Vihamanaafushi",
+    "natural": "coastline",
+    "place": "islet",
+    "tourism": "hotel",
+    "website": "https://www.kurumba.com/",
+    "wikidata": "Q371225",
+    "wikimedia_commons": "Category:Vihamanaafushi"
+  }
+},
+{
+  "type": "way",
+  "id": 133845532,
+  "timestamp": "2026-10-13T07:58:25Z",
+  "version": 4,
+  "changeset": 190437977,
+  "user": "carlosassuncao92",
+  "uid": 6251065,
+  "center": {
+    "lat": 4.1944401,
+    "lon": 73.5261597
+  },
+  "nodes": [
+    1472910530,
+    1472906269,
+    1472906271,
+    1472906252,
+    1472906251,
+    1472906204,
+    1472906272,
+    1472906295,
+    1472906210,
+    1472906246,
+    1472906283,
+    1472906224,
+    1472906296,
+    1472906292,
+    1472906236,
+    1472906233,
+    1472906231,
+    1472906265,
+    1472906220,
+    1472906197,
+    1472906221,
+    1472906216,
+    1472906254,
+    1472906255,
+    1472906284,
+    1472906291,
+    1472906193,
+    1472906242,
+    1472906198,
+    1472906250,
+    1472906195,
+    1472906217,
+    1472906199,
+    1472906212,
+    1472906239,
+    1472906245,
+    1472906274,
+    1472906278,
+    1472906266,
+    1472906196,
+    1472906264,
+    1472906234,
+    1472910530
+  ],
+  "tags": {
+    "building": "hotel",
+    "name": "Hulhule Island Hotel",
+    "stars": "5",
+    "tourism": "hotel",
+    "wikidata": "Q112003433"
+  }
+},
+{
+  "type": "way",
+  "id": 477457657,
+  "timestamp": "2026-10-15T09:17:33Z",
+  "version": 6,
+  "changeset": 190546285,
+  "user": "carlosassuncao92",
+  "uid": 6251065,
+  "center": {
+    "lat": 4.2084913,
+    "lon": 73.5429519
+  },
+  "nodes": [
+    4706353216,
+    4706354417,
+    4706340114,
+    4709425254,
+    4709425255,
+    4706353216
+  ],
+  "tags": {
+    "addr:street": "Nirolhu Magu - Goalhi 19",
+    "building": "yes",
+    "building:levels": "4",
+    "building:use": "hotel",
+    "name": "h78 Hotel Hulhumale",
+    "source": "survey",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 535156293,
+  "timestamp": "2026-10-13T11:13:46Z",
+  "version": 4,
+  "changeset": 190447738,
+  "user": "carlosassuncao92",
+  "uid": 6251065,
+  "center": {
+    "lat": 4.1726733,
+    "lon": 73.5169205
+  },
+  "nodes": [
+    5188016557,
+    5188016567,
+    3397766912,
+    5188016676,
+    5188016557
+  ],
+  "tags": {
+    "addr:city": "Malé",
+    "addr:postcode": "20022",
+    "addr:street": "H.Loajehiaage",
+    "addr:suburb": "Bodufungandu Magu",
+    "building": "hotel",
+    "building:levels": "10",
+    "contact:email": "sales@surfviewhotel.com",
+    "contact:phone": "+960 330 1005",
+    "contact:website": "http://www.surfviewhotel.com/",
+    "name": "Umet Sea View",
+    "stars": "4",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1317139674,
+  "timestamp": "2024-09-21T15:31:33Z",
+  "version": 1,
+  "changeset": 156917279,
+  "user": "dhoru",
+  "uid": 21936107,
+  "center": {
+    "lat": 4.1742126,
+    "lon": 73.5103210
+  },
+  "nodes": [
+    7211404057,
+    12190077961,
+    12190077962,
+    12190077963,
+    12190077964,
+    12190077965,
+    7211404057
+  ],
+  "tags": {
+    "addr:city": "Male'",
+    "addr:postcode": "20145",
+    "addr:street": "Rah Dhebai Magu",
+    "air_conditioning": "yes",
+    "building": "yes",
+    "email": "reservations@champacentralhotel.com",
+    "fax": "+960 331 7755",
+    "internet_access": "wlan",
+    "internet_access:fee": "yes",
+    "name": "Champa Central Hotel",
+    "payment:american_express": "yes",
+    "payment:cash": "yes",
+    "payment:mastercard": "yes",
+    "payment:unionpay": "yes",
+    "payment:visa": "yes",
+    "phone": "+960 331 7766",
+    "reservation": "yes",
+    "rooms": "74",
+    "smoking": "outside",
+    "stars": "4",
+    "start_date": "April 2016",
+    "tourism": "hotel",
+    "website": "https://champacentralhotel.com"
+  }
+},
+{
+  "type": "way",
+  "id": 1317932596,
+  "timestamp": "2026-08-30T06:27:02Z",
+  "version": 3,
+  "changeset": 188229814,
+  "user": "dhoru",
+  "uid": 21936107,
+  "center": {
+    "lat": 4.1755037,
+    "lon": 73.5163252
+  },
+  "nodes": [
+    12197388691,
+    12197388692,
+    12197388693,
+    12197388694,
+    12197388691
+  ],
+  "tags": {
+    "air_conditioning": "yes",
+    "building": "hotel",
+    "name": "Meerumaa",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+}
+
+  ]
+}

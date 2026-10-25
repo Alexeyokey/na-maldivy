@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "model_kind": "synthetic",
+  "description": "Demonstration train timetable and fare model. Not an RZD tariff or a sale offer.",
+  "route_distance_km": 650,
+  "distance_status": "synthetic modelling input, not measured rail routing",
+  "fare_rub_per_km": {"seated": 4, "platzkart": 5, "coupe": 8, "sv": 16},
+  "summer_multiplier_per_mille": 1250,
+  "new_year_multiplier_per_mille": 1350,
+  "normal_multiplier_per_mille": 1000,
+  "pet_fee_rub": 500,
+  "traveler_policy": "Every listed person occupies one seat; no age discount is claimed. Pets incur a modelled fee but actual carriage eligibility is unknown.",
+  "cities": {
+    "MOW": {"iata": "MOW", "name": "Москва, Ленинградский вокзал", "latitude": 55.7765, "longitude": 37.6553, "timezone": "Europe/Moscow", "yandex_city_code": "c213", "station_code": "s2006004"},
+    "LED": {"iata": "LED", "name": "Санкт-Петербург, Московский вокзал", "latitude": 59.9301, "longitude": 30.3619, "timezone": "Europe/Moscow", "yandex_city_code": "c146", "station_code": "s2004001"}
+  },
+  "point_note": "Rounded station gateway coordinates retained from D1 draft; Yandex station codes are independent of the IATA city alias used by D1.",
+  "sources": [{"title": "Yandex Timetables: search between points", "url": "https://yandex.ru/dev/rasp/doc/ru/reference/schedule-point-point", "checked_on": "2026-10-26", "scope": "API request/response schema and city-code example c146 to c213, not a captured timetable."}]
+}

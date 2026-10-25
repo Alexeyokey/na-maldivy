@@ -1,0 +1,9669 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-10-25T21:13:07Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 300876649,
+  "lat": 36.8547148,
+  "lon": 30.7423738,
+  "timestamp": "2023-12-18T11:00:02Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "Falcon",
+    "stars": "4",
+    "tourism": "hotel",
+    "wikidata": "Q111400130"
+  }
+},
+{
+  "type": "node",
+  "id": 530098775,
+  "lat": 36.8828261,
+  "lon": 30.7045857,
+  "timestamp": "2023-12-18T11:01:41Z",
+  "version": 6,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:housenumber": "17",
+    "addr:street": "Hıdırlık Sokak",
+    "check_date": "2022-11-26",
+    "name": "Hotel Frankfurt",
+    "tourism": "hotel",
+    "website": "http://www.hotel-frankfurt-antalya-tuerkei.info/",
+    "wikidata": "Q111998182"
+  }
+},
+{
+  "type": "node",
+  "id": 945156266,
+  "lat": 36.7302123,
+  "lon": 30.5609675,
+  "timestamp": "2018-10-23T19:27:21Z",
+  "version": 8,
+  "changeset": 63808343,
+  "user": "zeon84-74",
+  "uid": 97139,
+  "tags": {
+    "contact:website": "http://www.larissahotels.com/",
+    "name": "Larissa Beldibi",
+    "operator": "Larissa Hotels",
+    "stars": "4",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1280250536,
+  "lat": 36.8838868,
+  "lon": 30.7067810,
+  "timestamp": "2023-12-18T11:00:04Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "amenity": "restaurant",
+    "check_date": "2022-11-26",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Alp Paşa Hotel",
+    "tourism": "hotel",
+    "wheelchair": "no",
+    "wikidata": "Q111400136"
+  }
+},
+{
+  "type": "node",
+  "id": 1304838596,
+  "lat": 36.7226040,
+  "lon": 30.5615564,
+  "timestamp": "2025-09-29T07:16:25Z",
+  "version": 2,
+  "changeset": 172596830,
+  "user": "hangy",
+  "uid": 52781,
+  "tags": {
+    "check_date": "2025-09-25",
+    "name": "Ring beach",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1376172950,
+  "lat": 36.7303373,
+  "lon": 30.5615382,
+  "timestamp": "2018-05-13T15:02:57Z",
+  "version": 2,
+  "changeset": 58926616,
+  "user": "Aibek Nurlanov (Becho)",
+  "uid": 5703856,
+  "tags": {
+    "name": "California Dream",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1486003008,
+  "lat": 36.8817046,
+  "lon": 30.7095505,
+  "timestamp": "2023-12-18T11:00:43Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "internet_access": "wlan",
+    "name": "Oscar Boutique",
+    "smoking": "no",
+    "stars": "3",
+    "tourism": "hotel",
+    "wheelchair": "no",
+    "wikidata": "Q111856590"
+  }
+},
+{
+  "type": "node",
+  "id": 1584867163,
+  "lat": 36.8513326,
+  "lon": 30.6228211,
+  "timestamp": "2023-03-26T12:06:29Z",
+  "version": 2,
+  "changeset": 134133659,
+  "user": "batyrmastyr",
+  "uid": 5735399,
+  "tags": {
+    "check_date": "2023-03-26",
+    "name": "Portobello Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1654133400,
+  "lat": 36.8485398,
+  "lon": 30.7708050,
+  "timestamp": "2019-05-31T12:49:29Z",
+  "version": 3,
+  "changeset": 70807792,
+  "user": "melpper",
+  "uid": 10045701,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "muratpaşa",
+    "addr:housenumber": "2",
+    "addr:neighbourhood": "Çağlayan Mahallesi",
+    "addr:postcode": "07230",
+    "addr:street": "2050 Sokak",
+    "air_conditioning": "yes",
+    "bar": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "yes",
+    "name": "UpOn Hotel",
+    "rooms": "28",
+    "tourism": "hotel",
+    "website": "www.uponhotels.com"
+  }
+},
+{
+  "type": "node",
+  "id": 1675145608,
+  "lat": 36.8614248,
+  "lon": 30.6362447,
+  "timestamp": "2023-12-18T11:00:10Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "check_date": "2023-03-26",
+    "name": "Sea Life family Resort Hotel",
+    "tourism": "hotel",
+    "wheelchair": "limited",
+    "wikidata": "Q111400163"
+  }
+},
+{
+  "type": "node",
+  "id": 1710776982,
+  "lat": 36.8773505,
+  "lon": 30.7073285,
+  "timestamp": "2019-07-26T12:05:00Z",
+  "version": 3,
+  "changeset": 72683815,
+  "user": "Burcu Bayasli",
+  "uid": 9237592,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:housenumber": "6",
+    "addr:street": "1312. Sokak",
+    "name": "Kozan Hotel",
+    "phone": "+90 242 243 50 50",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1711817368,
+  "lat": 36.8824385,
+  "lon": 30.7046751,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 4,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "amenity": "restaurant",
+    "check_date": "2022-11-26",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Patio Hotel & Restaurant",
+    "phone": "+90 242 2483425",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1711817370,
+  "lat": 36.8819664,
+  "lon": 30.7037170,
+  "timestamp": "2012-04-11T19:15:06Z",
+  "version": 1,
+  "changeset": 11269004,
+  "user": "yolcu",
+  "uid": 581997,
+  "tags": {
+    "name": "Bacchus Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1711817375,
+  "lat": 36.8827181,
+  "lon": 30.7042392,
+  "timestamp": "2013-10-16T20:05:25Z",
+  "version": 3,
+  "changeset": 18392908,
+  "user": "yolcu",
+  "uid": 581997,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:housenumber": "23",
+    "addr:street": "Hıdırlık Sokak",
+    "name": "Eliza Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1711817378,
+  "lat": 36.8823466,
+  "lon": 30.7043007,
+  "timestamp": "2022-04-05T07:22:59Z",
+  "version": 3,
+  "changeset": 119330010,
+  "user": "ZinaidaZ",
+  "uid": 9465790,
+  "tags": {
+    "name": "Hadrianus Boutique Hotel",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1761078734,
+  "lat": 36.8848473,
+  "lon": 30.7072723,
+  "timestamp": "2012-05-29T13:06:55Z",
+  "version": 2,
+  "changeset": 11737862,
+  "user": "obitus",
+  "uid": 510390,
+  "tags": {
+    "name": "Urcu Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1806190931,
+  "lat": 36.8871843,
+  "lon": 30.7018344,
+  "timestamp": "2023-12-18T11:01:37Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "Hotel Mevre",
+    "tourism": "hotel",
+    "wikidata": "Q111998181"
+  }
+},
+{
+  "type": "node",
+  "id": 1826874035,
+  "lat": 36.8532061,
+  "lon": 30.8024562,
+  "timestamp": "2012-07-15T20:05:25Z",
+  "version": 1,
+  "changeset": 12234757,
+  "user": "Holedigger",
+  "uid": 714311,
+  "tags": {
+    "name": "Tugce Pansyon",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1852010185,
+  "lat": 36.8549461,
+  "lon": 30.8707982,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 3,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "tags": {
+    "addr:city": "Lara-Beach",
+    "addr:country": "TR",
+    "addr:postcode": "07003",
+    "email": "info@delphindiva.com",
+    "fax": "+90 242 352 03 62",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Hotel Delphin Diva Premiere",
+    "operator": "Delphin Hotels",
+    "phone": "+90 242 352 03 52",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "http://delphindiva.com/diva/tr/"
+  }
+},
+{
+  "type": "node",
+  "id": 2029595164,
+  "lat": 36.8552954,
+  "lon": 30.8599734,
+  "timestamp": "2019-08-09T12:34:10Z",
+  "version": 4,
+  "changeset": 73179753,
+  "user": "wheelmap_visitor",
+  "uid": 290680,
+  "tags": {
+    "name": "Miracle Hotel",
+    "toilets:wheelchair": "yes",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 2029595170,
+  "lat": 36.8552708,
+  "lon": 30.8639049,
+  "timestamp": "2023-12-18T11:00:35Z",
+  "version": 8,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "Delphin BE Grand Resort",
+    "toilets:wheelchair": "yes",
+    "tourism": "hotel",
+    "wheelchair": "limited",
+    "wikidata": "Q111415930"
+  }
+},
+{
+  "type": "node",
+  "id": 2047973306,
+  "lat": 36.8839177,
+  "lon": 30.7076802,
+  "timestamp": "2013-05-14T17:48:28Z",
+  "version": 2,
+  "changeset": 16128492,
+  "user": "yolcu",
+  "uid": 581997,
+  "tags": {
+    "name": "Erkal pansiyon",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 2134998873,
+  "lat": 36.8494423,
+  "lon": 30.8061141,
+  "timestamp": "2014-03-22T16:28:57Z",
+  "version": 3,
+  "changeset": 21247201,
+  "user": "hover_dam",
+  "uid": 75078,
+  "tags": {
+    "name": "Sera Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 2156604164,
+  "lat": 36.8515614,
+  "lon": 30.8016724,
+  "timestamp": "2013-02-15T21:00:42Z",
+  "version": 1,
+  "changeset": 15044735,
+  "user": "Diaaalwa",
+  "uid": 696299,
+  "tags": {
+    "name": "Lara World Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 2291851186,
+  "lat": 36.8858752,
+  "lon": 30.6743329,
+  "timestamp": "2025-05-19T17:57:11Z",
+  "version": 6,
+  "changeset": 166490031,
+  "user": "burakonder",
+  "uid": 9397174,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:place": "Konyaaltı Sahili",
+    "addr:postcode": "07050",
+    "addr:province": "Antalya",
+    "addr:street": "Sakıp Sabancı Bulvarı",
+    "email": "downtown@rixos.com",
+    "fax": "+90 242 249 49 00",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "name": "Rixos Downtown Antalya Hotel",
+    "payment:cash": "yes",
+    "payment:coins": "no",
+    "payment:notes": "no",
+    "phone": "+90 242 249 49 49",
+    "tourism": "hotel",
+    "website": "https://downtownantalya-tr.rixos.com/",
+    "wikidata": "Q111400159"
+  }
+},
+{
+  "type": "node",
+  "id": 2300063902,
+  "lat": 36.8912885,
+  "lon": 30.6948587,
+  "timestamp": "2023-12-18T11:01:47Z",
+  "version": 5,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "Ant Royal",
+    "stars": "3",
+    "tourism": "hotel",
+    "website": "https://www.hotelantroyal.com/",
+    "wikidata": "Q111998191"
+  }
+},
+{
+  "type": "node",
+  "id": 2300063915,
+  "lat": 36.8936779,
+  "lon": 30.7018080,
+  "timestamp": "2013-05-11T19:38:16Z",
+  "version": 1,
+  "changeset": 16085203,
+  "user": "yolcu",
+  "uid": 581997,
+  "tags": {
+    "name": "Hotel Kayalar",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 2392396301,
+  "lat": 36.7187024,
+  "lon": 30.5612634,
+  "timestamp": "2013-07-22T07:05:53Z",
+  "version": 2,
+  "changeset": 17044552,
+  "user": "jaybe",
+  "uid": 16514,
+  "tags": {
+    "name": "Golden Sun",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3073573850,
+  "lat": 36.8814171,
+  "lon": 30.7045126,
+  "timestamp": "2023-12-18T11:01:04Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:street": "Hesapci Sokak",
+    "check_date": "2022-11-26",
+    "name": "Hotel Blue Sea Garden",
+    "tourism": "hotel",
+    "wikidata": "Q111856618"
+  }
+},
+{
+  "type": "node",
+  "id": 3574829970,
+  "lat": 36.8949963,
+  "lon": 30.7030470,
+  "timestamp": "2015-06-05T17:49:38Z",
+  "version": 2,
+  "changeset": 31752070,
+  "user": "Artemi541",
+  "uid": 1567539,
+  "tags": {
+    "name": "Ersoy Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3623376901,
+  "lat": 36.8846431,
+  "lon": 30.7060959,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 2,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Mia Boutique Hotel Antalya",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3623376904,
+  "lat": 36.8839812,
+  "lon": 30.7041455,
+  "timestamp": "2023-12-18T11:00:04Z",
+  "version": 5,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:housenumber": "15",
+    "addr:postcode": "07100",
+    "addr:street": "Mermerli Sokak",
+    "check_date": "2022-11-26",
+    "email": "info@pudinghotels.com",
+    "fax": "+90 242 2440738",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "name": "Puding Marina Residence",
+    "operator": "Puding Hotels",
+    "payment:coins": "yes",
+    "payment:mastercard": "yes",
+    "payment:notes": "yes",
+    "payment:visa": "yes",
+    "phone": "+90 242 2440730",
+    "rooms": "70",
+    "smoking": "no",
+    "stars": "4",
+    "tourism": "hotel",
+    "website": "https://www.pudinghotels.com/",
+    "wheelchair": "no",
+    "wikidata": "Q111400139"
+  }
+},
+{
+  "type": "node",
+  "id": 3623376905,
+  "lat": 36.8852620,
+  "lon": 30.7065524,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 2,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "addr:housenumber": "25",
+    "addr:street": "Mescit Sokak",
+    "check_date": "2022-11-26",
+    "name": "Eski Masal Hotel",
+    "operator": "Puding Hotels",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3623393754,
+  "lat": 36.8843888,
+  "lon": 30.7065967,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 3,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "tags": {
+    "brand": "Hakan",
+    "name": "Atelya Art Hotel",
+    "phone": "+90 242 241 64 16",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3623393755,
+  "lat": 36.8846661,
+  "lon": 30.7074810,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 2,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Grand Erken Butik Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3623393756,
+  "lat": 36.8838708,
+  "lon": 30.7060486,
+  "timestamp": "2023-12-18T10:59:51Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Mediterra Art Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111118440"
+  }
+},
+{
+  "type": "node",
+  "id": 3951817907,
+  "lat": 36.8817125,
+  "lon": 30.7090511,
+  "timestamp": "2016-01-17T16:37:55Z",
+  "version": 1,
+  "changeset": 36636624,
+  "user": "bakasana",
+  "uid": 540071,
+  "tags": {
+    "name": "Life Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4224939392,
+  "lat": 36.8819403,
+  "lon": 30.7090339,
+  "timestamp": "2016-06-04T05:36:00Z",
+  "version": 1,
+  "changeset": 39791696,
+  "user": "Tatiana Grekhova",
+  "uid": 4061653,
+  "tags": {
+    "addr:housenumber": "10",
+    "addr:postcode": "07100",
+    "addr:street": "1304 Sokak",
+    "name": "Eliz hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4230034589,
+  "lat": 36.7201585,
+  "lon": 30.5627448,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 3,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "tags": {
+    "addr:housenumber": "133",
+    "addr:postcode": "07985",
+    "addr:street": "Atatürk Caddesi",
+    "internet_access": "wlan",
+    "name": "Transatlantic beach hotel",
+    "opening_hours": "24/7",
+    "phone": "+90 242 824 93 21",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4231642089,
+  "lat": 36.8739555,
+  "lon": 30.7157755,
+  "timestamp": "2023-12-19T10:42:54Z",
+  "version": 2,
+  "changeset": 145285858,
+  "user": "evgenykatyshev",
+  "uid": 98099,
+  "tags": {
+    "check_date": "2023-12-19",
+    "name": "Prime hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4285200889,
+  "lat": 36.8873425,
+  "lon": 30.7354241,
+  "timestamp": "2016-07-05T22:58:43Z",
+  "version": 1,
+  "changeset": 40511476,
+  "user": "Addiel Lora",
+  "uid": 4086590,
+  "tags": {
+    "name": "Latanya Palm & Spa Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4299641195,
+  "lat": 36.8939343,
+  "lon": 30.7016150,
+  "timestamp": "2016-07-13T08:09:39Z",
+  "version": 1,
+  "changeset": 40705667,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "Kivrak Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4299792190,
+  "lat": 36.8908993,
+  "lon": 30.7031412,
+  "timestamp": "2022-02-01T13:44:51Z",
+  "version": 2,
+  "changeset": 116869620,
+  "user": "Viterall",
+  "uid": 7272786,
+  "tags": {
+    "name": "Marka Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4299794490,
+  "lat": 36.8808137,
+  "lon": 30.7140588,
+  "timestamp": "2023-06-29T21:51:23Z",
+  "version": 2,
+  "changeset": 137935370,
+  "user": "Farook Al-Sammarraie",
+  "uid": 19717194,
+  "tags": {
+    "name": "Mera Park Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4299862389,
+  "lat": 36.8641152,
+  "lon": 30.7259877,
+  "timestamp": "2016-07-13T08:11:26Z",
+  "version": 1,
+  "changeset": 40705688,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "The LifeCo Antalya Well-Being Detox Center and Vegan Hotel\n\n",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4323036791,
+  "lat": 36.8993230,
+  "lon": 30.7023291,
+  "timestamp": "2016-07-27T10:55:44Z",
+  "version": 1,
+  "changeset": 41059755,
+  "user": "Mudafar Ozbek",
+  "uid": 4319316,
+  "tags": {
+    "name": "Denizhan hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4330917609,
+  "lat": 36.8518233,
+  "lon": 30.8047349,
+  "timestamp": "2024-09-28T20:19:01Z",
+  "version": 3,
+  "changeset": 157227623,
+  "user": "Руслан Вит",
+  "uid": 21194715,
+  "tags": {
+    "name": "Hotel Awen",
+    "old_name:en": "Hotel Paris",
+    "old_name:tr": "Hotel Paris",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4586532190,
+  "lat": 36.8529030,
+  "lon": 30.7786757,
+  "timestamp": "2019-01-26T10:17:41Z",
+  "version": 2,
+  "changeset": 66651962,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "Adress Residence",
+    "name:en": "Adress Residence",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4754033123,
+  "lat": 36.8988697,
+  "lon": 30.6999169,
+  "timestamp": "2019-01-26T10:17:41Z",
+  "version": 2,
+  "changeset": 66651962,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "Grand Kayalar Hotel",
+    "name:en": "Grand Kayalar Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4816939821,
+  "lat": 36.8870279,
+  "lon": 30.7017266,
+  "timestamp": "2018-06-02T04:51:02Z",
+  "version": 3,
+  "changeset": 59476902,
+  "user": "EugeniyKH",
+  "uid": 3939614,
+  "tags": {
+    "name": "Alkan",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4820007518,
+  "lat": 36.8814616,
+  "lon": 30.7049173,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 2,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "addr:housenumber": "30",
+    "addr:street": "Tabakhane Sokak",
+    "check_date": "2022-11-26",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Mavi & Ani Pansiyon",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4866060921,
+  "lat": 36.8497725,
+  "lon": 30.6171232,
+  "timestamp": "2022-04-09T11:35:38Z",
+  "version": 2,
+  "changeset": 119500688,
+  "user": "Ali Moeini",
+  "uid": 15365821,
+  "tags": {
+    "addr:street": "28 Sokak",
+    "name": "SANTAmarina hotel",
+    "name:en": "Santa Marina hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4936468027,
+  "lat": 36.8615661,
+  "lon": 30.9226773,
+  "timestamp": "2021-11-18T12:49:25Z",
+  "version": 2,
+  "changeset": 113943391,
+  "user": "VAt",
+  "uid": 289183,
+  "tags": {
+    "name": "Trendy Lara",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5007676924,
+  "lat": 36.8850042,
+  "lon": 30.7074682,
+  "timestamp": "2019-01-26T10:17:43Z",
+  "version": 2,
+  "changeset": 66651962,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "ninova",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5138144580,
+  "lat": 36.8723289,
+  "lon": 30.6480927,
+  "timestamp": "2017-09-29T19:15:53Z",
+  "version": 1,
+  "changeset": 52487958,
+  "user": "alper_256",
+  "uid": 5056155,
+  "tags": {
+    "addr:city": "ANTALYA",
+    "addr:district": "Konyaaltı",
+    "addr:neighbourhood": "Kuşkavağı Mh. 552 Sk. No:11",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Konyaaltı Hotel",
+    "phone": "+90 242 229 1484",
+    "rooms": "Tek kişilik, Çift kişilik, Aile",
+    "tourism": "hotel",
+    "website": "http://www.konyaaltiotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 5223207325,
+  "lat": 36.8867528,
+  "lon": 30.7013880,
+  "timestamp": "2023-12-18T11:01:02Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "internet_access": "wlan",
+    "name": "Sky kamer",
+    "name:ar": "فندق سكاي كامٓر",
+    "tourism": "hotel",
+    "wikidata": "Q111856601"
+  }
+},
+{
+  "type": "node",
+  "id": 5304625267,
+  "lat": 36.7352201,
+  "lon": 30.5630210,
+  "timestamp": "2023-11-01T13:07:08Z",
+  "version": 3,
+  "changeset": 143474351,
+  "user": "Timmy_Tesseract",
+  "uid": 5653955,
+  "tags": {
+    "name": "Endam Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5304625268,
+  "lat": 36.7356684,
+  "lon": 30.5631065,
+  "timestamp": "2018-09-17T13:15:08Z",
+  "version": 2,
+  "changeset": 62664844,
+  "user": "LLlypuk82",
+  "uid": 788014,
+  "tags": {
+    "name": "View Kemer Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5304625269,
+  "lat": 36.7360662,
+  "lon": 30.5631200,
+  "timestamp": "2018-09-17T13:15:09Z",
+  "version": 2,
+  "changeset": 62664844,
+  "user": "LLlypuk82",
+  "uid": 788014,
+  "tags": {
+    "name": "Hotel Beltur",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5304625270,
+  "lat": 36.7352439,
+  "lon": 30.5641921,
+  "timestamp": "2022-12-27T19:13:31Z",
+  "version": 4,
+  "changeset": 130570327,
+  "user": "Airiver",
+  "uid": 13901111,
+  "tags": {
+    "name": "Club Palm Beach Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5304625282,
+  "lat": 36.7366409,
+  "lon": 30.5631715,
+  "timestamp": "2024-10-04T14:56:32Z",
+  "version": 4,
+  "changeset": 157465128,
+  "user": "Глеб",
+  "uid": 346125,
+  "tags": {
+    "name": "Selçukhan",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5304625283,
+  "lat": 36.7356577,
+  "lon": 30.5646193,
+  "timestamp": "2017-12-26T11:11:28Z",
+  "version": 1,
+  "changeset": 54927071,
+  "user": "Алекс Мок",
+  "uid": 4814295,
+  "tags": {
+    "name": "Sultan Beldibi",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5308751056,
+  "lat": 36.7093731,
+  "lon": 30.5674785,
+  "timestamp": "2026-07-03T08:31:38Z",
+  "version": 4,
+  "changeset": 185026549,
+  "user": "BalmyHotels",
+  "uid": 24275211,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Kemer",
+    "addr:housenumber": "143/1",
+    "addr:neighbourhood": "Göynük Mahallesi",
+    "addr:postcode": "07985",
+    "addr:street": "Başkomutan Atatürk Caddesi",
+    "bar": "yes",
+    "brand": "Paloma",
+    "email": "info@balmyhotels.com",
+    "internet_access": "yes",
+    "internet_access:fee": "yes",
+    "name": "Balmy Foresta",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:mastercard": "yes",
+    "phone": "+90 242 824 84 31",
+    "rooms": "346",
+    "tourism": "hotel",
+    "website": "https://balmyforesta.com",
+    "wikidata": "Q111415878"
+  }
+},
+{
+  "type": "node",
+  "id": 5308751057,
+  "lat": 36.7114039,
+  "lon": 30.5665276,
+  "timestamp": "2020-01-08T11:20:14Z",
+  "version": 2,
+  "changeset": 79336601,
+  "user": "jemm",
+  "uid": 95199,
+  "tags": {
+    "addr:city": "Kemer",
+    "addr:housenumber": "141",
+    "addr:neighbourhood": "Göynük",
+    "addr:street": "Atatürk Caddesi",
+    "name": "Nirvana Mediterranean Excellence",
+    "old_name": "Nirvana Lagoon Villas Suites & SPA",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5308953235,
+  "lat": 36.6903968,
+  "lon": 30.5702788,
+  "timestamp": "2017-12-28T19:14:18Z",
+  "version": 1,
+  "changeset": 54991572,
+  "user": "Алекс Мок",
+  "uid": 4814295,
+  "tags": {
+    "name": "Rios Beach",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5308953320,
+  "lat": 36.6949628,
+  "lon": 30.5712497,
+  "timestamp": "2024-10-24T18:41:02Z",
+  "version": 3,
+  "changeset": 158309270,
+  "user": "Firefishy",
+  "uid": 3560,
+  "tags": {
+    "check_date": "2024-10-24",
+    "level": "0",
+    "name": "Onkel hotel beldibi resort",
+    "tourism": "hotel",
+    "website": "https://www.onkelresort.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 5308953321,
+  "lat": 36.6964940,
+  "lon": 30.5716950,
+  "timestamp": "2017-12-28T19:14:19Z",
+  "version": 1,
+  "changeset": 54991572,
+  "user": "Алекс Мок",
+  "uid": 4814295,
+  "tags": {
+    "name": "imperial Palace hotels",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5308953381,
+  "lat": 36.6931347,
+  "lon": 30.5692327,
+  "timestamp": "2024-10-20T19:21:12Z",
+  "version": 2,
+  "changeset": 158142759,
+  "user": "Firefishy",
+  "uid": 3560,
+  "tags": {
+    "air_conditioning": "yes",
+    "bar": "yes",
+    "check_date": "2024-10-19",
+    "internet_access": "wlan",
+    "level": "0",
+    "name": "Dosinia Luxury Resort",
+    "smoking": "outside",
+    "source": "survey",
+    "stars": "5",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5308953470,
+  "lat": 36.6956456,
+  "lon": 30.5702238,
+  "timestamp": "2017-12-28T19:14:22Z",
+  "version": 1,
+  "changeset": 54991572,
+  "user": "Алекс Мок",
+  "uid": 4814295,
+  "tags": {
+    "name": "Hotel Janina",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5308953471,
+  "lat": 36.6959628,
+  "lon": 30.5715743,
+  "timestamp": "2019-06-18T13:13:05Z",
+  "version": 3,
+  "changeset": 71365692,
+  "user": "JuliaLumen",
+  "uid": 10084665,
+  "tags": {
+    "name": "Club Marakech Beach hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5342826320,
+  "lat": 36.8512942,
+  "lon": 30.6201506,
+  "timestamp": "2018-11-30T11:33:01Z",
+  "version": 3,
+  "changeset": 65041144,
+  "user": "katpatuka",
+  "uid": 17497,
+  "tags": {
+    "name": "Zel Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5369186570,
+  "lat": 36.8748840,
+  "lon": 30.6530949,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 6,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:housenumber": "1",
+    "addr:place": "Konyaaltı",
+    "addr:province": "Antalya",
+    "addr:street": "7. Cadde",
+    "addr:suburb": "Arapsuyu Mahallesi",
+    "email": "info@elitbasaranotel.com",
+    "fax": "+90 242 229 23 12",
+    "name": "Elit Başaran Otel Antalya",
+    "phone": "+90 242 229 21 59",
+    "tourism": "hotel",
+    "website": "https://elitbasaranotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 5369319739,
+  "lat": 36.8653979,
+  "lon": 30.7277419,
+  "timestamp": "2019-03-23T22:46:23Z",
+  "version": 2,
+  "changeset": 68457141,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "281",
+    "addr:province": "Antalya",
+    "addr:street": "Metin Kasapoğlu Caddesi",
+    "addr:suburb": "Yeşilbahçe Mahallesi",
+    "email": "info@akrahotels.com",
+    "fax": "+90 242 316 20 30",
+    "name": "Barut Akra V Otel",
+    "operator": "Barut",
+    "phone": "+90 242 310 99 70",
+    "tourism": "hotel",
+    "website": "https://www.akra-v.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 5369319975,
+  "lat": 36.8880616,
+  "lon": 30.7253654,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 5,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "1",
+    "addr:neighbourhood": "Kızıltoprak",
+    "addr:province": "Antalya",
+    "addr:street": "917. Sokak",
+    "addr:suburb": "Kızıltoprak Mahallesi",
+    "contact:instagram": "https://www.instagram.com/skybusinesshotel",
+    "email": "bilgiislem@skybusinesshotel.com",
+    "fax": "+90 242 333 04 08",
+    "internet_access": "yes",
+    "name": "Sky Business Hotel",
+    "operator": "Sky Business Hotel",
+    "payment:cash": "yes",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "phone": "+90 242 333 04 04",
+    "rooms": "151",
+    "smoking": "outside",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://www.skybusinesshotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 5462490032,
+  "lat": 36.8817883,
+  "lon": 30.7060939,
+  "timestamp": "2026-10-13T17:46:48Z",
+  "version": 4,
+  "changeset": 190467722,
+  "user": "deejaydarvin",
+  "uid": 1299267,
+  "tags": {
+    "addr:street": "Tabakhane sokak",
+    "check_date": "2026-10-13",
+    "name": "La Paloma Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111856600"
+  }
+},
+{
+  "type": "node",
+  "id": 5611823221,
+  "lat": 36.7324690,
+  "lon": 30.5583424,
+  "timestamp": "2021-10-12T20:43:41Z",
+  "version": 4,
+  "changeset": 112434998,
+  "user": "mrbaja",
+  "uid": 5818656,
+  "tags": {
+    "name": "Castle park hotel",
+    "name:en": "Castle Park Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5615945321,
+  "lat": 36.7329713,
+  "lon": 30.5598597,
+  "timestamp": "2026-06-26T18:36:42Z",
+  "version": 4,
+  "changeset": 184660883,
+  "user": "Глеб",
+  "uid": 346125,
+  "tags": {
+    "name": "Santana",
+    "name:en": "Santana",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5630578122,
+  "lat": 36.7328297,
+  "lon": 30.5600710,
+  "timestamp": "2018-05-20T14:03:14Z",
+  "version": 1,
+  "changeset": 59123799,
+  "user": "ovsergey",
+  "uid": 4425684,
+  "tags": {
+    "name": "Hotel Marin",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5676717524,
+  "lat": 36.7278496,
+  "lon": 30.5611026,
+  "timestamp": "2026-08-26T18:42:00Z",
+  "version": 3,
+  "changeset": 188060974,
+  "user": "SilentCat",
+  "uid": 4272444,
+  "tags": {
+    "internet_access": "yes",
+    "internet_access:fee": "yes",
+    "internet_access:type": "wlan",
+    "name": "Alexius Beach Hotel",
+    "opening_hours": "24/7",
+    "stars": "4",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5676717525,
+  "lat": 36.7357980,
+  "lon": 30.5558584,
+  "timestamp": "2018-06-09T01:33:10Z",
+  "version": 1,
+  "changeset": 59681763,
+  "user": "Igarunya",
+  "uid": 8393944,
+  "tags": {
+    "name": "Akasia resort",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5676717526,
+  "lat": 36.7347723,
+  "lon": 30.5629785,
+  "timestamp": "2018-06-09T01:33:13Z",
+  "version": 1,
+  "changeset": 59681763,
+  "user": "Igarunya",
+  "uid": 8393944,
+  "tags": {
+    "name": "Tal Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5676717527,
+  "lat": 36.7334400,
+  "lon": 30.5594360,
+  "timestamp": "2019-01-26T10:17:45Z",
+  "version": 2,
+  "changeset": 66651962,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "name": "Marine Hotel",
+    "name:en": "Marin Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5676721621,
+  "lat": 36.7326870,
+  "lon": 30.5599393,
+  "timestamp": "2018-06-09T01:33:11Z",
+  "version": 1,
+  "changeset": 59681763,
+  "user": "Igarunya",
+  "uid": 8393944,
+  "tags": {
+    "name": "Asel Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5686540893,
+  "lat": 36.7234657,
+  "lon": 30.5618954,
+  "timestamp": "2025-09-29T07:16:25Z",
+  "version": 3,
+  "changeset": 172596830,
+  "user": "hangy",
+  "uid": 52781,
+  "tags": {
+    "check_date": "2025-09-25",
+    "name": "Catamaran",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5724256121,
+  "lat": 36.7195386,
+  "lon": 30.5570919,
+  "timestamp": "2018-06-27T23:05:23Z",
+  "version": 1,
+  "changeset": 60230864,
+  "user": "Igarunya",
+  "uid": 8393944,
+  "tags": {
+    "name": "Milenium Palace",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5862116585,
+  "lat": 37.0059048,
+  "lon": 30.5980002,
+  "timestamp": "2018-08-27T20:22:46Z",
+  "version": 1,
+  "changeset": 62050953,
+  "user": "gregdelycie",
+  "uid": 8567707,
+  "tags": {
+    "addr:housenumber": "294/2",
+    "addr:postcode": "07190",
+    "addr:street": "Atatürk Blv.",
+    "name": "Döşemealti Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5864893186,
+  "lat": 36.8879679,
+  "lon": 30.7039324,
+  "timestamp": "2024-04-09T12:03:04Z",
+  "version": 14,
+  "changeset": 149774377,
+  "user": "SomeoneElse_Revert",
+  "uid": 1778799,
+  "tags": {
+    "name": "Şehir hotel",
+    "name:ru": "Гостиница «Шехир»",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5894804086,
+  "lat": 36.7325384,
+  "lon": 30.5605644,
+  "timestamp": "2018-09-17T13:15:09Z",
+  "version": 2,
+  "changeset": 62664844,
+  "user": "LLlypuk82",
+  "uid": 788014,
+  "tags": {
+    "name": "Zara Tunc Hotel",
+    "name:en": "Zara Tunc Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5959289785,
+  "lat": 36.8813837,
+  "lon": 30.7064672,
+  "timestamp": "2026-10-13T17:41:16Z",
+  "version": 2,
+  "changeset": 190467647,
+  "user": "deejaydarvin",
+  "uid": 1299267,
+  "tags": {
+    "name": "Karyatit Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6076067032,
+  "lat": 36.8846556,
+  "lon": 30.7040773,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 5,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "4",
+    "addr:neighbourhood": "Kaleiçi",
+    "addr:postcode": "07100",
+    "addr:street": "Mermerli Sokak",
+    "brand": "Kaleiçi Marina Hotel & Restaurant",
+    "check_date": "2022-11-26",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "name": "Kaleiçi Marina Hotel & Restaurant",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6134695185,
+  "lat": 36.9017483,
+  "lon": 30.6580748,
+  "timestamp": "2018-12-13T09:29:37Z",
+  "version": 1,
+  "changeset": 65435678,
+  "user": "Mert Dikbıyık",
+  "uid": 9231682,
+  "tags": {
+    "addr:street": "3818",
+    "internet_access": "wlan",
+    "name": "elit otel",
+    "opening_hours": "24/7",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6165706187,
+  "lat": 36.8763937,
+  "lon": 30.6561772,
+  "timestamp": "2025-05-19T17:57:11Z",
+  "version": 4,
+  "changeset": 166490031,
+  "user": "burakonder",
+  "uid": 9397174,
+  "tags": {
+    "name": "Hotel White",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6168976887,
+  "lat": 36.8851347,
+  "lon": 30.7082800,
+  "timestamp": "2018-12-28T18:16:26Z",
+  "version": 1,
+  "changeset": 65849253,
+  "user": "Wae Hildebrand",
+  "uid": 4427218,
+  "tags": {
+    "name": "Urartu",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6418227128,
+  "lat": 36.8870325,
+  "lon": 30.7080502,
+  "timestamp": "2019-04-21T16:36:34Z",
+  "version": 3,
+  "changeset": 69428962,
+  "user": "Srgi",
+  "uid": 8004078,
+  "tags": {
+    "addr:housenumber": "3",
+    "addr:street": "1251 Sokak",
+    "internet_access": "wlan",
+    "name": "Real Esen Hotel location",
+    "name:en": "Real Esen Hotel lovation",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6426781168,
+  "lat": 36.7321092,
+  "lon": 30.5623462,
+  "timestamp": "2023-10-10T09:12:54Z",
+  "version": 2,
+  "changeset": 142383355,
+  "user": "evgenykatyshev",
+  "uid": 98099,
+  "tags": {
+    "name": "Mayroom Hotel",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6511669986,
+  "lat": 36.8513837,
+  "lon": 30.6173924,
+  "timestamp": "2023-03-26T12:21:04Z",
+  "version": 2,
+  "changeset": 134134130,
+  "user": "batyrmastyr",
+  "uid": 5735399,
+  "tags": {
+    "check_date": "2023-03-26",
+    "internet_access": "wlan",
+    "name": "Far Life",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6550660285,
+  "lat": 36.8638082,
+  "lon": 30.8956413,
+  "timestamp": "2020-09-06T22:46:06Z",
+  "version": 2,
+  "changeset": 90495038,
+  "user": "AzurRu",
+  "uid": 731064,
+  "tags": {
+    "name": "Attalos Smart Lara Star Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6591275785,
+  "lat": 36.8863259,
+  "lon": 30.7129597,
+  "timestamp": "2024-04-09T12:02:40Z",
+  "version": 15,
+  "changeset": 149774347,
+  "user": "SomeoneElse_Revert",
+  "uid": 1778799,
+  "tags": {
+    "internet_access": "wlan",
+    "name": "Atalla Hotel",
+    "name:en": "Atall Hotel",
+    "name:ru": "Отель Аталла",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6591968593,
+  "lat": 36.7231461,
+  "lon": 30.5618401,
+  "timestamp": "2019-07-05T19:00:19Z",
+  "version": 1,
+  "changeset": 71942768,
+  "user": "JuliaLumen",
+  "uid": 10084665,
+  "tags": {
+    "name": "Larissa Mare Beach",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6602020385,
+  "lat": 36.7326178,
+  "lon": 30.5590050,
+  "timestamp": "2019-07-10T08:00:33Z",
+  "version": 1,
+  "changeset": 72082690,
+  "user": "JuliaLumen",
+  "uid": 10084665,
+  "tags": {
+    "name": "Ozer Park Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6611904416,
+  "lat": 36.7245098,
+  "lon": 30.5607754,
+  "timestamp": "2025-09-29T07:16:25Z",
+  "version": 3,
+  "changeset": 172596830,
+  "user": "hangy",
+  "uid": 52781,
+  "tags": {
+    "bar": "yes",
+    "check_date": "2025-09-25",
+    "internet_access": "wlan",
+    "name": "Magic Sun",
+    "name:en": "Magic Sun",
+    "tourism": "hotel",
+    "website": "https://www.magicsunhotels.com.tr/"
+  }
+},
+{
+  "type": "node",
+  "id": 6633132388,
+  "lat": 36.8621171,
+  "lon": 30.6357984,
+  "timestamp": "2024-03-21T22:26:59Z",
+  "version": 4,
+  "changeset": 148988645,
+  "user": "anon17609",
+  "uid": 21013152,
+  "tags": {
+    "addr:housenumber": "4/2",
+    "addr:postcode": "07070",
+    "addr:street": "304. Sokak",
+    "check_date": "2023-03-26",
+    "email": "info@evaboutiquehotel.com",
+    "internet_access": "wlan",
+    "name": "Eva Butik Otel",
+    "name:en": "Eva Boutique Hotel",
+    "opening_hours": "24/7",
+    "operator": "Hasan Ertuğrul",
+    "phone": "+902423446161",
+    "tourism": "hotel",
+    "website": "https://evaboutiquehotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 6634168702,
+  "lat": 36.8528868,
+  "lon": 30.8037862,
+  "timestamp": "2019-07-20T18:42:59Z",
+  "version": 1,
+  "changeset": 72467302,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "tags": {
+    "name": "Ekin Aile Pansiyonu",
+    "phone": "+902423493200",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6634168704,
+  "lat": 36.8528442,
+  "lon": 30.8038120,
+  "timestamp": "2019-07-20T18:42:59Z",
+  "version": 1,
+  "changeset": 72467302,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "tags": {
+    "name": "Sercan Pansiyon",
+    "phone": "+902423496149",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6634402285,
+  "lat": 36.7347239,
+  "lon": 30.5600654,
+  "timestamp": "2019-07-20T22:23:54Z",
+  "version": 1,
+  "changeset": 72470840,
+  "user": "JuliaLumen",
+  "uid": 10084665,
+  "tags": {
+    "name": "Ipsos",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6660273785,
+  "lat": 36.7340513,
+  "lon": 30.5616871,
+  "timestamp": "2019-07-30T08:40:13Z",
+  "version": 1,
+  "changeset": 72800689,
+  "user": "JuliaLumen",
+  "uid": 10084665,
+  "tags": {
+    "name": "Belpoint Beach",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6721056288,
+  "lat": 36.8932651,
+  "lon": 30.7023714,
+  "timestamp": "2026-02-10T14:43:43Z",
+  "version": 3,
+  "changeset": 178363607,
+  "user": "CjMalone",
+  "uid": 6816132,
+  "tags": {
+    "addr:city": "Antalya",
+    "check_date": "2019-11-04",
+    "name": "Bilgehan Otel",
+    "name:ar": "بلگهان",
+    "name:tr": "Bilgehan Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6738600087,
+  "lat": 36.7367209,
+  "lon": 30.5612029,
+  "timestamp": "2019-08-23T11:55:57Z",
+  "version": 1,
+  "changeset": 73663032,
+  "user": "Тарас Ягнич",
+  "uid": 10246362,
+  "tags": {
+    "internet_access": "wlan",
+    "name": "trua hotel",
+    "name:en": "Trua Hotel",
+    "name:tr": "Trua Hotel",
+    "name:uk": "Trua Hotel",
+    "opening_hours": "24/7",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6738605285,
+  "lat": 36.6957564,
+  "lon": 30.5712609,
+  "timestamp": "2019-08-23T11:55:59Z",
+  "version": 1,
+  "changeset": 73663032,
+  "user": "Тарас Ягнич",
+  "uid": 10246362,
+  "tags": {
+    "name": "marrakesh",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6738605287,
+  "lat": 36.7326636,
+  "lon": 30.5601715,
+  "timestamp": "2019-08-23T11:56:00Z",
+  "version": 1,
+  "changeset": 73663032,
+  "user": "Тарас Ягнич",
+  "uid": 10246362,
+  "tags": {
+    "name": "melodi hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6738605289,
+  "lat": 36.7355013,
+  "lon": 30.5633520,
+  "timestamp": "2023-11-01T13:07:08Z",
+  "version": 3,
+  "changeset": 143474351,
+  "user": "Timmy_Tesseract",
+  "uid": 5653955,
+  "tags": {
+    "name": "Latte Beach",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6738605291,
+  "lat": 36.6934880,
+  "lon": 30.5706461,
+  "timestamp": "2019-08-23T11:56:05Z",
+  "version": 1,
+  "changeset": 73663032,
+  "user": "Тарас Ягнич",
+  "uid": 10246362,
+  "tags": {
+    "name": "Belrose Beach",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6738605294,
+  "lat": 36.7335388,
+  "lon": 30.5591192,
+  "timestamp": "2019-08-23T11:56:10Z",
+  "version": 1,
+  "changeset": 73663032,
+  "user": "Тарас Ягнич",
+  "uid": 10246362,
+  "tags": {
+    "name": "Begonia Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6738605295,
+  "lat": 36.7355544,
+  "lon": 30.5555460,
+  "timestamp": "2019-08-23T11:56:10Z",
+  "version": 1,
+  "changeset": 73663032,
+  "user": "Тарас Ягнич",
+  "uid": 10246362,
+  "tags": {
+    "name": "Kromer Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6738605297,
+  "lat": 36.7322770,
+  "lon": 30.5608027,
+  "timestamp": "2019-08-23T11:56:13Z",
+  "version": 1,
+  "changeset": 73663032,
+  "user": "Тарас Ягнич",
+  "uid": 10246362,
+  "tags": {
+    "name": "sun shine",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6738605685,
+  "lat": 36.7345987,
+  "lon": 30.5605359,
+  "timestamp": "2019-08-23T11:56:11Z",
+  "version": 1,
+  "changeset": 73663032,
+  "user": "Тарас Ягнич",
+  "uid": 10246362,
+  "tags": {
+    "name": "Ipsos Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6793060102,
+  "lat": 36.8872669,
+  "lon": 30.7083909,
+  "timestamp": "2019-09-13T13:53:44Z",
+  "version": 1,
+  "changeset": 74439721,
+  "user": "Karakoa",
+  "uid": 10258007,
+  "tags": {
+    "internet_access": "wlan",
+    "name": "Hemhet otel",
+    "name:fr": "Hôtel Hehmet",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6817342485,
+  "lat": 36.7320870,
+  "lon": 30.5625806,
+  "timestamp": "2026-10-01T23:37:27Z",
+  "version": 2,
+  "changeset": 189852933,
+  "user": "Szabó Bors",
+  "uid": 11148908,
+  "tags": {
+    "name": "Bel Sun Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6901322185,
+  "lat": 36.7353064,
+  "lon": 30.5648795,
+  "timestamp": "2022-09-04T20:18:06Z",
+  "version": 2,
+  "changeset": 125787397,
+  "user": "Turistik",
+  "uid": 4323826,
+  "tags": {
+    "name": "Latte beach hotel",
+    "name:en": "Latte beach hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6932523685,
+  "lat": 36.8819077,
+  "lon": 30.7059849,
+  "timestamp": "2022-11-25T18:51:31Z",
+  "version": 5,
+  "changeset": 129379797,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "addr:housenumber": "4",
+    "addr:postcode": "07400",
+    "addr:street": "Kılınçarslan Mah.",
+    "check_date": "2022-11-25",
+    "internet_access": "wlan",
+    "name": "Held Hotel",
+    "note": "Дешёвый и душевный отель",
+    "phone": "+90 242 2426362",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 7206780186,
+  "lat": 36.8583446,
+  "lon": 30.7325326,
+  "timestamp": "2024-10-16T15:50:09Z",
+  "version": 2,
+  "changeset": 157971618,
+  "user": "Aleksei Gurianov",
+  "uid": 21945193,
+  "tags": {
+    "name": "Antalya",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 7324630985,
+  "lat": 36.8923780,
+  "lon": 30.7056344,
+  "timestamp": "2020-03-24T06:03:11Z",
+  "version": 1,
+  "changeset": 82553030,
+  "user": "Great emo",
+  "uid": 6316976,
+  "tags": {
+    "name": "muratpasa pansiyon",
+    "name:en": "cheap muratpasa hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 7383511785,
+  "lat": 36.8564219,
+  "lon": 30.6271364,
+  "timestamp": "2020-04-08T23:24:27Z",
+  "version": 1,
+  "changeset": 83274565,
+  "user": "İlhkay",
+  "uid": 10149452,
+  "tags": {
+    "name": "Villa Granada Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 7516655503,
+  "lat": 36.8615380,
+  "lon": 30.8334350,
+  "timestamp": "2020-05-14T06:07:46Z",
+  "version": 1,
+  "changeset": 85178329,
+  "user": "الحاج مهند علي",
+  "uid": 11177711,
+  "tags": {
+    "name": "Lara Busch honks. سكن",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 7835079186,
+  "lat": 36.8822214,
+  "lon": 30.7051331,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 3,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "addr:housenumber": "54",
+    "addr:postcode": "07100",
+    "addr:street": "Hesapci Sokak",
+    "check_date": "2022-11-26",
+    "internet_access": "wlan",
+    "name": "Luna Boutique Hotel",
+    "name:en": "Luna Boutique Hotel",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 8051803785,
+  "lat": 36.8815397,
+  "lon": 30.7040259,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 4,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "tags": {
+    "addr:housenumber": "41",
+    "addr:postcode": "07100",
+    "addr:street": "Hıdırlık Sokak",
+    "check_date": "2022-11-26",
+    "internet_access": "wlan",
+    "name": "Antalya Inn Hotel",
+    "phone": "+90 242 241 52 42",
+    "tourism": "hotel",
+    "website": "https://antalyainnhotel.reservehotel.net/?avlparam=1",
+    "wikidata": "Q111118438"
+  }
+},
+{
+  "type": "node",
+  "id": 8734856721,
+  "lat": 36.8654731,
+  "lon": 30.6336974,
+  "timestamp": "2026-06-07T20:31:09Z",
+  "version": 2,
+  "changeset": 183799022,
+  "user": "xlocalx",
+  "uid": 24122633,
+  "tags": {
+    "name": "Türkay hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 8757424651,
+  "lat": 36.8950790,
+  "lon": 30.7032598,
+  "timestamp": "2021-05-23T08:14:44Z",
+  "version": 1,
+  "changeset": 105155992,
+  "user": "chris-ca",
+  "uid": 8373073,
+  "tags": {
+    "addr:housenumber": "8",
+    "addr:street": "569 Sokak",
+    "name": "Ersoy Ikiz hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 8906596522,
+  "lat": 36.8633631,
+  "lon": 30.6360418,
+  "timestamp": "2021-07-09T08:28:09Z",
+  "version": 1,
+  "changeset": 107686681,
+  "user": "borowis",
+  "uid": 2851937,
+  "tags": {
+    "addr:housenumber": "1",
+    "addr:street": "413. sokak",
+    "description": "Apart hotel",
+    "name": "Aspendos Seaside",
+    "tourism": "hotel",
+    "website": "https://seaside.aspendosaparts.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 8937522517,
+  "lat": 36.8710222,
+  "lon": 30.6263605,
+  "timestamp": "2021-07-21T05:36:02Z",
+  "version": 1,
+  "changeset": 108347542,
+  "user": "5ome8ody",
+  "uid": 8240030,
+  "tags": {
+    "addr:housenumber": "20",
+    "addr:postcode": "07070",
+    "addr:street": "370. Sokak",
+    "name": "London Otel",
+    "phone": "+905305113444",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 8958034655,
+  "lat": 36.8598672,
+  "lon": 30.8208360,
+  "timestamp": "2026-04-12T18:58:26Z",
+  "version": 5,
+  "changeset": 181245446,
+  "user": "Rico557",
+  "uid": 3281808,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Murapasa",
+    "addr:housenumber": "21",
+    "addr:neighbourhood": "Güzeloba",
+    "addr:postcode": "07260",
+    "addr:street": "2348. Sokak",
+    "beds": "96",
+    "brand": "OSK Group",
+    "email": "info@elysiumgreensuites.com",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "name": "Elysium Green Suites",
+    "phone": "+90 555 962 39 51;+90 242 349 51 51",
+    "tourism": "hotel",
+    "website": "https://elysiumgreensuites.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 8960532606,
+  "lat": 36.8585206,
+  "lon": 30.8184676,
+  "timestamp": "2021-07-29T17:07:00Z",
+  "version": 1,
+  "changeset": 108838307,
+  "user": "cpot",
+  "uid": 14857,
+  "tags": {
+    "name": "Corendon Hotels & Resort",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 8960532609,
+  "lat": 36.8615010,
+  "lon": 30.8243350,
+  "timestamp": "2021-07-29T17:07:00Z",
+  "version": 1,
+  "changeset": 108838307,
+  "user": "cpot",
+  "uid": 14857,
+  "tags": {
+    "name": "Tema Martılı Apart",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 8960532613,
+  "lat": 36.8608339,
+  "lon": 30.8264936,
+  "timestamp": "2021-07-29T17:07:00Z",
+  "version": 1,
+  "changeset": 108838307,
+  "user": "cpot",
+  "uid": 14857,
+  "tags": {
+    "name": "Laralya apart",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9051099517,
+  "lat": 36.8819230,
+  "lon": 30.7064310,
+  "timestamp": "2024-10-29T04:05:10Z",
+  "version": 2,
+  "changeset": 158481220,
+  "user": "TheTreeofPasts",
+  "uid": 9491165,
+  "tags": {
+    "check_date": "2024-10-29",
+    "level": "0",
+    "name": "The Suit Apart Hotel",
+    "name:en": "The Suit Apart Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9132729917,
+  "lat": 36.8816742,
+  "lon": 30.7060243,
+  "timestamp": "2022-11-25T18:51:31Z",
+  "version": 2,
+  "changeset": 129379797,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-25",
+    "name": "Efsali Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9248839617,
+  "lat": 36.8620797,
+  "lon": 30.8436455,
+  "timestamp": "2021-11-13T18:14:54Z",
+  "version": 1,
+  "changeset": 113740614,
+  "user": "Ciclo-Via",
+  "uid": 168468,
+  "tags": {
+    "name": "Huma Elite Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9331410526,
+  "lat": 36.8904298,
+  "lon": 30.7031626,
+  "timestamp": "2021-12-12T07:55:11Z",
+  "version": 1,
+  "changeset": 114838394,
+  "user": "scintlark",
+  "uid": 982026,
+  "tags": {
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Piyes Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9348576517,
+  "lat": 36.8949278,
+  "lon": 30.7031858,
+  "timestamp": "2024-07-11T16:26:02Z",
+  "version": 3,
+  "changeset": 153819401,
+  "user": "hocu",
+  "uid": 374342,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:housenumber": "3",
+    "addr:postcode": "07010",
+    "addr:street": "569. Sokak",
+    "name": "Özgür Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9747775706,
+  "lat": 36.8927613,
+  "lon": 30.6897790,
+  "timestamp": "2022-05-26T18:03:14Z",
+  "version": 2,
+  "changeset": 121539528,
+  "user": "bkil",
+  "uid": 3905346,
+  "tags": {
+    "description": "WiFi password 02420242",
+    "internet_access": "wlan",
+    "internet_access:password": "[REDACTED]",
+    "name": "Uyar palace",
+    "note": "WiFi password 02420242",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9868683132,
+  "lat": 36.8659651,
+  "lon": 30.6393510,
+  "timestamp": "2022-07-30T16:12:15Z",
+  "version": 2,
+  "changeset": 124274214,
+  "user": "kataguk",
+  "uid": 5187543,
+  "tags": {
+    "addr:street": "424. Sokak",
+    "email": "operahotelantalya@gmail.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Opera Boutique Hotel",
+    "phone": "+905326863774",
+    "tourism": "hotel",
+    "website": "https://www.operaboutiquehotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 9868683134,
+  "lat": 36.8658363,
+  "lon": 30.6391855,
+  "timestamp": "2022-07-05T17:30:18Z",
+  "version": 1,
+  "changeset": 123244593,
+  "user": "ivahn",
+  "uid": 14502571,
+  "tags": {
+    "addr:street": "424. Sokak",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "OPERA Suits",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9872650213,
+  "lat": 36.8658588,
+  "lon": 30.6401373,
+  "timestamp": "2022-07-07T15:40:04Z",
+  "version": 1,
+  "changeset": 123325926,
+  "user": "ivahn",
+  "uid": 14502571,
+  "tags": {
+    "addr:street": "424. Sokak",
+    "name": "Beyond",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9877084561,
+  "lat": 36.8654587,
+  "lon": 30.6389672,
+  "timestamp": "2022-07-09T19:51:44Z",
+  "version": 1,
+  "changeset": 123412347,
+  "user": "ivahn",
+  "uid": 14502571,
+  "tags": {
+    "name": "Volkii Hotel & Apart",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9877096026,
+  "lat": 36.8657290,
+  "lon": 30.6393617,
+  "timestamp": "2022-07-09T19:43:30Z",
+  "version": 2,
+  "changeset": 123412104,
+  "user": "ivahn",
+  "uid": 14502571,
+  "tags": {
+    "addr:street": "422. Sokak",
+    "name": "Mango Suite",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9877118498,
+  "lat": 36.8658368,
+  "lon": 30.6395260,
+  "timestamp": "2022-07-09T19:21:36Z",
+  "version": 1,
+  "changeset": 123411534,
+  "user": "ivahn",
+  "uid": 14502571,
+  "tags": {
+    "name": "The Blue Life Apart",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9887418706,
+  "lat": 36.8745095,
+  "lon": 30.6503218,
+  "timestamp": "2022-07-29T07:49:25Z",
+  "version": 3,
+  "changeset": 124216881,
+  "user": "ivahn",
+  "uid": 14502571,
+  "tags": {
+    "contact:phone": "+90 242 228 56 66",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "laundry_service": "yes",
+    "name": "Send Apart & Otel",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9946406317,
+  "lat": 36.8800728,
+  "lon": 30.7101134,
+  "timestamp": "2023-12-18T10:59:49Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "addr:housenumber": "8",
+    "addr:street": "Tınaztepe Caddesi",
+    "internet_access": "wlan",
+    "name": "Güleryüz",
+    "tourism": "hotel",
+    "wikidata": "Q111118425"
+  }
+},
+{
+  "type": "node",
+  "id": 9955599524,
+  "lat": 36.8905701,
+  "lon": 30.6948106,
+  "timestamp": "2022-08-15T19:51:28Z",
+  "version": 1,
+  "changeset": 124943485,
+  "user": "wschildbach",
+  "uid": 139873,
+  "tags": {
+    "addr:housenumber": "71",
+    "addr:street": "Altındağ Mh. Güllük Cd.",
+    "name": "Ring Downtown Hotel",
+    "phone": "+902422431516",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10010753017,
+  "lat": 36.8818340,
+  "lon": 30.7071324,
+  "timestamp": "2022-11-25T18:51:31Z",
+  "version": 2,
+  "changeset": 129379797,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "addr:housenumber": "6",
+    "addr:postcode": "07100",
+    "addr:street": "Kadirpaşa Gecidi",
+    "check_date": "2022-11-25",
+    "email": "Hitel@theeasyrooms.com",
+    "internet_access": "wlan",
+    "name": "The Easy Rooms",
+    "phone": "+90 5321203279",
+    "tourism": "hotel",
+    "website": "https://www.theeasyrooms.com"
+  }
+},
+{
+  "type": "node",
+  "id": 10119430738,
+  "lat": 36.8833857,
+  "lon": 30.7104855,
+  "timestamp": "2022-10-27T20:52:06Z",
+  "version": 2,
+  "changeset": 128146729,
+  "user": "TheTreeofPasts",
+  "uid": 9491165,
+  "tags": {
+    "check_date": "2022-10-21",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Lily town botique",
+    "name:en": "Lily town botique",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10216684034,
+  "lat": 36.7421445,
+  "lon": 30.5618245,
+  "timestamp": "2022-11-25T09:18:09Z",
+  "version": 1,
+  "changeset": 129358843,
+  "user": "Airiver",
+  "uid": 13901111,
+  "tags": {
+    "name": "Gizli Koy",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10216684035,
+  "lat": 36.7426818,
+  "lon": 30.5620958,
+  "timestamp": "2022-11-25T09:18:09Z",
+  "version": 1,
+  "changeset": 129358843,
+  "user": "Airiver",
+  "uid": 13901111,
+  "tags": {
+    "name": "Guler Butik",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10218335946,
+  "lat": 36.8819114,
+  "lon": 30.7062227,
+  "timestamp": "2026-10-13T17:46:23Z",
+  "version": 2,
+  "changeset": 190467722,
+  "user": "deejaydarvin",
+  "uid": 1299267,
+  "tags": {
+    "check_date": "2026-10-13",
+    "name": "Saye",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10218335947,
+  "lat": 36.8819771,
+  "lon": 30.7063824,
+  "timestamp": "2026-10-13T17:42:48Z",
+  "version": 2,
+  "changeset": 190467722,
+  "user": "deejaydarvin",
+  "uid": 1299267,
+  "tags": {
+    "check_date": "2026-10-13",
+    "name": "The Suite Apart Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10218335949,
+  "lat": 36.8821536,
+  "lon": 30.7063171,
+  "timestamp": "2026-10-14T11:17:30Z",
+  "version": 2,
+  "changeset": 190500566,
+  "user": "deejaydarvin",
+  "uid": 1299267,
+  "tags": {
+    "check_date": "2026-10-14",
+    "name": "Cedrus Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10218335950,
+  "lat": 36.8821323,
+  "lon": 30.7065140,
+  "timestamp": "2023-12-18T11:00:43Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "check_date": "2022-11-25",
+    "name": "Kaleiçi Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111856598"
+  }
+},
+{
+  "type": "node",
+  "id": 10218335956,
+  "lat": 36.8820583,
+  "lon": 30.7072318,
+  "timestamp": "2022-11-25T18:51:31Z",
+  "version": 1,
+  "changeset": 129379797,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "amenity": "cafe",
+    "bar": "yes",
+    "check_date": "2022-11-25",
+    "contact:instagram": "https://www.instagram.com/palmenhausantalya",
+    "name": "Palmen Haus",
+    "start_date": "2022",
+    "tourism": "hotel",
+    "website": "https://www.palmenhausantalya.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 10218336008,
+  "lat": 36.8840750,
+  "lon": 30.7090206,
+  "timestamp": "2023-12-18T11:00:42Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "check_date": "2022-11-25",
+    "name": "Elegance East Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111856586"
+  }
+},
+{
+  "type": "node",
+  "id": 10219505784,
+  "lat": 36.8821200,
+  "lon": 30.7048979,
+  "timestamp": "2023-12-18T10:59:50Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Famous Family Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111118430"
+  }
+},
+{
+  "type": "node",
+  "id": 10219505789,
+  "lat": 36.8826632,
+  "lon": 30.7055652,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 1,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Necip Bey Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10219505791,
+  "lat": 36.8829109,
+  "lon": 30.7057308,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 1,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "addr:housenumber": "44",
+    "addr:street": "Hesapçı Sokak",
+    "check_date": "2022-11-26",
+    "name": "Giges King Boutique Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10219505800,
+  "lat": 36.8841357,
+  "lon": 30.7071601,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 1,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "addr:housenumber": "22",
+    "addr:street": "Hesapçı Sokak",
+    "check_date": "2022-11-26",
+    "name": "Ruin Adalia Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10219505804,
+  "lat": 36.8844777,
+  "lon": 30.7075193,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 1,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "addr:housenumber": "14",
+    "addr:street": "Hesapçı Sokak",
+    "amenity": "bar",
+    "check_date": "2022-11-26",
+    "name": "Cicerone Lodge Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10219505815,
+  "lat": 36.8849724,
+  "lon": 30.7083189,
+  "timestamp": "2023-12-18T11:01:36Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Casa Sur",
+    "tourism": "hotel",
+    "wikidata": "Q111998169"
+  }
+},
+{
+  "type": "node",
+  "id": 10219528130,
+  "lat": 36.8812081,
+  "lon": 30.7049042,
+  "timestamp": "2023-12-18T11:01:03Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "addr:housenumber": "31",
+    "addr:street": "Tabakhane Sokak",
+    "check_date": "2022-11-26",
+    "name": "Minyon Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111856616"
+  }
+},
+{
+  "type": "node",
+  "id": 10219528142,
+  "lat": 36.8818142,
+  "lon": 30.7037457,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 1,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Royal Hayat",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10219528157,
+  "lat": 36.8849928,
+  "lon": 30.7040490,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 1,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Blue Paradise Boutique Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10219528163,
+  "lat": 36.8853955,
+  "lon": 30.7043486,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 1,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Little Prince Boutique Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10219528164,
+  "lat": 36.8853176,
+  "lon": 30.7041716,
+  "timestamp": "2024-03-12T17:28:04Z",
+  "version": 2,
+  "changeset": 148560045,
+  "user": "buosmanolmali",
+  "uid": 21192975,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Villa Citronella Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10219528198,
+  "lat": 36.8861181,
+  "lon": 30.7037110,
+  "timestamp": "2022-11-26T11:55:48Z",
+  "version": 1,
+  "changeset": 129399414,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "amenity": "restaurant",
+    "check_date": "2022-11-26",
+    "name": "Sarı Konak",
+    "outdoor_seating": "yes",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220058988,
+  "lat": 36.8825230,
+  "lon": 30.7050839,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Hotel Lykia",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220058989,
+  "lat": 36.8830028,
+  "lon": 30.7049241,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Hotel Konak",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220058990,
+  "lat": 36.8829357,
+  "lon": 30.7044963,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Tu Casa Linda Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220059004,
+  "lat": 36.8859514,
+  "lon": 30.7068888,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Sun Rise Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220059008,
+  "lat": 36.8860484,
+  "lon": 30.7074837,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Kaleiçi Butik Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220059011,
+  "lat": 36.8868355,
+  "lon": 30.7091015,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Yalçın Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220067922,
+  "lat": 36.8853557,
+  "lon": 30.7079964,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Kısa Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220067930,
+  "lat": 36.8866641,
+  "lon": 30.7069425,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Otel Twenty",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220067932,
+  "lat": 36.8865167,
+  "lon": 30.7066919,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Sun Anatolia Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220067938,
+  "lat": 36.8853541,
+  "lon": 30.7061962,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Kauçuk Residence",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220067952,
+  "lat": 36.8837756,
+  "lon": 30.7048859,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 1,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "check_date": "2022-11-26",
+    "name": "Orana Resort",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10220439412,
+  "lat": 36.8948091,
+  "lon": 30.7053685,
+  "timestamp": "2022-11-26T21:33:44Z",
+  "version": 1,
+  "changeset": 129416231,
+  "user": "FoxDev",
+  "uid": 1190472,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "3",
+    "addr:neighbourhood": "Tahılpazarı Mahallesi",
+    "addr:postcode": "07040",
+    "addr:street": "472 Sokak",
+    "air_conditioning": "yes",
+    "name": "Grand Nergiz Otel",
+    "stars": "3",
+    "tourism": "hotel",
+    "website": "https://grandnergizotelcom"
+  }
+},
+{
+  "type": "node",
+  "id": 10632555505,
+  "lat": 36.8684407,
+  "lon": 30.6472181,
+  "timestamp": "2023-06-11T04:15:16Z",
+  "version": 2,
+  "changeset": 137190397,
+  "user": "n2m2",
+  "uid": 19349636,
+  "tags": {
+    "addr:housenumber": "6",
+    "addr:postcode": "07070",
+    "addr:street": "519. Sokak",
+    "name": "White Country Boutique Hotel",
+    "phone": "+905368431292",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10676264701,
+  "lat": 36.8737719,
+  "lon": 30.6560954,
+  "timestamp": "2025-05-19T17:57:11Z",
+  "version": 3,
+  "changeset": 166490031,
+  "user": "burakonder",
+  "uid": 9397174,
+  "tags": {
+    "check_date": "2023-02-18",
+    "name": "Pacco",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10676302046,
+  "lat": 36.8685925,
+  "lon": 30.6483243,
+  "timestamp": "2023-12-18T11:01:09Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "check_date": "2023-02-18",
+    "name": "Acropol beach",
+    "tourism": "hotel",
+    "wikidata": "Q111856624"
+  }
+},
+{
+  "type": "node",
+  "id": 10725632997,
+  "lat": 36.8755179,
+  "lon": 30.7141491,
+  "timestamp": "2023-03-10T11:05:22Z",
+  "version": 1,
+  "changeset": 133514001,
+  "user": "Campl3r",
+  "uid": 13801467,
+  "tags": {
+    "name": "Mene city hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10763684241,
+  "lat": 36.8610610,
+  "lon": 30.6340365,
+  "timestamp": "2023-03-26T13:39:05Z",
+  "version": 1,
+  "changeset": 134136959,
+  "user": "batyrmastyr",
+  "uid": 5735399,
+  "tags": {
+    "check_date": "2023-03-26",
+    "name": "İsinda Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10763684242,
+  "lat": 36.8612572,
+  "lon": 30.6343017,
+  "timestamp": "2023-03-26T13:39:05Z",
+  "version": 1,
+  "changeset": 134136959,
+  "user": "batyrmastyr",
+  "uid": 5735399,
+  "tags": {
+    "check_date": "2023-03-26",
+    "name": "Sare beach Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10763756935,
+  "lat": 36.8635209,
+  "lon": 30.6352948,
+  "timestamp": "2023-12-18T11:01:58Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "tags": {
+    "check_date": "2023-03-26",
+    "name": "Sava Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111998219"
+  }
+},
+{
+  "type": "node",
+  "id": 10856467370,
+  "lat": 36.8819419,
+  "lon": 30.7062282,
+  "timestamp": "2026-10-13T17:46:10Z",
+  "version": 2,
+  "changeset": 190467722,
+  "user": "deejaydarvin",
+  "uid": 1299267,
+  "tags": {
+    "addr:housenumber": "1",
+    "addr:street": "Kalinçarslan Mahallesi Tabakhane Sokak 1",
+    "check_date": "2026-10-13",
+    "name": "Saye Konak hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 10936703705,
+  "lat": 36.8735172,
+  "lon": 30.6475146,
+  "timestamp": "2023-10-23T22:11:24Z",
+  "version": 3,
+  "changeset": 143038613,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "tags": {
+    "addr:housenumber": "02",
+    "addr:postcode": "07070",
+    "addr:street": "657. Sokak",
+    "internet_access": "wlan",
+    "name": "Basel Otel",
+    "name:en": "Hotel Basel",
+    "tourism": "hotel",
+    "website": "https://www.baselotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 11117249705,
+  "lat": 36.8830146,
+  "lon": 30.7084322,
+  "timestamp": "2024-07-11T16:26:02Z",
+  "version": 2,
+  "changeset": 153819401,
+  "user": "hocu",
+  "uid": 374342,
+  "tags": {
+    "addr:housenumber": "11",
+    "addr:postcode": "07040",
+    "addr:street": "Kandiller Çıkmaz",
+    "internet_access": "wlan",
+    "name": "Castle Inn Boutique Hotel",
+    "opening_hours": "24/7",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 11158852907,
+  "lat": 36.8885916,
+  "lon": 30.6964981,
+  "timestamp": "2026-05-10T02:58:31Z",
+  "version": 2,
+  "changeset": 182448376,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "tags": {
+    "addr:housenumber": "28 / B",
+    "addr:postcode": "07040",
+    "addr:street": "Güllük Caddesi",
+    "email": "grandgullukhotel@hotmail.com",
+    "name": "Grand Güllük Hotel & Spa",
+    "opening_hours": "24/7",
+    "phone": "+902422422247",
+    "tourism": "hotel",
+    "website": "https://grandgullukhotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 11158852908,
+  "lat": 36.8864101,
+  "lon": 30.6969597,
+  "timestamp": "2025-05-19T17:57:11Z",
+  "version": 4,
+  "changeset": 166490031,
+  "user": "burakonder",
+  "uid": 9397174,
+  "tags": {
+    "addr:housenumber": "121",
+    "addr:postcode": "07050",
+    "addr:street": "121. Sokak",
+    "name": "Afflon Loft City Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111998194"
+  }
+},
+{
+  "type": "node",
+  "id": 11279735282,
+  "lat": 36.8571720,
+  "lon": 30.8863980,
+  "timestamp": "2023-10-21T15:09:17Z",
+  "version": 1,
+  "changeset": 142928738,
+  "user": "batyrmastyr",
+  "uid": 5735399,
+  "tags": {
+    "check_date": "2023-10-21",
+    "name": "Lara Suite's",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 11725204537,
+  "lat": 36.8851004,
+  "lon": 30.7043337,
+  "timestamp": "2024-03-12T17:26:43Z",
+  "version": 1,
+  "changeset": 148559992,
+  "user": "buosmanolmali",
+  "uid": 21192975,
+  "tags": {
+    "name": "Grand Friends Butik Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 11972474698,
+  "lat": 36.8738992,
+  "lon": 30.6566449,
+  "timestamp": "2025-05-19T17:57:11Z",
+  "version": 3,
+  "changeset": 166490031,
+  "user": "burakonder",
+  "uid": 9397174,
+  "tags": {
+    "name": "Olbia Residence Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 12088376969,
+  "lat": 36.9135902,
+  "lon": 30.7751548,
+  "timestamp": "2024-08-02T05:51:27Z",
+  "version": 1,
+  "changeset": 154719384,
+  "user": "Slavyanin50",
+  "uid": 14546695,
+  "tags": {
+    "name": "Isnova Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 12104211224,
+  "lat": 36.8951453,
+  "lon": 30.7029716,
+  "timestamp": "2026-05-10T02:58:46Z",
+  "version": 2,
+  "changeset": 182448376,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "12",
+    "addr:neighbourhood": "Muratpaşa Mahallesi",
+    "addr:postcode": "07010",
+    "addr:street": "561 Sokak",
+    "email": "comfortbasaranotel@outlook.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "COMFORT BAŞARAN OTEL",
+    "phone": "+90 537 520 8626",
+    "rooms": "0",
+    "tourism": "hotel",
+    "website": "https://comfortbasaranotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 12149890577,
+  "lat": 36.8581234,
+  "lon": 30.8840933,
+  "timestamp": "2024-09-01T14:46:15Z",
+  "version": 1,
+  "changeset": 156057991,
+  "user": "JP-osm",
+  "uid": 21908299,
+  "tags": {
+    "air_conditioning": "yes",
+    "email": "reservation@alicehotelantalya.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Alice hotel",
+    "phone": "+9024220109000",
+    "tourism": "hotel",
+    "website": "https://www.alicehotelantalya.com/en"
+  }
+},
+{
+  "type": "node",
+  "id": 12282093036,
+  "lat": 36.6888816,
+  "lon": 30.5706901,
+  "timestamp": "2024-10-23T15:27:42Z",
+  "version": 1,
+  "changeset": 158259555,
+  "user": "Firefishy",
+  "uid": 3560,
+  "tags": {
+    "check_date": "2024-10-23",
+    "level": "0",
+    "name": "Corendon Playa Kemer",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 12317268853,
+  "lat": 36.8892622,
+  "lon": 30.7041422,
+  "timestamp": "2025-09-12T20:16:27Z",
+  "version": 3,
+  "changeset": 171849423,
+  "user": "custodiankeyy",
+  "uid": 23088365,
+  "tags": {
+    "air_conditioning": "yes",
+    "name": "Ay Otel 2",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 12467496338,
+  "lat": 36.8858952,
+  "lon": 30.7088581,
+  "timestamp": "2025-01-01T20:27:50Z",
+  "version": 1,
+  "changeset": 160884229,
+  "user": "evgenykatyshev",
+  "uid": 98099,
+  "tags": {
+    "check_date": "2025-01-01",
+    "name": "Just Inn City",
+    "name:en": "Just Inn City",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 12481085601,
+  "lat": 36.8824034,
+  "lon": 30.7063561,
+  "timestamp": "2025-01-15T19:02:41Z",
+  "version": 2,
+  "changeset": 161392444,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "tags": {
+    "addr:housenumber": "11",
+    "addr:postcode": "07100",
+    "addr:street": "Seferoğlu Sokak",
+    "internet_access": "wlan",
+    "name": "Mille Kaleiçi",
+    "outdoor_seating": "no",
+    "self_service": "no",
+    "tourism": "hotel",
+    "website": "https://www.hotelmille.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 12995292063,
+  "lat": 36.9275455,
+  "lon": 30.8154603,
+  "timestamp": "2025-07-12T05:31:11Z",
+  "version": 1,
+  "changeset": 168822172,
+  "user": "sardina777",
+  "uid": 21814652,
+  "tags": {
+    "addr:housenumber": "16",
+    "addr:street": "26221st",
+    "name": "Red Flag",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13041113901,
+  "lat": 36.8723511,
+  "lon": 30.6490002,
+  "timestamp": "2025-08-01T11:04:03Z",
+  "version": 1,
+  "changeset": 169811820,
+  "user": "void_wanderer",
+  "uid": 10513856,
+  "tags": {
+    "addr:housenumber": "4",
+    "addr:postcode": "07070",
+    "addr:street": "551. sokak",
+    "internet_access": "wlan",
+    "level": "2",
+    "name": "7inn",
+    "opening_hours": "24/7",
+    "phone": "+905338111725",
+    "tourism": "hotel",
+    "website": "https://www.menehotels.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 13138085301,
+  "lat": 36.8887105,
+  "lon": 30.7033484,
+  "timestamp": "2025-09-12T12:00:23Z",
+  "version": 1,
+  "changeset": 171828606,
+  "user": "Goreloff",
+  "uid": 22894559,
+  "tags": {
+    "name": "Nest Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13147435601,
+  "lat": 36.8674137,
+  "lon": 30.6391623,
+  "timestamp": "2025-09-16T13:47:12Z",
+  "version": 1,
+  "changeset": 172016386,
+  "user": "IlyaSpace",
+  "uid": 3878837,
+  "tags": {
+    "addr:housenumber": "23",
+    "addr:postcode": "07070",
+    "addr:street": "470 Sokak",
+    "name": "regA hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13172843001,
+  "lat": 36.8891914,
+  "lon": 30.7187181,
+  "timestamp": "2025-09-26T08:36:12Z",
+  "version": 1,
+  "changeset": 172473516,
+  "user": "IlyaSpace",
+  "uid": 3878837,
+  "tags": {
+    "name": "Toprak City Hotel Antalya",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13176180710,
+  "lat": 36.8766695,
+  "lon": 30.4671110,
+  "timestamp": "2025-10-15T12:40:06Z",
+  "version": 2,
+  "changeset": 173318664,
+  "user": "Seron Hotel",
+  "uid": 23400093,
+  "tags": {
+    "addr:city": "ANTALYA",
+    "addr:district": "Konyaaltı",
+    "addr:housenumber": "14",
+    "addr:neighbourhood": "Geyikbayırı",
+    "addr:street": "3615. Sokak",
+    "email": "seronhotel@gmail.com",
+    "name": "Seron Hotel",
+    "phone": "+90 505 757 0901",
+    "tourism": "hotel",
+    "website": "https://www.seronmountainhouse.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 13257030693,
+  "lat": 36.8597912,
+  "lon": 30.8686752,
+  "timestamp": "2025-10-26T04:21:39Z",
+  "version": 1,
+  "changeset": 173779178,
+  "user": "Герасим27",
+  "uid": 21907129,
+  "tags": {
+    "addr:housenumber": "8",
+    "addr:street": "1003 Sokak",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Wind Of Lara Resort & Spa",
+    "rooms": "298",
+    "tourism": "hotel",
+    "website": "windoflara.tr"
+  }
+},
+{
+  "type": "node",
+  "id": 13319501752,
+  "lat": 36.8854317,
+  "lon": 30.7066072,
+  "timestamp": "2025-11-20T15:49:47Z",
+  "version": 1,
+  "changeset": 174912503,
+  "user": "vbertola",
+  "uid": 4347030,
+  "tags": {
+    "addr:city": "Kılınçarslan Mahallesi",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "23",
+    "addr:postcode": "07100",
+    "addr:street": "Mescit Sokak",
+    "name": "Adria Inn",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13514201694,
+  "lat": 36.8662904,
+  "lon": 30.4640234,
+  "timestamp": "2026-01-31T12:13:56Z",
+  "version": 1,
+  "changeset": 177923516,
+  "user": "Richtefee",
+  "uid": 23638458,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Konyaaltı",
+    "addr:housenumber": "24/1",
+    "addr:neighbourhood": "Çağlarca",
+    "addr:postcode": "07070",
+    "addr:street": "4433. Sokak",
+    "email": "info@apaboutiquehotels.com",
+    "name": "apa Mountain Lodge",
+    "phone": "+902424413366",
+    "tourism": "hotel",
+    "website": "https://apamountainlodge.com"
+  }
+},
+{
+  "type": "node",
+  "id": 13519368201,
+  "lat": 36.8891259,
+  "lon": 30.7013621,
+  "timestamp": "2026-02-04T14:43:50Z",
+  "version": 2,
+  "changeset": 178098198,
+  "user": "kama_itachi",
+  "uid": 23779579,
+  "tags": {
+    "addr:street": "45 Sokak",
+    "internet_access": "wlan",
+    "name": "Bonnie City Hotel",
+    "opening_hours": "24/7",
+    "self_service": "no",
+    "tourism": "hotel",
+    "website": "http://bonniecityhotel.com"
+  }
+},
+{
+  "type": "node",
+  "id": 13903044880,
+  "lat": 36.8941448,
+  "lon": 30.7001869,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 2,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "tags": {
+    "name": "Bone-best Otel",
+    "phone": "+90 242 470 41 31",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 13942643601,
+  "lat": 36.8603871,
+  "lon": 30.8656404,
+  "timestamp": "2026-06-15T12:39:33Z",
+  "version": 1,
+  "changeset": 184135589,
+  "user": "quite",
+  "uid": 578312,
+  "tags": {
+    "addr:street": "32002 Sokak",
+    "check_date": "2026-06-15",
+    "name": "River Park Lara",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14023820301,
+  "lat": 36.8681851,
+  "lon": 30.6366918,
+  "timestamp": "2026-07-18T09:38:20Z",
+  "version": 1,
+  "changeset": 185947847,
+  "user": "IlyaSpace",
+  "uid": 3878837,
+  "tags": {
+    "name": "Grand Lavin",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14066541745,
+  "lat": 36.8671036,
+  "lon": 30.6386070,
+  "timestamp": "2026-08-05T21:44:58Z",
+  "version": 3,
+  "changeset": 187002325,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "tags": {
+    "addr:housenumber": "14",
+    "addr:street": "425",
+    "name": "Lavin Garden Butik Otel",
+    "phone": "+90 242 228 07 72",
+    "tourism": "hotel",
+    "website": "https://lavingardenhotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 14066660901,
+  "lat": 36.8671038,
+  "lon": 30.6386079,
+  "timestamp": "2026-08-05T21:44:59Z",
+  "version": 3,
+  "changeset": 187002325,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "tags": {
+    "addr:housenumber": "14",
+    "addr:street": "425 Sokak",
+    "check_date": "2026-08-01",
+    "check_date:opening_hours": "2026-08-01",
+    "internet_access": "wlan",
+    "name": "Lavin Garden Butik Otel",
+    "name:en": "Lavin Garden Boutique Hotel",
+    "opening_hours": "24/7",
+    "phone": "+90 242 228 07 72",
+    "self_service": "yes",
+    "tourism": "hotel",
+    "website": "https://lavingardenhotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 14081632502,
+  "lat": 36.8624776,
+  "lon": 30.6330130,
+  "timestamp": "2026-10-12T15:10:28Z",
+  "version": 2,
+  "changeset": 190407675,
+  "user": "TheTreeofPasts",
+  "uid": 9491165,
+  "tags": {
+    "addr:housenumber": "23/1",
+    "addr:postcode": "07070",
+    "addr:street": "310. Sokak",
+    "check_date": "2026-10-12",
+    "name": "Ataer Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14090662102,
+  "lat": 36.8613007,
+  "lon": 30.8394247,
+  "timestamp": "2026-08-12T22:14:43Z",
+  "version": 2,
+  "changeset": 187363079,
+  "user": "georgekg",
+  "uid": 23730212,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:housenumber": "No.99/E2",
+    "addr:postcode": "07230",
+    "addr:street": "Güzeloba Mh. Yaşar Sobutay Blv. Ahi Evran",
+    "contact:facebook": "echinuslara",
+    "contact:instagram": "echinushotels",
+    "internet_access": "wlan",
+    "name": "Echinus Lara Hotel",
+    "phone": "+905318833449",
+    "tourism": "hotel",
+    "website": "http://www.echinus.com.tr"
+  }
+},
+{
+  "type": "node",
+  "id": 14091558679,
+  "lat": 36.8492108,
+  "lon": 30.8185521,
+  "timestamp": "2026-08-13T09:32:47Z",
+  "version": 1,
+  "changeset": 187379821,
+  "user": "Vladisl0ve",
+  "uid": 23823691,
+  "tags": {
+    "contact:phone": "+90 531 722 26 46",
+    "name": "Raw",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14131513903,
+  "lat": 36.8836429,
+  "lon": 30.7082957,
+  "timestamp": "2026-08-28T16:45:08Z",
+  "version": 1,
+  "changeset": 188157838,
+  "user": "cvallee60",
+  "uid": 1857913,
+  "tags": {
+    "internet_access": "wlan",
+    "name": "Easy Rooms Verandah",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14131581955,
+  "lat": 36.8685894,
+  "lon": 30.6472482,
+  "timestamp": "2026-08-29T10:18:35Z",
+  "version": 2,
+  "changeset": 188189036,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Konyaaltı",
+    "name": "Duran Apart",
+    "phone": "+90 536 843 12 92",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14131581956,
+  "lat": 36.8729002,
+  "lon": 30.6483301,
+  "timestamp": "2026-08-29T10:18:35Z",
+  "version": 2,
+  "changeset": 188189036,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "tags": {
+    "bar": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Vista Konyaaltı Otel",
+    "phone": "+90 539 930 86 87",
+    "smoking": "yes",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14158182301,
+  "lat": 36.8890483,
+  "lon": 30.7114344,
+  "timestamp": "2026-09-06T19:01:21Z",
+  "version": 1,
+  "changeset": 188634893,
+  "user": "Alex_from_Moscow",
+  "uid": 18546615,
+  "tags": {
+    "addr:housenumber": "19",
+    "addr:street": "Ali Cetinkaya Caddesi",
+    "internet_access": "wlan",
+    "name": "Start Hotel",
+    "tourism": "hotel",
+    "website": "https://www.startotel.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 14201897703,
+  "lat": 36.8915059,
+  "lon": 30.7102475,
+  "timestamp": "2026-09-20T19:27:29Z",
+  "version": 1,
+  "changeset": 189313817,
+  "user": "nomadmisha",
+  "uid": 24569007,
+  "tags": {
+    "addr:housenumber": "2/201",
+    "addr:street": "441 Sokak",
+    "check_date": "2026-09-20",
+    "email": "infa@privadohotels.com",
+    "internet_access": "wlan",
+    "name": "Privado Hotels",
+    "phone": "+902422449797;+905331906018",
+    "tourism": "hotel",
+    "website": "https://www.privadohotels.com"
+  }
+},
+{
+  "type": "node",
+  "id": 14277331568,
+  "lat": 36.8628172,
+  "lon": 30.6335865,
+  "timestamp": "2026-10-12T15:09:36Z",
+  "version": 1,
+  "changeset": 190407636,
+  "user": "TheTreeofPasts",
+  "uid": 9491165,
+  "tags": {
+    "check_date": "2026-10-12",
+    "name": "Venüs Hotel",
+    "name:en": "Venus Hotel",
+    "name:tr": "Venüs Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14277344631,
+  "lat": 36.8623151,
+  "lon": 30.6320200,
+  "timestamp": "2026-10-12T15:11:31Z",
+  "version": 1,
+  "changeset": 190407716,
+  "user": "TheTreeofPasts",
+  "uid": 9491165,
+  "tags": {
+    "check_date": "2026-10-12",
+    "name": "Perast City Hotel",
+    "name:en": "Perast City Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14277346378,
+  "lat": 36.8626196,
+  "lon": 30.6332557,
+  "timestamp": "2026-10-12T15:10:28Z",
+  "version": 1,
+  "changeset": 190407675,
+  "user": "TheTreeofPasts",
+  "uid": 9491165,
+  "tags": {
+    "check_date": "2026-10-12",
+    "name": "BOMO suites",
+    "name:en": "BOMO suites",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14287167135,
+  "lat": 36.8641075,
+  "lon": 30.6351200,
+  "timestamp": "2026-10-15T14:43:45Z",
+  "version": 1,
+  "changeset": 190562182,
+  "user": "TheTreeofPasts",
+  "uid": 9491165,
+  "tags": {
+    "check_date": "2026-10-15",
+    "name": "Retro Star Suites",
+    "name:en": "Retro Star Suites",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14287292805,
+  "lat": 36.8643691,
+  "lon": 30.6355450,
+  "timestamp": "2026-10-15T14:42:58Z",
+  "version": 1,
+  "changeset": 190562142,
+  "user": "TheTreeofPasts",
+  "uid": 9491165,
+  "tags": {
+    "check_date": "2026-10-15",
+    "name": "Ale Park Hotel Apartments",
+    "name:en": "Ale Park Hotel Apartments",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 14298521940,
+  "lat": 36.8798180,
+  "lon": 30.4702663,
+  "timestamp": "2026-10-19T06:19:44Z",
+  "version": 1,
+  "changeset": 190726129,
+  "user": "Alex Krasavin",
+  "uid": 4219806,
+  "tags": {
+    "addr:street": "Geyikbayırı, 3610 sokak no16a, 07070 Konyaaltı/Antalya, Türkiye",
+    "name": "Vita Camping Otel",
+    "phone": "+90 553 009 91 95",
+    "tourism": "hotel",
+    "website": "https://vitaclimbing.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 28264886,
+  "timestamp": "2017-09-25T12:03:24Z",
+  "version": 9,
+  "changeset": 52353972,
+  "user": "brbbl",
+  "uid": 355408,
+  "center": {
+    "lat": 36.8546824,
+    "lon": 30.8759937
+  },
+  "nodes": [
+    5128330662,
+    310407776,
+    1350477904,
+    310576855,
+    310071877,
+    310399065,
+    5128330659,
+    5128330662
+  ],
+  "tags": {
+    "name": "Delphin Palace & Spa Resort",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 28318141,
+  "timestamp": "2025-02-16T19:09:02Z",
+  "version": 8,
+  "changeset": 162583203,
+  "user": "Urtchuk",
+  "uid": 570066,
+  "center": {
+    "lat": 36.8547996,
+    "lon": 30.8725071
+  },
+  "nodes": [
+    12593561554,
+    12593561553,
+    12593561552,
+    12593561551,
+    12593561550,
+    5128330657,
+    310967143,
+    1350080186,
+    1350080188,
+    1350080264,
+    1350080281,
+    5602094755,
+    310967575,
+    310967577,
+    310407775,
+    12593656153,
+    5128330663,
+    5128330664,
+    12593561555,
+    12593561554
+  ],
+  "tags": {
+    "name": "Delphin Imperial Lara",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 32724173,
+  "timestamp": "2026-08-13T10:37:47Z",
+  "version": 5,
+  "changeset": 187382928,
+  "user": "Vladisl0ve",
+  "uid": 23823691,
+  "center": {
+    "lat": 36.8544837,
+    "lon": 30.8619856
+  },
+  "nodes": [
+    368228915,
+    1350080289,
+    368228918,
+    1350080290,
+    1350080287,
+    1350080286,
+    1350080284,
+    1350080280,
+    1350080279,
+    368228919,
+    3261891329,
+    1350477662,
+    1350477588,
+    3261891328,
+    1350477604,
+    1350477594,
+    1350477606,
+    1350477601,
+    1350477595,
+    1350477573,
+    1350477584,
+    368228922,
+    368228915
+  ],
+  "tags": {
+    "contact:phone": "+90 242 352 02 02",
+    "name": "Titanic",
+    "stars": "5",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 115539424,
+  "timestamp": "2021-10-12T20:28:54Z",
+  "version": 6,
+  "changeset": 112434505,
+  "user": "mrbaja",
+  "uid": 5818656,
+  "center": {
+    "lat": 36.7057383,
+    "lon": 30.5705670
+  },
+  "nodes": [
+    7891144843,
+    7891144845,
+    9168319991,
+    9168319988,
+    9168319986,
+    9168319984,
+    9168319981,
+    3719289522,
+    3719289520,
+    3632193469,
+    1305043303,
+    3632193448,
+    7891144843
+  ],
+  "tags": {
+    "name": "Zigana",
+    "stars": "6",
+    "tourism": "hotel",
+    "website": "http://clubzigana.com"
+  }
+},
+{
+  "type": "way",
+  "id": 115539426,
+  "timestamp": "2011-05-29T17:34:04Z",
+  "version": 1,
+  "changeset": 8283672,
+  "user": "Alexey Vazhnov",
+  "uid": 91771,
+  "center": {
+    "lat": 36.6948061,
+    "lon": 30.5713083
+  },
+  "nodes": [
+    1305043249,
+    1305043255,
+    1305043247,
+    1305043261,
+    1305043281,
+    1305043312,
+    1305043242,
+    1305043249
+  ],
+  "tags": {
+    "name": "Imperial De Luxe",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "http://imperialdeluxe.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 115539428,
+  "timestamp": "2024-10-07T13:28:22Z",
+  "version": 8,
+  "changeset": 157582505,
+  "user": "small_red_ants",
+  "uid": 22039577,
+  "center": {
+    "lat": 36.7069866,
+    "lon": 30.5698098
+  },
+  "nodes": [
+    1305043293,
+    1305043254,
+    3719289482,
+    3719289478,
+    5308751154,
+    5308701370,
+    3719289479,
+    5308751156,
+    5308751155,
+    9168319979,
+    9168319981,
+    3719289522,
+    3719289520,
+    1305043293
+  ],
+  "tags": {
+    "addr:city": "Beldibi",
+    "name": "Baia Salima Kemer",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://baiahotels.com/baiakemer"
+  }
+},
+{
+  "type": "way",
+  "id": 115539434,
+  "timestamp": "2011-05-29T17:34:05Z",
+  "version": 1,
+  "changeset": 8283672,
+  "user": "Alexey Vazhnov",
+  "uid": 91771,
+  "center": {
+    "lat": 36.6955290,
+    "lon": 30.5714506
+  },
+  "nodes": [
+    1305043272,
+    1305043248,
+    1305043239,
+    1305043267,
+    1305043256,
+    1305043272
+  ],
+  "tags": {
+    "name": "Belport Beach",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115539436,
+  "timestamp": "2024-10-24T18:29:14Z",
+  "version": 2,
+  "changeset": 158308903,
+  "user": "Firefishy",
+  "uid": 3560,
+  "center": {
+    "lat": 36.6952051,
+    "lon": 30.5712586
+  },
+  "nodes": [
+    1305043261,
+    1305043244,
+    1305043274,
+    1305043260,
+    1305043247,
+    1305043261
+  ],
+  "tags": {
+    "check_date": "2024-10-24",
+    "level": "0",
+    "name": "Club Sunbel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115539446,
+  "timestamp": "2024-10-24T18:41:02Z",
+  "version": 4,
+  "changeset": 158309270,
+  "user": "Firefishy",
+  "uid": 3560,
+  "center": {
+    "lat": 36.6943159,
+    "lon": 30.5712944
+  },
+  "nodes": [
+    1305043249,
+    1305043242,
+    1305043312,
+    1305043281,
+    1305185313,
+    1305043305,
+    1305043264,
+    1305043311,
+    1305043295,
+    1305043249
+  ],
+  "tags": {
+    "check_date": "2024-10-24",
+    "level": "0",
+    "name": "Sea Gull",
+    "source": "GPS",
+    "stars": "4",
+    "tourism": "hotel",
+    "website": "https://seagullhotel.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 115551103,
+  "timestamp": "2017-12-28T19:14:40Z",
+  "version": 2,
+  "changeset": 54991572,
+  "user": "Алекс Мок",
+  "uid": 4814295,
+  "center": {
+    "lat": 36.6877120,
+    "lon": 30.5708104
+  },
+  "nodes": [
+    1305131463,
+    1305131477,
+    1305131443,
+    1305131435,
+    1305131450,
+    1305131439,
+    1305131468,
+    1305131463
+  ],
+  "tags": {
+    "name": "Grand Park Kemer Hotel(ex.Yelken Blue Life)",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115551107,
+  "timestamp": "2024-10-23T15:37:20Z",
+  "version": 4,
+  "changeset": 158259997,
+  "user": "Firefishy",
+  "uid": 3560,
+  "center": {
+    "lat": 36.6905335,
+    "lon": 30.5701945
+  },
+  "nodes": [
+    1305131476,
+    1305131451,
+    1305131440,
+    1305131484,
+    1305131476
+  ],
+  "tags": {
+    "check_date": "2024-10-23",
+    "level": "0",
+    "name": "RIOS hotel beach",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115551110,
+  "timestamp": "2024-10-23T15:37:20Z",
+  "version": 5,
+  "changeset": 158259997,
+  "user": "Firefishy",
+  "uid": 3560,
+  "center": {
+    "lat": 36.6913164,
+    "lon": 30.5712369
+  },
+  "nodes": [
+    1305131473,
+    1305131425,
+    1305131458,
+    1305131446,
+    1305131448,
+    1305131473
+  ],
+  "tags": {
+    "FIXME": "I'm not sure that this hotel is called the «Inter Sport»",
+    "check_date": "2024-10-23",
+    "level": "0",
+    "name": "Rios Beach",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115551115,
+  "timestamp": "2026-08-19T05:21:41Z",
+  "version": 3,
+  "changeset": 187670500,
+  "user": "Malej_viktor",
+  "uid": 599929,
+  "center": {
+    "lat": 36.6938370,
+    "lon": 30.5712354
+  },
+  "nodes": [
+    1305043264,
+    14104598876,
+    1305131472,
+    14104598877,
+    1305131455,
+    1305043311,
+    1305043264
+  ],
+  "tags": {
+    "check_date": "2024-10-24",
+    "level": "0",
+    "name": "La Hoya Beach Hotel",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115551116,
+  "timestamp": "2025-01-27T10:06:45Z",
+  "version": 3,
+  "changeset": 161811034,
+  "user": "Pan Perníček",
+  "uid": 9641379,
+  "center": {
+    "lat": 36.6922633,
+    "lon": 30.5703342
+  },
+  "nodes": [
+    1305131445,
+    12535880867,
+    12535880869,
+    1305131474,
+    1305131485,
+    12535880868,
+    1305131438,
+    1305131428,
+    1305131442,
+    12535880870,
+    12535880871,
+    1305131434,
+    1305131445
+  ],
+  "tags": {
+    "check_date": "2024-10-25",
+    "contact:email": "info@grandringhotel.com",
+    "contact:phone": "+90 242 824 9393",
+    "level": "0",
+    "name": "Grand Ring Hotel",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://www.grandringhotel.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 115551118,
+  "timestamp": "2024-10-23T15:37:20Z",
+  "version": 2,
+  "changeset": 158259997,
+  "user": "Firefishy",
+  "uid": 3560,
+  "center": {
+    "lat": 36.6918312,
+    "lon": 30.5713131
+  },
+  "nodes": [
+    1305131453,
+    1305131488,
+    1305131456,
+    1305131444,
+    1305131453
+  ],
+  "tags": {
+    "check_date": "2024-10-23",
+    "level": "0",
+    "name": "Imperial Sunland beach",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115551121,
+  "timestamp": "2026-08-19T05:21:41Z",
+  "version": 3,
+  "changeset": 187670500,
+  "user": "Malej_viktor",
+  "uid": 599929,
+  "center": {
+    "lat": 36.6935241,
+    "lon": 30.5712155
+  },
+  "nodes": [
+    1305131472,
+    1305131436,
+    1305131452,
+    1305131455,
+    14104598877,
+    1305131472
+  ],
+  "tags": {
+    "check_date": "2024-10-24",
+    "level": "0",
+    "name": "Sumela Garden",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115551123,
+  "timestamp": "2024-10-23T15:37:20Z",
+  "version": 2,
+  "changeset": 158259997,
+  "user": "Firefishy",
+  "uid": 3560,
+  "center": {
+    "lat": 36.6907756,
+    "lon": 30.5711173
+  },
+  "nodes": [
+    1305131479,
+    1305131433,
+    1305131448,
+    1305131437,
+    1305131479
+  ],
+  "tags": {
+    "check_date": "2024-10-23",
+    "level": "0",
+    "name": "Club Rama",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115551126,
+  "timestamp": "2024-10-25T07:10:33Z",
+  "version": 3,
+  "changeset": 158324009,
+  "user": "Firefishy",
+  "uid": 3560,
+  "center": {
+    "lat": 36.6913921,
+    "lon": 30.5701194
+  },
+  "nodes": [
+    1305131454,
+    1305131489,
+    1305131480,
+    1305131431,
+    1305131454
+  ],
+  "tags": {
+    "check_date": "2024-10-25",
+    "fixme": "Closed? Refurbishment October 2024",
+    "level": "0",
+    "name": "Imperial Sunland",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 115551128,
+  "timestamp": "2024-10-23T15:27:42Z",
+  "version": 2,
+  "changeset": 158259555,
+  "user": "Firefishy",
+  "uid": 3560,
+  "center": {
+    "lat": 36.6897589,
+    "lon": 30.5709461
+  },
+  "nodes": [
+    1305131475,
+    1305131429,
+    1305131460,
+    1305131449,
+    1305131466,
+    1305131475
+  ],
+  "tags": {
+    "check_date": "2024-10-23",
+    "level": "0",
+    "name": "Rama Club Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 124077165,
+  "timestamp": "2026-08-24T18:11:16Z",
+  "version": 5,
+  "changeset": 187952939,
+  "user": "SilentCat",
+  "uid": 4272444,
+  "center": {
+    "lat": 36.7250174,
+    "lon": 30.5603274
+  },
+  "nodes": [
+    1381882639,
+    1381882644,
+    1381882638,
+    1381882636,
+    1381882627,
+    1381882635,
+    1381882639
+  ],
+  "tags": {
+    "building": "hotel",
+    "building:levels": "5",
+    "contact:phone": "+90 242 8249848",
+    "name": "Anita Matiate Wb travel",
+    "name:en": "Get Enjoy Hotels 4*",
+    "old_name": "Matiate hotel",
+    "stars": "4",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163358435,
+  "timestamp": "2023-08-29T15:50:52Z",
+  "version": 5,
+  "changeset": 140548966,
+  "user": "dpolovinkin",
+  "uid": 6710042,
+  "center": {
+    "lat": 36.8550360,
+    "lon": 30.8855660
+  },
+  "nodes": [
+    1750723258,
+    1750722927,
+    1750722923,
+    3002417406,
+    1350477820,
+    1750723234,
+    1750723258
+  ],
+  "tags": {
+    "name": "Crystal Centro Resort",
+    "old_name": "Antalya Kervansaray Kundu Hotel",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163358437,
+  "timestamp": "2026-08-13T10:37:47Z",
+  "version": 7,
+  "changeset": 187382928,
+  "user": "Vladisl0ve",
+  "uid": 23823691,
+  "center": {
+    "lat": 36.8553122,
+    "lon": 30.8560450
+  },
+  "nodes": [
+    1350477486,
+    1350477525,
+    1350477515,
+    1350477502,
+    1350477526,
+    1350477564,
+    1350477576,
+    1659662311,
+    1659662314,
+    1350477583,
+    1350477570,
+    1661280046,
+    1350477508,
+    13017706286,
+    13017706284,
+    13017706285,
+    1653008148,
+    13017706283,
+    13017706282,
+    1750723245,
+    13017746238,
+    1750723291,
+    13017706281,
+    13017706280,
+    1750723320,
+    12369584382,
+    1750723314,
+    1750723191,
+    1350477486
+  ],
+  "tags": {
+    "contact:website": "https://barutlara.com/",
+    "name": "Barut-Lara",
+    "stars": "5",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 163358438,
+  "timestamp": "2026-10-03T17:57:40Z",
+  "version": 10,
+  "changeset": 189944796,
+  "user": "Katzenstreu",
+  "uid": 118020,
+  "center": {
+    "lat": 36.8556754,
+    "lon": 30.8882143
+  },
+  "nodes": [
+    1350477834,
+    2029595187,
+    12864242633,
+    3765356928,
+    3765356927,
+    12864242632,
+    1750723306,
+    4897731611,
+    1750722928,
+    12864242634,
+    1350477834
+  ],
+  "tags": {
+    "air_conditioning": "yes",
+    "barrier": "wall",
+    "internet_access": "wlan",
+    "landuse": "commercial",
+    "name": "Baia Lara Hotel",
+    "sauna": "yes",
+    "swimming_pool": "indoor;outdoor",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 163358440,
+  "timestamp": "2024-10-07T18:46:00Z",
+  "version": 3,
+  "changeset": 157595109,
+  "user": "AxelBant1915",
+  "uid": 22032873,
+  "center": {
+    "lat": 36.8556574,
+    "lon": 30.8896759
+  },
+  "nodes": [
+    4897731610,
+    4897731611,
+    1750722928,
+    1350477814,
+    1750722946,
+    1750723222,
+    1750723305,
+    4897731610
+  ],
+  "tags": {
+    "name": "Liberty Lara",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163358445,
+  "timestamp": "2026-10-10T06:40:39Z",
+  "version": 4,
+  "changeset": 190284373,
+  "user": "lxndrl",
+  "uid": 21771395,
+  "center": {
+    "lat": 36.8551045,
+    "lon": 30.8584088
+  },
+  "nodes": [
+    1350477469,
+    1350477453,
+    1350477449,
+    1350477446,
+    1350477444,
+    1350477445,
+    1350477442,
+    1350477486,
+    1750723191,
+    1750723314,
+    1750723327,
+    1750723322,
+    1750723318,
+    1350477469
+  ],
+  "tags": {
+    "brand": "Nirvana Hotels",
+    "description": "A 13-minute walk from Lara Beach, this contemporary all-inclusive hotel with views of the Gulf of Antalya is 15 minutes away on foot from Aksu Dolphinarium and 8 km from Düden Waterfalls. Chic, modern rooms, some with gulf views, feature balconies, TVs an",
+    "name": "Nirvana Cosmopolitan",
+    "old_name": "Kervansaray Lara Convention Center & Spa",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://www.nirvanahotels.com.tr/oteller/nirvana-cosmopolitan"
+  }
+},
+{
+  "type": "way",
+  "id": 163358446,
+  "timestamp": "2024-10-07T18:46:00Z",
+  "version": 3,
+  "changeset": 157595109,
+  "user": "AxelBant1915",
+  "uid": 22032873,
+  "center": {
+    "lat": 36.8556116,
+    "lon": 30.8921483
+  },
+  "nodes": [
+    1750723303,
+    1750723293,
+    1750723148,
+    12232471389,
+    1750722931,
+    12228184469,
+    1750722930,
+    1750723132,
+    1750723303
+  ],
+  "tags": {
+    "name": "Melas Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163358447,
+  "timestamp": "2026-08-13T10:37:47Z",
+  "version": 4,
+  "changeset": 187382928,
+  "user": "Vladisl0ve",
+  "uid": 23823691,
+  "center": {
+    "lat": 36.8553290,
+    "lon": 30.8600329
+  },
+  "nodes": [
+    1350477584,
+    1350477547,
+    1350477537,
+    1350477536,
+    1350477476,
+    1350477455,
+    1350477452,
+    1350477461,
+    1350477479,
+    1350477516,
+    1350477491,
+    1350477469,
+    1750723318,
+    1750723329,
+    1750723328,
+    1750723301,
+    368228922,
+    1350477584
+  ],
+  "tags": {
+    "contact:phone": "+90 242 352 21 21",
+    "contact:website": "https://miraclehotel.com/",
+    "name": "Miracle Resort Hotel",
+    "stars": "5",
+    "toilets:wheelchair": "yes",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 163358485,
+  "timestamp": "2021-05-29T12:50:44Z",
+  "version": 3,
+  "changeset": 105533269,
+  "user": "kesler",
+  "uid": 13908,
+  "center": {
+    "lat": 36.8555955,
+    "lon": 30.8909683
+  },
+  "nodes": [
+    1750723303,
+    1750723304,
+    8778879115,
+    8778879113,
+    8778879112,
+    8778879114,
+    1750723294,
+    8778883376,
+    2034874426,
+    1750722935,
+    1750722929,
+    1750722930,
+    1750723132,
+    1750723303
+  ],
+  "tags": {
+    "name": "Royal Holiday Palace Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163358486,
+  "timestamp": "2026-08-13T10:08:58Z",
+  "version": 4,
+  "changeset": 187381482,
+  "user": "Vladisl0ve",
+  "uid": 23823691,
+  "center": {
+    "lat": 36.8520816,
+    "lon": 30.8535988
+  },
+  "nodes": [
+    1750722918,
+    12273427044,
+    12273427045,
+    1350477427,
+    1350477426,
+    1350477431,
+    1350477437,
+    1750722920,
+    1750722918
+  ],
+  "tags": {
+    "contact:phone": "+90 242 352 06 10",
+    "name": "TRT Lara",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163359036,
+  "timestamp": "2012-05-13T09:36:14Z",
+  "version": 2,
+  "changeset": 11583946,
+  "user": "Dave Stanley",
+  "uid": 111410,
+  "center": {
+    "lat": 36.8547856,
+    "lon": 30.8773203
+  },
+  "nodes": [
+    310407776,
+    1750724951,
+    1750724950,
+    1750724949,
+    1750724948,
+    310071877,
+    310576855,
+    1350477904,
+    310407776
+  ],
+  "tags": {
+    "name": "Fame Residence",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163375117,
+  "timestamp": "2026-08-13T10:37:47Z",
+  "version": 8,
+  "changeset": 187382928,
+  "user": "Vladisl0ve",
+  "uid": 23823691,
+  "center": {
+    "lat": 36.8542581,
+    "lon": 30.8652524
+  },
+  "nodes": [
+    368228919,
+    1750827612,
+    1750827607,
+    3261389348,
+    1750827608,
+    3261389344,
+    1750827603,
+    3261389319,
+    3261389329,
+    1750827593,
+    1750827583,
+    1750827579,
+    1750827574,
+    1750827562,
+    1750827547,
+    1750827545,
+    1750827544,
+    1750827542,
+    12273446869,
+    3261389139,
+    1750827540,
+    3261389124,
+    1750827538,
+    3261389101,
+    3261389098,
+    1750827537,
+    1750827535,
+    1750827527,
+    1750827488,
+    1750827485,
+    3261388884,
+    3261388879,
+    3261388876,
+    1350477747,
+    1350477743,
+    1350477741,
+    1350477736,
+    3261388866,
+    1350477740,
+    1350477751,
+    1350477758,
+    1350477757,
+    3261388872,
+    1350477754,
+    1350477756,
+    3261388873,
+    1350477749,
+    1350477745,
+    1350477750,
+    1350477748,
+    1350477742,
+    1350477738,
+    3261388868,
+    3261388869,
+    1350477744,
+    1350477737,
+    1350477733,
+    1350477739,
+    1350477725,
+    1350477708,
+    3261388865,
+    1350477697,
+    1350477649,
+    1350477688,
+    1350477667,
+    1350477643,
+    1350477671,
+    1350477700,
+    1350477712,
+    1350477652,
+    1350477642,
+    1350477691,
+    1350477662,
+    3261891329,
+    368228919
+  ],
+  "tags": {
+    "addr:city": "Güzeloba Mahallesi",
+    "addr:district": "Antalya",
+    "addr:housenumber": "38",
+    "addr:neighbourhood": "Muratpaşa",
+    "addr:postcode": "07112",
+    "addr:street": "Yaşar Sobutay Bulvarı",
+    "contact:phone": "+90 242 320 09 00",
+    "contact:website": "https://www.delphinhotel.com/de/delphin-be-grand-resort",
+    "name": "Delphin BE Grand",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163378142,
+  "timestamp": "2021-05-29T12:50:44Z",
+  "version": 3,
+  "changeset": 105533269,
+  "user": "kesler",
+  "uid": 13908,
+  "center": {
+    "lat": 36.8555208,
+    "lon": 30.8838651
+  },
+  "nodes": [
+    1350477821,
+    1750841527,
+    1750841529,
+    1750841533,
+    8778882205,
+    8778882204,
+    1750841535,
+    1750723234,
+    1350477820,
+    1350477819,
+    1350477823,
+    1350477821
+  ],
+  "tags": {
+    "name": "Royal Wings",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163379102,
+  "timestamp": "2022-02-17T20:15:20Z",
+  "version": 7,
+  "changeset": 117536479,
+  "user": "Claudius Henrichs",
+  "uid": 18069,
+  "center": {
+    "lat": 36.8550246,
+    "lon": 30.8809788
+  },
+  "nodes": [
+    9511948787,
+    9514840992,
+    1750844664,
+    1777031044,
+    1777031015,
+    1777030998,
+    1777030961,
+    1750844661,
+    1781392744,
+    1781392737,
+    1781392734,
+    1781392731,
+    1781392726,
+    1781392729,
+    1781392732,
+    1781392736,
+    1781392742,
+    1781392743,
+    1350477818,
+    9511948787
+  ],
+  "tags": {
+    "name": "Limak Lara",
+    "stars": "5",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 163379103,
+  "timestamp": "2021-05-29T12:50:44Z",
+  "version": 4,
+  "changeset": 105533269,
+  "user": "kesler",
+  "uid": 13908,
+  "center": {
+    "lat": 36.8552952,
+    "lon": 30.8824306
+  },
+  "nodes": [
+    1750844664,
+    1750841533,
+    1750841529,
+    1750841527,
+    1350477821,
+    7109438063,
+    1750844661,
+    1777030961,
+    1777030998,
+    1777031015,
+    1777031044,
+    1750844664
+  ],
+  "tags": {
+    "name": "Sherwood Breezes Resort",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163490011,
+  "timestamp": "2026-03-23T03:34:50Z",
+  "version": 2,
+  "changeset": 180279501,
+  "user": "mrbaja",
+  "uid": 5818656,
+  "center": {
+    "lat": 36.8562875,
+    "lon": 30.9065438
+  },
+  "nodes": [
+    1751645908,
+    1751645916,
+    1751645936,
+    1751645932,
+    1751645779,
+    1751645776,
+    1751645773,
+    13670597360,
+    1751645758,
+    1751645775,
+    1751645774,
+    1751645780,
+    1751645782,
+    1751645814,
+    1751645846,
+    1751645884,
+    1751645908
+  ],
+  "tags": {
+    "name": "Green palace Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163490012,
+  "timestamp": "2026-06-03T16:27:56Z",
+  "version": 5,
+  "changeset": 183603404,
+  "user": "bubeck",
+  "uid": 173791,
+  "center": {
+    "lat": 36.8563494,
+    "lon": 30.9088168
+  },
+  "nodes": [
+    1751645779,
+    1751645777,
+    13907104439,
+    13907675633,
+    13907104437,
+    1751645914,
+    6551649704,
+    1751645932,
+    1751645779
+  ],
+  "tags": {
+    "name": "Venezia Palace Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 163490013,
+  "timestamp": "2026-06-03T09:13:56Z",
+  "version": 8,
+  "changeset": 183582430,
+  "user": "bubeck",
+  "uid": 173791,
+  "center": {
+    "lat": 36.8561238,
+    "lon": 30.9135298
+  },
+  "nodes": [
+    1751645926,
+    4284343451,
+    4284343450,
+    4284343449,
+    1751645924,
+    9902063790,
+    9902063445,
+    1751645792,
+    4284118949,
+    9902064562,
+    4284990753,
+    4284990751,
+    1751645786,
+    1751645788,
+    13906589542,
+    4284337986,
+    4284343429,
+    1751645926
+  ],
+  "tags": {
+    "addr:housenumber": "440",
+    "addr:street": "Tesisler Caddesi",
+    "brand": "ATG Hotels",
+    "name": "Asteria Kremlin Palace",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 172714686,
+  "timestamp": "2022-07-21T14:29:27Z",
+  "version": 12,
+  "changeset": 123896929,
+  "user": "BaghdadiMapper",
+  "uid": 14601220,
+  "center": {
+    "lat": 36.8576063,
+    "lon": 30.9197581
+  },
+  "nodes": [
+    2634077706,
+    2634077704,
+    2634077702,
+    1835922536,
+    2634077700,
+    2634077698,
+    2634077696,
+    2634077682,
+    1835922526,
+    2634101211,
+    1835922512,
+    1835922467,
+    2634077684,
+    2634077686,
+    1835922463,
+    2634077690,
+    2634077688,
+    3511812916,
+    3511812917,
+    9902064565,
+    1835922469,
+    1835922492,
+    2634077694,
+    1835922514,
+    1835922516,
+    2634008821,
+    2634008819,
+    1835922537,
+    2634077706
+  ],
+  "tags": {
+    "ele": "100",
+    "internet_access": "yes",
+    "name": "Mardan Palace",
+    "operator": "Önder Kuşçu",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "www.mardanpalace.com",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 184206437,
+  "timestamp": "2015-10-06T16:09:55Z",
+  "version": 2,
+  "changeset": 34472252,
+  "user": "Rico557",
+  "uid": 3281808,
+  "center": {
+    "lat": 36.7362320,
+    "lon": 30.5585026
+  },
+  "nodes": [
+    1946640265,
+    1946640257,
+    1946640262,
+    1946640268,
+    1946640265
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Belle vue",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 184206438,
+  "timestamp": "2012-10-04T19:57:50Z",
+  "version": 1,
+  "changeset": 13364969,
+  "user": "iWowik",
+  "uid": 481934,
+  "center": {
+    "lat": 36.7355556,
+    "lon": 30.5581062
+  },
+  "nodes": [
+    1946640248,
+    1946640245,
+    1946640251,
+    1946640254,
+    1946640248
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Gönül Palace",
+    "name:en": "Gonul Palace",
+    "stars": "3",
+    "tourism": "hotel",
+    "website": "http://www.gonulpalacehotel.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 184253265,
+  "timestamp": "2024-07-18T20:02:03Z",
+  "version": 18,
+  "changeset": 154117224,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "center": {
+    "lat": 36.7264283,
+    "lon": 30.5614755
+  },
+  "nodes": [
+    1947097710,
+    1947097705,
+    1947097692,
+    1947097648,
+    1947097646,
+    1947097635,
+    1947097636,
+    1947097616,
+    1947097618,
+    1947097614,
+    1947097609,
+    1947097604,
+    1947097605,
+    1947097584,
+    1947097581,
+    1947097578,
+    1947097570,
+    1947097560,
+    1947097558,
+    1947097562,
+    1947097552,
+    1947097550,
+    1947097548,
+    1947097554,
+    1947097564,
+    1947097566,
+    1947097574,
+    1947097579,
+    1947097576,
+    1947097586,
+    1947097588,
+    1947097603,
+    1947097612,
+    1947097611,
+    1947097620,
+    1947097634,
+    1947097639,
+    1947097638,
+    1947097641,
+    9999878921,
+    1947097642,
+    1947097656,
+    9999878920,
+    1947097650,
+    1947097673,
+    1947097674,
+    1947097704,
+    1947097690,
+    1947097711,
+    1947097712,
+    1947097745,
+    1947097743,
+    1947097726,
+    1947097724,
+    1947097720,
+    1947097718,
+    1947097716,
+    1947097714,
+    1947097722,
+    1947097713,
+    1947097710
+  ],
+  "tags": {
+    "building": "yes",
+    "check_date": "2023-01-01",
+    "description": "ultra all inclisive",
+    "internet_access": "wlan",
+    "name": "Akka Antedon Hotel",
+    "name:en": "Akka Antedon Hotel",
+    "name:ru": "Акка Антедон",
+    "opening_hours": "24/7",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://www.akkahotels.com/OtelDetay.aspx?ID=15",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 189318625,
+  "timestamp": "2024-10-11T14:43:00Z",
+  "version": 2,
+  "changeset": 157760192,
+  "user": "fiupi",
+  "uid": 22047862,
+  "center": {
+    "lat": 36.8534259,
+    "lon": 30.7894099
+  },
+  "nodes": [
+    1999599710,
+    1999599711,
+    1999599705,
+    1999599706,
+    1999599707,
+    1999599712,
+    1999599709,
+    1999599708,
+    1999599710
+  ],
+  "tags": {
+    "check_date": "2024-10-11",
+    "name": "Lara Hotel",
+    "source": "tourist map",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 189319351,
+  "timestamp": "2012-11-06T06:35:38Z",
+  "version": 3,
+  "changeset": 13769302,
+  "user": "huopa",
+  "uid": 234917,
+  "center": {
+    "lat": 36.8532189,
+    "lon": 30.7900102
+  },
+  "nodes": [
+    1999604588,
+    1999604587,
+    1999604586,
+    1999604585,
+    1999604589,
+    1999604588
+  ],
+  "tags": {
+    "name": "Nazar Beach Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 238588375,
+  "timestamp": "2022-01-24T16:21:18Z",
+  "version": 4,
+  "changeset": 116547803,
+  "user": "turankaya74",
+  "uid": 1845527,
+  "center": {
+    "lat": 36.8553567,
+    "lon": 30.8719753
+  },
+  "nodes": [
+    9445155128,
+    9445150590,
+    9445150587,
+    9445150586,
+    9445150589,
+    9445150585,
+    9445150584,
+    9445150588,
+    9445150583,
+    9445150580,
+    9445150582,
+    9445150579,
+    9445150581,
+    9445150577,
+    9445150578,
+    9445150574,
+    9445150573,
+    9445150576,
+    9445150572,
+    9445150571,
+    9445150570,
+    9445150575,
+    9445150568,
+    9445150569,
+    9445150567,
+    9445150564,
+    9445150563,
+    9445150566,
+    9445150562,
+    9445150561,
+    9445150560,
+    9445150565,
+    9445150558,
+    9445150559,
+    9445150557,
+    9445150554,
+    9445150553,
+    9445150556,
+    9445150552,
+    9445150551,
+    9445150555,
+    9445150591,
+    9445150594,
+    9445150592,
+    9445150596,
+    9445150593,
+    9445150595,
+    9445150601,
+    9445150597,
+    9445150598,
+    9445150602,
+    9445150599,
+    9445150600,
+    9445150603,
+    9445150608,
+    9445150604,
+    9445150605,
+    9445150609,
+    9445150606,
+    9445150607,
+    9445150610,
+    9445150612,
+    9445150611,
+    9445155117,
+    9445150613,
+    9445150614,
+    9445155118,
+    9445150615,
+    9445150616,
+    9445155119,
+    9445155124,
+    9445155120,
+    9445155121,
+    9445155125,
+    9445155122,
+    9445155123,
+    9445155126,
+    9445155127,
+    9445150519,
+    9445150520,
+    9445150521,
+    9445150522,
+    9445150523,
+    9445150524,
+    9445150525,
+    9445150526,
+    9445150527,
+    9445150528,
+    9445150529,
+    9445150530,
+    9445150531,
+    9445150532,
+    9445150533,
+    9445150534,
+    9445150550,
+    9445150535,
+    9445150536,
+    9445150537,
+    9445150538,
+    9445150539,
+    9445150549,
+    9445150548,
+    9445150547,
+    9445150546,
+    9445150545,
+    9445150544,
+    9445150543,
+    9445150542,
+    9445150541,
+    9445150540,
+    9445155128
+  ],
+  "tags": {
+    "building": "hotel",
+    "building:levels": "11",
+    "name": "Delphin Imperial Hotel",
+    "source": "Maxar Premium-Luftbilder (Beta)",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 252537755,
+  "timestamp": "2026-05-31T17:47:03Z",
+  "version": 6,
+  "changeset": 183459627,
+  "user": "technopagan99",
+  "uid": 22974111,
+  "center": {
+    "lat": 36.8602427,
+    "lon": 30.9759990
+  },
+  "nodes": [
+    2585676972,
+    2585677359,
+    2585677349,
+    3177863967,
+    2585677337,
+    2585676980,
+    2585676987,
+    2585676974,
+    2585676972
+  ],
+  "tags": {
+    "internet_access": "wlan",
+    "name": "TUI MAGİC LİFE Belek",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 252537756,
+  "timestamp": "2025-05-27T13:01:26Z",
+  "version": 3,
+  "changeset": 166825869,
+  "user": "wielandb",
+  "uid": 11695431,
+  "center": {
+    "lat": 36.8602254,
+    "lon": 30.9792340
+  },
+  "nodes": [
+    2585677342,
+    11539397038,
+    11539397039,
+    2585676978,
+    370682108,
+    2585676972,
+    2585677359,
+    2585677357,
+    2585677356,
+    2585677352,
+    2585677342
+  ],
+  "tags": {
+    "addr:housenumber": "07500 Kumköy/Antalya Province, Türkei",
+    "name": "Club Mega Saray",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 259179541,
+  "timestamp": "2014-01-31T10:26:14Z",
+  "version": 1,
+  "changeset": 20297449,
+  "user": "zhvlnts",
+  "uid": 443101,
+  "center": {
+    "lat": 36.6965016,
+    "lon": 30.5719484
+  },
+  "nodes": [
+    2645361269,
+    2645361271,
+    2645361272,
+    2645361266,
+    2645361265,
+    2645361270,
+    2645361268,
+    2645361267,
+    2645361273,
+    2645361269
+  ],
+  "tags": {
+    "name": "La Perla",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 299684028,
+  "timestamp": "2024-04-09T12:04:18Z",
+  "version": 16,
+  "changeset": 149774429,
+  "user": "SomeoneElse_Revert",
+  "uid": 1778799,
+  "center": {
+    "lat": 36.8584169,
+    "lon": 30.7315913
+  },
+  "nodes": [
+    3037261014,
+    3037261015,
+    3037261017,
+    6265948590,
+    6265948591,
+    6265948592,
+    6265948593,
+    6265948594,
+    3037261016,
+    3037261014
+  ],
+  "tags": {
+    "building": "yes",
+    "internet_access": "wlan",
+    "name": "Adonis",
+    "name:ru": "Адонис",
+    "tourism": "hotel",
+    "wikidata": "Q111400132"
+  }
+},
+{
+  "type": "way",
+  "id": 299684029,
+  "timestamp": "2014-08-23T16:29:58Z",
+  "version": 1,
+  "changeset": 24959473,
+  "user": "Farwynd",
+  "uid": 2284598,
+  "center": {
+    "lat": 36.8578655,
+    "lon": 30.7321206
+  },
+  "nodes": [
+    3037261018,
+    3037261019,
+    3037261020,
+    3037261021,
+    3037261018
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Antalya Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 299684033,
+  "timestamp": "2019-03-23T22:46:20Z",
+  "version": 6,
+  "changeset": 68457141,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "center": {
+    "lat": 36.8644670,
+    "lon": 30.7259130
+  },
+  "nodes": [
+    3037262661,
+    3037262662,
+    3037262669,
+    3037262667,
+    3037262666,
+    3037262672,
+    3037262670,
+    3037262671,
+    3037262665,
+    3037262663,
+    3037262664,
+    5369319595,
+    3037262661
+  ],
+  "tags": {
+    "name": "Barut Akra Otel",
+    "tourism": "hotel",
+    "website": "https://www.baruthotels.com/",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 304547612,
+  "timestamp": "2025-07-21T11:45:25Z",
+  "version": 7,
+  "changeset": 169239215,
+  "user": "Tewuzij",
+  "uid": 16194143,
+  "center": {
+    "lat": 36.8767628,
+    "lon": 30.7079790
+  },
+  "nodes": [
+    6649909925,
+    6649909926,
+    3090969897,
+    3090969898,
+    6649909925
+  ],
+  "tags": {
+    "addr:housenumber": "22",
+    "addr:street": "Fevzi Çakmak Caddesi",
+    "air_conditioning": "yes",
+    "brand": "Ramada",
+    "brand:wikidata": "Q1502859",
+    "building": "yes",
+    "check_date": "2025-07-05",
+    "email": "info@ramadaplazaantalya.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Ramada Plaza Antalya",
+    "official_name": "Ramada by Wyndham",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "reservation": "yes",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://ramadaplazaantalya.com/",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 309360753,
+  "timestamp": "2024-01-22T08:29:04Z",
+  "version": 6,
+  "changeset": 146541992,
+  "user": "ig5map",
+  "uid": 20662097,
+  "center": {
+    "lat": 36.8600404,
+    "lon": 30.9822672
+  },
+  "nodes": [
+    3146923845,
+    3146923846,
+    3146916604,
+    3146916603,
+    3146916602,
+    3146916601,
+    3146916600,
+    3146829287,
+    6779982030,
+    3146829288,
+    3146916599,
+    3146923847,
+    11539397029,
+    11539397028,
+    3146923848,
+    3146923845
+  ],
+  "tags": {
+    "name": "Adora Golf Resort",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 311772612,
+  "timestamp": "2023-07-06T22:21:33Z",
+  "version": 5,
+  "changeset": 138206451,
+  "user": "VLD304",
+  "uid": 16974287,
+  "center": {
+    "lat": 36.8487126,
+    "lon": 30.8201830
+  },
+  "nodes": [
+    3175676166,
+    3174922456,
+    3174913333,
+    2734250823,
+    3175642527,
+    1350476844,
+    3175687194,
+    1350476853,
+    3174913326,
+    3175676166
+  ],
+  "tags": {
+    "name": "PTT Lara",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 347167920,
+  "timestamp": "2022-01-23T10:12:07Z",
+  "version": 4,
+  "changeset": 116492534,
+  "user": "turankaya74",
+  "uid": 1845527,
+  "center": {
+    "lat": 36.8587902,
+    "lon": 30.9204434
+  },
+  "nodes": [
+    3535556585,
+    9441845303,
+    9441845301,
+    9441845300,
+    9441845302,
+    3535556586,
+    9441845245,
+    9441845244,
+    9441845296,
+    9441845295,
+    9441845297,
+    9441845299,
+    9441845298,
+    9441845304,
+    9441845260,
+    9441845294,
+    3535556585
+  ],
+  "tags": {
+    "building": "hotel",
+    "name": "Mardan Palace",
+    "source": "Maxar Premium-Luftbilder (Beta)",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 347259719,
+  "timestamp": "2018-02-21T21:13:55Z",
+  "version": 2,
+  "changeset": 56562183,
+  "user": "sis651",
+  "uid": 2015671,
+  "center": {
+    "lat": 36.8663383,
+    "lon": 30.7247360
+  },
+  "nodes": [
+    3536091250,
+    3536091254,
+    3536091248,
+    3536091239,
+    3536091250
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "117",
+    "addr:neighbourhood": "Yeşilbahçe Mahallesi",
+    "addr:postcode": "07050",
+    "addr:province": "Antalya",
+    "addr:street": "Eski Lara Caddesi",
+    "building": "hotel",
+    "building:levels": "3",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Atan Park Hotel",
+    "operator": "Atanpark Hotel",
+    "phone": "+902422121689",
+    "rooms": "49",
+    "tourism": "hotel",
+    "website": "http://www.atanparkhotel.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 358272588,
+  "timestamp": "2025-06-20T09:37:42Z",
+  "version": 6,
+  "changeset": 167860960,
+  "user": "dpolovinkin",
+  "uid": 6710042,
+  "center": {
+    "lat": 36.7011653,
+    "lon": 30.5723602
+  },
+  "nodes": [
+    9168319863,
+    9168319865,
+    9168319867,
+    9168319869,
+    9168319871,
+    9168319873,
+    9168319875,
+    9168319877,
+    9168319879,
+    9168319881,
+    9168320077,
+    9168320075,
+    9168320073,
+    9168320070,
+    9168320067,
+    9168320064,
+    9168320061,
+    9168320058,
+    9168320056,
+    9168320054,
+    9168320052,
+    9168320046,
+    9168320044,
+    9168320048,
+    9168320041,
+    9168320038,
+    9168320035,
+    9168320032,
+    9168320028,
+    9168320026,
+    9168320024,
+    9168320021,
+    9168320018,
+    9168320015,
+    9168320012,
+    9168320009,
+    9168320006,
+    9168320003,
+    9168320001,
+    9168319999,
+    9168319997,
+    9168319995,
+    7891144839,
+    7891144840,
+    1305043253,
+    3632193447,
+    1305043238,
+    3632193397,
+    3632193393,
+    1305043301,
+    1305043252,
+    1305043299,
+    9168319863
+  ],
+  "tags": {
+    "access": "private",
+    "addr:city": "Beldibi",
+    "addr:country": "TR",
+    "addr:housenumber": "153-1/1",
+    "addr:street": "Atatürk Caddesi",
+    "brand": "Rixos Hotels",
+    "brand:wikidata": "Q6075716",
+    "email": "sungate@rixos.com",
+    "fax": "+90 242 824 97 55",
+    "name": "Rixos Sungate",
+    "phone": "+90 242 824 00 00",
+    "rooms": "1094",
+    "tourism": "hotel",
+    "website": "https://sungate.rixos.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 363000242,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 4,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "center": {
+    "lat": 36.8550206,
+    "lon": 30.8790748
+  },
+  "nodes": [
+    1350477818,
+    3672151844,
+    3672151845,
+    3672151846,
+    3672151847,
+    3672151848,
+    3672151849,
+    3672151850,
+    3672151851,
+    3672184742,
+    1350477818
+  ],
+  "tags": {
+    "addr:city": "Aksu - Antalya",
+    "addr:housenumber": "358/1",
+    "addr:postcode": "07110",
+    "addr:street": "Kemerağzı Site Mahallesi Tesisler Cad.",
+    "name": "Concorde De Luxe Resort Hotel",
+    "phone": "+90 242 352 26 26",
+    "smoking": "outside",
+    "tourism": "hotel",
+    "website": "http://www.concordehotel.com.tr/",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 368452489,
+  "timestamp": "2015-08-31T12:07:22Z",
+  "version": 1,
+  "changeset": 33701968,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8932589,
+    "lon": 30.7016258
+  },
+  "nodes": [
+    3722883062,
+    3722883063,
+    3722883064,
+    3722883065,
+    3722883062
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "building": "yes",
+    "name": "Mostar Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 368649252,
+  "timestamp": "2023-05-15T11:21:20Z",
+  "version": 3,
+  "changeset": 136114629,
+  "user": "wheelmap_visitor",
+  "uid": 290680,
+  "center": {
+    "lat": 36.8598638,
+    "lon": 30.6335896
+  },
+  "nodes": [
+    3725003587,
+    3725003588,
+    3725003589,
+    3725003590,
+    3725003587
+  ],
+  "tags": {
+    "building": "yes",
+    "check_date": "2023-03-25",
+    "name": "Megasaray Westbeach",
+    "tourism": "hotel",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 369350970,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 4,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "center": {
+    "lat": 36.7175766,
+    "lon": 30.5648898
+  },
+  "nodes": [
+    3731474979,
+    3731474981,
+    3737647470,
+    9168319949,
+    9168319947,
+    9168319945,
+    9168319943,
+    9168319941,
+    9168319939,
+    9168319937,
+    9168319935,
+    9168319933,
+    9168319931,
+    9168319929,
+    9168319927,
+    9168319925,
+    3731475002,
+    3731475001,
+    3737648265,
+    3731475000,
+    3731474996,
+    3737648133,
+    3737647505,
+    3731474984,
+    3737647465,
+    3731474979
+  ],
+  "tags": {
+    "contact:email": "info.flora@crystalhotels.com.tr",
+    "contact:fax": "+90 242 824 97 27",
+    "contact:phone": "+90 242 824 97 97",
+    "contact:website": "www.crystalflorakemer.com",
+    "name": "Crystal Flora Beach",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 369486383,
+  "timestamp": "2015-09-07T09:20:27Z",
+  "version": 1,
+  "changeset": 33851639,
+  "user": "HellSpawn",
+  "uid": 137798,
+  "center": {
+    "lat": 36.7136711,
+    "lon": 30.5638245
+  },
+  "nodes": [
+    3732760473,
+    3732760476,
+    3732760479,
+    3732760478,
+    3732760475,
+    3732760473
+  ],
+  "tags": {
+    "name": "Imeros",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 426752884,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 3,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "center": {
+    "lat": 36.8547690,
+    "lon": 30.7463910
+  },
+  "nodes": [
+    4260143607,
+    4260143608,
+    4260143609,
+    4260143610,
+    4260143607
+  ],
+  "tags": {
+    "addr:city": "Muratpaşa/Antalya",
+    "addr:street": "Lara Caddesi",
+    "building": "yes",
+    "image": "https://photos.app.goo.gl/zvwbZRzVWMsUmmru8",
+    "name": "Nasa Flora Otel",
+    "phone": "+90 242 323 33 24",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 426752885,
+  "timestamp": "2016-06-23T09:39:18Z",
+  "version": 1,
+  "changeset": 40225008,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8545587,
+    "lon": 30.7466231
+  },
+  "nodes": [
+    4260143611,
+    4260143612,
+    4260143613,
+    4260143614,
+    4260143611
+  ],
+  "tags": {
+    "addr:city": "Muratpaşa/Antalya",
+    "addr:street": "Lara Caddesi",
+    "building": "yes",
+    "name": "Selge Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 426752886,
+  "timestamp": "2019-09-24T07:58:33Z",
+  "version": 2,
+  "changeset": 74840791,
+  "user": "6473994",
+  "uid": 8665061,
+  "center": {
+    "lat": 36.8546744,
+    "lon": 30.7465208
+  },
+  "nodes": [
+    4260143615,
+    4260143616,
+    4260143617,
+    4260143618,
+    4260143615
+  ],
+  "tags": {
+    "addr:city": "Muratpaşa/Antalya",
+    "addr:street": "Lara Caddesi",
+    "building": "yes",
+    "name": "La suite boutique hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 426752896,
+  "timestamp": "2016-06-23T09:39:19Z",
+  "version": 1,
+  "changeset": 40225008,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8546725,
+    "lon": 30.7456404
+  },
+  "nodes": [
+    4260143718,
+    4260143719,
+    4260143720,
+    4260143721,
+    4260143722,
+    4260143723,
+    4260143724,
+    4260143718
+  ],
+  "tags": {
+    "addr:city": "Muratpaşa/Antalya",
+    "addr:street": "1513. Sokak",
+    "building": "yes",
+    "name": "Duru Apart Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 426766017,
+  "timestamp": "2023-12-18T11:00:42Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8556627,
+    "lon": 30.7445118
+  },
+  "nodes": [
+    4260263608,
+    4260263609,
+    4260263610,
+    4260263611,
+    4260263612,
+    4260263613,
+    4260263614,
+    4260263615,
+    4260263608
+  ],
+  "tags": {
+    "addr:city": "Muratpaşa/Antalya",
+    "building": "yes",
+    "name": "Royal City Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111856580"
+  }
+},
+{
+  "type": "way",
+  "id": 426766018,
+  "timestamp": "2016-06-23T10:59:52Z",
+  "version": 1,
+  "changeset": 40228175,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8554939,
+    "lon": 30.7449045
+  },
+  "nodes": [
+    4260263616,
+    4260263617,
+    4260263618,
+    4260263619,
+    4260263616
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Prize Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 427007581,
+  "timestamp": "2017-03-09T16:54:05Z",
+  "version": 2,
+  "changeset": 46715117,
+  "user": "LLlypuk82",
+  "uid": 788014,
+  "center": {
+    "lat": 36.7082042,
+    "lon": 30.5691602
+  },
+  "nodes": [
+    4262554813,
+    4262554814,
+    4262554815,
+    4262554816,
+    4262554817,
+    4262554813
+  ],
+  "tags": {
+    "addr:street": "Atatürk Caddesi",
+    "name": "Champion Holiday Village",
+    "operator": "Champion",
+    "smoking": "outside",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 431358896,
+  "timestamp": "2024-02-04T21:46:04Z",
+  "version": 4,
+  "changeset": 147070848,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "center": {
+    "lat": 36.9276177,
+    "lon": 30.8098664
+  },
+  "nodes": [
+    4305652753,
+    4305652751,
+    4305652750,
+    4305652752,
+    4305652754,
+    4305652755,
+    4305652756,
+    4305652757,
+    4305652758,
+    4305652760,
+    4305652761,
+    4305652762,
+    4305652763,
+    4305652766,
+    4305652767,
+    4305652774,
+    4305652779,
+    4305652778,
+    4305652781,
+    4305652782,
+    4305652786,
+    4305652785,
+    4305652788,
+    4305652790,
+    4305652797,
+    4305652793,
+    4305652795,
+    4305652796,
+    4305652794,
+    4305652792,
+    4305652791,
+    4305652789,
+    4305652787,
+    4305652784,
+    4305652783,
+    4305652780,
+    4305652777,
+    4305652776,
+    4305652775,
+    4305652773,
+    4305652772,
+    4305652770,
+    4305652771,
+    4305652769,
+    4305652733,
+    4305652736,
+    4305652737,
+    4305652741,
+    4305652739,
+    4305652749,
+    4305652745,
+    4305652747,
+    4305652748,
+    4305652746,
+    4305652744,
+    4305652743,
+    4305652742,
+    4305652740,
+    4305652738,
+    4305652735,
+    4305652734,
+    4305652732,
+    4305652731,
+    4305652730,
+    4305652726,
+    4305652727,
+    4305652725,
+    4305652724,
+    4305652722,
+    4305652723,
+    4305652721,
+    4305652720,
+    4305652719,
+    4305652729,
+    4305652728,
+    4305652753
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Aksu",
+    "addr:neighbourhood": "Çalkaya Mahallesi",
+    "addr:postcode": "07110",
+    "addr:street": "Güzelyurt Mevkii",
+    "building": "yes",
+    "email": "ichotelssocialmedia@gmail.com",
+    "name": "IC Hotels Airport",
+    "tourism": "hotel",
+    "website": "https://www.ichotels.com.tr/",
+    "wikidata": "Q111998111"
+  }
+},
+{
+  "type": "way",
+  "id": 431519183,
+  "timestamp": "2016-07-17T12:18:10Z",
+  "version": 1,
+  "changeset": 40797078,
+  "user": "turankaya74",
+  "uid": 1845527,
+  "center": {
+    "lat": 36.8863081,
+    "lon": 30.6762923
+  },
+  "nodes": [
+    4307277021,
+    4307276985,
+    4307276984,
+    4307277019,
+    4307277016,
+    4307277025,
+    4307277026,
+    4307277033,
+    4307277037,
+    4307277038,
+    4307277039,
+    4307277040,
+    4307277041,
+    4307277042,
+    4307277043,
+    4307277044,
+    4307277045,
+    4307277048,
+    4307277049,
+    4307277051,
+    4307277055,
+    4307277058,
+    4307277060,
+    4307277062,
+    4307277064,
+    4307277061,
+    4307277059,
+    4307277057,
+    4307277053,
+    4307277050,
+    4307277046,
+    4307277047,
+    4307277032,
+    4307277034,
+    4307277030,
+    4307277031,
+    4307277035,
+    4307277036,
+    4307277063,
+    4307277065,
+    4307277074,
+    4307277075,
+    4307277077,
+    4307277079,
+    4307277081,
+    4307277083,
+    4307277085,
+    4307277086,
+    4307277084,
+    4307277082,
+    4307277080,
+    4307277078,
+    4307277076,
+    4307277066,
+    4307277072,
+    4307277073,
+    4307277071,
+    4307277070,
+    4307277069,
+    4307277068,
+    4307277067,
+    4307277054,
+    4307277087,
+    4307277052,
+    4307277056,
+    4307277029,
+    4307277021
+  ],
+  "tags": {
+    "building": "hotel",
+    "name": "Özkaymak Falez Hotel",
+    "source": "mapbox",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 432156890,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 7,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "center": {
+    "lat": 36.8966170,
+    "lon": 30.7106329
+  },
+  "nodes": [
+    4313183722,
+    4313183723,
+    6957448371,
+    4313183724,
+    6957448372,
+    4313183725,
+    4313183715,
+    4313183714,
+    4313183717,
+    6957448370,
+    4313183716,
+    4313183722
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "61",
+    "addr:postcode": "07310",
+    "addr:street": "Etiler, Adnan Menderes Bulvarı",
+    "brand": "DoubleTree",
+    "brand:wikidata": "Q2504643",
+    "building": "yes",
+    "contact:facebook": "https://www.facebook.com/DoubleTreebyHiltonAntalyaCityCentre",
+    "contact:twitter": "https://twitter.com/by_centre",
+    "contact:youtube": "https://www.youtube.com/channel/UCxGqVcpAFMGn6cTGhjXgaAw",
+    "email": "reservation@dtbhantalyacc.com",
+    "internet_access:fee": "yes",
+    "name": "DoubleTree by Hilton Antalya City Centre",
+    "official_name": "DoubleTree by Hilton",
+    "operator": "Hilton",
+    "phone": "+90 242 231 00 42",
+    "rooms": "149",
+    "source": "mapbox",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://www.hilton.com/en/hotels/aytccdi-doubletree-antalya-city-centre/",
+    "wheelchair": "yes",
+    "wikidata": "Q111856579"
+  }
+},
+{
+  "type": "way",
+  "id": 432156891,
+  "timestamp": "2024-04-18T19:38:01Z",
+  "version": 3,
+  "changeset": 150191866,
+  "user": "km2bp",
+  "uid": 3610826,
+  "center": {
+    "lat": 36.8857500,
+    "lon": 30.7022970
+  },
+  "nodes": [
+    2705571789,
+    4313183448,
+    4313183442,
+    4313183441,
+    2705571789
+  ],
+  "tags": {
+    "building": "yes",
+    "check_date": "2022-11-26",
+    "image": "https://photos.app.goo.gl/Yb8TC6WrJRHS296F8",
+    "name": "Adalya Hotel",
+    "source": "mapbox",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 444501389,
+  "timestamp": "2018-01-16T12:16:06Z",
+  "version": 2,
+  "changeset": 55491236,
+  "user": "user03ee88557",
+  "uid": 7456006,
+  "center": {
+    "lat": 36.8512329,
+    "lon": 30.6200701
+  },
+  "nodes": [
+    4419800453,
+    4419800454,
+    4419800455,
+    4419800456,
+    4419800453
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Zel Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 462395389,
+  "timestamp": "2023-11-23T12:06:33Z",
+  "version": 5,
+  "changeset": 144366704,
+  "user": "Alexis Gureev",
+  "uid": 7148457,
+  "center": {
+    "lat": 36.8756289,
+    "lon": 30.4799787
+  },
+  "nodes": [
+    4577941055,
+    4577941056,
+    4577941057,
+    11365416586,
+    11365416585,
+    4577941058,
+    11365416584,
+    4577941059,
+    4577941060,
+    11371021526,
+    4577941061,
+    4577941062,
+    4577941063,
+    4577941064,
+    4577941055
+  ],
+  "tags": {
+    "name": "The Land",
+    "tourism": "hotel",
+    "website": "theland.com.tr"
+  }
+},
+{
+  "type": "way",
+  "id": 465171651,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 5,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "center": {
+    "lat": 36.8581348,
+    "lon": 30.6312254
+  },
+  "nodes": [
+    4601683858,
+    4601683859,
+    4601683860,
+    4601683861,
+    4601683862,
+    4601683863,
+    4601683864,
+    4601683865,
+    4601683858
+  ],
+  "tags": {
+    "addr:city": "Konyaaltı/Antalya",
+    "brand": "Crowne Plaza",
+    "brand:wikidata": "Q2746220",
+    "brand:wikipedia": "en:Crowne Plaza",
+    "building": "yes",
+    "building:levels": "11",
+    "check_date": "2023-03-25",
+    "name": "Crowne Plaza",
+    "phone": "+90 242 228 77 18",
+    "stars": "5",
+    "tourism": "hotel",
+    "wikidata": "Q111400164"
+  }
+},
+{
+  "type": "way",
+  "id": 467486799,
+  "timestamp": "2025-09-02T08:17:18Z",
+  "version": 2,
+  "changeset": 171348491,
+  "user": "vvoovv",
+  "uid": 27371,
+  "center": {
+    "lat": 36.8775019,
+    "lon": 30.6553211
+  },
+  "nodes": [
+    4621000621,
+    4621000622,
+    4621000623,
+    4621000624,
+    4621000621
+  ],
+  "tags": {
+    "addr:housenumber": "13",
+    "addr:street": "616. Sokak",
+    "building": "yes",
+    "building:levels": "4",
+    "name": "Oli Hotel and Suites",
+    "phone": "+90 242 500 2757",
+    "tourism": "hotel",
+    "website": "https://theolihotel.com"
+  }
+},
+{
+  "type": "way",
+  "id": 467510549,
+  "timestamp": "2017-01-20T20:12:58Z",
+  "version": 1,
+  "changeset": 45336503,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.9030402,
+    "lon": 30.6636264
+  },
+  "nodes": [
+    4621234018,
+    4621234019,
+    4621234020,
+    4621234021,
+    4621234018
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Antalya Öğretmenevi",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 512965710,
+  "timestamp": "2023-12-18T11:01:56Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8637783,
+    "lon": 30.6361736
+  },
+  "nodes": [
+    5015445657,
+    5015445633,
+    5015445654,
+    5015445715,
+    5015445657
+  ],
+  "tags": {
+    "building": "commercial",
+    "building:levels": "4",
+    "building:use": "hotel",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Aspendos Suites",
+    "tourism": "hotel",
+    "wikidata": "Q111998218"
+  }
+},
+{
+  "type": "way",
+  "id": 527495455,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 7,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "center": {
+    "lat": 36.8571675,
+    "lon": 30.8758638
+  },
+  "nodes": [
+    5128104365,
+    5128104366,
+    5128104367,
+    5234294711,
+    5128104368,
+    9514841014,
+    5234294714,
+    5234294713,
+    2464226933,
+    5234294710,
+    5128104369,
+    5128104365
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Aksu",
+    "addr:housenumber": "339",
+    "addr:neighbourhood": "Lara",
+    "addr:street": "Lara Cd",
+    "name": "Grand Park Lara",
+    "operator": "Corendon Hotels",
+    "phone": "+90 242 352 44 44",
+    "tourism": "hotel",
+    "website": "https://www.corendonhotels.com.tr/grand-park-lara",
+    "wikidata": "Q111400121"
+  }
+},
+{
+  "type": "way",
+  "id": 527811195,
+  "timestamp": "2024-03-01T22:50:36Z",
+  "version": 3,
+  "changeset": 148114690,
+  "user": "म्यापर",
+  "uid": 17365610,
+  "center": {
+    "lat": 36.8578475,
+    "lon": 30.8721235
+  },
+  "nodes": [
+    6485122569,
+    5130598553,
+    5128330685,
+    6485122568,
+    6485122569
+  ],
+  "tags": {
+    "brand": "Ramada",
+    "brand:wikidata": "Q1502859",
+    "name": "Ramada Resort Lara",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 527811197,
+  "timestamp": "2023-12-18T11:00:32Z",
+  "version": 4,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8581950,
+    "lon": 30.8711203
+  },
+  "nodes": [
+    6485122557,
+    5128329514,
+    5128330686,
+    6485122556,
+    6485122555,
+    6485122554,
+    6485122553,
+    6485122557
+  ],
+  "tags": {
+    "name": "Lara Family Club",
+    "tourism": "hotel",
+    "wikidata": "Q111415866"
+  }
+},
+{
+  "type": "way",
+  "id": 529709845,
+  "timestamp": "2024-09-01T15:08:35Z",
+  "version": 6,
+  "changeset": 156059064,
+  "user": "JP-osm",
+  "uid": 21908299,
+  "center": {
+    "lat": 36.8550672,
+    "lon": 30.8936841
+  },
+  "nodes": [
+    5145303816,
+    5145303815,
+    5145303814,
+    5145303813,
+    5145303812,
+    12149953247,
+    5145303811,
+    5145303810,
+    5145303816
+  ],
+  "tags": {
+    "name": "Royal Seginus",
+    "operator": "Aksa Lara Resort",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 549136232,
+  "timestamp": "2024-05-24T13:32:37Z",
+  "version": 5,
+  "changeset": 151770321,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "center": {
+    "lat": 36.7343256,
+    "lon": 30.5628028
+  },
+  "nodes": [
+    5304625245,
+    5304625244,
+    5304625243,
+    5304625242,
+    5304625245
+  ],
+  "tags": {
+    "addr:city": "ANTALYA",
+    "addr:district": "KEMER",
+    "addr:housenumber": "NO:78",
+    "addr:neighbourhood": "BELDİBİ MAHALLESİ",
+    "addr:postcode": "07980",
+    "addr:street": ",BASKOMUTAN ATATURK CADDESİ",
+    "brand": "BELCAN HOTEL",
+    "building": "hotel",
+    "building:levels": "2",
+    "check_date": "27.04.2024",
+    "email": "info@belcanhotel.com",
+    "height": "12",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "BELCAN HOTEL",
+    "phone": "+905426597407",
+    "roof:colour": "KIRMIZI",
+    "rooms": "28",
+    "start_date": "2020",
+    "tourism": "hotel",
+    "website": "https://www.belcanhotel.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 549589952,
+  "timestamp": "2026-07-03T08:30:30Z",
+  "version": 3,
+  "changeset": 185026490,
+  "user": "BalmyHotels",
+  "uid": 24275211,
+  "center": {
+    "lat": 36.7095884,
+    "lon": 30.5674763
+  },
+  "nodes": [
+    5308732485,
+    5308732484,
+    5308732483,
+    5308732482,
+    5308732481,
+    5308732480,
+    5308732479,
+    5308732478,
+    5308732477,
+    5308732476,
+    5308732475,
+    5308732474,
+    5308732485
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Kemer",
+    "addr:housenumber": "143",
+    "addr:neighbourhood": "beldibi mahallesi",
+    "addr:postcode": "07985",
+    "addr:street": "başkomutan atatürk caddesi",
+    "building": "yes",
+    "building:levels": "5",
+    "name": "Balmy Foresta",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 556617986,
+  "timestamp": "2023-12-18T11:00:02Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8565407,
+    "lon": 30.7386013
+  },
+  "nodes": [
+    5369319518,
+    5369319515,
+    5369319516,
+    5369319517,
+    5369319518
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:neighbourhood": "Şirinyalı Mahallesi",
+    "addr:postcode": "07160",
+    "addr:province": "Antalya",
+    "addr:street": "Lara Caddesi",
+    "building": "hotel",
+    "email": "antalya-info@themarmarahotels.com",
+    "fax": "+90 212 292 33 18",
+    "name": "Marmara Otel Antalya",
+    "name:en": "The Marmara Antalya",
+    "phone": "+90 242 249 36 00",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://www.themarmarahotels.com/the-marmara-antalya-otel.aspx",
+    "wikidata": "Q111400131"
+  }
+},
+{
+  "type": "way",
+  "id": 563126081,
+  "timestamp": "2018-02-21T21:13:52Z",
+  "version": 1,
+  "changeset": 56562183,
+  "user": "sis651",
+  "uid": 2015671,
+  "center": {
+    "lat": 36.8670535,
+    "lon": 30.7241458
+  },
+  "nodes": [
+    5427537280,
+    5427537279,
+    5427537278,
+    5427537277,
+    5427537280
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "61",
+    "addr:neighbourhood": "Yeşilbahçe Mahallesi",
+    "addr:postcode": "07050",
+    "addr:province": "Antalya",
+    "addr:street": "1470 Sokak",
+    "beds": "66",
+    "building": "hotel",
+    "email": "rezervasyon@adaliaotel.com",
+    "fax": "+90242 322 68 92",
+    "name": "Adalia Hotel",
+    "phone": "+90242 322 68 91",
+    "rooms": "27",
+    "tourism": "hotel",
+    "website": "https://adaliaotel.com/index/"
+  }
+},
+{
+  "type": "way",
+  "id": 633908276,
+  "timestamp": "2018-10-14T14:16:21Z",
+  "version": 1,
+  "changeset": 63510251,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8677981,
+    "lon": 30.6315127
+  },
+  "nodes": [
+    5983220490,
+    5983220491,
+    5983220492,
+    5983220493,
+    5983220490
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Voswos Garage",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 657532008,
+  "timestamp": "2023-12-18T11:00:43Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8752003,
+    "lon": 30.7118005
+  },
+  "nodes": [
+    6158335753,
+    6158335754,
+    6158335755,
+    6158335756,
+    6158335757,
+    6158335758,
+    6158335759,
+    6158335760,
+    6158335761,
+    6158335762,
+    6158335763,
+    6158335764,
+    6158335765,
+    6158335766,
+    6158335767,
+    6158335768,
+    6158335769,
+    6158335770,
+    6158335771,
+    6158335772,
+    6158335773,
+    6158335774,
+    6158335775,
+    6158335776,
+    6158335777,
+    6158335778,
+    6158335779,
+    6158335780,
+    6158335781,
+    6158335782,
+    6158335783,
+    6158335784,
+    6158335785,
+    6158335786,
+    6158335787,
+    6158335788,
+    6158335789,
+    6158335790,
+    6158335791,
+    6158335792,
+    6158335793,
+    6158335794,
+    6158335795,
+    6158335796,
+    6158335797,
+    6158335798,
+    6158335799,
+    6158335800,
+    6158335801,
+    6158335802,
+    6158335803,
+    6158335804,
+    6158335805,
+    6158335806,
+    6158335807,
+    6158335808,
+    6158335809,
+    6158335810,
+    6158335753
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Cender Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111856599"
+  }
+},
+{
+  "type": "way",
+  "id": 657894907,
+  "timestamp": "2019-08-24T12:35:26Z",
+  "version": 2,
+  "changeset": 73695434,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8542811,
+    "lon": 30.8033643
+  },
+  "nodes": [
+    6161443706,
+    6161443707,
+    6161443708,
+    6161443709,
+    6161443706
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Nurella Pansiyon",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 663465465,
+  "timestamp": "2023-07-12T07:20:48Z",
+  "version": 2,
+  "changeset": 138408860,
+  "user": "Farook Al-Sammarraie",
+  "uid": 19717194,
+  "center": {
+    "lat": 36.8879902,
+    "lon": 30.6896389
+  },
+  "nodes": [
+    6210086968,
+    6210086969,
+    6210086970,
+    6210086971,
+    6210086968
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "building": "yes",
+    "name": "Suite Laguna hotel (Antalya)",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 668219973,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 2,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "center": {
+    "lat": 36.9091306,
+    "lon": 30.7411190
+  },
+  "nodes": [
+    6257574253,
+    6257574254,
+    6257574255,
+    6257574256,
+    6257574257,
+    6257574258,
+    6257574259,
+    6257574260,
+    6257574261,
+    6257574262,
+    6257574263,
+    6257574264,
+    6257574265,
+    6257574253
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:neighbourhood": "Doğuyaka Mah.",
+    "building": "yes",
+    "name": "Han Hotel",
+    "phone": "+90 242 338 38 38",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 668410562,
+  "timestamp": "2026-06-10T07:10:30Z",
+  "version": 5,
+  "changeset": 183907878,
+  "user": "confusedbuffalo-bot",
+  "uid": 23492813,
+  "center": {
+    "lat": 36.8886522,
+    "lon": 30.7042887
+  },
+  "nodes": [
+    6259355747,
+    6259355748,
+    6259355749,
+    6259355750,
+    6259355747
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "brand": "Best Western Plus",
+    "brand:wikidata": "Q38623383",
+    "building": "yes",
+    "name": "Best Western Plus Khan Hotel",
+    "phone": "+90 242 248 38 70",
+    "tourism": "hotel",
+    "wikidata": "Q111400134"
+  }
+},
+{
+  "type": "way",
+  "id": 670397994,
+  "timestamp": "2022-04-05T07:22:59Z",
+  "version": 3,
+  "changeset": 119330010,
+  "user": "ZinaidaZ",
+  "uid": 9465790,
+  "center": {
+    "lat": 36.8545781,
+    "lon": 30.8029785
+  },
+  "nodes": [
+    6278052194,
+    6278052195,
+    6278052196,
+    6278052197,
+    6278052194
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:housenumber": "7",
+    "addr:postcode": "07100",
+    "addr:street": "2275 Sokak",
+    "building": "hotel",
+    "name": "Luna Hotel",
+    "phone": "+90 242 3494650",
+    "tourism": "hotel",
+    "website": "http://www.otelluna.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 670397998,
+  "timestamp": "2020-10-25T00:37:12Z",
+  "version": 2,
+  "changeset": 93003344,
+  "user": "carrybean",
+  "uid": 12051847,
+  "center": {
+    "lat": 36.8546149,
+    "lon": 30.8039989
+  },
+  "nodes": [
+    6278052213,
+    6278052214,
+    6278052215,
+    6278052216,
+    6278052213
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Enda Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 674875530,
+  "timestamp": "2023-12-18T11:00:40Z",
+  "version": 7,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8503287,
+    "lon": 30.8055754
+  },
+  "nodes": [
+    6320273096,
+    6320273097,
+    6544589488,
+    6320273098,
+    6320273099,
+    6320273096
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:neighbourhood": "Güzeloba Mahallesi",
+    "building": "yes",
+    "building:levels": "6",
+    "name": "Lara Park Hotel",
+    "tourism": "hotel",
+    "wikidata": "Q111856573"
+  }
+},
+{
+  "type": "way",
+  "id": 683058994,
+  "timestamp": "2022-06-12T12:18:28Z",
+  "version": 2,
+  "changeset": 122278274,
+  "user": "RoYank",
+  "uid": 1920336,
+  "center": {
+    "lat": 36.8895110,
+    "lon": 30.6913121
+  },
+  "nodes": [
+    6397879458,
+    6397879459,
+    6397879460,
+    6397879461,
+    6397879458
+  ],
+  "tags": {
+    "building": "hotel",
+    "internet_access": "wlan",
+    "name": "City Inn Family Apart",
+    "tourism": "hotel",
+    "website": "https://www.cityinnhotels.com.tr/"
+  }
+},
+{
+  "type": "way",
+  "id": 683653575,
+  "timestamp": "2023-12-18T11:01:14Z",
+  "version": 3,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8606768,
+    "lon": 30.8895441
+  },
+  "nodes": [
+    6403537828,
+    6403537829,
+    8778883390,
+    8778883389,
+    6403537830,
+    6403537831,
+    8778883392,
+    8778883391,
+    6403537828
+  ],
+  "tags": {
+    "name": "Sherwood Suites Resort",
+    "tourism": "hotel",
+    "wikidata": "Q111888298"
+  }
+},
+{
+  "type": "way",
+  "id": 696346400,
+  "timestamp": "2024-07-11T16:26:02Z",
+  "version": 7,
+  "changeset": 153819401,
+  "user": "hocu",
+  "uid": 374342,
+  "center": {
+    "lat": 36.8496421,
+    "lon": 30.8070555
+  },
+  "nodes": [
+    6539213822,
+    6539213823,
+    6555695510,
+    6539213824,
+    6539213825,
+    6539213822
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "453",
+    "addr:neighbourhood": "Güzeloba Mahallesi",
+    "addr:postcode": "07230",
+    "addr:street": "Lara Caddesi",
+    "building": "yes",
+    "contact:phone": "+90 242 340 42 00",
+    "name": "Hotel Bir",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 696346409,
+  "timestamp": "2019-06-13T13:22:50Z",
+  "version": 4,
+  "changeset": 71218583,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8497856,
+    "lon": 30.8055692
+  },
+  "nodes": [
+    6539213916,
+    6539213917,
+    6539213918,
+    6539213919,
+    6544589490,
+    6539213916
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:neighbourhood": "Güzeloba Mahallesi",
+    "building": "yes",
+    "name": "Lara Palace",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 696439241,
+  "timestamp": "2019-10-01T10:59:32Z",
+  "version": 4,
+  "changeset": 75143489,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8527620,
+    "lon": 30.8045743
+  },
+  "nodes": [
+    6540181658,
+    6540181624,
+    6540181648,
+    6540181633,
+    6540181657,
+    6540181640,
+    6540181623,
+    6742093370,
+    6540181647,
+    6540181658
+  ],
+  "tags": {
+    "addr:housenumber": "429",
+    "addr:street": "Lara caddesi",
+    "building": "yes;apartments",
+    "building:levels": "7",
+    "name": "Dinç Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 696442804,
+  "timestamp": "2019-06-18T19:00:17Z",
+  "version": 4,
+  "changeset": 71377411,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8514196,
+    "lon": 30.8062415
+  },
+  "nodes": [
+    6540212161,
+    6556036670,
+    6540212180,
+    6540212141,
+    6540221694,
+    6549873773,
+    6549873771,
+    6540221712,
+    6540212161
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:neighbourhood": "Güzeloba Mahallesi",
+    "addr:street": "2314 Sokak",
+    "building": "yes",
+    "name": "Banina Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 696528629,
+  "timestamp": "2019-08-24T12:35:26Z",
+  "version": 3,
+  "changeset": 73695434,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8520108,
+    "lon": 30.8021497
+  },
+  "nodes": [
+    6541089083,
+    6742194686,
+    6541089084,
+    6541089085,
+    6541089086,
+    6541089083
+  ],
+  "tags": {
+    "addr:street": "2293 Sokak",
+    "building": "yes",
+    "name": "Esperanza Boutique Hotel",
+    "phone": "+902423491412;+905051085030",
+    "tourism": "hotel",
+    "website": "http://www.EsperanzaBoutiqueHotel.com"
+  }
+},
+{
+  "type": "way",
+  "id": 696528651,
+  "timestamp": "2019-06-11T22:56:46Z",
+  "version": 1,
+  "changeset": 71159751,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8515926,
+    "lon": 30.8018287
+  },
+  "nodes": [
+    6541089199,
+    6541089200,
+    6541089201,
+    6541089202,
+    6541089208,
+    6541089203,
+    6541089204,
+    6541089199
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Lara World Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 696528784,
+  "timestamp": "2019-10-02T09:25:17Z",
+  "version": 2,
+  "changeset": 75182670,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8517706,
+    "lon": 30.8012394
+  },
+  "nodes": [
+    6541090418,
+    6541090419,
+    6541090420,
+    6541090421,
+    6541090418
+  ],
+  "tags": {
+    "addr:housenumber": "13",
+    "addr:street": "Menekşe Caddesi",
+    "building": "yes",
+    "building:levels": "4",
+    "name": "Elken Bütik Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 696528787,
+  "timestamp": "2019-10-02T09:25:17Z",
+  "version": 2,
+  "changeset": 75182670,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8520195,
+    "lon": 30.8009379
+  },
+  "nodes": [
+    6541090430,
+    6541090431,
+    6541090432,
+    6541090433,
+    6541090430
+  ],
+  "tags": {
+    "addr:housenumber": "7",
+    "addr:street": "Menekşe Caddesi",
+    "building": "yes",
+    "name": "Lara Kapris Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 707643496,
+  "timestamp": "2025-07-21T11:45:25Z",
+  "version": 4,
+  "changeset": 169239215,
+  "user": "Tewuzij",
+  "uid": 16194143,
+  "center": {
+    "lat": 36.8765094,
+    "lon": 30.7071532
+  },
+  "nodes": [
+    6649909927,
+    6649909928,
+    3090969899,
+    3090969900,
+    6649909927
+  ],
+  "tags": {
+    "addr:housenumber": "22",
+    "addr:street": "Fevzi Çakmak Caddesi",
+    "brand": "Ramada",
+    "brand:wikidata": "Q1502859",
+    "email": "info@ramadaplazaantalya.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Ramada Plaza Antalya",
+    "official_name": "Ramada by Wyndham",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://ramadaplazaantalya.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 715051789,
+  "timestamp": "2023-10-23T22:10:31Z",
+  "version": 4,
+  "changeset": 143038578,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "center": {
+    "lat": 36.8856445,
+    "lon": 30.7062611
+  },
+  "nodes": [
+    6720841906,
+    9777586644,
+    6720841908,
+    6720841911,
+    6720841914,
+    9777586650,
+    6720841906
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Tuzcular Mah.",
+    "addr:housenumber": "18",
+    "addr:neighbourhood": "Kaleiçe",
+    "addr:street": "Karanlık Sokak",
+    "building": "yes",
+    "check_date": "2022-11-26",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "internet_access:ssid": "Tuvana",
+    "name": "Tuvana Hotel",
+    "phone": "+902422476015",
+    "smoking": "no",
+    "stars": "3",
+    "tourism": "hotel",
+    "website": "https://tuvanahotel.com/",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "way",
+  "id": 715051791,
+  "timestamp": "2023-10-23T22:14:15Z",
+  "version": 2,
+  "changeset": 143038710,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "center": {
+    "lat": 36.8856650,
+    "lon": 30.7059404
+  },
+  "nodes": [
+    6720841905,
+    6720841910,
+    6720841913,
+    6720841903,
+    6720841905
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Tuzcular Mah.",
+    "addr:housenumber": "18",
+    "addr:neighbourhood": "Kaleiçe",
+    "addr:street": "Karanlık Sokak",
+    "building": "yes",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "internet_access:ssid": "Tuvana",
+    "name": "Tuvana Hotel",
+    "phone": "+902422476015",
+    "smoking": "no",
+    "stars": "3",
+    "tourism": "hotel",
+    "website": "https://tuvanahotel.com/",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "way",
+  "id": 718022701,
+  "timestamp": "2019-09-18T11:40:06Z",
+  "version": 2,
+  "changeset": 74621595,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8544775,
+    "lon": 30.7944093
+  },
+  "nodes": [
+    6743198281,
+    6743198385,
+    6743198223,
+    6805395301,
+    6743198492,
+    6743198281
+  ],
+  "tags": {
+    "addr:housenumber": "369",
+    "addr:street": "Lara Caddesi",
+    "building": "yes",
+    "building:levels": "3",
+    "name": "Ales Park Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 725838475,
+  "timestamp": "2023-10-27T14:49:23Z",
+  "version": 4,
+  "changeset": 143215582,
+  "user": "batyrmastyr",
+  "uid": 5735399,
+  "center": {
+    "lat": 36.8532297,
+    "lon": 30.8029747
+  },
+  "nodes": [
+    6541089036,
+    6541089037,
+    6541089038,
+    6541089039,
+    6541089031,
+    6541089032,
+    6829934165,
+    6541089033,
+    6541089034,
+    6541089035,
+    6541089026,
+    6541089027,
+    6541089028,
+    7897006398,
+    6805461189,
+    6541089029,
+    6541089030,
+    6541089036
+  ],
+  "tags": {
+    "brand": "Holiday Inn",
+    "brand:wikidata": "Q2717882",
+    "brand:wikipedia": "en:Holiday Inn",
+    "building": "yes",
+    "building:levels": "3",
+    "check_date": "2023-10-27",
+    "name": "Holiday Inn",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 797844058,
+  "timestamp": "2023-10-20T11:30:15Z",
+  "version": 2,
+  "changeset": 142865701,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8559484,
+    "lon": 30.8096137
+  },
+  "nodes": [
+    7462285944,
+    7462285941,
+    7462285940,
+    7462285938,
+    7462285944
+  ],
+  "tags": {
+    "building": "hotel",
+    "name": "Lara Garden Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 820888815,
+  "timestamp": "2022-05-28T18:06:07Z",
+  "version": 2,
+  "changeset": 121627771,
+  "user": "Alex170581",
+  "uid": 16073635,
+  "center": {
+    "lat": 36.8833247,
+    "lon": 30.7046828
+  },
+  "nodes": [
+    7663432839,
+    7663432865,
+    7663432877,
+    7663432818,
+    7663432839
+  ],
+  "tags": {
+    "addr:housenumber": "5",
+    "addr:street": "Ömer Efendi Sokak",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "Villa Porta",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 820888818,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 3,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "center": {
+    "lat": 36.8836515,
+    "lon": 30.7049699
+  },
+  "nodes": [
+    7663432864,
+    7663432842,
+    7663432854,
+    7663432876,
+    7663432864
+  ],
+  "tags": {
+    "addr:housenumber": "4",
+    "addr:street": "Kaledibi Sokak",
+    "building": "yes",
+    "building:levels": "2",
+    "check_date": "2022-11-26",
+    "name": "Doğan Hotel",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 820888820,
+  "timestamp": "2026-05-10T02:58:38Z",
+  "version": 4,
+  "changeset": 182448376,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "center": {
+    "lat": 36.8834629,
+    "lon": 30.7043053
+  },
+  "nodes": [
+    7663432847,
+    7663432873,
+    7663432833,
+    7663432814,
+    7663432828,
+    7663432847
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:country": "TR",
+    "addr:housenumber": "23",
+    "addr:street": "Mermerli Sokak",
+    "building": "yes",
+    "building:levels": "3",
+    "check_date": "2022-11-26",
+    "name": "Reutlingen Hof",
+    "tourism": "hotel",
+    "website": "https://www.reutlingenhof.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 820888822,
+  "timestamp": "2022-11-26T17:11:57Z",
+  "version": 3,
+  "changeset": 129409948,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "center": {
+    "lat": 36.8835307,
+    "lon": 30.7050629
+  },
+  "nodes": [
+    7663432822,
+    7663432845,
+    9777569889,
+    7663432859,
+    7663432871,
+    7663432822
+  ],
+  "tags": {
+    "addr:housenumber": "6",
+    "addr:street": "Kaledibi Sokak",
+    "building": "yes",
+    "building:levels": "3",
+    "check_date": "2022-11-26",
+    "name": "Villa Tulıpan Bed&Breakfast",
+    "phone": "+902422449258",
+    "stars": "3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 820888823,
+  "timestamp": "2024-04-17T20:40:09Z",
+  "version": 5,
+  "changeset": 150147760,
+  "user": "km2bp",
+  "uid": 3610826,
+  "center": {
+    "lat": 36.8832725,
+    "lon": 30.7043649
+  },
+  "nodes": [
+    7663432848,
+    7663432874,
+    7663432815,
+    7663432829,
+    7663432840,
+    7663432852,
+    7663432866,
+    7663432879,
+    7663432820,
+    7663432848
+  ],
+  "tags": {
+    "addr:housenumber": "25",
+    "addr:street": "Mermerli Sokak",
+    "building": "yes",
+    "check_date": "2022-11-26",
+    "contact:facebook": "https://www.facebook.com/aspenhotelantalya/",
+    "image": "https://photos.app.goo.gl/d2p85oHUMihbwYVPA",
+    "name": "Hotel Aspen",
+    "phone": "+90 242 247 05 90",
+    "tourism": "hotel",
+    "wikidata": "Q111118441"
+  }
+},
+{
+  "type": "way",
+  "id": 820888826,
+  "timestamp": "2022-05-28T18:06:07Z",
+  "version": 2,
+  "changeset": 121627771,
+  "user": "Alex170581",
+  "uid": 16073635,
+  "center": {
+    "lat": 36.8835781,
+    "lon": 30.7045533
+  },
+  "nodes": [
+    7663432856,
+    7663432808,
+    7663432824,
+    7663432835,
+    7663432846,
+    7663432861,
+    7663432872,
+    7663432813,
+    7663432856
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:housenumber": "5",
+    "addr:postcode": "07100",
+    "addr:street": "Mermerli Banyo Sokak",
+    "building": "yes",
+    "name": "Dogan Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 845826509,
+  "timestamp": "2024-03-21T22:26:59Z",
+  "version": 6,
+  "changeset": 148988645,
+  "user": "anon17609",
+  "uid": 21013152,
+  "center": {
+    "lat": 36.7045264,
+    "lon": 30.5712301
+  },
+  "nodes": [
+    7891157148,
+    7891157149,
+    7891157153,
+    7891157150,
+    7891157151,
+    7891157152,
+    7891157148
+  ],
+  "tags": {
+    "addr:housenumber": "151",
+    "addr:neighbourhood": "Beldibi Mahallesi",
+    "addr:street": "Başkomutan Atatürk Caddesi",
+    "brand": "Gypsophila Hotels",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Gypsophila Club Marine",
+    "rooms": "399",
+    "tourism": "hotel",
+    "website": "https://www.gypsophilamarine.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 866579526,
+  "timestamp": "2023-12-18T11:02:02Z",
+  "version": 2,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.9013853,
+    "lon": 30.6549419
+  },
+  "nodes": [
+    8077213273,
+    8077213274,
+    8077213275,
+    8077213276,
+    8077213273
+  ],
+  "tags": {
+    "addr:housenumber": "42B",
+    "addr:street": "Hürriyet Caddesi",
+    "air_conditioning": "yes",
+    "building": "hotel",
+    "email": "info@anellihotel.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Anelli Hotel",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "phone": "+902425023307",
+    "tourism": "hotel",
+    "website": "https://www.anellihotel.com/",
+    "wikidata": "Q112027051"
+  }
+},
+{
+  "type": "way",
+  "id": 948417034,
+  "timestamp": "2025-03-23T09:46:43Z",
+  "version": 4,
+  "changeset": 163978341,
+  "user": "nicolaymitropolsky",
+  "uid": 2080978,
+  "center": {
+    "lat": 36.8581864,
+    "lon": 30.8919147
+  },
+  "nodes": [
+    8778883461,
+    8778883460,
+    8778883459,
+    8778883458,
+    8778883457,
+    8778883456,
+    8778883455,
+    8778883454,
+    12692696296,
+    5476465528,
+    8778883453,
+    8778883452,
+    11153500671,
+    8778883451,
+    11153500672,
+    8778883461
+  ],
+  "tags": {
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Royal Seginus Hotel",
+    "operator": "Stone Group",
+    "rooms": "500",
+    "smoking": "outside",
+    "stars": "5",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 948417088,
+  "timestamp": "2023-08-22T03:54:56Z",
+  "version": 11,
+  "changeset": 140207753,
+  "user": "NorthCrab",
+  "uid": 15215305,
+  "center": {
+    "lat": 36.8559129,
+    "lon": 30.8954925
+  },
+  "nodes": [
+    8778867112,
+    8778867113,
+    8778867114,
+    8778867115,
+    5145303802,
+    8778867109,
+    8257612217,
+    8778867112
+  ],
+  "tags": {
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Adalya Elite Lara",
+    "name:en": "Adalya Elite Lara",
+    "name:ru": "Адалия Элит Лара",
+    "phone": "+902429995080",
+    "stars": "5",
+    "tourism": "hotel",
+    "website": "https://www.adalyahotels.com/",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 948417089,
+  "timestamp": "2024-09-01T15:08:35Z",
+  "version": 3,
+  "changeset": 156059064,
+  "user": "JP-osm",
+  "uid": 21908299,
+  "center": {
+    "lat": 36.8560166,
+    "lon": 30.8943189
+  },
+  "nodes": [
+    5145303813,
+    5145303814,
+    1750239139,
+    8778867110,
+    8778867111,
+    8778867112,
+    8778867113,
+    8778867114,
+    8778867115,
+    5145303802,
+    5145303800,
+    8778882945,
+    8778882926,
+    5145303801,
+    5145303811,
+    12149953247,
+    5145303812,
+    5145303813
+  ],
+  "tags": {
+    "name": "Saturn Palace Resort",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1003960150,
+  "timestamp": "2021-11-18T12:01:06Z",
+  "version": 1,
+  "changeset": 113941695,
+  "user": "VAt",
+  "uid": 289183,
+  "center": {
+    "lat": 36.8598018,
+    "lon": 30.9229044
+  },
+  "nodes": [
+    9263669709,
+    9263669710,
+    9263669711,
+    9263669712,
+    9263669713,
+    9263704261,
+    9263669714,
+    9263669715,
+    9263669716,
+    9263704217,
+    9263704218,
+    9263704219,
+    9263704220,
+    9263704221,
+    9263704222,
+    9263704223,
+    9263669709
+  ],
+  "tags": {
+    "name": "Trendy Lara",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1024271613,
+  "timestamp": "2025-01-31T06:51:54Z",
+  "version": 4,
+  "changeset": 161965447,
+  "user": "Sadrettin",
+  "uid": 389644,
+  "center": {
+    "lat": 36.8558355,
+    "lon": 30.8825195
+  },
+  "nodes": [
+    9445090937,
+    9445090940,
+    9445090939,
+    9445090938,
+    9445090929,
+    9445090936,
+    9445090934,
+    9445090933,
+    9445090935,
+    9445090931,
+    9445090930,
+    9445090932,
+    9445090893,
+    9445090922,
+    9445090921,
+    9445090920,
+    9445090919,
+    9445090918,
+    9445090928,
+    9445090917,
+    9445090937
+  ],
+  "tags": {
+    "building": "hotel",
+    "building:levels": "10",
+    "internet_access": "wlan",
+    "name": "Sherwood Exclusive Lara",
+    "smoking": "isolated",
+    "source": "Maxar Premium-Luftbilder (Beta)",
+    "stars": "5",
+    "tourism": "hotel",
+    "wikidata": "Q111400117"
+  }
+},
+{
+  "type": "way",
+  "id": 1063676742,
+  "timestamp": "2024-04-17T18:10:41Z",
+  "version": 2,
+  "changeset": 150143350,
+  "user": "km2bp",
+  "uid": 3610826,
+  "center": {
+    "lat": 36.8848337,
+    "lon": 30.7078407
+  },
+  "nodes": [
+    10219505810,
+    9770168888,
+    9770168887,
+    9770168880,
+    9770168889,
+    10219505810
+  ],
+  "tags": {
+    "addr:housenumber": "10",
+    "addr:street": "Hesapçı Sokak",
+    "building": "yes",
+    "check_date": "2022-11-26",
+    "contact:facebook": "https://www.facebook.com/HadrianGateHotel/?locale=nb_NO",
+    "email": "hadrian@hadriangatehotel.com",
+    "image": "https://photos.app.goo.gl/KhvCwPq6ETPKGkFZA",
+    "name": "Hadrian Gate Hotel",
+    "phone": "+90 242 241 04 04",
+    "tourism": "hotel",
+    "website": "http://hadriangatehotel.com/",
+    "wikidata": "Q111856588"
+  }
+},
+{
+  "type": "way",
+  "id": 1064391632,
+  "timestamp": "2023-12-18T10:59:49Z",
+  "version": 4,
+  "changeset": 145246347,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8846844,
+    "lon": 30.7051691
+  },
+  "nodes": [
+    9775443676,
+    9775443677,
+    9775443678,
+    9775443679,
+    9775443676
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "6",
+    "addr:neighbourhood": "Kaleiçi",
+    "addr:street": "Balıkpazarı Sokak",
+    "building": "yes",
+    "name": "Argos Hotel",
+    "phone": "+902422472012",
+    "tourism": "hotel",
+    "website": "https://argoshotel.com/",
+    "wikidata": "Q111118427"
+  }
+},
+{
+  "type": "way",
+  "id": 1119952642,
+  "timestamp": "2022-12-16T16:36:02Z",
+  "version": 2,
+  "changeset": 130163052,
+  "user": "ron1024",
+  "uid": 4004697,
+  "center": {
+    "lat": 36.8713476,
+    "lon": 30.9771080
+  },
+  "nodes": [
+    10243206654,
+    10243206653,
+    6814140840,
+    9458780843,
+    10243206652,
+    10242229267,
+    10242229268,
+    10242229269,
+    10242229270,
+    10242229271,
+    10242229272,
+    10242229273,
+    10242229274,
+    10242229275,
+    10243206651,
+    10243206650,
+    10243206649,
+    10243206648,
+    10243206647,
+    10243197377,
+    10243206654
+  ],
+  "tags": {
+    "landuse": "recreation_ground",
+    "name": "Pearl Golf Villas",
+    "name:en": "Pearl Golf VIllas",
+    "name:tr": "Pearl Golf Villaları",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1214490669,
+  "timestamp": "2023-10-10T09:12:54Z",
+  "version": 1,
+  "changeset": 142383355,
+  "user": "evgenykatyshev",
+  "uid": 98099,
+  "center": {
+    "lat": 36.7323531,
+    "lon": 30.5621032
+  },
+  "nodes": [
+    11252485564,
+    11252485580,
+    11252485565,
+    11252485578,
+    11252485566,
+    11252485585,
+    11252485568,
+    11252485569,
+    11252485574,
+    11252485573,
+    11252485570,
+    11252485571,
+    11252485567,
+    11252485577,
+    11252485564
+  ],
+  "tags": {
+    "barrier": "fence",
+    "name": "Akar Palace Resort",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1217067113,
+  "timestamp": "2023-10-20T11:30:15Z",
+  "version": 1,
+  "changeset": 142865701,
+  "user": "Nesim",
+  "uid": 1386706,
+  "center": {
+    "lat": 36.8539963,
+    "lon": 30.8067061
+  },
+  "nodes": [
+    6540841706,
+    6540841736,
+    6540841763,
+    6540841791,
+    6540841730,
+    6540841598,
+    11277133935,
+    6540841706
+  ],
+  "tags": {
+    "name": "Lara Hadrianus Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1245479772,
+  "timestamp": "2024-07-15T18:59:40Z",
+  "version": 3,
+  "changeset": 153985965,
+  "user": "floweringnight",
+  "uid": 19955230,
+  "center": {
+    "lat": 36.9085358,
+    "lon": 30.7675051
+  },
+  "nodes": [
+    11578457953,
+    11578457954,
+    11578457955,
+    11578457956,
+    11578457953
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Kepez",
+    "addr:housenumber": "25/B",
+    "addr:neighbourhood": "Altınova Sinan Mahallesi",
+    "addr:postcode": "07170",
+    "addr:street": "Serik Caddesi",
+    "alt_name": "Hampton Inn",
+    "brand": "Hampton",
+    "brand:wikidata": "Q5646230",
+    "brand:wikipedia": "en:Hampton by Hilton",
+    "building": "hotel",
+    "contact:facebook": "https://www.facebook.com/hamptonantalya",
+    "contact:instagram": "https://www.instagram.com/hamptonbyhiltonantalyaairport/",
+    "contact:linkedin": "https://www.linkedin.com/company/hamptonantalya/",
+    "contact:twitter": "https://twitter.com/hamptonantalya",
+    "email": "AYTAA_SM@hilton.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Hampton by Hilton Antalya Airport",
+    "official_name": "Hampton by Hilton",
+    "operator": "Hilton",
+    "phone": "+90 242 966 7070",
+    "rooms": "150",
+    "stars": "4",
+    "tourism": "hotel",
+    "website": "https://www.hilton.com/en/hotels/aytaahx-hampton-antalya-airport/",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1261920262,
+  "timestamp": "2024-03-12T17:26:43Z",
+  "version": 1,
+  "changeset": 148559992,
+  "user": "buosmanolmali",
+  "uid": 21192975,
+  "center": {
+    "lat": 36.8854185,
+    "lon": 30.7043288
+  },
+  "nodes": [
+    11725204528,
+    11725204529,
+    11725204530,
+    11725204531,
+    11725204528
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Little Prince Boutique Hotal",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1261920263,
+  "timestamp": "2024-03-12T17:26:43Z",
+  "version": 1,
+  "changeset": 148559992,
+  "user": "buosmanolmali",
+  "uid": 21192975,
+  "center": {
+    "lat": 36.8851021,
+    "lon": 30.7043356
+  },
+  "nodes": [
+    11725204533,
+    11725204534,
+    11725204535,
+    11725204536,
+    11725204533
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Grand Friends Butik Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1273485234,
+  "timestamp": "2026-10-14T10:43:44Z",
+  "version": 3,
+  "changeset": 190498905,
+  "user": "crn48z",
+  "uid": 24659209,
+  "center": {
+    "lat": 36.8814953,
+    "lon": 30.7042425
+  },
+  "nodes": [
+    10219528137,
+    11825749753,
+    11825749754,
+    14283186605,
+    14283186606,
+    9770186663,
+    9770186664,
+    10219528137
+  ],
+  "tags": {
+    "building": "yes",
+    "check_date": "2022-11-26",
+    "contact:facebook": "https://www.facebook.com/monohotelantalya/",
+    "email": "info@monohotelantalya.com",
+    "image": "https://photos.app.goo.gl/dBPC1jXpb9oVu8KMA",
+    "name": "Mono Hotel & Terrace",
+    "phone": "+90 533 309 32 62",
+    "tourism": "hotel",
+    "website": "https://www.monohotelantalya.com/",
+    "wikidata": "Q111998190"
+  }
+},
+{
+  "type": "way",
+  "id": 1289800070,
+  "timestamp": "2025-01-31T06:51:55Z",
+  "version": 2,
+  "changeset": 161965447,
+  "user": "Sadrettin",
+  "uid": 389644,
+  "center": {
+    "lat": 36.8744643,
+    "lon": 30.6570479
+  },
+  "nodes": [
+    11959634740,
+    11959634741,
+    11959634742,
+    11959634743,
+    11959634744,
+    11959634759,
+    11959634745,
+    11959634746,
+    11959634747,
+    11959634748,
+    11959634749,
+    11959634750,
+    11959634751,
+    11959634740
+  ],
+  "tags": {
+    "building": "yes",
+    "email": "info@thecornerpark.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "The Corner Park Hotel",
+    "phone": "+90 242 2291011",
+    "tourism": "hotel",
+    "website": "https://thecornerpark.com/",
+    "wikidata": "Q111856622"
+  }
+},
+{
+  "type": "way",
+  "id": 1335369705,
+  "timestamp": "2024-11-19T11:40:18Z",
+  "version": 1,
+  "changeset": 159320650,
+  "user": "Andreyko",
+  "uid": 493039,
+  "center": {
+    "lat": 36.8900208,
+    "lon": 30.6955617
+  },
+  "nodes": [
+    12354067398,
+    12354067399,
+    12354067400,
+    12354125101,
+    12354067398
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "4",
+    "addr:neighbourhood": "Kizilsaray",
+    "addr:postcode": "07000",
+    "addr:street": "67 Sokak",
+    "building": "yes",
+    "email": "reservation@bluemarinahotel.com",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Blue Marina Hotel",
+    "phone": "+902422437617",
+    "tourism": "hotel",
+    "website": "https://www.bluemarinahotel.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 1359047343,
+  "timestamp": "2025-10-09T08:52:02Z",
+  "version": 2,
+  "changeset": 173038546,
+  "user": "PulisakZ",
+  "uid": 9026132,
+  "center": {
+    "lat": 36.9847384,
+    "lon": 30.6626559
+  },
+  "nodes": [
+    12578942901,
+    12578942902,
+    12578942903,
+    12578942904,
+    12578942905,
+    12578942906,
+    12578942901
+  ],
+  "tags": {
+    "landuse": "residential",
+    "name": "Ayka Vital Park Hotel",
+    "tourism": "hotel",
+    "website": "https://aykavital.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 1369908599,
+  "timestamp": "2025-06-29T16:46:11Z",
+  "version": 2,
+  "changeset": 168273789,
+  "user": "Руслан Вит",
+  "uid": 21194715,
+  "center": {
+    "lat": 36.8659252,
+    "lon": 30.8419803
+  },
+  "nodes": [
+    12686720968,
+    12686720967,
+    12686720966,
+    12686720965,
+    12686720968
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Rox Garden Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1369908607,
+  "timestamp": "2025-08-07T20:28:16Z",
+  "version": 2,
+  "changeset": 170126252,
+  "user": "hup",
+  "uid": 16981,
+  "center": {
+    "lat": 36.8656861,
+    "lon": 30.8434829
+  },
+  "nodes": [
+    12686721000,
+    12686720999,
+    12686720998,
+    12686720997,
+    12686721000
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Lara Breeze Homes",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1369908611,
+  "timestamp": "2025-06-29T16:46:11Z",
+  "version": 2,
+  "changeset": 168273789,
+  "user": "Руслан Вит",
+  "uid": 21194715,
+  "center": {
+    "lat": 36.8660969,
+    "lon": 30.8428582
+  },
+  "nodes": [
+    12686721016,
+    12686721015,
+    12686721014,
+    12686721013,
+    12686721016
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Birpa Kundu otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1369908622,
+  "timestamp": "2025-05-28T22:19:45Z",
+  "version": 2,
+  "changeset": 166895334,
+  "user": "Руслан Вит",
+  "uid": 21194715,
+  "center": {
+    "lat": 36.8619325,
+    "lon": 30.8423596
+  },
+  "nodes": [
+    12686721060,
+    12686721059,
+    12686721058,
+    12686721057,
+    12686721060
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Royal group hotels",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1369923247,
+  "timestamp": "2025-10-21T01:39:39Z",
+  "version": 2,
+  "changeset": 173560987,
+  "user": "Russ McD",
+  "uid": 346601,
+  "center": {
+    "lat": 36.8615848,
+    "lon": 30.8395971
+  },
+  "nodes": [
+    12686798911,
+    13247004236,
+    12686798910,
+    12686798909,
+    12686798908,
+    12686798911
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "MRT Suites",
+    "phone": "+902423400678",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1389753772,
+  "timestamp": "2026-09-29T12:48:18Z",
+  "version": 7,
+  "changeset": 189726179,
+  "user": "Katzenstreu",
+  "uid": 118020,
+  "center": {
+    "lat": 36.8561838,
+    "lon": 30.8881511
+  },
+  "nodes": [
+    9445102912,
+    9445102908,
+    9445102907,
+    9445102910,
+    9445102906,
+    9445102905,
+    9445102909,
+    9445102903,
+    9445102902,
+    9445102904,
+    9445102901,
+    9445125968,
+    9445125969,
+    9445125970,
+    9445125971,
+    9445125972,
+    9445125973,
+    9445125974,
+    1750723274,
+    9445125975,
+    9445125976,
+    9445125977,
+    9445125978,
+    9445125979,
+    9445125980,
+    12864242621,
+    9445126517,
+    9445126518,
+    9445126519,
+    9445126520,
+    9445126521,
+    9445126522,
+    9445126523,
+    9445126524,
+    9445126525,
+    9445126526,
+    9445126527,
+    9445126528,
+    9445126529,
+    9445126530,
+    9445126531,
+    9445126532,
+    9445126533,
+    9445126535,
+    9445126534,
+    9445126563,
+    9445126562,
+    9445126561,
+    9445126604,
+    9445126603,
+    9445126602,
+    9445126601,
+    9445126600,
+    9445126599,
+    9445126598,
+    9445126597,
+    9445126596,
+    9445126595,
+    9445126594,
+    9445126593,
+    9445126592,
+    9445126591,
+    9445126590,
+    9445126589,
+    9445126588,
+    9445126587,
+    9445126586,
+    12864242622,
+    9445125983,
+    9445125984,
+    9445125985,
+    9445125986,
+    9445125987,
+    1750723259,
+    9445125962,
+    9445125963,
+    9445125964,
+    9445125965,
+    9445125966,
+    9445102882,
+    9445102883,
+    9445102884,
+    9445102885,
+    9445102886,
+    9445102887,
+    9445102888,
+    9445102889,
+    9445102890,
+    9445102891,
+    9445102892,
+    9445102893,
+    9445102894,
+    9445102895,
+    9445102896,
+    9445102897,
+    9445102898,
+    9445102899,
+    9445102900,
+    9445125958,
+    9445125959,
+    9445125961,
+    9445125948,
+    9445125949,
+    9445102916,
+    9445102915,
+    9445125918,
+    9445102914,
+    9445102913,
+    9445125917,
+    9445102911,
+    9445102912
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Aksu",
+    "addr:housenumber": "No : 62",
+    "addr:neighbourhood": "Kemerağzı Mahallesi",
+    "addr:postcode": "07112",
+    "addr:street": "Yaşar Sobutay Bulvarı",
+    "air_conditioning": "yes",
+    "building": "hotel",
+    "email": "baialara@baiahotels.com",
+    "internet_access": "wlan",
+    "name": "Baia Lara Hotel",
+    "phone": "+90 850 850 2242",
+    "sauna": "yes",
+    "swimming_pool": "indoor;outdoor",
+    "tourism": "hotel",
+    "website": "https://baiahotels.com/baialara",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1432719774,
+  "timestamp": "2025-12-10T01:53:39Z",
+  "version": 2,
+  "changeset": 175739023,
+  "user": "Russ McD",
+  "uid": 346601,
+  "center": {
+    "lat": 36.8837441,
+    "lon": 30.7097015
+  },
+  "nodes": [
+    13169030949,
+    13169030950,
+    13169030951,
+    13169030952,
+    13169030949
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Muratpaşa da Otel",
+    "name:en": "Nergiz Boutique Otel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1432719777,
+  "timestamp": "2025-12-10T01:53:39Z",
+  "version": 2,
+  "changeset": 175739023,
+  "user": "Russ McD",
+  "uid": 346601,
+  "center": {
+    "lat": 36.8827222,
+    "lon": 30.7096183
+  },
+  "nodes": [
+    13169030961,
+    13169030962,
+    13169030963,
+    13169030964,
+    13169030961
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:neighbourhood": "Haşim İşcan Mah.",
+    "addr:postcode": "07100",
+    "addr:street": "1298 Sokak",
+    "building": "yes",
+    "check_date": "2025-02-25",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Lost Town Inn",
+    "phone": "+902422477575",
+    "rooms": "12",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1432730111,
+  "timestamp": "2025-12-10T01:53:39Z",
+  "version": 2,
+  "changeset": 175739023,
+  "user": "Russ McD",
+  "uid": 346601,
+  "center": {
+    "lat": 36.8822349,
+    "lon": 30.7099848
+  },
+  "nodes": [
+    13169100776,
+    13169100777,
+    13169100778,
+    13169100762,
+    13169100776
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Rose Lia",
+    "phone": "+905304467452",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 1432730112,
+  "timestamp": "2025-12-10T01:53:39Z",
+  "version": 2,
+  "changeset": 175739023,
+  "user": "Russ McD",
+  "uid": 346601,
+  "center": {
+    "lat": 36.8824167,
+    "lon": 30.7094447
+  },
+  "nodes": [
+    13169100779,
+    13169100780,
+    13169100781,
+    13169100782,
+    13169100779
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Muratpaşa",
+    "addr:housenumber": "30",
+    "addr:neighbourhood": "Haşim İşcan Mah.",
+    "addr:postcode": "07100",
+    "addr:street": "1295 Sokak",
+    "building": "hotel",
+    "building:levels": "3",
+    "check_date": "2025-10-02",
+    "name": "Davidson Boutique Hotel",
+    "smoking": "no",
+    "tourism": "hotel",
+    "website": "https://davidsonboutiquehotel.com.tr/"
+  }
+},
+{
+  "type": "way",
+  "id": 1434004982,
+  "timestamp": "2026-05-23T10:43:58Z",
+  "version": 2,
+  "changeset": 183061813,
+  "user": "b-jazz-bot",
+  "uid": 9451067,
+  "center": {
+    "lat": 36.7281068,
+    "lon": 30.5598394
+  },
+  "nodes": [
+    13180168717,
+    13180168718,
+    13180168719,
+    13180168720,
+    13180168721,
+    13180168722,
+    13180168723,
+    13180168724,
+    13180168725,
+    13180168726,
+    13180168717
+  ],
+  "tags": {
+    "email": "info@gardenparkbeldibihotel.com",
+    "fax": "+90 242 824 9838",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Garden Park Beldibi Hotel",
+    "phone": "+90 242 824 9737",
+    "tourism": "hotel",
+    "website": "https://gardenparkbeldibihotel.com/",
+    "wikidata": "Q136399386"
+  }
+},
+{
+  "type": "way",
+  "id": 1457201965,
+  "timestamp": "2025-12-09T18:18:42Z",
+  "version": 1,
+  "changeset": 175726494,
+  "user": "entyr",
+  "uid": 21297726,
+  "center": {
+    "lat": 36.9139980,
+    "lon": 30.6756700
+  },
+  "nodes": [
+    13364199904,
+    13364199905,
+    13364199906,
+    13364199907,
+    13364199908,
+    13364199909,
+    13364199904
+  ],
+  "tags": {
+    "building": "hotel",
+    "name": "74 Otel",
+    "tourism": "hotel",
+    "website": "https://www.74otel.com"
+  }
+},
+{
+  "type": "way",
+  "id": 1525704860,
+  "timestamp": "2026-06-06T07:45:09Z",
+  "version": 7,
+  "changeset": 183725904,
+  "user": "Goldeimer",
+  "uid": 1742509,
+  "center": {
+    "lat": 36.8562010,
+    "lon": 30.9112046
+  },
+  "nodes": [
+    13906589542,
+    4284337986,
+    1751645926,
+    13907664052,
+    13907664047,
+    13911607704,
+    13907664050,
+    13907664051,
+    13906589541,
+    13907664056,
+    1751645912,
+    13907675632,
+    13906589544,
+    13913927771,
+    13913927773,
+    13911976971,
+    13906589542
+  ],
+  "tags": {
+    "leisure": "park",
+    "name": "Voyage Kundu",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "relation",
+  "id": 6465160,
+  "timestamp": "2016-08-06T12:58:30Z",
+  "version": 1,
+  "changeset": 41287031,
+  "user": "turankaya74",
+  "uid": 1845527,
+  "center": {
+    "lat": 36.8870717,
+    "lon": 30.6783674
+  },
+  "members": [
+    {
+      "type": "way",
+      "ref": 435948612,
+      "role": "inner"
+    },
+    {
+      "type": "way",
+      "ref": 435948610,
+      "role": "outer"
+    }
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Antalya Uygulama Oteli",
+    "source": "bing",
+    "tourism": "hotel",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 9680152,
+  "timestamp": "2019-06-14T18:54:04Z",
+  "version": 2,
+  "changeset": 71263842,
+  "user": "olegrasskazov",
+  "uid": 3984556,
+  "center": {
+    "lat": 36.8539987,
+    "lon": 30.8067498
+  },
+  "members": [
+    {
+      "type": "way",
+      "ref": 696511082,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 696511066,
+      "role": "outer"
+    }
+  ],
+  "tags": {
+    "addr:housenumber": "6A",
+    "building": "yes",
+    "name": "Lara Hadrianus Hotel",
+    "tourism": "hotel",
+    "type": "multipolygon",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "relation",
+  "id": 21054813,
+  "timestamp": "2026-10-10T06:40:39Z",
+  "version": 2,
+  "changeset": 190284373,
+  "user": "lxndrl",
+  "uid": 21771395,
+  "center": {
+    "lat": 36.8602183,
+    "lon": 30.9724442
+  },
+  "members": [
+    {
+      "type": "way",
+      "ref": 1534479127,
+      "role": "outer"
+    },
+    {
+      "type": "way",
+      "ref": 1534479129,
+      "role": "outer"
+    }
+  ],
+  "tags": {
+    "addr:city": "Antalya",
+    "addr:district": "Serik",
+    "addr:housenumber": "4/A",
+    "addr:neighbourhood": "Kadriye",
+    "addr:postcode": "07525",
+    "addr:street": "Uckum Tepesi Cad",
+    "name": "Cullinan Belek",
+    "phone": "+902425050500",
+    "tourism": "hotel",
+    "type": "multipolygon",
+    "website": "https://www.cullinanhotels.com/"
+  }
+}
+
+  ]
+}
