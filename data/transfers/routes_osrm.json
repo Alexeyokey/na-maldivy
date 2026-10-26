@@ -1,0 +1,206 @@
+{
+  "source": "OSRM, профиль driving, данные © участники OpenStreetMap",
+  "fetched": "2026-10-25",
+  "routes": {
+    "osm:node/1852010185": {
+      "airport": "AYT",
+      "duration_s": 1276,
+      "distance_m": 16001
+    },
+    "osm:node/2300063902": {
+      "airport": "AYT",
+      "duration_s": 1311,
+      "distance_m": 17481
+    },
+    "osm:node/3623376904": {
+      "airport": "AYT",
+      "duration_s": 1404,
+      "distance_m": 16911
+    },
+    "osm:node/5369319975": {
+      "airport": "AYT",
+      "duration_s": 1116,
+      "distance_m": 14238
+    },
+    "osm:node/897383953": {
+      "airport": "AYT",
+      "duration_s": 2004,
+      "distance_m": 30034
+    },
+    "osm:node/920059974": {
+      "airport": "AYT",
+      "duration_s": 2223,
+      "distance_m": 32744
+    },
+    "osm:node/2266976150": {
+      "airport": "AYT",
+      "duration_s": 2368,
+      "distance_m": 34643
+    },
+    "osm:node/2286514995": {
+      "airport": "AYT",
+      "duration_s": 1899,
+      "distance_m": 29197
+    },
+    "osm:node/1882917900": {
+      "airport": "AYT",
+      "duration_s": 3625,
+      "distance_m": 63411
+    },
+    "osm:node/2301596616": {
+      "airport": "AYT",
+      "duration_s": 3006,
+      "distance_m": 53513
+    },
+    "osm:node/2399000167": {
+      "airport": "AYT",
+      "duration_s": 3738,
+      "distance_m": 67678
+    },
+    "osm:node/2466747618": {
+      "airport": "AYT",
+      "duration_s": 3774,
+      "distance_m": 68122
+    },
+    "osm:node/4453897027": {
+      "airport": "AYT",
+      "duration_s": 3547,
+      "distance_m": 67013
+    },
+    "osm:way/187650251": {
+      "airport": "AYT",
+      "duration_s": 3832,
+      "distance_m": 71714
+    },
+    "osm:way/187650749": {
+      "airport": "AYT",
+      "duration_s": 3842,
+      "distance_m": 71928
+    },
+    "osm:way/433249157": {
+      "airport": "AYT",
+      "duration_s": 3253,
+      "distance_m": 60594
+    },
+    "osm:node/8960913745": {
+      "airport": "AYT",
+      "duration_s": 6112,
+      "distance_m": 129110
+    },
+    "osm:way/73172644": {
+      "airport": "AYT",
+      "duration_s": 5856,
+      "distance_m": 124653
+    },
+    "osm:way/73333722": {
+      "airport": "AYT",
+      "duration_s": 5901,
+      "distance_m": 124966
+    },
+    "osm:way/74016732": {
+      "airport": "AYT",
+      "duration_s": 6076,
+      "distance_m": 127483
+    },
+    "osm:node/3050967398": {
+      "airport": "DXB",
+      "duration_s": 1639,
+      "distance_m": 14238
+    },
+    "osm:node/4778124107": {
+      "airport": "DXB",
+      "duration_s": 1819,
+      "distance_m": 17355
+    },
+    "osm:node/4889565597": {
+      "airport": "DXB",
+      "duration_s": 1614,
+      "distance_m": 14408
+    },
+    "osm:way/98642884": {
+      "airport": "DXB",
+      "duration_s": 1828,
+      "distance_m": 17360
+    },
+    "osm:node/12299353871": {
+      "airport": "DXB",
+      "duration_s": 1845,
+      "distance_m": 20723
+    },
+    "osm:way/514827143": {
+      "airport": "DXB",
+      "duration_s": 1986,
+      "distance_m": 21012
+    },
+    "osm:way/126601133": {
+      "airport": "DXB",
+      "duration_s": 1934,
+      "distance_m": 20455
+    },
+    "osm:node/12180426387": {
+      "airport": "DXB",
+      "duration_s": 1945,
+      "distance_m": 20389
+    },
+    "osm:node/1155036334": {
+      "airport": "DXB",
+      "duration_s": 2949,
+      "distance_m": 40516
+    },
+    "osm:node/4511016805": {
+      "airport": "DXB",
+      "duration_s": 2792,
+      "distance_m": 39854
+    },
+    "osm:node/12480115865": {
+      "airport": "DXB",
+      "duration_s": 2966,
+      "distance_m": 40673
+    },
+    "osm:way/169356188": {
+      "airport": "DXB",
+      "duration_s": 3552,
+      "distance_m": 47516
+    },
+    "osm:way/89790675": {
+      "airport": "DXB",
+      "duration_s": 3238,
+      "distance_m": 44159
+    },
+    "osm:way/199500497": {
+      "airport": "DXB",
+      "duration_s": 3026,
+      "distance_m": 41196
+    },
+    "osm:way/536065296": {
+      "airport": "DXB",
+      "duration_s": 2897,
+      "distance_m": 39711
+    },
+    "osm:way/591560667": {
+      "airport": "DXB",
+      "duration_s": 3702,
+      "distance_m": 48292
+    },
+    "osm:node/2130527272": {
+      "airport": "DXB",
+      "duration_s": 2499,
+      "distance_m": 34033
+    },
+    "osm:way/532818899": {
+      "airport": "DXB",
+      "duration_s": 2517,
+      "distance_m": 33295
+    },
+    "osm:way/721802993": {
+      "airport": "DXB",
+      "duration_s": 2551,
+      "distance_m": 34397
+    },
+    "osm:way/532818903": {
+      "airport": "DXB",
+      "duration_s": 2599,
+      "distance_m": 33838
+    }
+  }
+}
