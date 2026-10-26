@@ -1,4 +1,4 @@
-"""Входы и выходы travel-инструментов, версия 0 для O1.
+"""Входы и выходы travel-инструментов D1 v0.1.
 
 Все цены — целые рубли за указанную группу. Перелёт/поезд — в одну сторону,
 отель — за весь срок, трансфер — за всю поездку. Багаж оплачивается отдельно.
@@ -17,6 +17,18 @@ IATACode = Annotated[str, StringConstraints(pattern=r"^[A-Z]{3}$")]
 Rubles = Annotated[int, Field(strict=True, ge=0)]
 ChildAge = Annotated[int, Field(strict=True, ge=0, le=17)]
 KnownBoolean = Annotated[bool, Field(strict=True)]
+TransferIssue = Literal[
+    "unavailable_at_pickup",
+    "pets_forbidden",
+    "pets_unknown",
+    "child_seat_missing",
+    "child_seat_unknown",
+    "extra_vehicle",
+    "night_surcharge",
+    "long_transfer",
+    "prebook_required",
+    "luggage_limit",
+]
 
 
 class Contract(BaseModel):
@@ -126,8 +138,8 @@ class HotelOffer(Contract):
     adults_only: KnownBoolean | None = None
     pets_allowed: KnownBoolean | None = None
     refundable: KnownBoolean | None = None
-    check_in_time: time = time(14)
-    check_out_time: time = time(12)
+    check_in_time: time | None = None
+    check_out_time: time | None = None
     reception_24h: KnownBoolean | None = None
     reception_closes_at: time | None = None
     early_check_in_available: KnownBoolean | None = None
@@ -177,7 +189,27 @@ class Train(Journey):
     seat_class: Literal["platzkart", "coupe", "sv", "seated"]
 
 
+class TransferRequest(Contract):
+    """Public airport-to-hotel request; physical places come from source data.
+
+    Any explicit UTC offset is accepted. The resolving adapter constructs a
+    TransferQuery, which converts that instant into the airport's local zone.
+    """
+
+    airport: IATACode
+    hotel_id: str
+    pickup_at: AwareDatetime
+    travelers: Travelers = Field(default_factory=Travelers)
+
+    @field_validator("hotel_id")
+    @classmethod
+    def canonical_identity(cls, value: str) -> str:
+        return canonical_hotel_id(value)
+
+
 class TransferQuery(Contract):
+    """Resolved transfer query; pickup is normalized to the origin's timezone."""
+
     origin: Place
     destination: Place
     pickup_at: AwareDatetime
@@ -185,8 +217,10 @@ class TransferQuery(Contract):
 
     @model_validator(mode="after")
     def local_pickup(self) -> "TransferQuery":
-        if self.pickup_at.utcoffset() != self.pickup_at.astimezone(ZoneInfo(self.origin.timezone)).utcoffset():
-            raise ValueError("Время подачи должно быть местным для точки отправления")
+        try:
+            self.pickup_at = self.pickup_at.astimezone(ZoneInfo(self.origin.timezone))
+        except OverflowError as exc:
+            raise ValueError("Local pickup is outside the supported calendar") from exc
         return self
 
 
@@ -230,9 +264,13 @@ class Transfer(Contract):
     vehicles: Annotated[int, Field(strict=True, ge=1)] | None = None
     duration_minutes: int = Field(gt=0)
     price_rub: Rubles = Field(description="Цена за всю группу, без умножения на число пассажиров")
-    mode: Literal["taxi", "minivan", "shuttle", "bus", "metro", "boat", "seaplane"] = "taxi"
+    mode: Literal["taxi", "minivan", "shuttle", "bus", "metro", "boat", "seaplane", "flight_speedboat"] = "taxi"
     pets: KnownBoolean | None = None
     child_seat: KnownBoolean | None = None
+    luggage_limit: str | None = None
+    prebook_hours: Annotated[int, Field(strict=True, ge=0)] | None = None
+    distance_km: Annotated[float, Field(strict=True, ge=0, allow_inf_nan=False)] | None = None
+    issues: list[TransferIssue] = Field(default_factory=list)
     is_synthetic: bool
 
     @model_validator(mode="after")
@@ -259,7 +297,7 @@ class Transfer(Contract):
 
 class DestinationQuery(Contract):
     month: int = Field(ge=1, le=12)
-    origin: IATACode = "SVO"
+    origin: IATACode
     travelers: Travelers = Field(default_factory=Travelers)
     nights: int = Field(default=7, ge=1)
     budget_rub: Rubles | None = None

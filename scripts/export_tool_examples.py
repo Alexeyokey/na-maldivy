@@ -27,23 +27,19 @@ async def build_examples() -> dict[str, str]:
         "search_flights": {"origin": "SVO", "destination": "MLE", "departure_date": "2026-11-18"},
         "search_hotels": {"destination": "MLE", "check_in": "2026-11-18", "check_out": "2026-11-25"},
         "search_trains": {"origin": "LED", "destination": "MOW", "departure_date": "2026-11-18"},
-        "suggest_destinations": {"month": 11, "min_water_temperature_c": 24},
+        "suggest_destinations": {"month": 11, "origin": "SVO", "min_water_temperature_c": 24},
         "price_calendar": {"origin": "SVO", "destination": "MLE", "month": "2026-11"},
     }
     examples = {name: await pair(name, args) for name, args in inputs.items()}
-    airport = examples["search_flights"]["output"][0]["destination"]
-    hotel = examples["search_hotels"]["output"][0]["place"]
-    night_query = {"origin": airport, "destination": hotel, "pickup_at": "2026-11-18T23:40:00+05:00"}
+    hotel = examples["search_hotels"]["output"][0]
+    night_query = {"airport": "MLE", "hotel_id": hotel["hotel_id"], "pickup_at": "2026-11-18T23:40:00+05:00"}
     examples["get_transfer"] = await pair("get_transfer", night_query)
-    antalya_flights = await pair(
-        "search_flights", {"origin": "SVO", "destination": "AYT", "departure_date": "2026-11-18"}
-    )
     antalya_hotels = await pair(
         "search_hotels", {"destination": "AYT", "check_in": "2026-11-18", "check_out": "2026-11-25"}
     )
     group_query = {
-        "origin": antalya_flights["output"][0]["destination"],
-        "destination": antalya_hotels["output"][0]["place"],
+        "airport": "AYT",
+        "hotel_id": antalya_hotels["output"][0]["hotel_id"],
         "pickup_at": "2026-11-18T12:00:00+03:00",
         "travelers": {"adults": 4, "children_ages": [1]},
     }

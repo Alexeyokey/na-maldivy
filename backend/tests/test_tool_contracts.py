@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from app.contracts.tools import (
     DayPrice,
+    DestinationQuery,
     Flight,
     HotelOffer,
     HotelSearch,
@@ -126,6 +127,14 @@ def test_travelers_reject_impossible_party(changes: dict[str, Any]) -> None:
 def test_contracts_reject_misspelled_arguments() -> None:
     with pytest.raises(ValidationError, match="extra_forbidden"):
         Travelers.model_validate({"childen_ages": [5]})
+
+
+def test_destination_origin_is_required_instead_of_silently_assuming_moscow() -> None:
+    with pytest.raises(ValidationError, match="origin"):
+        DestinationQuery(month=11)
+    result = DestinationQuery(month=11, origin="LED")
+    assert result.origin == "LED"
+    assert "origin" in DestinationQuery.model_json_schema()["required"]
 
 
 def test_transfer_output_rejects_nonlocal_pickup() -> None:

@@ -10,6 +10,7 @@ from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from app.config import Settings
 from app.llm import Message, OpenAICompatClient
+from app.tools.errors import UnsupportedTransfer
 from app.tools.registry import TOOLS, create_tools, run_tool, tool_specs
 
 EXAMPLES = {
@@ -22,26 +23,11 @@ EXAMPLES = {
     "search_hotels": {"destination": "AYT", "check_in": "2026-11-15", "check_out": "2026-11-22"},
     "search_trains": {"origin": "LED", "destination": "MOW", "departure_date": "2026-11-15"},
     "get_transfer": {
-        "origin": {
-            "kind": "airport",
-            "iata": "AYT",
-            "name": "Аэропорт Антальи",
-            "latitude": 36.8987,
-            "longitude": 30.8005,
-            "timezone": "Europe/Istanbul",
-        },
-        "destination": {
-            "kind": "hotel",
-            "id": "demo-ayt-budget",
-            "iata": "AYT",
-            "name": "Demo Hotel",
-            "latitude": 36.9007,
-            "longitude": 30.8025,
-            "timezone": "Europe/Istanbul",
-        },
+        "airport": "AYT",
+        "hotel_id": "demo-ayt-budget",
         "pickup_at": "2026-11-15T12:00:00+03:00",
     },
-    "suggest_destinations": {"month": 11},
+    "suggest_destinations": {"origin": "SVO", "month": 11},
     "price_calendar": {"origin": "SVO", "destination": "AYT", "month": "2026-11"},
 }
 
@@ -59,6 +45,94 @@ async def test_transfer_registry_example_returns_a_valid_nonempty_alternatives_l
     alternatives = await run_tool("get_transfer", EXAMPLES["get_transfer"])
     assert isinstance(alternatives, list) and alternatives
     assert alternatives == sorted(alternatives, key=lambda item: (not item.available, item.price_rub, item.id))
+    assert alternatives[0].origin.kind == "airport" and alternatives[0].origin.iata == "AYT"
+    assert alternatives[0].destination.kind == "hotel" and alternatives[0].destination.id == "demo-ayt-budget"
+
+
+async def test_flat_transfer_public_schema_resolves_coordinates_only_on_server() -> None:
+    fields = TOOLS["get_transfer"].input_model.model_json_schema()["properties"]
+    assert set(fields) == {"airport", "hotel_id", "pickup_at", "travelers"}
+    results = await run_tool(
+        "get_transfer",
+        {
+            "airport": "DXB",
+            "hotel_id": "demo-dxb-family",
+            "pickup_at": "2030-11-10T08:00:00Z",
+        },
+    )
+    assert results[0].origin.latitude == 25.2532
+    assert results[0].destination.id == "demo-dxb-family"
+    with pytest.raises(ValidationError):
+        await run_tool("get_transfer", {**EXAMPLES["get_transfer"], "origin": {"latitude": 0, "longitude": 0}})
+
+
+@pytest.mark.parametrize(
+    "airport,hotel_id",
+    [
+        ("DXB", "demo-ayt-budget"),
+        ("AAA", "demo-dxb-family"),
+        ("DXB", "unknown-hotel"),
+        ("DXB", "osm:node:123"),
+    ],
+)
+async def test_public_transfer_rejects_unknown_or_cross_destination_identity(airport, hotel_id) -> None:
+    with pytest.raises(UnsupportedTransfer):
+        await run_tool(
+            "get_transfer",
+            {
+                "airport": airport,
+                "hotel_id": hotel_id,
+                "pickup_at": "2030-11-10T08:00:00Z",
+            },
+        )
+
+
+async def test_public_transfer_normalizes_utc_instant_and_date_before_night_schedule() -> None:
+    request = {"airport": "DXB", "hotel_id": "demo-dxb-family", "pickup_at": "2030-11-10T20:30:00Z"}
+    utc_results = await run_tool("get_transfer", request)
+    local_results = await run_tool("get_transfer", {**request, "pickup_at": "2030-11-11T00:30:00+04:00"})
+    assert utc_results == local_results
+    assert all(item.pickup_at.isoformat() == "2030-11-11T00:30:00+04:00" for item in utc_results)
+    taxi = next(item for item in utc_results if item.mode == "taxi")
+    shuttle = next(item for item in utc_results if item.mode == "shuttle")
+    assert "night_surcharge" in taxi.issues
+    assert not shuttle.available and shuttle.depart_at.isoformat() == "2030-11-11T06:00:00+04:00"
+
+
+async def test_forbidden_pets_sort_after_available_compatible_and_unknown_options() -> None:
+    results = await run_tool(
+        "get_transfer",
+        {
+            "airport": "DXB",
+            "hotel_id": "demo-dxb-family",
+            "pickup_at": "2030-11-10T12:00:00+04:00",
+            "travelers": {"adults": 1, "children_ages": [5], "pets": 1},
+        },
+    )
+    blocked = {"pets_forbidden", "child_seat_missing"}
+    assert results == sorted(
+        results,
+        key=lambda item: (
+            not item.available,
+            bool(blocked.intersection(item.issues)),
+            item.price_rub,
+            item.id,
+        ),
+    )
+    bus_index = next(index for index, item in enumerate(results) if item.mode == "bus")
+    taxi_index = next(index for index, item in enumerate(results) if item.mode == "taxi")
+    assert results[bus_index].price_rub < results[taxi_index].price_rub
+    assert taxi_index < bus_index and "pets_forbidden" in results[bus_index].issues
+    shuttle = next(item for item in results if item.mode == "shuttle")
+    assert shuttle.pets is None and "pets_unknown" in shuttle.issues
+    assert "pets_forbidden" not in shuttle.issues and shuttle.available is True
+    taxi = results[taxi_index]
+    assert taxi.child_seat is None and "child_seat_unknown" in taxi.issues
+
+
+async def test_destination_origin_is_required_in_public_registry() -> None:
+    with pytest.raises(ValidationError):
+        await run_tool("suggest_destinations", {"month": 11})
 
 
 async def test_generated_specs_reach_openai_compatible_api_unchanged() -> None:

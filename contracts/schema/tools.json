@@ -139,7 +139,6 @@
           "type": "integer"
         },
         "origin": {
-          "default": "SVO",
           "pattern": "^[A-Z]{3}$",
           "title": "Origin",
           "type": "string"
@@ -154,7 +153,8 @@
         }
       },
       "required": [
-        "month"
+        "month",
+        "origin"
       ],
       "title": "DestinationQuery",
       "type": "object"
@@ -297,10 +297,17 @@
           "type": "string"
         },
         "check_in_time": {
-          "default": "14:00:00",
-          "format": "time",
-          "title": "Check In Time",
-          "type": "string"
+          "anyOf": [
+            {
+              "format": "time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Check In Time"
         },
         "check_out": {
           "format": "date",
@@ -308,10 +315,17 @@
           "type": "string"
         },
         "check_out_time": {
-          "default": "12:00:00",
-          "format": "time",
-          "title": "Check Out Time",
-          "type": "string"
+          "anyOf": [
+            {
+              "format": "time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Check Out Time"
         },
         "early_check_in_available": {
           "anyOf": [
@@ -742,6 +756,19 @@
         "destination": {
           "$ref": "#/$defs/Place"
         },
+        "distance_km": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distance Km"
+        },
         "duration_minutes": {
           "exclusiveMinimum": 0,
           "title": "Duration Minutes",
@@ -766,6 +793,37 @@
           "title": "Is Synthetic",
           "type": "boolean"
         },
+        "issues": {
+          "items": {
+            "enum": [
+              "unavailable_at_pickup",
+              "pets_forbidden",
+              "pets_unknown",
+              "child_seat_missing",
+              "child_seat_unknown",
+              "extra_vehicle",
+              "night_surcharge",
+              "long_transfer",
+              "prebook_required",
+              "luggage_limit"
+            ],
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "luggage_limit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Luggage Limit"
+        },
         "mode": {
           "default": "taxi",
           "enum": [
@@ -775,7 +833,8 @@
             "bus",
             "metro",
             "boat",
-            "seaplane"
+            "seaplane",
+            "flight_speedboat"
           ],
           "title": "Mode",
           "type": "string"
@@ -799,6 +858,19 @@
           "format": "date-time",
           "title": "Pickup At",
           "type": "string"
+        },
+        "prebook_hours": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prebook Hours"
         },
         "price_rub": {
           "description": "Цена за всю группу, без умножения на число пассажиров",
@@ -857,14 +929,18 @@
       "title": "TransferHours",
       "type": "object"
     },
-    "TransferQuery": {
+    "TransferRequest": {
       "additionalProperties": false,
+      "description": "Public airport-to-hotel request; physical places come from source data.\n\nAny explicit UTC offset is accepted. The resolving adapter constructs a\nTransferQuery, which converts that instant into the airport's local zone.",
       "properties": {
-        "destination": {
-          "$ref": "#/$defs/Place"
+        "airport": {
+          "pattern": "^[A-Z]{3}$",
+          "title": "Airport",
+          "type": "string"
         },
-        "origin": {
-          "$ref": "#/$defs/Place"
+        "hotel_id": {
+          "title": "Hotel Id",
+          "type": "string"
         },
         "pickup_at": {
           "format": "date-time",
@@ -876,11 +952,11 @@
         }
       },
       "required": [
-        "origin",
-        "destination",
+        "airport",
+        "hotel_id",
         "pickup_at"
       ],
-      "title": "TransferQuery",
+      "title": "TransferRequest",
       "type": "object"
     },
     "Travelers": {
@@ -920,7 +996,7 @@
       "description": "Синтетический трансфер только между точками демо-каталога",
       "properties": {
         "input": {
-          "$ref": "#/$defs/TransferQuery"
+          "$ref": "#/$defs/TransferRequest"
         },
         "output": {
           "items": {
@@ -1044,6 +1120,6 @@
     "suggest_destinations",
     "price_calendar"
   ],
-  "title": "D1 travel tool contracts v0.1 (draft for O1; S4 feedback)",
+  "title": "D1 travel tool contracts v0.1",
   "type": "object"
 }

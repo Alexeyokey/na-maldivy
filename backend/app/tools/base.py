@@ -5,6 +5,7 @@ from typing import Protocol
 from pydantic import BaseModel, TypeAdapter
 
 from app.llm.base import ToolSpec
+from app.tools.schema_refs import inline_local_refs
 
 
 class Tool[Input: BaseModel, Output](Protocol):
@@ -21,5 +22,5 @@ def tool_spec[Input: BaseModel, Output](tool: Tool[Input, Output]) -> ToolSpec:
     return ToolSpec(
         name=tool.name,
         description=tool.description,
-        parameters=tool.input_model.model_json_schema(),
+        parameters=inline_local_refs(tool.input_model.model_json_schema()),
     )

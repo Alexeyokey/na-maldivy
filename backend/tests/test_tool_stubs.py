@@ -18,7 +18,7 @@ from app.contracts.tools import (
     Travelers,
 )
 from app.tools.errors import UnsupportedTransfer
-from app.tools.stubs import _next_departure, create_stub_tools
+from app.tools.stubs import _next_departure, _transfer, create_stub_tools
 
 
 @pytest.fixture
@@ -110,6 +110,7 @@ async def test_hotel_filters_children_pets_stars_refund_and_stay(tools, destinat
     assert len(hotels) == 2
     assert all(not h.adults_only and h.pets_allowed and h.refundable and h.stars >= 4 for h in hotels)
     assert all(h.check_in == query.check_in and h.check_out == query.check_out and h.is_synthetic for h in hotels)
+    assert all(h.check_in_time == time(14) and h.check_out_time == time(12) for h in hotels)
     cheapest = min(h.price_rub for h in hotels)
     budget = query.model_copy(update={"max_price_rub": cheapest})
     assert len(await tools["search_hotels"].run(budget)) == 1
@@ -175,26 +176,29 @@ async def transfer_query(tools, hour=12, adults=1):
 
 
 async def test_transfer_group_vehicle_capacity_and_local_night_coefficient(tools):
-    transfer_tool = tools["get_transfer"]
     query = await transfer_query(tools)
 
     def taxi(options):
         return next(item for item in options if item.mode == "taxi")
 
-    solo = taxi(await transfer_tool.run(query))
-    four = taxi(await transfer_tool.run(query.model_copy(update={"travelers": Travelers(adults=4)})))
-    five = taxi(await transfer_tool.run(query.model_copy(update={"travelers": Travelers(adults=5)})))
-    night = taxi(await transfer_tool.run(await transfer_query(tools, hour=23)))
+    solo = taxi(_transfer(query))
+    four = taxi(_transfer(query.model_copy(update={"travelers": Travelers(adults=4)})))
+    five = taxi(_transfer(query.model_copy(update={"travelers": Travelers(adults=5)})))
+    night = taxi(_transfer(await transfer_query(tools, hour=23)))
     assert solo.price_rub == four.price_rub
     assert five.price_rub == 2 * solo.price_rub
     assert night.price_rub > solo.price_rub
     assert night.duration_minutes == solo.duration_minutes
     assert solo.price_rub > 0 and solo.duration_minutes > 0 and solo.is_synthetic
     assert solo.vehicles == four.vehicles == 1 and five.vehicles == 2
+    assert "extra_vehicle" in five.issues and "night_surcharge" in night.issues
+    assert "pets_unknown" not in solo.issues and "child_seat_unknown" not in solo.issues
+    assert isinstance(solo.distance_km, float) and solo.distance_km > 0
+    assert solo.prebook_hours == 0 and solo.luggage_limit is None
     assert solo.available and solo.hours is None and solo.depart_at == query.pickup_at
     # pickup_at может содержать фиксированное UTC-смещение, а не объект ZoneInfo.
     offset_only = query.model_copy(update={"pickup_at": datetime.fromisoformat("2030-11-10T23:00:00+04:00")})
-    assert taxi(await transfer_tool.run(offset_only)).price_rub == night.price_rub
+    assert taxi(_transfer(offset_only)).price_rub == night.price_rub
 
 
 async def test_transfer_rejects_unknown_coordinates_cross_destination_and_same_point(tools):
@@ -207,7 +211,7 @@ async def test_transfer_rejects_unknown_coordinates_cross_destination_and_same_p
     ]
     for destination in invalid_places:
         with pytest.raises(UnsupportedTransfer, match="Unsupported demo transfer route"):
-            await tools["get_transfer"].run(query.model_copy(update={"destination": destination}))
+            _transfer(query.model_copy(update={"destination": destination}))
 
 
 async def test_place_kinds_and_hotel_identity_survive_date_and_party_changes(tools):
@@ -285,7 +289,7 @@ def by_mode(alternatives: list[Transfer], mode: str) -> Transfer:
 
 async def test_transfer_list_available_first_then_full_group_price_and_public_unknown_flags(tools):
     query = await transfer_query(tools, hour=23)
-    options = await tools["get_transfer"].run(query)
+    options = _transfer(query)
     assert len(options) == 5
     assert options == sorted(options, key=lambda item: (not item.available, item.price_rub, item.id))
     assert {item.mode for item in options} == {"taxi", "minivan", "bus", "metro", "shuttle"}
@@ -305,15 +309,15 @@ async def test_transfer_list_available_first_then_full_group_price_and_public_un
 
 async def test_infants_count_towards_vehicle_capacity_but_public_fares_are_free_under_two(tools):
     query = await transfer_query(tools, adults=4)
-    four = await tools["get_transfer"].run(query)
-    infant = await tools["get_transfer"].run(
+    four = _transfer(query)
+    infant = _transfer(
         query.model_copy(
             update={
                 "travelers": Travelers(adults=4, children_ages=[1]),
             }
         )
     )
-    older = await tools["get_transfer"].run(
+    older = _transfer(
         query.model_copy(
             update={
                 "travelers": Travelers(adults=4, children_ages=[2]),
@@ -354,12 +358,15 @@ async def test_male_late_seaplane_waits_to_next_local_day_and_boat_is_available(
         pickup_at=datetime(2030, 12, 31, 23, 40, tzinfo=ZoneInfo("Indian/Maldives")),
         travelers=Travelers(adults=2, children_ages=[1, 2]),
     )
-    options = await tools["get_transfer"].run(query)
+    options = _transfer(query)
     assert [item.mode for item in options] == ["boat", "seaplane"]
     plane = by_mode(options, "seaplane")
     assert plane.available is False and plane.depart_at.isoformat() == "2031-01-01T06:00:00+05:00"
     assert plane.hours.from_ == time(6) and plane.hours.to == time(18)
     assert plane.price_rub == 15000 * 3 and plane.vehicles is None
+    assert plane.prebook_hours == 24 and plane.luggage_limit
+    assert plane.distance_km > 0
+    assert {"unavailable_at_pickup", "prebook_required", "luggage_limit"}.issubset(plane.issues)
     assert by_mode(options, "boat").available and by_mode(options, "boat").depart_at == query.pickup_at
     daytime = query.model_copy(
         update={
@@ -367,7 +374,7 @@ async def test_male_late_seaplane_waits_to_next_local_day_and_boat_is_available(
             "travelers": Travelers(adults=1, pets=1),
         }
     )
-    plane_day = by_mode(await tools["get_transfer"].run(daytime), "seaplane")
+    plane_day = by_mode(_transfer(daytime), "seaplane")
     assert plane_day.available is True and plane_day.pets is False  # Timing is separate from pet eligibility.
 
 
@@ -424,7 +431,7 @@ def test_unrepresentable_next_opening_is_explicit_and_known_24h_still_immediate(
 
 async def test_destinations_month_water_budget_visa_and_group_cost(tools):
     tool = tools["suggest_destinations"]
-    query = DestinationQuery(month=11, min_water_temperature_c=24, visa_free_only=True)
+    query = DestinationQuery(origin="SVO", month=11, min_water_temperature_c=24, visa_free_only=True)
     destinations = await tool.run(query)
     assert {d.place.iata for d in destinations} == {"DXB", "MLE"}
     assert all(d.month == 11 and d.water_temperature_c >= 24 and not d.visa_required for d in destinations)
@@ -438,8 +445,8 @@ async def test_destinations_month_water_budget_visa_and_group_cost(tools):
         g.estimated_total_price_rub > s.estimated_total_price_rub for g, s in zip(group, destinations, strict=True)
     )
     assert await tool.run(query.model_copy(update={"origin": "AAA"})) == []
-    winter = await tool.run(DestinationQuery(month=1))
-    summer = await tool.run(DestinationQuery(month=8))
+    winter = await tool.run(DestinationQuery(origin="SVO", month=1))
+    summer = await tool.run(DestinationQuery(origin="SVO", month=8))
     winter_ayt = next(d for d in winter if d.place.iata == "AYT")
     summer_ayt = next(d for d in summer if d.place.iata == "AYT")
     assert summer_ayt.water_temperature_c > winter_ayt.water_temperature_c
@@ -486,10 +493,10 @@ async def test_determinism_isolation_and_date_derived_ids(tools):
     assert await fresh_tool.run(query) == second
     next_day = await tool.run(query.model_copy(update={"departure_date": date(2030, 11, 11)}))
     assert next_day[0].id != second[0].id
-    destinations = await tools["suggest_destinations"].run(DestinationQuery(month=11))
+    destinations = await tools["suggest_destinations"].run(DestinationQuery(origin="SVO", month=11))
     destinations[0].tags.append("mutated")
     destinations[0].place.name = "Mutated"
-    fresh = await tools["suggest_destinations"].run(DestinationQuery(month=11))
+    fresh = await tools["suggest_destinations"].run(DestinationQuery(origin="SVO", month=11))
     assert all("mutated" not in item.tags and item.place.name != "Mutated" for item in fresh)
 
 

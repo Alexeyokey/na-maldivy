@@ -30,7 +30,7 @@ def tools_schema() -> dict:
         }
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "title": "D1 travel tool contracts v0.1 (draft for O1; S4 feedback)",
+        "title": "D1 travel tool contracts v0.1",
         "$defs": definitions,
         "type": "object",
         "properties": properties,
@@ -56,7 +56,7 @@ def main() -> None:
     if args.check:
         if not path.exists() or path.read_text(encoding="utf-8") != schema_json():
             raise SystemExit("D1 schema differs; run make schemas")
-        print("D1 draft schema is current")
+        print("D1 v0.1 schema is current")
         return
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(schema_json(), encoding="utf-8")
