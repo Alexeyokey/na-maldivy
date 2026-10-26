@@ -8,6 +8,7 @@ dependencies = [
     "openai>=3.37.0",
     "pydantic>=2.14.1",
     "pydantic-settings>=2.16.1",
+    "tzdata>=2026.5",
     "uvicorn[standard]>=0.54.0",
 ]
 
