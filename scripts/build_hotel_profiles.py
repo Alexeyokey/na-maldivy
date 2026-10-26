@@ -59,7 +59,7 @@ def synthetic_rules(hotels: list[dict]) -> list[dict]:
             rows.append(
                 {
                     "hotel_id": hotel["hotel_id"],
-                    "version": "synthetic-hotel-v1",
+                    "version": "synthetic-hotel-v2",
                     "seed": seed,
                     "is_synthetic": True,
                     "scenario": scenario,
@@ -121,6 +121,12 @@ async def run(args: argparse.Namespace) -> None:
                 "Saved synthetic rules differ from deterministic generation"
             )
     if args.generate_demo_data:
+        # Remove only generated JSON artifacts outside the active catalogue.
+        # Historical source snapshots are separate and remain untouched.
+        for directory in (reviews_dir, profiles_dir):
+            for file in directory.glob("*.json"):
+                if file.name not in expected_names:
+                    file.unlink()
         rules = synthetic_rules(hotels)
         rules_path.write_text(
             json.dumps(

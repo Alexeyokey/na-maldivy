@@ -6,6 +6,7 @@ import pytest
 
 from app.booking.timeline import TransferLeg, arrival_transfer_leg, build_timeline, departure_transfer_leg
 from app.booking.validator import Issue, Requirements, validate_trip
+from app.tools.hotels import get_synthetic_rules, load_hotel_catalog
 from app.tools.transfers import TransferBase, Travelers, quote_transfers
 
 MSK = ZoneInfo("Europe/Moscow")
@@ -330,6 +331,13 @@ def test_night_arrival_with_infant() -> None:
 class TestTrapsFromD3:
     """Пять ловушек data/traps.md (ветка У2): ошибочный вариант подаётся напрямую, минуя фильтры поиска."""
 
+    def trap_id(self, scenario: str) -> str:
+        return next(
+            hotel.hotel_id
+            for hotel in load_hotel_catalog("AYT")
+            if get_synthetic_rules(hotel.hotel_id)["scenario"] == scenario
+        )
+
     def hotel(self, hotel_id: str, **rules_: object) -> Hotel:
         return Hotel(
             hotel_id,
@@ -347,7 +355,7 @@ class TestTrapsFromD3:
         )
 
     def test_1_nonrefundable(self) -> None:
-        hotel = self.hotel("osm:node/530098775", refundable=False)
+        hotel = self.hotel(self.trap_id("cheap_nonrefundable"), refundable=False)
         timeline = build_timeline(self.day_flight(), hotel)
 
         def severity(req: Requirements) -> str:
@@ -361,8 +369,8 @@ class TestTrapsFromD3:
 
     def test_2_adults_only_with_child(self) -> None:
         travelers = Travelers(adults=2, children_ages=[5])
-        known = self.hotel("osm:node/3623376904", adults_only=True)
-        unknown = self.hotel("osm:node/3623376904", adults_only=None)
+        known = self.hotel(self.trap_id("adults_only"), adults_only=True)
+        unknown = self.hotel(self.trap_id("adults_only"), adults_only=None)
 
         issue = only(
             validate_trip(build_timeline(self.day_flight(), known), known, travelers), "adults_only_with_children"
@@ -378,7 +386,7 @@ class TestTrapsFromD3:
         dawn = Journey(
             "out", SVO, AYT, datetime(2026, 11, 18, 2, 15, tzinfo=MSK), datetime(2026, 11, 18, 5, 15, tzinfo=ANTALYA)
         )
-        hotel = self.hotel("osm:node/10219505800", early_check_in_available=False)
+        hotel = self.hotel(self.trap_id("early_arrival"), early_check_in_available=False)
 
         issue = only(validate_trip(build_timeline(dawn, hotel), hotel, Travelers(adults=2)), "early_hotel_arrival")
 
@@ -390,7 +398,7 @@ class TestTrapsFromD3:
         ]
 
     def test_4_two_hour_transfer(self) -> None:
-        hotel = self.hotel("osm:node/11725204537")
+        hotel = self.hotel(self.trap_id("far_transfer"))
         flight = self.day_flight()
         leg = TransferLeg(
             option_id="synthetic",
@@ -411,7 +419,7 @@ class TestTrapsFromD3:
         assert rules(issues) == [("long_transfer", "critical")]
 
     def test_5_pets_ban(self) -> None:
-        hotel = self.hotel("osm:node/1280250536", pets_allowed=False)
+        hotel = self.hotel(self.trap_id("no_pets"), pets_allowed=False)
 
         issue = only(
             validate_trip(build_timeline(self.day_flight(), hotel), hotel, Travelers(adults=2, pets=1)),

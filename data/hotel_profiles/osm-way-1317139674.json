@@ -5,7 +5,7 @@
   "notice": "Это профиль синтетического тестового корпуса, не характеристика реального отеля по реальным отзывам.",
   "review_count": 24,
   "corpus_generator": "codex-authored-synthetic-templates-v1",
-  "corpus_sha256": "7644e731ab37ce041026d175d716cbafa620060db1da54f3ca3c89449fc28e03",
+  "corpus_sha256": "e3b630efbe07d3a529a25e5181e523c6326e7bddcef423e9db33cf98c7870079",
   "extraction": {
     "method": "lexical-fixture-baseline-v1",
     "model": null,
@@ -138,20 +138,20 @@
       ]
     },
     "pets": {
-      "positive_count": 0,
-      "negative_count": 2,
+      "positive_count": 2,
+      "negative_count": 0,
       "mention_count": 2,
       "review_count": 2,
       "evidence": [
         {
           "review_id": "synthetic-review/osm:way/1317139674/pets/01",
-          "sentiment": "negative",
-          "quote": "В модельном сценарии размещение с собакой было запрещено."
+          "sentiment": "positive",
+          "quote": "В модельном сценарии с собакой разместили без затруднений."
         },
         {
           "review_id": "synthetic-review/osm:way/1317139674/pets/02",
-          "sentiment": "negative",
-          "quote": "В модельном сценарии размещение с собакой было запрещено."
+          "sentiment": "positive",
+          "quote": "В модельном сценарии с собакой разместили без затруднений."
         }
       ]
     },
@@ -567,25 +567,29 @@
           ]
         },
         "pets": {
-          "positive_count": 0,
-          "negative_count": 2,
+          "positive_count": 2,
+          "negative_count": 0,
           "mention_count": 2,
           "review_count": 2,
           "evidence": [
             {
               "review_id": "synthetic-review/osm:way/1317139674/pets/01",
-              "sentiment": "negative",
-              "quote": "В модельном сценарии размещение с собакой было запрещено."
+              "sentiment": "positive",
+              "quote": "В модельном сценарии с собакой разместили без затруднений."
             },
             {
               "review_id": "synthetic-review/osm:way/1317139674/pets/02",
-              "sentiment": "negative",
-              "quote": "В модельном сценарии размещение с собакой было запрещено."
+              "sentiment": "positive",
+              "quote": "В модельном сценарии с собакой разместили без затруднений."
             }
           ]
         }
       },
       "pros": [
+        {
+          "aspect": "pets",
+          "count": 2
+        },
         {
           "aspect": "cleanliness",
           "count": 1
@@ -600,10 +604,6 @@
         }
       ],
       "cons": [
-        {
-          "aspect": "pets",
-          "count": 2
-        },
         {
           "aspect": "noise",
           "count": 1

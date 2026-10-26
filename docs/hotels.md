@@ -5,9 +5,12 @@ registered after O1; it is not silently enabled in the shared registry.
 
 ## What is real and what is synthetic
 
-`data/hotels/catalog.json` is an ODbL derivative of saved OpenStreetMap snapshots.
-Only the OSM object ID, name, coordinates, and a 1–5 `stars` tag when present are
-reference facts. Missing/malformed stars stay `null`. These are community map
+`data/hotels/catalog.json` is an ODbL derivative of the saved shared S4 hotel
+snapshot, `data/hotels/osm_hotels.json`. D3 and S4 use the same **60 hotels: 20 each
+for AYT, DXB and MLE**, with identical physical IDs, names and coordinates.
+Only the OSM object ID, name, coordinates, and the normalized 1–5 star value
+retained by S4 are reference facts. Missing stars stay `null`; the original tag
+is unavailable in this snapshot. These are community map
 records, not verified supplier listings or current hotel star certificates.
 
 `data/hotels/synthetic_rules.json` is a separate demonstration overlay. **Prices,
@@ -21,23 +24,19 @@ The rich output includes both layers, provenance, and a notice. Its compatibilit
 excludes unknown stars. Reception and early-check-in availability use explicit fields;
 `reception_closes_at=null` alone never supplies a claim of 24-hour service.
 
-## Snapshot regions and licensing
+## Shared snapshot and licensing
 
-The snapshot query is `tourism=hotel` with a nonempty `name`. It contains nodes,
-ways, and relations; way/relation coordinates are bounding-box centres, explicitly
-marked as such. Selection is the nearest 24 distinct named objects to each saved
-catchment centre, deduplicating equal names within 150 metres.
+`scripts/fetch_hotels.py` projects the normalized S4 snapshot into the D3 format
+without network requests or a second hotel selection. Its manifest,
+`data/hotels/sources.json`, records the normalized input file and its SHA256.
+The snapshot is not the original Overpass response: unavailable OSM versions,
+timestamps and raw star tags remain `null`. Each hotel retains its OSM object link.
+Maldive entries include island resorts; real coordinates do not imply that a road
+connects the hotel to MLE.
 
-- AYT: 25 km from Antalya city centre, serving as a hotel catchment for this demo.
-- DXB: central Dubai bbox south 25.14, west 55.20, north 25.28, east 55.34.
-- MLE: Male/Hulhumale bbox south 4.15, west 73.48, north 4.25, east 73.56.
-  This does not represent all Maldives resorts. A hotel may need a boat transfer;
-  its presence must not be treated as proof of road connectivity.
-
-`data/hotels/sources.json` records the exact query, request URL, endpoint, fetched
-UTC time, OSM base timestamp, raw snapshot SHA256, region, and object counts.
-`data/hotels/osm/*.json` retain the source responses. Every selected record links
-to its OSM object and retains version/timestamp when returned.
+The previous D3 raw responses and their manifest are archived in
+`data/hotels/legacy_sources.json` and `data/hotels/osm/*.json`. Their historical
+queries and hashes describe the old selection, not the active 60-hotel catalogue.
 
 Attribution: **© OpenStreetMap contributors**. OSM snapshots and their derivative
 catalogue are available under the [Open Database License 1.0](https://opendatacommons.org/licenses/odbl/1-0/).
@@ -46,17 +45,30 @@ notice and licence when distributing the data; display attribution when showing
 OSM-derived hotel facts. Synthetic reviews/policies are a separately identified
 project-authored layer, not real supplier data or real guest reviews.
 
-Refresh (network access, read-only public API):
+Rebuild D3 from the checked shared snapshot, entirely offline:
 
 ```bash
 backend/.venv/bin/python scripts/fetch_hotels.py
+# Read-only reproduction check: no file writes or network.
+backend/.venv/bin/python scripts/fetch_hotels.py --check
 ```
 
-Rebuild from the exact checked snapshots without network:
+`--from-snapshots` remains an alias for this offline rebuild. Refreshing the shared
+source is a separate, explicit S4 operation that needs network access:
 
 ```bash
-backend/.venv/bin/python scripts/fetch_hotels.py --from-snapshots
+cd backend
+uv run python scripts/build_transfers.py fetch
+uv run python scripts/build_transfers.py build
+cd ..
+backend/.venv/bin/python scripts/fetch_hotels.py
+backend/.venv/bin/python scripts/build_hotel_profiles.py --generate-demo-data
+backend/.venv/bin/python scripts/build_hotel_profiles.py --check
 ```
+
+Review the changed snapshot, OSRM routes, transfer cases and generated D3 data
+together after a refresh. Offline projection does not alter the 136 saved S4
+options or 40 saved OSRM routes.
 
 ## Identity, search and price scope
 
@@ -90,13 +102,14 @@ surcharge is once per pet per stay and already included. Do not multiply the
 result by nights or passengers again. Early check-in is a separate optional fee,
 calculated for all rooms; it is not silently added to the stay total.
 
-Five reproducible examples are in `data/traps.md`, including an explicitly synthetic 120-minute airport transfer. The transfer override is a test fixture for S4/S5, not a physical route measurement; other hotel transfer times remain unknown. Their commercial rules are
+Five reproducible examples are in `data/traps.md`, including an explicitly synthetic 120-minute airport transfer. The transfer override is a separate test fixture, not a physical route measurement; actual S3/S5 timelines use the selected S4 route. Other D3 overlay transfer times remain unknown. Their commercial rules are
 synthetic even when the hotel anchor is a real OSM object.
 
 ## D7 corpus and checked profile pipeline
 
 There are **24 synthetic reviews per hotel**, six each for family, couple,
-business and pet guest segments. Every text starts with a synthetic marker.
+business and pet guest segments: **1,440 reviews and 60 checked profiles**.
+Every text starts with a synthetic marker.
 They are project-authored deterministic templates, not scraped reviews and not
 evidence about the named hotel. Saved review files include generation provenance
 and reference annotations. No personal data or real reviewers are used.
@@ -155,30 +168,35 @@ commercial-field provenance, and how profiles attach to ranking facts. D3 data
 and independent search are usable now; A2/R2 integration remains separate. D7's
 live-model extraction and assessment on non-template data remain unverified.
 
-## Canonical ID migration
+## Canonical catalogue and ID migration
 
-The 72 selected OSM objects are unchanged. `data/hotels/id_aliases.json` maps each
-historical `osm:node:123`/`osm:way:123`/`osm:relation:123` to the canonical
+The active D3 catalogue follows the 60 saved S4 objects. `data/hotels/id_aliases.json`
+maps legacy spellings of active IDs, such as
+`osm:node:123`/`osm:way:123`/`osm:relation:123`, to the canonical
 `osm:node/123`/`osm:way/123`/`osm:relation/123`. `normalize_hotel_id`,
 `get_synthetic_rules`, `get_hotel_profile`, and `hotel_id_for_offer` accept known
 legacy lookup IDs but return canonical identities. New catalogue, rule, review,
-profile, place and offer outputs use canonical IDs only. This aligns the identity
-format with published S4. Its 60-hotel catalogue overlaps in only six objects
-(AYT: one, MLE: five, DXB: none); the remaining 66 U2 hotels have no published S4 route.
-The compatibility suite checks all six through actual U2 offers, S3 timelines and S5 rules.
+profile, place and offer outputs use canonical IDs only. Hotels removed with the
+old D3 selection are not reassigned to another physical hotel.
+The compatibility suite checks all 60 through actual U2 offers, S3 timelines and
+S5 rules, using day and night flights for each destination.
 The synthetic D3 `far_transfer` override is not substituted for an S4 route duration.
 
 Review/profile filenames remain flat, e.g. `osm-node-123.json`: both `:` and `/`
 are escaped as `-`. Offer parsing separates the final digest using `rsplit("/",1)`
-because the canonical hotel ID itself contains `/`. Raw OSM snapshots and their
-source hashes are not rewritten during ID migration. Synthetic fixture seed and
-inventory keys preserve the original physical identity so spelling migration
-does not by itself change prices or availability; new offer digests use canonical IDs.
+because the canonical hotel ID itself contains `/`. Archived raw OSM snapshots
+and their hashes remain unchanged. Synthetic rules, reviews and profiles are
+regenerated for the active catalogue; their prices and policies are demo fixtures,
+not a promise to preserve the previous 72-hotel selection's commercial values.
+Their tariff version is `synthetic-hotel-v2`, so regenerated offers get new IDs
+even when a physical hotel and query are unchanged.
 
 Offline regeneration after identity/contract changes:
 
 ```bash
 backend/.venv/bin/python scripts/fetch_hotels.py --from-snapshots
 backend/.venv/bin/python scripts/build_hotel_profiles.py --generate-demo-data
+backend/.venv/bin/python scripts/fetch_hotels.py --check
 backend/.venv/bin/python scripts/build_hotel_profiles.py --check
+make u2-compat-check
 ```

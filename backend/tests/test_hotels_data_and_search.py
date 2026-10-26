@@ -28,31 +28,49 @@ def query(**overrides):
     )
 
 
-def test_snapshot_counts_and_raw_fact_fidelity():
+def test_snapshot_counts_and_normalized_s4_fact_fidelity():
     catalog = load_hotel_catalog()
-    assert Counter(record.destination for record in catalog) == {"AYT": 24, "DXB": 24, "MLE": 24}
+    assert Counter(record.destination for record in catalog) == {"AYT": 20, "DXB": 20, "MLE": 20}
     sources = json.loads((DATA_ROOT / "hotels/sources.json").read_text())["sources"]
+    assert {source["destination"] for source in sources} == {"AYT", "DXB", "MLE"}
     for source in sources:
-        content = (DATA_ROOT / "hotels" / source["raw_file"]).read_bytes()
+        content = (DATA_ROOT / "hotels" / source["snapshot_file"]).read_bytes()
         assert hashlib.sha256(content).hexdigest() == source["sha256"]
         assert source["license"] == "ODbL-1.0"
         assert source["attribution"] == "© OpenStreetMap contributors"
-        raw = json.loads(content)
-        elements = {f"osm:{e['type']}/{e['id']}": e for e in raw["elements"]}
-        for record in load_hotel_catalog(source["destination"]):
+        assert source["snapshot_kind"] == "normalized_osm"
+        assert source["selected_objects"] == 20
+        normalized = json.loads(content)
+        elements = {
+            hotel["hotel_id"]: hotel for hotel in normalized["hotels"] if hotel["destination"] == source["destination"]
+        }
+        records = load_hotel_catalog(source["destination"])
+        assert {record.hotel_id for record in records} == set(elements)
+        for record in records:
             element = elements[record.hotel_id]
-            assert record.name == element["tags"]["name"]
-            point = element if element["type"] == "node" else element["center"]
-            assert (record.latitude, record.longitude) == (point["lat"], point["lon"])
-            assert record.raw_stars_tag == element["tags"].get("stars")
-            if record.stars is not None:
-                assert str(record.stars) == element["tags"]["stars"]
+            assert record.name == element["name"]
+            assert record.name_en == element["name_en"]
+            assert (record.latitude, record.longitude) == (element["lat"], element["lon"])
+            assert record.stars == element["stars"]
+            assert record.source_url == element["osm_url"]
+            # The normalized snapshot does not establish raw OSM metadata.
+            assert record.raw_stars_tag is record.osm_version is record.osm_timestamp is None
+
+
+def test_archival_overpass_manifest_still_authenticates_original_raw_responses():
+    archived = json.loads((DATA_ROOT / "hotels/legacy_sources.json").read_text())["sources"]
+    assert len(archived) == 3
+    for source in archived:
+        content = (DATA_ROOT / "hotels" / source["raw_file"]).read_bytes()
+        assert hashlib.sha256(content).hexdigest() == source["sha256"]
+        assert source["selected_objects"] == 24
+        assert len(json.loads(content)["elements"]) == source["returned_objects"]
 
 
 @pytest.mark.parametrize("destination", ["AYT", "DXB", "MLE"])
 async def test_every_destination_has_offers_and_explicit_synthetic_provenance(destination):
     results = await search_hotel_results(query(destination=destination))
-    assert len(results) >= 20
+    assert len(results) == 20
     for result in results:
         assert result.offer.hotel_id == result.hotel_id == result.offer.place.id
         assert result.offer.place.kind == "hotel"
@@ -144,7 +162,7 @@ async def test_all_five_synthetic_traps_have_reproducible_candidates():
 
 async def test_required_two_hour_airport_transfer_trap_is_explicitly_synthetic():
     results = await search_hotel_results(query(travelers={"adults": 2}))
-    trap = next(result for result in results if result.hotel_id == "osm:node/11725204537")
+    trap = next(result for result in results if result.synthetic_rules["scenario"] == "far_transfer")
     assert trap.synthetic_rules["scenario"] == "far_transfer"
     assert trap.synthetic_rules["synthetic_airport_transfer_minutes"] == 120
     assert trap.synthetic_rules["synthetic_airport_transfer_source"] == "synthetic_scenario_override"
@@ -156,10 +174,10 @@ async def test_required_two_hour_airport_transfer_trap_is_explicitly_synthetic()
     )
 
 
-def test_all_72_identity_aliases_resolve_without_changing_filenames_or_source_records():
+def test_all_60_identity_aliases_resolve_without_changing_filenames_or_source_records():
     aliases = json.loads((DATA_ROOT / "hotels/id_aliases.json").read_text())["aliases"]
     records = load_hotel_catalog()
-    assert len(aliases) == len(records) == 72
+    assert len(aliases) == len(records) == 60
     assert set(aliases.values()) == {r.hotel_id for r in records}
     for legacy, canonical in aliases.items():
         assert normalize_hotel_id(legacy) == normalize_hotel_id(canonical) == canonical
@@ -172,7 +190,7 @@ def test_all_72_identity_aliases_resolve_without_changing_filenames_or_source_re
         assert (DATA_ROOT / "hotel_reviews" / filename).is_file()
         assert (DATA_ROOT / "hotel_profiles" / filename).is_file()
     for directory in ("hotel_reviews", "hotel_profiles"):
-        assert len(list((DATA_ROOT / directory).glob("*.json"))) == 72
+        assert len(list((DATA_ROOT / directory).glob("*.json"))) == 60
         assert not any(p.is_dir() for p in (DATA_ROOT / directory).iterdir())
     for record in records:
         assert record.hotel_id == f"osm:{record.osm_type}/{record.osm_id}"

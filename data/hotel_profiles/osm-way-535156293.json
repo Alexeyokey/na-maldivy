@@ -5,7 +5,7 @@
   "notice": "Это профиль синтетического тестового корпуса, не характеристика реального отеля по реальным отзывам.",
   "review_count": 24,
   "corpus_generator": "codex-authored-synthetic-templates-v1",
-  "corpus_sha256": "eb55fdcf7755ae1600056af276f5f1665a81639e707db6bce7871bda77ffbf78",
+  "corpus_sha256": "f67c0f6d22a150082fce4c526faf5216165fc68f28d9e39d0580f202f994e3ab",
   "extraction": {
     "method": "lexical-fixture-baseline-v1",
     "model": null,
@@ -82,30 +82,30 @@
       ]
     },
     "location": {
-      "positive_count": 0,
-      "negative_count": 4,
+      "positive_count": 4,
+      "negative_count": 0,
       "mention_count": 4,
       "review_count": 4,
       "evidence": [
         {
           "review_id": "synthetic-review/osm:way/535156293/family/05",
-          "sentiment": "negative",
-          "quote": "В модельном сценарии пляж находился слишком далеко."
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
         },
         {
           "review_id": "synthetic-review/osm:way/535156293/couple/03",
-          "sentiment": "negative",
-          "quote": "В модельном сценарии пляж находился слишком далеко."
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
         },
         {
           "review_id": "synthetic-review/osm:way/535156293/business/06",
-          "sentiment": "negative",
-          "quote": "В модельном сценарии пляж находился слишком далеко."
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
         },
         {
           "review_id": "synthetic-review/osm:way/535156293/pets/06",
-          "sentiment": "negative",
-          "quote": "В модельном сценарии пляж находился слишком далеко."
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
         }
       ]
     },
@@ -138,20 +138,20 @@
       ]
     },
     "pets": {
-      "positive_count": 2,
-      "negative_count": 0,
+      "positive_count": 0,
+      "negative_count": 2,
       "mention_count": 2,
       "review_count": 2,
       "evidence": [
         {
           "review_id": "synthetic-review/osm:way/535156293/pets/01",
-          "sentiment": "positive",
-          "quote": "В модельном сценарии с собакой разместили без затруднений."
+          "sentiment": "negative",
+          "quote": "В модельном сценарии размещение с собакой было запрещено."
         },
         {
           "review_id": "synthetic-review/osm:way/535156293/pets/02",
-          "sentiment": "positive",
-          "quote": "В модельном сценарии с собакой разместили без затруднений."
+          "sentiment": "negative",
+          "quote": "В модельном сценарии размещение с собакой было запрещено."
         }
       ]
     },
@@ -241,15 +241,15 @@
           ]
         },
         "location": {
-          "positive_count": 0,
-          "negative_count": 1,
+          "positive_count": 1,
+          "negative_count": 0,
           "mention_count": 1,
           "review_count": 1,
           "evidence": [
             {
               "review_id": "synthetic-review/osm:way/535156293/family/05",
-              "sentiment": "negative",
-              "quote": "В модельном сценарии пляж находился слишком далеко."
+              "sentiment": "positive",
+              "quote": "В модельном сценарии до пляжа было удобно идти."
             }
           ]
         },
@@ -292,13 +292,13 @@
         {
           "aspect": "food",
           "count": 1
-        }
-      ],
-      "cons": [
+        },
         {
           "aspect": "location",
           "count": 1
-        },
+        }
+      ],
+      "cons": [
         {
           "aspect": "noise",
           "count": 1
@@ -339,15 +339,15 @@
           ]
         },
         "location": {
-          "positive_count": 0,
-          "negative_count": 1,
+          "positive_count": 1,
+          "negative_count": 0,
           "mention_count": 1,
           "review_count": 1,
           "evidence": [
             {
               "review_id": "synthetic-review/osm:way/535156293/couple/03",
-              "sentiment": "negative",
-              "quote": "В модельном сценарии пляж находился слишком далеко."
+              "sentiment": "positive",
+              "quote": "В модельном сценарии до пляжа было удобно идти."
             }
           ]
         },
@@ -393,6 +393,10 @@
           "count": 1
         },
         {
+          "aspect": "location",
+          "count": 1
+        },
+        {
           "aspect": "noise",
           "count": 1
         },
@@ -402,10 +406,6 @@
         }
       ],
       "cons": [
-        {
-          "aspect": "location",
-          "count": 1
-        },
         {
           "aspect": "staff",
           "count": 1
@@ -442,15 +442,15 @@
           ]
         },
         "location": {
-          "positive_count": 0,
-          "negative_count": 1,
+          "positive_count": 1,
+          "negative_count": 0,
           "mention_count": 1,
           "review_count": 1,
           "evidence": [
             {
               "review_id": "synthetic-review/osm:way/535156293/business/06",
-              "sentiment": "negative",
-              "quote": "В модельном сценарии пляж находился слишком далеко."
+              "sentiment": "positive",
+              "quote": "В модельном сценарии до пляжа было удобно идти."
             }
           ]
         },
@@ -498,13 +498,13 @@
         {
           "aspect": "food",
           "count": 1
-        }
-      ],
-      "cons": [
+        },
         {
           "aspect": "location",
           "count": 1
-        },
+        }
+      ],
+      "cons": [
         {
           "aspect": "noise",
           "count": 1
@@ -541,15 +541,15 @@
           ]
         },
         "location": {
-          "positive_count": 0,
-          "negative_count": 1,
+          "positive_count": 1,
+          "negative_count": 0,
           "mention_count": 1,
           "review_count": 1,
           "evidence": [
             {
               "review_id": "synthetic-review/osm:way/535156293/pets/06",
-              "sentiment": "negative",
-              "quote": "В модельном сценарии пляж находился слишком далеко."
+              "sentiment": "positive",
+              "quote": "В модельном сценарии до пляжа было удобно идти."
             }
           ]
         },
@@ -567,29 +567,25 @@
           ]
         },
         "pets": {
-          "positive_count": 2,
-          "negative_count": 0,
+          "positive_count": 0,
+          "negative_count": 2,
           "mention_count": 2,
           "review_count": 2,
           "evidence": [
             {
               "review_id": "synthetic-review/osm:way/535156293/pets/01",
-              "sentiment": "positive",
-              "quote": "В модельном сценарии с собакой разместили без затруднений."
+              "sentiment": "negative",
+              "quote": "В модельном сценарии размещение с собакой было запрещено."
             },
             {
               "review_id": "synthetic-review/osm:way/535156293/pets/02",
-              "sentiment": "positive",
-              "quote": "В модельном сценарии с собакой разместили без затруднений."
+              "sentiment": "negative",
+              "quote": "В модельном сценарии размещение с собакой было запрещено."
             }
           ]
         }
       },
       "pros": [
-        {
-          "aspect": "pets",
-          "count": 2
-        },
         {
           "aspect": "cleanliness",
           "count": 1
@@ -597,12 +593,16 @@
         {
           "aspect": "food",
           "count": 1
+        },
+        {
+          "aspect": "location",
+          "count": 1
         }
       ],
       "cons": [
         {
-          "aspect": "location",
-          "count": 1
+          "aspect": "pets",
+          "count": 2
         },
         {
           "aspect": "noise",

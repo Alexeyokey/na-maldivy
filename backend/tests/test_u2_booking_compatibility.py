@@ -2,7 +2,7 @@
 
 import json
 from collections import Counter
-from datetime import UTC, date, timedelta
+from datetime import UTC, date, datetime, time, timedelta
 
 import pytest
 
@@ -18,14 +18,10 @@ from app.tools.registry import run_tool
 from app.tools.s4_adapter import S4TransferTool, transfer_leg
 from app.tools.transfers import TransferBase
 
-COMMON_HOTELS = (
-    ("AYT", "osm:node/3623376904"),
-    ("MLE", "osm:node/11182077737"),
-    ("MLE", "osm:node/8284491717"),
-    ("MLE", "osm:way/1317139674"),
-    ("MLE", "osm:way/133845532"),
-    ("MLE", "osm:way/535156293"),
-)
+# Canonical S4 facts also drive D3; assertions below prevent vacuous or
+# destination-limited parametrization if the common snapshot changes.
+S4_HOTELS = json.loads((DATA_ROOT / "hotels/osm_hotels.json").read_text())["hotels"]
+COMMON_HOTELS = tuple((hotel["destination"], hotel["hotel_id"]) for hotel in S4_HOTELS)
 JEN = "osm:node/11182077737"
 
 
@@ -64,18 +60,27 @@ async def transfer_quotes(stay: HotelOffer, flight, party: Travelers):
     )
 
 
-def test_shared_catalogue_boundary_is_six_hotels_with_no_dubai_coverage():
-    u2 = {hotel.hotel_id: hotel.destination for hotel in load_hotel_catalog()}
-    s4 = json.loads((DATA_ROOT / "hotels/osm_hotels.json").read_text())["hotels"]
-    shared = {(u2[hotel["hotel_id"]], hotel["hotel_id"]) for hotel in s4 if hotel["hotel_id"] in u2}
-    assert shared == set(COMMON_HOTELS)
-    assert Counter(airport for airport, _ in shared) == {"AYT": 1, "MLE": 5}
-    assert len(u2) == 72
+def test_d3_and_s4_catalogues_match_all_sixty_hotel_facts_and_routes():
+    u2 = {hotel.hotel_id: hotel for hotel in load_hotel_catalog()}
+    s4 = {hotel["hotel_id"]: hotel for hotel in S4_HOTELS}
+    routes = {(record.hotel_id, record.airport) for record in TransferBase.load()}
+    assert len(u2) == len(s4) == 60
+    assert Counter(hotel.destination for hotel in u2.values()) == {"AYT": 20, "DXB": 20, "MLE": 20}
+    assert set(u2) == set(s4)
+    assert routes == {(record.hotel_id, record.destination) for record in u2.values()}
+    for hotel_id, record in u2.items():
+        source = s4[hotel_id]
+        assert record.destination == source["destination"]
+        assert record.name == source["name"]
+        assert record.name_en == source["name_en"]
+        assert (record.latitude, record.longitude) == (source["lat"], source["lon"])
+        assert record.stars == source["stars"]
+        assert record.source_url == source["osm_url"]
 
 
 @pytest.mark.parametrize("airport,hotel_id", COMMON_HOTELS, ids=[hotel_id for _, hotel_id in COMMON_HOTELS])
 @pytest.mark.parametrize("departure_hour", [9, 23])
-async def test_every_shared_u2_offer_reaches_s3_and_enforces_s5_transfer_limit(airport, hotel_id, departure_hour):
+async def test_every_common_u2_offer_reaches_s3_and_enforces_s5_transfer_limit(airport, hotel_id, departure_hour):
     party = Travelers(adults=2)
     stay = await offered_stay(airport, hotel_id, party)
     flight = await outbound_for(stay, party, departure_hour)
@@ -88,7 +93,7 @@ async def test_every_shared_u2_offer_reaches_s3_and_enforces_s5_transfer_limit(a
         stay,
         party,
         arrival_transfer=leg,
-        requirements=Requirements(max_transfer_minutes=10),
+        requirements=Requirements(max_transfer_minutes=1),
         airport=airport,
         base=TransferBase.load(),
     )
@@ -101,6 +106,12 @@ async def test_every_shared_u2_offer_reaches_s3_and_enforces_s5_transfer_limit(a
     assert quote.pickup_at.astimezone(UTC) == ready.astimezone(UTC)
     assert quote.pickup_at.utcoffset() == flight.arrival_at.utcoffset()
     assert quote.destination.timezone == stay.place.timezone
+    assert quote.destination.name == stay.place.name
+    assert (quote.destination.latitude, quote.destination.longitude) == (
+        stay.place.latitude,
+        stay.place.longitude,
+    )
+    assert len(quotes) == len(TransferBase.load().get(hotel_id, airport).options)
     assert leg.price_rub == quote.price_rub
     assert leg.issues == quote.issues
     assert leg.arrive_at.timestamp() - leg.depart_at.timestamp() == quote.duration_minutes * 60
@@ -113,16 +124,24 @@ async def test_every_shared_u2_offer_reaches_s3_and_enforces_s5_transfer_limit(a
     assert "hotel_times_unknown" not in by_rule
     assert "transfer_before_arrival" not in by_rule
     assert by_rule["long_transfer"].severity == "critical"
-    assert by_rule["long_transfer"].fixes[0].patch == {"kind": "replace_hotel", "max_transfer_minutes": 10}
-    if departure_hour == 23:
-        assert flight.arrival_at.date() == stay.check_in + timedelta(days=1)
+    assert by_rule["long_transfer"].fixes[0].patch == {"kind": "replace_hotel", "max_transfer_minutes": 1}
+    assert flight.arrival_at.date() == stay.check_in + timedelta(days=int(departure_hour == 23))
+    # Evening arrivals can reach an island the next morning even after the
+    # daytime flight; paid-night rules depend on the actual S4 arrival.
+    if leg.arrive_at.date() > stay.check_in:
         first_night = by_rule["wasted_first_night"]
-        assert first_night.severity == "info"
+        assert first_night.severity == ("info" if leg.arrive_at.time() < stay.check_in_time else "warning")
         assert first_night.fixes[0].price_estimated
         assert -stay.price_rub < first_night.fixes[0].price_delta_rub < 0
     else:
-        assert flight.arrival_at.date() == stay.check_in
         assert "wasted_first_night" not in by_rule
+    if quote.available:
+        assert leg.depart_at == quote.pickup_at
+        assert timeline.wait("airport_after_arrival") is None
+    else:
+        wait = timeline.wait("airport_after_arrival")
+        assert "unavailable_at_pickup" in quote.issues
+        assert wait is not None and wait.start == quote.pickup_at and wait.end == leg.depart_at
 
 
 async def test_family_pet_group_prices_and_unknown_transfer_constraints_reach_s5():
@@ -258,40 +277,93 @@ async def test_real_ayt_minivan_preserves_mode_and_prebooking_in_s5():
     assert prebook.severity == "info" and "24" in prebook.message
 
 
-@pytest.mark.parametrize("hotel_id,expected_minutes", [("osm:node/8284491717", 25), ("osm:way/535156293", 27)])
-async def test_d3_far_transfer_scenario_does_not_replace_s4_route_duration(hotel_id, expected_minutes):
+async def test_d3_far_transfer_scenarios_do_not_replace_s4_route_duration():
     party = Travelers(adults=2)
-    stay = await offered_stay("MLE", hotel_id, party)
-    flight = await outbound_for(stay, party)
-    rules = get_synthetic_rules(hotel_id)
-    quote = (await transfer_quotes(stay, flight, party))[0]
-    leg = transfer_leg(quote)
-    issues = validate_trip(build_timeline(flight, stay, arrival_transfer=leg), stay, party, arrival_transfer=leg)
-    assert rules["scenario"] == "far_transfer" and rules["synthetic_airport_transfer_minutes"] == 120
-    assert quote.duration_minutes == expected_minutes
-    assert leg.arrive_at.timestamp() - leg.depart_at.timestamp() == expected_minutes * 60
-    assert not any(issue.rule == "long_transfer" for issue in issues)
+    traps = [
+        hotel for hotel in load_hotel_catalog() if get_synthetic_rules(hotel.hotel_id)["scenario"] == "far_transfer"
+    ]
+    assert len(traps) == 12 and {hotel.destination for hotel in traps} == {"AYT", "DXB", "MLE"}
+    for record in traps:
+        stay = await offered_stay(record.destination, record.hotel_id, party)
+        flight = await outbound_for(stay, party)
+        rules = get_synthetic_rules(record.hotel_id)
+        quote = (await transfer_quotes(stay, flight, party))[0]
+        expected = next(
+            option
+            for option in TransferBase.load().get(record.hotel_id, record.destination).options
+            if option.id == quote.id
+        )
+        leg = transfer_leg(quote)
+        issues = validate_trip(build_timeline(flight, stay, arrival_transfer=leg), stay, party, arrival_transfer=leg)
+        assert rules["synthetic_airport_transfer_minutes"] == 120
+        assert quote.duration_minutes == expected.duration_min
+        assert leg.arrive_at.timestamp() - leg.depart_at.timestamp() == expected.duration_min * 60
+        assert any(issue.rule == "long_transfer" for issue in issues) == (expected.duration_min > 90)
 
 
-async def test_real_dubai_offer_has_explicit_unsupported_route_without_stub_fallback():
+async def test_real_dubai_offer_has_priced_s4_route_and_s3_events():
     party = Travelers(adults=2, children_ages=[5])
     offers = await HotelSearchTool().run(
         HotelSearch(destination="DXB", check_in=date(2026, 11, 18), check_out=date(2026, 11, 25), travelers=party)
     )
     assert offers
-    stay = offers[0]
-    flight = await outbound_for(stay, party)
-    with pytest.raises(UnsupportedTransfer, match="Нет трансфера DXB"):
-        await transfer_quotes(stay, flight, party)
-    with pytest.raises(UnsupportedTransfer):
-        TransferBase.load().get(stay.hotel_id, "DXB")
+    for stay in offers:
+        flight = await outbound_for(stay, party)
+        quotes = await transfer_quotes(stay, flight, party)
+        assert quotes and all(quote.destination.id == stay.hotel_id for quote in quotes)
+        leg = transfer_leg(quotes[0])
+        timeline = build_timeline(flight, stay, arrival_transfer=leg)
+        assert timeline.event("arrival_transfer_departure").at == leg.depart_at
+        assert timeline.event("arrival_transfer_arrival").at == leg.arrive_at
+        assert not any(note.startswith("Нет трансфера из аэропорта:") for note in timeline.notes)
 
-    # S3 can display partial data, but its missing-transfer assumption must be
-    # explicit; it is not evidence of a supported or priced airport route.
-    timeline = build_timeline(flight, stay)
-    assert timeline.event("arrival_transfer_departure") is None
-    assert timeline.event("arrival_transfer_arrival") is None
-    assert any(note.startswith("Нет трансфера из аэропорта:") for note in timeline.notes)
+
+@pytest.mark.parametrize("airport,hotel_id", [("DXB", "osm:node/999999999999999"), ("DXB", JEN)])
+async def test_unknown_hotel_and_wrong_airport_remain_explicit_errors(airport, hotel_id):
+    request = TransferRequest(
+        airport=airport,
+        hotel_id=hotel_id,
+        pickup_at=datetime(2026, 11, 18, 23, 40, tzinfo=UTC),
+        travelers=Travelers(adults=2),
+    )
+    with pytest.raises(UnsupportedTransfer, match=f"Нет трансфера {airport}"):
+        await S4TransferTool().run(request)
+    with pytest.raises(UnsupportedTransfer):
+        TransferBase.load().get(hotel_id, airport)
+
+
+async def test_maldives_2340_arrival_waits_for_six_am_seaplane_and_reaches_s5():
+    party = Travelers(adults=2)
+    stay = await offered_stay("MLE", "osm:node/4455235191", party)
+    generated = await outbound_for(stay, party)
+    # Deliberate schedule trap validated as a D1 flight, using the actual D3
+    # Conrad offer and unmodified S4 seaplane hours/prices.
+    arrival = datetime.combine(stay.check_in, time(23, 40), tzinfo=generated.arrival_at.tzinfo)
+    flight = type(generated).model_validate(
+        generated.model_dump()
+        | {
+            "arrival_at": arrival,
+            "departure_at": (arrival - timedelta(hours=9)).astimezone(generated.departure_at.tzinfo),
+        }
+    )
+    quotes = await transfer_quotes(stay, flight, party)
+    assert len(quotes) == 1
+    quote = quotes[0]
+    leg = transfer_leg(quote)
+    timeline = build_timeline(flight, stay, arrival_transfer=leg)
+    issues = validate_trip(timeline, stay, party, arrival_transfer=leg, airport="MLE", base=TransferBase.load())
+    by_rule = {issue.rule: issue for issue in issues}
+    assert quote.mode == "seaplane" and quote.available is False
+    assert quote.hours.from_ == time(6) and quote.hours.to == time(15, 30)
+    assert quote.pickup_at.date() == stay.check_in + timedelta(days=1)
+    assert quote.pickup_at.time() == time(0, 25)
+    assert quote.depart_at == datetime.combine(stay.check_in + timedelta(days=1), time(6), tzinfo=arrival.tzinfo)
+    assert quote.price_rub == leg.price_rub == 66_000
+    assert timeline.wait("airport_after_arrival").minutes == 335
+    assert timeline.hotel_arrival_at == leg.arrive_at
+    assert by_rule["airport_overnight_wait"].severity == "critical"
+    assert by_rule["transfer_prebook"].severity == "info"
+    assert by_rule["wasted_first_night"].severity == "info"
 
 
 async def test_factory_composes_u2_search_s4_and_s5_with_one_party_and_saved_base(tmp_path):

@@ -1,83 +1,41 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "sources": [
     {
       "destination": "AYT",
-      "endpoint": "https://overpass-api.de/api/interpreter",
-      "request_url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A90%5D%3Bnwr%5B%22tourism%22%3D%22hotel%22%5D%5B%22name%22%5D%28around%3A25000%2C36.8841%2C30.7056%29%3Bout+meta+center%3B",
-      "query": "[out:json][timeout:90];nwr[\"tourism\"=\"hotel\"][\"name\"](around:25000,36.8841,30.7056);out meta center;",
-      "retrieved_at": "2026-10-25T21:15:01.316925+00:00",
-      "sha256": "15f3f0e316f881b458b55e5eb6a882d504588a39afca4141a38ad80d0d8e0dfd",
-      "raw_file": "osm/AYT.json",
-      "region": {
-        "latitude": 36.8841,
-        "longitude": 30.7056,
-        "radius_m": 25000,
-        "description": "Antalya urban/coastal hotel catchment; 25 km from city centre."
-      },
+      "snapshot_file": "osm_hotels.json",
+      "snapshot_kind": "normalized_osm",
+      "sha256": "f7ed86557f2f1bf4c29a09c86edf66befb886e7a137dca5aa65b77a5b82771e9",
+      "fetched": "2026-10-25",
+      "selected_objects": 20,
       "license": "ODbL-1.0",
       "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
       "attribution": "© OpenStreetMap contributors",
-      "copyright_url": "https://www.openstreetmap.org/copyright",
-      "osm_base_timestamp": "2026-10-25T21:13:07Z",
-      "returned_objects": 386,
-      "selected_objects": 24
+      "metadata_limitations": "Raw stars tags, OSM object versions and timestamps were not retained. legacy_sources.json describes the historical raw snapshots, not this active selection."
     },
     {
       "destination": "DXB",
-      "endpoint": "https://overpass-api.de/api/interpreter",
-      "request_url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A25%5D%3Bnwr%5B%22tourism%22%3D%22hotel%22%5D%5B%22name%22%5D%2825.14%2C55.20%2C25.28%2C55.34%29%3Bout+meta+center%3B",
-      "query": "[out:json][timeout:25];nwr[\"tourism\"=\"hotel\"][\"name\"](25.14,55.20,25.28,55.34);out meta center;",
-      "retrieved_at": "2026-10-25T21:19:58.236534+00:00",
-      "sha256": "486c4c86907cb90d419f336f7a0707da588551af187912b960fa9afdf748f965",
-      "raw_file": "osm/DXB.json",
-      "region": {
-        "latitude": 25.2048,
-        "longitude": 55.2708,
-        "radius_m": 20000,
-        "bbox": [
-          25.14,
-          55.2,
-          25.28,
-          55.34
-        ],
-        "description": "Central Dubai bounding box: south25.14 west55.20 north25.28 east55.34; centre is a selection anchor."
-      },
+      "snapshot_file": "osm_hotels.json",
+      "snapshot_kind": "normalized_osm",
+      "sha256": "f7ed86557f2f1bf4c29a09c86edf66befb886e7a137dca5aa65b77a5b82771e9",
+      "fetched": "2026-10-25",
+      "selected_objects": 20,
       "license": "ODbL-1.0",
       "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
       "attribution": "© OpenStreetMap contributors",
-      "copyright_url": "https://www.openstreetmap.org/copyright",
-      "osm_base_timestamp": "2026-10-25T21:18:21Z",
-      "returned_objects": 427,
-      "selected_objects": 24
+      "metadata_limitations": "Raw stars tags, OSM object versions and timestamps were not retained. legacy_sources.json describes the historical raw snapshots, not this active selection."
     },
     {
       "destination": "MLE",
-      "endpoint": "https://overpass-api.de/api/interpreter",
-      "request_url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A25%5D%3Bnwr%5B%22tourism%22%3D%22hotel%22%5D%5B%22name%22%5D%284.15%2C73.48%2C4.25%2C73.56%29%3Bout+meta+center%3B",
-      "query": "[out:json][timeout:25];nwr[\"tourism\"=\"hotel\"][\"name\"](4.15,73.48,4.25,73.56);out meta center;",
-      "retrieved_at": "2026-10-25T21:19:57.119236+00:00",
-      "sha256": "15f27a63fe38e03c8a8d1dfde7b585f04ad1e3d42fdeb3f8953ea335e9033ba7",
-      "raw_file": "osm/MLE.json",
-      "region": {
-        "latitude": 4.1755,
-        "longitude": 73.5093,
-        "radius_m": 15000,
-        "bbox": [
-          4.15,
-          73.48,
-          4.25,
-          73.56
-        ],
-        "description": "Male/Hulhumale bounding box: south4.15 west73.48 north4.25 east73.56. This is not a catalogue of all Maldives resorts or a road-only transfer region."
-      },
+      "snapshot_file": "osm_hotels.json",
+      "snapshot_kind": "normalized_osm",
+      "sha256": "f7ed86557f2f1bf4c29a09c86edf66befb886e7a137dca5aa65b77a5b82771e9",
+      "fetched": "2026-10-25",
+      "selected_objects": 20,
       "license": "ODbL-1.0",
       "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
       "attribution": "© OpenStreetMap contributors",
-      "copyright_url": "https://www.openstreetmap.org/copyright",
-      "osm_base_timestamp": "2026-10-25T21:18:21Z",
-      "returned_objects": 37,
-      "selected_objects": 24
+      "metadata_limitations": "Raw stars tags, OSM object versions and timestamps were not retained. legacy_sources.json describes the historical raw snapshots, not this active selection."
     }
   ]
 }

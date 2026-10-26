@@ -22,7 +22,8 @@ def load_reviews(hotel_id):
     return [SyntheticReview.model_validate(r) for r in json.loads(file.read_text())["reviews"]]
 
 
-def test_all_72_saved_profiles_match_literal_corpus_and_aggregates():
+def test_all_60_saved_profiles_match_literal_corpus_and_aggregates():
+    assert len(load_hotel_catalog()) == 60
     for hotel in load_hotel_catalog():
         reviews = load_reviews(hotel.hotel_id)
         assert len(reviews) == 24
