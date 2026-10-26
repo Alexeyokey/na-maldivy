@@ -21,6 +21,12 @@ curl -N localhost:8000/api/chat -H 'Content-Type: application/json' -d '{"messag
 
 **LLM-клиент в коде** лежит в `backend/app/llm`: `complete()` возвращает ответ целиком, вместе с вызовами инструментов и `json_mode`; `stream()` отдаёт текст по кускам; `tier="fast"` выбирает быструю модель. В тестах используйте `FakeLLMClient` с заготовленными ответами, сеть не нужна. Любая ошибка провайдера (таймаут, сеть, 5xx, битый ответ) приходит как `LLMError`.
 
+**Кэш данных и валюты D4.** `CachedHttpClient` поддерживает `record`/`replay`/`live`,
+а валютное ядро считает через `Decimal` с учётом номинала ЦБ. Сохранённый снимок
+за 24.10.2026 работает без сети: `make d4-demo`; проверки — `make d4-check`.
+Режим задаётся `CACHE_MODE`, для демо и проверок принудительно используется `replay`.
+Инструкция и границы готовности — в [docs/data-cache.md](docs/data-cache.md).
+
 **Бэкенд без Docker** (нужен [uv](https://docs.astral.sh/uv/)):
 
 ```bash

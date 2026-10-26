@@ -3,6 +3,10 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Проверки воспроизводят записи и используют фейковую модель независимо от .env.
+export CACHE_MODE=replay
+export LLM_PROVIDER=fake
+
 steps=("$@")
 if [ ${#steps[@]} -eq 0 ]; then
   steps=(lint test smoke)

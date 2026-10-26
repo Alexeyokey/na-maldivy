@@ -1,5 +1,6 @@
 """Настройки сервиса: переменные окружения и .env (образец — .env.example в корне репозитория)."""
 
+from pathlib import Path
 from typing import Literal
 
 from pydantic import SecretStr, model_validator
@@ -20,6 +21,9 @@ class Settings(BaseSettings):
     llm_model_fast: str | None = None  # если не задана, берётся основная
     llm_timeout_s: float = 60.0
     llm_max_retries: int = 2
+
+    cache_mode: Literal["record", "replay", "live"] = "replay"
+    data_cache_dir: Path | None = None
 
     @model_validator(mode="after")
     def _check_llm(self) -> "Settings":
