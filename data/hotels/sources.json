@@ -1,0 +1,41 @@
+{
+  "schema_version": 2,
+  "sources": [
+    {
+      "destination": "AYT",
+      "snapshot_file": "osm_hotels.json",
+      "snapshot_kind": "normalized_osm",
+      "sha256": "f7ed86557f2f1bf4c29a09c86edf66befb886e7a137dca5aa65b77a5b82771e9",
+      "fetched": "2026-10-25",
+      "selected_objects": 20,
+      "license": "ODbL-1.0",
+      "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+      "attribution": "© OpenStreetMap contributors",
+      "metadata_limitations": "Raw stars tags, OSM object versions and timestamps were not retained."
+    },
+    {
+      "destination": "DXB",
+      "snapshot_file": "osm_hotels.json",
+      "snapshot_kind": "normalized_osm",
+      "sha256": "f7ed86557f2f1bf4c29a09c86edf66befb886e7a137dca5aa65b77a5b82771e9",
+      "fetched": "2026-10-25",
+      "selected_objects": 20,
+      "license": "ODbL-1.0",
+      "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+      "attribution": "© OpenStreetMap contributors",
+      "metadata_limitations": "Raw stars tags, OSM object versions and timestamps were not retained."
+    },
+    {
+      "destination": "MLE",
+      "snapshot_file": "osm_hotels.json",
+      "snapshot_kind": "normalized_osm",
+      "sha256": "f7ed86557f2f1bf4c29a09c86edf66befb886e7a137dca5aa65b77a5b82771e9",
+      "fetched": "2026-10-25",
+      "selected_objects": 20,
+      "license": "ODbL-1.0",
+      "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+      "attribution": "© OpenStreetMap contributors",
+      "metadata_limitations": "Raw stars tags, OSM object versions and timestamps were not retained."
+    }
+  ]
+}

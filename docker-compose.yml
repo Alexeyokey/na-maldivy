@@ -6,6 +6,9 @@ services:
         required: false # без .env агент работает на фейковой модели
     ports:
       - "${AGENT_PORT:-8000}:8000"
+    environment:
+      NA_MALDIVY_DATA_DIR: /data
+      TRANSFERS_PATH: /data/transfers/transfers.json
     volumes:
       - ./data:/data:ro # справочники и базы инструментов, например data/transfers
     restart: unless-stopped
