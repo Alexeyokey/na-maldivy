@@ -21,14 +21,14 @@ async def test_every_registered_tool_runs_and_round_trips_through_exported_schem
         "search_flights": {"origin": "SVO", "destination": "DXB", "departure_date": "2026-11-18"},
         "search_hotels": {"destination": "DXB", "check_in": "2026-11-18", "check_out": "2026-11-25"},
         "search_trains": {"origin": "MOW", "destination": "LED", "departure_date": "2026-11-18"},
-        "suggest_destinations": {"month": 11, "min_water_temperature_c": 24},
+        "suggest_destinations": {"month": 11, "origin": "SVO", "min_water_temperature_c": 24},
         "price_calendar": {"origin": "SVO", "destination": "DXB", "month": "2026-11"},
     }
     flights = await run_tool("search_flights", inputs["search_flights"])
     hotels = await run_tool("search_hotels", inputs["search_hotels"])
     inputs["get_transfer"] = {
-        "origin": flights[0].destination.model_dump(mode="json"),
-        "destination": hotels[0].place.model_dump(mode="json"),
+        "airport": flights[0].destination.iata,
+        "hotel_id": hotels[0].hotel_id,
         "pickup_at": flights[0].arrival_at.isoformat(),
     }
     examples = {}

@@ -11,6 +11,8 @@ services:
       LLM_PROVIDER: ${LLM_PROVIDER:-fake}
     ports:
       - "${AGENT_PORT:-8000}:8000"
+    volumes:
+      - ./data:/data:ro # справочники и базы инструментов, например data/transfers
     restart: unless-stopped
 
   # web: интерфейс появится в U1 (#6)

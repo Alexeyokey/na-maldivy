@@ -1,0 +1,239 @@
+{
+  "note": "Эталонные случаи для quote_transfers. Ожидания посчитаны вручную по полям transfers.json, формат — data/transfers/README.md.",
+  "cases": [
+    {
+      "id": "ayt-belek-day-couple",
+      "why": "Обычный дневной прилёт: все три вида доступны, шаттл дешевле всех",
+      "hotel_id": "osm:node/897383953",
+      "airport": "AYT",
+      "pickup_at": "2026-11-18T14:20:00+03:00",
+      "travelers": {"adults": 2},
+      "expect": {
+        "hotel_labels": [],
+        "modes": ["taxi", "private_minivan", "shuttle"],
+        "first": {"mode": "shuttle", "available": true, "price_rub": 1300},
+        "issues": {"taxi": [], "private_minivan": ["prebook_required"], "shuttle": []},
+        "price_rub": {"taxi": 3000, "private_minivan": 4800, "shuttle": 1300},
+        "vehicles": {"taxi": 1, "private_minivan": 1}
+      }
+    },
+    {
+      "id": "ayt-belek-night",
+      "why": "Ночной прилёт: такси с наценкой ×1,3, шаттл только с 06:00",
+      "hotel_id": "osm:node/897383953",
+      "airport": "AYT",
+      "pickup_at": "2026-11-18T02:10:00+03:00",
+      "travelers": {"adults": 2},
+      "expect": {
+        "first": {"mode": "taxi", "available": true, "price_rub": 3900},
+        "issues": {"taxi": ["night_surcharge"], "private_minivan": ["prebook_required"], "shuttle": ["unavailable_at_pickup"]},
+        "price_rub": {"taxi": 3900, "private_minivan": 4800, "shuttle": 1300},
+        "depart_at": {"shuttle": "2026-11-18T06:00:00+03:00"}
+      }
+    },
+    {
+      "id": "ayt-alanya-child",
+      "why": "Аланья в двух часах от аэропорта, с четырёхлетним ребёнком: у такси кресло неизвестно",
+      "hotel_id": "osm:node/8960913745",
+      "airport": "AYT",
+      "pickup_at": "2026-11-18T13:00:00+03:00",
+      "travelers": {"adults": 2, "children_ages": [4]},
+      "expect": {
+        "hotel_labels": ["far_from_airport"],
+        "first": {"mode": "shuttle", "price_rub": 3000},
+        "issues": {
+          "taxi": ["child_seat_unknown", "long_transfer"],
+          "private_minivan": ["long_transfer", "prebook_required"],
+          "shuttle": ["long_transfer"]
+        },
+        "price_rub": {"taxi": 9950, "private_minivan": 15900, "shuttle": 3000}
+      }
+    },
+    {
+      "id": "ayt-group-five",
+      "why": "Пятеро взрослых: в такси нужна вторая машина, минивэн вмещает всех",
+      "hotel_id": "osm:node/920059974",
+      "airport": "AYT",
+      "pickup_at": "2026-11-18T11:00:00+03:00",
+      "travelers": {"adults": 5},
+      "expect": {
+        "first": {"mode": "shuttle", "price_rub": 3250},
+        "issues": {"taxi": ["extra_vehicle"], "private_minivan": ["prebook_required"], "shuttle": []},
+        "price_rub": {"taxi": 6400, "private_minivan": 5100, "shuttle": 3250},
+        "vehicles": {"taxi": 2, "private_minivan": 1}
+      }
+    },
+    {
+      "id": "ayt-with-dog",
+      "why": "С собакой: шаттл дешевле, но животных не берёт и уходит в конец выдачи",
+      "hotel_id": "osm:node/2286514995",
+      "airport": "AYT",
+      "pickup_at": "2026-11-18T16:00:00+03:00",
+      "travelers": {"adults": 2, "pets": 1},
+      "expect": {
+        "first": {"mode": "taxi", "available": true, "price_rub": 2950},
+        "issues": {"taxi": ["pets_unknown"], "private_minivan": ["prebook_required"], "shuttle": ["pets_forbidden"]},
+        "price_rub": {"taxi": 2950, "private_minivan": 4700, "shuttle": 1300}
+      }
+    },
+    {
+      "id": "dxb-metro-closed-at-night",
+      "why": "Прилёт в 00:40: метро закрыто до 05:00, такси без ночной наценки",
+      "hotel_id": "osm:way/126601133",
+      "airport": "DXB",
+      "pickup_at": "2026-11-18T00:40:00+04:00",
+      "travelers": {"adults": 2},
+      "expect": {
+        "first": {"mode": "taxi", "available": true, "price_rub": 1750},
+        "issues": {"taxi": [], "private_minivan": ["prebook_required"], "metro": ["unavailable_at_pickup", "luggage_limit"]},
+        "price_rub": {"metro": 360},
+        "depart_at": {"metro": "2026-11-18T05:00:00+04:00"}
+      }
+    },
+    {
+      "id": "dxb-metro-late-evening",
+      "why": "23:30: метро ещё работает до полуночи и оказывается самым дешёвым",
+      "hotel_id": "osm:way/126601133",
+      "airport": "DXB",
+      "pickup_at": "2026-11-18T23:30:00+04:00",
+      "travelers": {"adults": 2},
+      "expect": {
+        "first": {"mode": "metro", "available": true, "price_rub": 360},
+        "issues": {"metro": ["luggage_limit"], "taxi": []}
+      }
+    },
+    {
+      "id": "dxb-palm-no-metro",
+      "why": "На Пальму метро не идёт: только такси и минивэн",
+      "hotel_id": "osm:way/89790675",
+      "airport": "DXB",
+      "pickup_at": "2026-11-18T10:00:00+04:00",
+      "travelers": {"adults": 2, "children_ages": [6]},
+      "expect": {
+        "modes": ["taxi", "private_minivan"],
+        "first": {"mode": "taxi", "price_rub": 3050},
+        "issues": {"taxi": ["child_seat_unknown"], "private_minivan": ["prebook_required"]}
+      }
+    },
+    {
+      "id": "dxb-pickup-in-moscow-time",
+      "why": "Время пришло по Москве: 04:30 МСК — это 05:30 в Дубае, метро уже открыто",
+      "hotel_id": "osm:way/126601133",
+      "airport": "DXB",
+      "pickup_at": "2026-11-19T04:30:00+03:00",
+      "travelers": {"adults": 1},
+      "expect": {
+        "first": {"mode": "metro", "available": true, "depart_at": "2026-11-19T05:30:00+04:00", "price_rub": 180}
+      }
+    },
+    {
+      "id": "mle-seaplane-night",
+      "why": "Главная ловушка демо: прилёт в 23:40, до курорта только гидросамолёт с 06:00",
+      "hotel_id": "osm:node/4455235191",
+      "airport": "MLE",
+      "pickup_at": "2026-11-18T23:40:00+05:00",
+      "travelers": {"adults": 2},
+      "expect": {
+        "hotel_labels": ["only_scheduled_transfer"],
+        "modes": ["seaplane"],
+        "first": {
+          "mode": "seaplane",
+          "available": false,
+          "depart_at": "2026-11-19T06:00:00+05:00",
+          "arrive_at": "2026-11-19T07:29:00+05:00",
+          "price_rub": 66000
+        },
+        "issues": {"seaplane": ["unavailable_at_pickup", "prebook_required", "luggage_limit"]}
+      }
+    },
+    {
+      "id": "mle-seaplane-family",
+      "why": "Днём с младенцем и ребёнком: младенец бесплатно, ребёнок за полцены",
+      "hotel_id": "osm:node/3988586285",
+      "airport": "MLE",
+      "pickup_at": "2026-11-18T11:15:00+05:00",
+      "travelers": {"adults": 2, "children_ages": [1, 7]},
+      "expect": {
+        "hotel_labels": ["only_scheduled_transfer", "far_from_airport"],
+        "first": {"mode": "seaplane", "available": true, "price_rub": 88750},
+        "issues": {"seaplane": ["long_transfer", "prebook_required", "luggage_limit"]}
+      }
+    },
+    {
+      "id": "mle-seaplane-after-last-flight",
+      "why": "Прилёт в 16:10 после последнего гидросамолёта: следующий только утром",
+      "hotel_id": "osm:node/5228528653",
+      "airport": "MLE",
+      "pickup_at": "2026-11-18T16:10:00+05:00",
+      "travelers": {"adults": 2},
+      "expect": {
+        "first": {"mode": "seaplane", "available": false, "depart_at": "2026-11-19T06:00:00+05:00", "price_rub": 81000},
+        "issues": {"seaplane": ["unavailable_at_pickup", "long_transfer", "prebook_required", "luggage_limit"]}
+      }
+    },
+    {
+      "id": "mle-seaplane-with-dog",
+      "why": "С собакой на гидросамолёт нельзя, другого трансфера нет",
+      "hotel_id": "osm:node/4455235191",
+      "airport": "MLE",
+      "pickup_at": "2026-11-18T09:00:00+05:00",
+      "travelers": {"adults": 2, "pets": 1},
+      "expect": {
+        "first": {"mode": "seaplane", "available": true, "price_rub": 66000},
+        "issues": {"seaplane": ["pets_forbidden", "prebook_required", "luggage_limit"]}
+      }
+    },
+    {
+      "id": "mle-speedboat-night-surcharge",
+      "why": "Катер ходит ночью, но с 22:00 наценка ×1,5",
+      "hotel_id": "osm:node/773451744",
+      "airport": "MLE",
+      "pickup_at": "2026-11-18T23:00:00+05:00",
+      "travelers": {"adults": 2},
+      "expect": {
+        "hotel_labels": [],
+        "first": {"mode": "speedboat", "available": true, "price_rub": 22800},
+        "issues": {"speedboat": ["night_surcharge"]}
+      }
+    },
+    {
+      "id": "mle-speedboat-no-night",
+      "why": "Курорт не возит катером после 22:00: ждать до утра",
+      "hotel_id": "osm:node/2457795615",
+      "airport": "MLE",
+      "pickup_at": "2026-11-18T22:30:00+05:00",
+      "travelers": {"adults": 2},
+      "expect": {
+        "hotel_labels": ["only_scheduled_transfer"],
+        "first": {"mode": "speedboat", "available": false, "depart_at": "2026-11-19T06:00:00+05:00", "price_rub": 30400},
+        "issues": {"speedboat": ["unavailable_at_pickup"]}
+      }
+    },
+    {
+      "id": "mle-domestic-flight",
+      "why": "Дальний атолл: местный рейс и катер, бронь за 48 часов",
+      "hotel_id": "osm:node/11212357332",
+      "airport": "MLE",
+      "pickup_at": "2026-11-18T14:00:00+05:00",
+      "travelers": {"adults": 2, "children_ages": [10]},
+      "expect": {
+        "modes": ["flight_speedboat"],
+        "first": {"mode": "flight_speedboat", "available": true, "price_rub": 77500},
+        "issues": {"flight_speedboat": ["long_transfer", "prebook_required", "luggage_limit"]}
+      }
+    },
+    {
+      "id": "mle-city-taxi-night-group",
+      "why": "Ночью в отель у аэропорта впятером с детьми: две машины, наценка, кресла неизвестно",
+      "hotel_id": "osm:way/133845532",
+      "airport": "MLE",
+      "pickup_at": "2026-11-18T01:30:00+05:00",
+      "travelers": {"adults": 3, "children_ages": [2, 5]},
+      "expect": {
+        "first": {"mode": "taxi", "available": true, "price_rub": 2280},
+        "issues": {"taxi": ["extra_vehicle", "night_surcharge", "child_seat_unknown"]},
+        "vehicles": {"taxi": 2}
+      }
+    }
+  ]
+}

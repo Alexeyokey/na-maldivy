@@ -1,14 +1,14 @@
 """Cross-team identities, unknown facts and local transfer schedules."""
 
 import json
-from datetime import time
+from datetime import UTC, datetime, time
 from typing import Any
 
 import pytest
 from pydantic import ValidationError
 
 from app.contracts.identifiers import canonical_hotel_id
-from app.contracts.tools import HotelOffer, Place, Transfer, TransferHours
+from app.contracts.tools import HotelOffer, Place, Transfer, TransferHours, TransferQuery, TransferRequest
 from app.tools.errors import UnsupportedTransfer
 
 AIRPORT = {
@@ -140,6 +140,10 @@ def test_hotel_and_place_ids_normalize_before_consistency_check() -> None:
 
 def test_unknown_hotel_facts_are_not_false_free_or_round_the_clock() -> None:
     result = hotel()
+    assert result.check_in_time is result.check_out_time is None
+    assert hotel(check_in_time="14:00", check_out_time="12:00").check_in_time == time(14)
+    assert hotel(check_in_time="00:00", check_out_time=None).check_in_time == time(0)
+    assert json.loads(result.model_dump_json())["check_in_time"] is None
     assert result.stars is result.rating is result.adults_only is result.pets_allowed is None
     assert result.refundable is result.reception_24h is result.reception_closes_at is None
     assert result.early_check_in_available is result.early_check_in_price_rub is None
@@ -275,7 +279,7 @@ def test_transfer_schedule_fields_are_required_even_if_nullable(field: str) -> N
         Transfer.model_validate({key: value for key, value in data.items() if key != field})
 
 
-@pytest.mark.parametrize("mode", ["taxi", "minivan", "shuttle", "bus", "metro", "boat", "seaplane"])
+@pytest.mark.parametrize("mode", ["taxi", "minivan", "shuttle", "bus", "metro", "boat", "seaplane", "flight_speedboat"])
 def test_s4_vehicle_modes_and_group_price(mode: str) -> None:
     assert transfer(mode=mode).mode == mode
 
@@ -295,3 +299,88 @@ def test_dst_offset_checked_for_future_departure_in_origin_zone() -> None:
 
 def test_shared_unsupported_transfer_preserves_valueerror_compatibility() -> None:
     assert issubclass(UnsupportedTransfer, ValueError)
+
+
+@pytest.mark.parametrize(
+    "requested,normalized",
+    [
+        ("2026-11-15T18:40:00Z", "2026-11-15T23:40:00+05:00"),
+        ("2026-11-15T23:40:00Z", "2026-11-16T04:40:00+05:00"),
+        ("2026-11-15T23:40:00+03:00", "2026-11-16T01:40:00+05:00"),
+    ],
+)
+def test_resolved_transfer_normalizes_any_aware_offset_without_changing_instant(
+    requested: str, normalized: str
+) -> None:
+    result = TransferQuery(origin=AIRPORT, destination=HOTEL, pickup_at=requested)
+    assert result.pickup_at.isoformat() == normalized
+    source = datetime.fromisoformat(requested.replace("Z", "+00:00"))
+    assert result.pickup_at.astimezone(UTC) == source.astimezone(UTC)
+
+
+def test_resolved_transfer_normalizes_utc_across_dst_transition() -> None:
+    berlin = AIRPORT | {"iata": "BER", "timezone": "Europe/Berlin"}
+    query = TransferQuery(origin=berlin, destination=HOTEL, pickup_at="2030-03-31T01:30:00Z")
+    assert query.pickup_at.isoformat() == "2030-03-31T03:30:00+02:00"
+
+
+def test_public_transfer_request_needs_ids_not_fabricated_places() -> None:
+    request = TransferRequest(airport="MLE", hotel_id="osm:way:123456", pickup_at="2026-11-15T23:40:00Z")
+    assert request.hotel_id == "osm:way/123456"
+    assert request.travelers.count == 1
+    assert request.pickup_at.utcoffset().total_seconds() == 0
+    assert set(request.model_dump()) == {"airport", "hotel_id", "pickup_at", "travelers"}
+    assert "origin" not in TransferRequest.model_json_schema()["properties"]
+    with pytest.raises(ValidationError, match="extra_forbidden"):
+        TransferRequest.model_validate(request.model_dump() | {"origin": AIRPORT})
+
+
+@pytest.mark.parametrize("model", [TransferRequest, TransferQuery])
+def test_transfer_input_still_rejects_naive_datetime(model: type) -> None:
+    data = (
+        {"airport": "MLE", "hotel_id": "demo-mle-family"}
+        if model is TransferRequest
+        else {"origin": AIRPORT, "destination": HOTEL}
+    )
+    with pytest.raises(ValidationError, match="timezone_aware"):
+        model.model_validate(data | {"pickup_at": "2026-11-15T23:40:00"})
+
+
+def test_output_keeps_transfer_eligibility_and_source_constraints() -> None:
+    result = transfer(
+        mode="flight_speedboat",
+        luggage_limit="20 kg per person",
+        prebook_hours=24,
+        distance_km=182.5,
+        issues=["prebook_required", "luggage_limit", "unavailable_at_pickup"],
+    )
+    dumped = result.model_dump(mode="json")
+    assert dumped["mode"] == "flight_speedboat"
+    assert dumped["issues"] == ["prebook_required", "luggage_limit", "unavailable_at_pickup"]
+    assert dumped["prebook_hours"] == 24 and dumped["distance_km"] == 182.5
+    assert transfer(prebook_hours=0, distance_km=0).prebook_hours == 0
+    first, second = transfer(), transfer()
+    assert first.prebook_hours is first.distance_km is first.luggage_limit is None
+    first.issues.append("pets_unknown")
+    assert second.issues == []
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"mode": "domestic_flight"},
+        {"issues": ["invented_warning"]},
+        {"prebook_hours": -1},
+        {"prebook_hours": 1.5},
+        {"prebook_hours": True},
+        {"prebook_hours": "24"},
+        {"distance_km": -1},
+        {"distance_km": float("inf")},
+        {"distance_km": float("nan")},
+        {"distance_km": "12.5"},
+        {"distance_km": True},
+    ],
+)
+def test_source_constraints_reject_invalid_values(changes: dict[str, Any]) -> None:
+    with pytest.raises(ValidationError):
+        transfer(**changes)

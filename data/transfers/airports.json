@@ -1,0 +1,30 @@
+{
+  "source": "© участники OpenStreetMap, ODbL",
+  "fetched": "2026-10-25",
+  "airports": [
+    {
+      "iata": "AYT",
+      "name": "Antalya Airport",
+      "lat": 36.899606,
+      "lon": 30.79614,
+      "tz": "Europe/Istanbul",
+      "destination": "Анталья"
+    },
+    {
+      "iata": "DXB",
+      "name": "Dubai International Airport",
+      "lat": 25.251561,
+      "lon": 55.370201,
+      "tz": "Asia/Dubai",
+      "destination": "Дубай"
+    },
+    {
+      "iata": "MLE",
+      "name": "Velana International Airport",
+      "lat": 4.196231,
+      "lon": 73.530445,
+      "tz": "Indian/Maldives",
+      "destination": "Мальдивы"
+    }
+  ]
+}

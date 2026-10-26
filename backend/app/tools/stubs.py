@@ -31,6 +31,7 @@ from app.contracts.tools import (
     Transfer,
     TransferHours,
     TransferQuery,
+    TransferRequest,
     Travelers,
 )
 from app.tools.base import Tool
@@ -200,6 +201,8 @@ def _hotels(query: HotelSearch) -> list[HotelOffer]:
                 adults_only=adults_only,
                 pets_allowed=pets_allowed,
                 refundable=refundable,
+                check_in_time=time(14),
+                check_out_time=time(12),
                 reception_24h=suffix != "budget",
                 reception_closes_at=time(22) if suffix == "budget" else None,
                 early_check_in_available=suffix != "budget",
@@ -311,6 +314,9 @@ def _next_departure(pickup: datetime, timezone: str, hours: TransferHours | None
 
 
 def _transfer(query: TransferQuery) -> list[Transfer]:
+    # Internal callers may hold a copied DTO; revalidate before using places or
+    # instants so every returned pickup is normalized to the origin's zone.
+    query = TransferQuery.model_validate(query)
     codes = {query.origin.iata, query.destination.iata}
     same_region = len(codes) == 1 or codes == {"SVO", "MOW"}
     if not same_region or not all(_demo_transfer_point(place) for place in (query.origin, query.destination)):
@@ -334,8 +340,33 @@ def _transfer(query: TransferQuery) -> list[Transfer]:
         vehicles: int | None = None,
         pets: bool | None = None,
         child_seat: bool | None = None,
+        luggage_limit: str | None = None,
+        prebook_hours: int | None = 0,
     ) -> None:
         available, departure = _next_departure(query.pickup_at, query.origin.timezone, hours)
+        issues = []
+        if not available:
+            issues.append("unavailable_at_pickup")
+        if vehicles is not None and vehicles > 1:
+            issues.append("extra_vehicle")
+        if mode in {"taxi", "minivan"} and (local_pickup.hour >= 22 or local_pickup.hour < 6):
+            issues.append("night_surcharge")
+        if query.travelers.pets:
+            if pets is False:
+                issues.append("pets_forbidden")
+            elif pets is None:
+                issues.append("pets_unknown")
+        if mode in {"taxi", "minivan"} and any(age < 12 for age in query.travelers.children_ages):
+            if child_seat is False:
+                issues.append("child_seat_missing")
+            elif child_seat is None:
+                issues.append("child_seat_unknown")
+        if minutes > 90:
+            issues.append("long_transfer")
+        if prebook_hours is not None and prebook_hours >= 24:
+            issues.append("prebook_required")
+        if luggage_limit:
+            issues.append("luggage_limit")
         alternatives.append(
             Transfer(
                 id=(
@@ -357,13 +388,26 @@ def _transfer(query: TransferQuery) -> list[Transfer]:
                 available=available,
                 pets=pets,
                 child_seat=child_seat,
+                luggage_limit=luggage_limit,
+                prebook_hours=prebook_hours,
+                distance_km=round(float(distance if mode in {"boat", "seaplane"} else road_distance), 3),
+                issues=issues,
                 is_synthetic=True,
             )
         )
 
     if codes == {"MLE"}:
         # Synthetic island graph: public fares per paying passenger, infants <2 free.
-        add("boat", billable_passengers * 4000, max(20, ceil(distance / 25 * 60)), None, pets=None, child_seat=None)
+        add(
+            "boat",
+            billable_passengers * 4000,
+            max(20, ceil(distance / 25 * 60)),
+            None,
+            pets=None,
+            child_seat=None,
+            luggage_limit="Демо: одна сумка на пассажира",
+            prebook_hours=2,
+        )
         add(
             "seaplane",
             billable_passengers * 15000,
@@ -371,6 +415,8 @@ def _transfer(query: TransferQuery) -> list[Transfer]:
             TransferHours(from_=time(6), to=time(18)),
             pets=False,
             child_seat=None,
+            luggage_limit="Демо: багаж до 20 кг на оплаченного пассажира",
+            prebook_hours=24,
         )
     else:
         night_coefficient = 125 if local_pickup.hour >= 22 or local_pickup.hour < 6 else 100
@@ -379,9 +425,24 @@ def _transfer(query: TransferQuery) -> list[Transfer]:
         taxi_price = (500 + ceil(road_distance) * 80) * taxis + query.travelers.pets * 300
         van_price = (750 + ceil(road_distance) * 110) * minivans + query.travelers.pets * 300
         duration = max(5, ceil(road_distance / 35 * 60))
-        add("taxi", (taxi_price * night_coefficient + 99) // 100, duration, None, taxis, pets=True, child_seat=None)
         add(
-            "minivan", (van_price * night_coefficient + 99) // 100, duration, None, minivans, pets=True, child_seat=True
+            "taxi",
+            (taxi_price * night_coefficient + 99) // 100,
+            duration,
+            None,
+            taxis,
+            pets=True,
+            child_seat=None,
+        )
+        add(
+            "minivan",
+            (van_price * night_coefficient + 99) // 100,
+            duration,
+            None,
+            minivans,
+            pets=True,
+            child_seat=True,
+            prebook_hours=2,
         )
         add(
             "shuttle",
@@ -390,6 +451,8 @@ def _transfer(query: TransferQuery) -> list[Transfer]:
             TransferHours(from_=time(6), to=time(22)),
             pets=None,
             child_seat=None,
+            luggage_limit="Демо: один стандартный чемодан на пассажира",
+            prebook_hours=24,
         )
         add(
             "bus",
@@ -408,7 +471,39 @@ def _transfer(query: TransferQuery) -> list[Transfer]:
                 pets=False,
                 child_seat=None,
             )
-    return sorted(alternatives, key=lambda item: (not item.available, item.price_rub, item.id))
+    blocking = {"pets_forbidden", "child_seat_missing"}
+    return sorted(
+        alternatives,
+        key=lambda item: (
+            not item.available,
+            bool(blocking.intersection(item.issues)),
+            item.price_rub,
+            item.id,
+        ),
+    )
+
+
+def _public_transfer(request: TransferRequest) -> list[Transfer]:
+    """Resolve physical points on the server; user-supplied coordinates are not accepted."""
+    hotel = next(
+        (
+            _hotel_place(code, index)
+            for code in _DESTINATIONS
+            for index in range(len(_HOTEL_TYPES))
+            if _hotel_id(code, index) == request.hotel_id
+        ),
+        None,
+    )
+    if hotel is None or request.airport not in _DESTINATIONS or hotel.iata != request.airport:
+        raise UnsupportedTransfer("Unsupported demo transfer route: airport and known hotel ID must match")
+    return _transfer(
+        TransferQuery(
+            origin=_place(request.airport),
+            destination=hotel,
+            pickup_at=request.pickup_at,
+            travelers=request.travelers,
+        )
+    )
 
 
 def _destinations(query: DestinationQuery) -> list[Destination]:
@@ -513,9 +608,9 @@ def create_stub_tools() -> dict[str, Tool[Any, Any]]:
         StubTool(
             "get_transfer",
             "Синтетический трансфер только между точками демо-каталога",
-            TransferQuery,
+            TransferRequest,
             TypeAdapter(list[Transfer]),
-            _transfer,
+            _public_transfer,
         ),
         StubTool(
             "suggest_destinations",

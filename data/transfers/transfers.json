@@ -1,0 +1,3682 @@
+{
+  "note": "Синтетическая база: время по дорогам из OSRM или по расстоянию, цены и расписания — модель из backend/scripts/build_transfers.py. Описание — data/transfers/README.md.",
+  "transfers": [
+    {
+      "hotel_id": "osm:node/1852010185",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/1852010185:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 34,
+          "distance_km": 16.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2000,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/1852010185:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 34,
+          "distance_km": 16.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3200,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/1852010185:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 60,
+          "distance_km": 16.0,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 550,
+            "child_price_rub": 300
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/2300063902",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/2300063902:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 35,
+          "distance_km": 17.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2100,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/2300063902:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 35,
+          "distance_km": 17.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3350,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/2300063902:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 61,
+          "distance_km": 17.5,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 550,
+            "child_price_rub": 300
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/3623376904",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/3623376904:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 37,
+          "distance_km": 16.9,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2100,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/3623376904:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 37,
+          "distance_km": 16.9,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3350,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/3623376904:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 63,
+          "distance_km": 16.9,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 550,
+            "child_price_rub": 300
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/5369319975",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/5369319975:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 31,
+          "distance_km": 14.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1900,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/5369319975:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 31,
+          "distance_km": 14.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3050,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/5369319975:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 56,
+          "distance_km": 14.2,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 550,
+            "child_price_rub": 300
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/897383953",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/897383953:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 48,
+          "distance_km": 30.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3000,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/897383953:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 48,
+          "distance_km": 30.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4800,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/897383953:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 77,
+          "distance_km": 30.0,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 650,
+            "child_price_rub": 300
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/920059974",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/920059974:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 53,
+          "distance_km": 32.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3200,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/920059974:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 53,
+          "distance_km": 32.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5100,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/920059974:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 82,
+          "distance_km": 32.7,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 650,
+            "child_price_rub": 300
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/2266976150",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/2266976150:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 55,
+          "distance_km": 34.6,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3350,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/2266976150:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 55,
+          "distance_km": 34.6,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5350,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/2266976150:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 85,
+          "distance_km": 34.6,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 650,
+            "child_price_rub": 300
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/2286514995",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/2286514995:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 46,
+          "distance_km": 29.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2950,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/2286514995:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 46,
+          "distance_km": 29.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4700,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/2286514995:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 74,
+          "distance_km": 29.2,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 650,
+            "child_price_rub": 300
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/1882917900",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/1882917900:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 79,
+          "distance_km": 63.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5350,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/1882917900:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 79,
+          "distance_km": 63.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 8550,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/1882917900:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 115,
+          "distance_km": 63.4,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 850,
+            "child_price_rub": 400
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/2301596616",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/2301596616:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 68,
+          "distance_km": 53.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4650,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/2301596616:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 68,
+          "distance_km": 53.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 7450,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/2301596616:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 100,
+          "distance_km": 53.5,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 750,
+            "child_price_rub": 400
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/2399000167",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/2399000167:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 82,
+          "distance_km": 67.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5650,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/2399000167:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 82,
+          "distance_km": 67.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 9050,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/2399000167:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 117,
+          "distance_km": 67.7,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 850,
+            "child_price_rub": 400
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/2466747618",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/2466747618:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 82,
+          "distance_km": 68.1,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5650,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/2466747618:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 82,
+          "distance_km": 68.1,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 9050,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/2466747618:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 118,
+          "distance_km": 68.1,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 850,
+            "child_price_rub": 400
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/4453897027",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/4453897027:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 78,
+          "distance_km": 67.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5600,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/4453897027:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 78,
+          "distance_km": 67.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 8950,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/4453897027:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 113,
+          "distance_km": 67.0,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 850,
+            "child_price_rub": 400
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/187650251",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/187650251:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 83,
+          "distance_km": 71.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5900,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:way/187650251:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 83,
+          "distance_km": 71.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 9450,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/187650251:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 119,
+          "distance_km": 71.7,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 900,
+            "child_price_rub": 450
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/187650749",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/187650749:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 84,
+          "distance_km": 71.9,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5950,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:way/187650749:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 84,
+          "distance_km": 71.9,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 9500,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/187650749:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 120,
+          "distance_km": 71.9,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 900,
+            "child_price_rub": 450
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/433249157",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/433249157:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 72,
+          "distance_km": 60.6,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5150,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:way/433249157:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 72,
+          "distance_km": 60.6,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 8250,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/433249157:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 106,
+          "distance_km": 60.6,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 800,
+            "child_price_rub": 400
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/8960913745",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:node/8960913745:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 127,
+          "distance_km": 129.1,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 9950,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:node/8960913745:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 127,
+          "distance_km": 129.1,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 15900,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/8960913745:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 173,
+          "distance_km": 129.1,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 1200,
+            "child_price_rub": 600
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/73172644",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:way/73172644:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 122,
+          "distance_km": 124.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 9650,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:way/73172644:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 122,
+          "distance_km": 124.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 15450,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/73172644:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 167,
+          "distance_km": 124.7,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 1200,
+            "child_price_rub": 600
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/73333722",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:way/73333722:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 123,
+          "distance_km": 125.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 9650,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:way/73333722:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 123,
+          "distance_km": 125.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 15450,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/73333722:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 168,
+          "distance_km": 125.0,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 1200,
+            "child_price_rub": 600
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/74016732",
+      "airport": "AYT",
+      "tz": "Europe/Istanbul",
+      "labels": [
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:way/74016732:AYT:taxi",
+          "mode": "taxi",
+          "duration_min": 126,
+          "distance_km": 127.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 9800,
+            "capacity": 4,
+            "night_multiplier": 1.3,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "small_capacity",
+            "night_surcharge"
+          ]
+        },
+        {
+          "id": "osm:way/74016732:AYT:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 126,
+          "distance_km": 127.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 15700,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/74016732:AYT:shuttle",
+          "mode": "shuttle",
+          "duration_min": 172,
+          "distance_km": 127.5,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 1200,
+            "child_price_rub": 600
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "23:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/3050967398",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/3050967398:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 44,
+          "distance_km": 14.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1400,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:node/3050967398:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 44,
+          "distance_km": 14.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2250,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/3050967398:DXB:metro",
+          "mode": "metro",
+          "duration_min": 44,
+          "distance_km": 14.2,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/4778124107",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/4778124107:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 48,
+          "distance_km": 17.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1550,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:node/4778124107:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 48,
+          "distance_km": 17.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2500,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/4778124107:DXB:metro",
+          "mode": "metro",
+          "duration_min": 50,
+          "distance_km": 17.4,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/4889565597",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/4889565597:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 44,
+          "distance_km": 14.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1400,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:node/4889565597:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 44,
+          "distance_km": 14.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2250,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/4889565597:DXB:metro",
+          "mode": "metro",
+          "duration_min": 45,
+          "distance_km": 14.4,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/98642884",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/98642884:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 48,
+          "distance_km": 17.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1550,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/98642884:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 48,
+          "distance_km": 17.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2500,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/98642884:DXB:metro",
+          "mode": "metro",
+          "duration_min": 50,
+          "distance_km": 17.4,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/12299353871",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/12299353871:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 48,
+          "distance_km": 20.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1750,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:node/12299353871:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 48,
+          "distance_km": 20.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2800,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/12299353871:DXB:metro",
+          "mode": "metro",
+          "duration_min": 56,
+          "distance_km": 20.7,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/514827143",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/514827143:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 51,
+          "distance_km": 21.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1750,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/514827143:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 51,
+          "distance_km": 21.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2800,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/514827143:DXB:metro",
+          "mode": "metro",
+          "duration_min": 56,
+          "distance_km": 21.0,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/126601133",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/126601133:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 50,
+          "distance_km": 20.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1750,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/126601133:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 50,
+          "distance_km": 20.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2800,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/126601133:DXB:metro",
+          "mode": "metro",
+          "duration_min": 55,
+          "distance_km": 20.5,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/12180426387",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/12180426387:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 51,
+          "distance_km": 20.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1700,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:node/12180426387:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 51,
+          "distance_km": 20.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2700,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/12180426387:DXB:metro",
+          "mode": "metro",
+          "duration_min": 55,
+          "distance_km": 20.4,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/1155036334",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/1155036334:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 71,
+          "distance_km": 40.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2850,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:node/1155036334:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 71,
+          "distance_km": 40.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4550,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/1155036334:DXB:metro",
+          "mode": "metro",
+          "duration_min": 89,
+          "distance_km": 40.5,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/4511016805",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/4511016805:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 68,
+          "distance_km": 39.9,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2800,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:node/4511016805:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 68,
+          "distance_km": 39.9,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4500,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/4511016805:DXB:metro",
+          "mode": "metro",
+          "duration_min": 88,
+          "distance_km": 39.9,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/12480115865",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/12480115865:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 72,
+          "distance_km": 40.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2850,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:node/12480115865:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 72,
+          "distance_km": 40.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4550,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/12480115865:DXB:metro",
+          "mode": "metro",
+          "duration_min": 90,
+          "distance_km": 40.7,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/169356188",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/169356188:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 84,
+          "distance_km": 47.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3200,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/169356188:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 84,
+          "distance_km": 47.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5100,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/169356188:DXB:metro",
+          "mode": "metro",
+          "duration_min": 101,
+          "distance_km": 47.5,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/89790675",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/89790675:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 77,
+          "distance_km": 44.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3050,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/89790675:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 77,
+          "distance_km": 44.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4900,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/199500497",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/199500497:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 73,
+          "distance_km": 41.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2850,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/199500497:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 73,
+          "distance_km": 41.2,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4550,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/536065296",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/536065296:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 70,
+          "distance_km": 39.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2800,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/536065296:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 70,
+          "distance_km": 39.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4500,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/591560667",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/591560667:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 87,
+          "distance_km": 48.3,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3250,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/591560667:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 87,
+          "distance_km": 48.3,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 5200,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/2130527272",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/2130527272:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 62,
+          "distance_km": 34.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2450,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:node/2130527272:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 62,
+          "distance_km": 34.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3900,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:node/2130527272:DXB:metro",
+          "mode": "metro",
+          "duration_min": 78,
+          "distance_km": 34.0,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/532818899",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/532818899:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 62,
+          "distance_km": 33.3,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2450,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/532818899:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 62,
+          "distance_km": 33.3,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3900,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/532818899:DXB:metro",
+          "mode": "metro",
+          "duration_min": 77,
+          "distance_km": 33.3,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/721802993",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/721802993:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 63,
+          "distance_km": 34.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2500,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/721802993:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 63,
+          "distance_km": 34.4,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 4000,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/721802993:DXB:metro",
+          "mode": "metro",
+          "duration_min": 79,
+          "distance_km": 34.4,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/532818903",
+      "airport": "DXB",
+      "tz": "Asia/Dubai",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/532818903:DXB:taxi",
+          "mode": "taxi",
+          "duration_min": 64,
+          "distance_km": 33.8,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 2450,
+            "capacity": 4
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "osrm",
+          "labels": [
+            "small_capacity"
+          ]
+        },
+        {
+          "id": "osm:way/532818903:DXB:private_minivan",
+          "mode": "private_minivan",
+          "duration_min": 64,
+          "distance_km": 33.8,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 3900,
+            "capacity": 7
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": true,
+          "pets": true,
+          "prebook_hours": 24,
+          "source": "osrm",
+          "labels": [
+            "prebook_required"
+          ]
+        },
+        {
+          "id": "osm:way/532818903:DXB:metro",
+          "mode": "metro",
+          "duration_min": 78,
+          "distance_km": 33.8,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 180,
+            "child_price_rub": 100
+          },
+          "hours": {
+            "from": "05:00",
+            "to": "00:00"
+          },
+          "luggage_limit": "2 места багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "luggage_limit",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/535156293",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/535156293:MLE:taxi",
+          "mode": "taxi",
+          "duration_min": 27,
+          "distance_km": 3.0,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1150,
+            "capacity": 4,
+            "night_multiplier": 1.2,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/1317139674",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/1317139674:MLE:taxi",
+          "mode": "taxi",
+          "duration_min": 28,
+          "distance_km": 3.3,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1150,
+            "capacity": 4,
+            "night_multiplier": 1.2,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/8284491717",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/8284491717:MLE:taxi",
+          "mode": "taxi",
+          "duration_min": 25,
+          "distance_km": 2.7,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1100,
+            "capacity": 4,
+            "night_multiplier": 1.2,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/11182077737",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/11182077737:MLE:taxi",
+          "mode": "taxi",
+          "duration_min": 26,
+          "distance_km": 2.8,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 1100,
+            "capacity": 4,
+            "night_multiplier": 1.2,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/133845532",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:way/133845532:MLE:taxi",
+          "mode": "taxi",
+          "duration_min": 17,
+          "distance_km": 0.5,
+          "pricing": {
+            "type": "per_vehicle",
+            "price_rub": 950,
+            "capacity": 4,
+            "night_multiplier": 1.2,
+            "night_hours": {
+              "from": "00:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": null,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "small_capacity",
+            "night_surcharge"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/773451744",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/773451744:MLE:speedboat",
+          "mode": "speedboat",
+          "duration_min": 34,
+          "distance_km": 10.4,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 7600,
+            "child_price_rub": 3800,
+            "night_multiplier": 1.5,
+            "night_hours": {
+              "from": "22:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "pets_forbidden",
+            "night_surcharge"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/8565810442",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer"
+      ],
+      "options": [
+        {
+          "id": "osm:node/8565810442:MLE:speedboat",
+          "mode": "speedboat",
+          "duration_min": 65,
+          "distance_km": 33.5,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 13400,
+            "child_price_rub": 6700
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "22:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/9852338432",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/9852338432:MLE:speedboat",
+          "mode": "speedboat",
+          "duration_min": 46,
+          "distance_km": 19.2,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 9800,
+            "child_price_rub": 4900,
+            "night_multiplier": 1.5,
+            "night_hours": {
+              "from": "22:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "pets_forbidden",
+            "night_surcharge"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/622290137",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [],
+      "options": [
+        {
+          "id": "osm:node/622290137:MLE:speedboat",
+          "mode": "speedboat",
+          "duration_min": 70,
+          "distance_km": 37.7,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 14400,
+            "child_price_rub": 7200,
+            "night_multiplier": 1.5,
+            "night_hours": {
+              "from": "22:00",
+              "to": "06:00"
+            }
+          },
+          "hours": null,
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "pets_forbidden",
+            "night_surcharge"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/2457795615",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer"
+      ],
+      "options": [
+        {
+          "id": "osm:node/2457795615:MLE:speedboat",
+          "mode": "speedboat",
+          "duration_min": 75,
+          "distance_km": 40.9,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 15200,
+            "child_price_rub": 7600
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "22:00"
+          },
+          "luggage_limit": null,
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 0,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/3988586285",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer",
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:node/3988586285:MLE:seaplane",
+          "mode": "seaplane",
+          "duration_min": 97,
+          "distance_km": 129.7,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 35500,
+            "child_price_rub": 17750
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "15:30"
+          },
+          "luggage_limit": "20 кг багажа и 5 кг ручной клади на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 72,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "daylight_only",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/4455235191",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer"
+      ],
+      "options": [
+        {
+          "id": "osm:node/4455235191:MLE:seaplane",
+          "mode": "seaplane",
+          "duration_min": 89,
+          "distance_km": 110.3,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 33000,
+            "child_price_rub": 16500
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "15:30"
+          },
+          "luggage_limit": "20 кг багажа и 5 кг ручной клади на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 72,
+          "source": "synthetic",
+          "labels": [
+            "no_night_service",
+            "daylight_only",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/5228528653",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer",
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:node/5228528653:MLE:seaplane",
+          "mode": "seaplane",
+          "duration_min": 113,
+          "distance_km": 170.1,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 40500,
+            "child_price_rub": 20250
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "15:30"
+          },
+          "luggage_limit": "20 кг багажа и 5 кг ручной клади на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 72,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "daylight_only",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/9268048974",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer",
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:node/9268048974:MLE:seaplane",
+          "mode": "seaplane",
+          "duration_min": 106,
+          "distance_km": 152.8,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 38500,
+            "child_price_rub": 19250
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "15:30"
+          },
+          "luggage_limit": "20 кг багажа и 5 кг ручной клади на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 72,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "daylight_only",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/19882871",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer",
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:way/19882871:MLE:seaplane",
+          "mode": "seaplane",
+          "duration_min": 118,
+          "distance_km": 183.5,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 42000,
+            "child_price_rub": 21000
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "15:30"
+          },
+          "luggage_limit": "20 кг багажа и 5 кг ручной клади на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 72,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "daylight_only",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/11212357332",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer",
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:node/11212357332:MLE:flight_speedboat",
+          "mode": "flight_speedboat",
+          "duration_min": 130,
+          "distance_km": 264.9,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 31000,
+            "child_price_rub": 15500
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "21:00"
+          },
+          "luggage_limit": "20 кг багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 48,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden",
+            "multi_leg"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:way/364882234",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer",
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:way/364882234:MLE:flight_speedboat",
+          "mode": "flight_speedboat",
+          "duration_min": 128,
+          "distance_km": 254.0,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 30000,
+            "child_price_rub": 15000
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "21:00"
+          },
+          "luggage_limit": "20 кг багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 48,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden",
+            "multi_leg"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/4802569136",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer",
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:node/4802569136:MLE:flight_speedboat",
+          "mode": "flight_speedboat",
+          "duration_min": 152,
+          "distance_km": 410.4,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 39500,
+            "child_price_rub": 19750
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "21:00"
+          },
+          "luggage_limit": "20 кг багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 48,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden",
+            "multi_leg"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/5156483845",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer",
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:node/5156483845:MLE:flight_speedboat",
+          "mode": "flight_speedboat",
+          "duration_min": 170,
+          "distance_km": 535.6,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 47000,
+            "child_price_rub": 23500
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "21:00"
+          },
+          "luggage_limit": "20 кг багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 48,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden",
+            "multi_leg"
+          ]
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node/5560886023",
+      "airport": "MLE",
+      "tz": "Indian/Maldives",
+      "labels": [
+        "only_scheduled_transfer",
+        "far_from_airport"
+      ],
+      "options": [
+        {
+          "id": "osm:node/5560886023:MLE:flight_speedboat",
+          "mode": "flight_speedboat",
+          "duration_min": 151,
+          "distance_km": 409.5,
+          "pricing": {
+            "type": "per_person",
+            "price_rub": 39500,
+            "child_price_rub": 19750
+          },
+          "hours": {
+            "from": "06:00",
+            "to": "21:00"
+          },
+          "luggage_limit": "20 кг багажа на человека",
+          "child_seat": null,
+          "pets": false,
+          "prebook_hours": 48,
+          "source": "synthetic",
+          "labels": [
+            "long_transfer",
+            "no_night_service",
+            "luggage_limit",
+            "prebook_required",
+            "pets_forbidden",
+            "multi_leg"
+          ]
+        }
+      ]
+    }
+  ]
+}

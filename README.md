@@ -21,6 +21,14 @@ curl -N localhost:8000/api/chat -H 'Content-Type: application/json' -d '{"messag
 
 **LLM-клиент в коде** лежит в `backend/app/llm`: `complete()` возвращает ответ целиком, вместе с вызовами инструментов и `json_mode`; `stream()` отдаёт текст по кускам; `tier="fast"` выбирает быструю модель. В тестах используйте `FakeLLMClient` с заготовленными ответами, сеть не нужна. Любая ошибка провайдера (таймаут, сеть, 5xx, битый ответ) приходит как `LLMError`.
 
+**Инструменты D1 v0.1.** Контракты шести инструментов лежат в `backend/app/contracts/tools.py`,
+заглушки и реестр — в `backend/app/tools`. Они работают без сети и ключей, по умолчанию `TOOLS_MODE=stub`.
+Примеры, смысл цен, JSON Schema и список решений для согласования — в [docs/tool-contracts.md](docs/tool-contracts.md).
+Подключение инструментов к диалогу появится в A2.
+Для опубликованной базы S4 есть `S4TransferTool`: аэропорт и ID отеля разрешаются на сервере,
+а результат передаётся в S3/S5 через `transfer_leg()`. Инструкция — в
+[docs/d1-s4-migration.md](docs/d1-s4-migration.md). Остальные решения TripState и событий интерфейса остаются O1.
+
 **Бэкенд без Docker** (нужен [uv](https://docs.astral.sh/uv/)):
 
 ```bash
