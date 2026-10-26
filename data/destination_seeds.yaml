@@ -1,0 +1,340 @@
+# Editorial destination seeds. Airports are gateways; tags are authored trip interests.
+# This file does not assert live routes, current prices, climate, or entry eligibility.
+schema_version: 1
+destinations:
+  - id: "sochi"
+    iata: "AER"
+    name: "Сочи"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Sochi", "Адлер", "Adler", "Красная Поляна", "Krasnaya Polyana"]
+    tags: ["beach", "mountains", "family"]
+  - id: "mineralnye-vody"
+    iata: "MRV"
+    name: "Минеральные Воды"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Mineralnye Vody", "Кавминводы", "Кавказские Минеральные Воды", "Кисловодск", "Пятигорск"]
+    tags: ["mountains", "sightseeing", "family"]
+  - id: "irkutsk"
+    iata: "IKT"
+    name: "Иркутск"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Irkutsk", "Листвянка", "Listvyanka", "западный Байкал", "West Baikal"]
+    tags: ["mountains", "sightseeing", "family"]
+  - id: "ulan-ude"
+    iata: "UUD"
+    name: "Улан-Удэ"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Ulan Ude", "Ulan-Ude", "Улан Удэ", "восточный Байкал", "East Baikal"]
+    tags: ["mountains", "sightseeing", "family"]
+  - id: "makhachkala"
+    iata: "MCX"
+    name: "Махачкала"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Makhachkala", "Дагестан", "Dagestan", "Дербент", "Derbent"]
+    tags: ["beach", "mountains", "sightseeing", "family"]
+  - id: "kazan"
+    iata: "KZN"
+    name: "Казань"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Kazan", "Казани", "Татарстан", "Tatarstan"]
+    tags: ["sightseeing", "family"]
+  - id: "saint-petersburg"
+    iata: "LED"
+    name: "Санкт-Петербург"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Saint Petersburg", "St Petersburg", "St. Petersburg", "Петербург", "Питер", "СПб", "Санкт Петербург"]
+    tags: ["sightseeing", "family"]
+  - id: "kaliningrad"
+    iata: "KGD"
+    name: "Калининград"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Kaliningrad", "Зеленоградск", "Zelenogradsk", "Светлогорск", "Svetlogorsk", "Куршская коса", "Curonian Spit"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "kamchatka"
+    iata: "PKC"
+    name: "Камчатка"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Kamchatka", "Петропавловск-Камчатский", "Petropavlovsk-Kamchatsky", "Елизово", "Yelizovo"]
+    tags: ["mountains", "sightseeing"]
+  - id: "vladivostok"
+    iata: "VVO"
+    name: "Владивосток"
+    country: "Россия"
+    country_code: "RU"
+    aliases: ["Vladivostok", "Приморье", "Primorye", "остров Русский", "Russky Island"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "antalya"
+    iata: "AYT"
+    name: "Анталья"
+    country: "Турция"
+    country_code: "TR"
+    aliases: ["Antalya", "Анталия", "Антальи", "Анталию", "Кемер", "Kemer", "Белек", "Belek", "Сиде", "Side"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "alanya"
+    iata: "GZP"
+    name: "Аланья"
+    country: "Турция"
+    country_code: "TR"
+    aliases: ["Alanya", "Аланьей", "Алания", "Gazipasa", "Газипаша"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "dalaman"
+    iata: "DLM"
+    name: "Даламан"
+    country: "Турция"
+    country_code: "TR"
+    aliases: ["Dalaman", "Мармарис", "Marmaris", "Фетхие", "Fethiye", "Олюдениз", "Oludeniz"]
+    tags: ["beach", "mountains", "sightseeing", "family"]
+  - id: "bodrum"
+    iata: "BJV"
+    name: "Бодрум"
+    country: "Турция"
+    country_code: "TR"
+    aliases: ["Bodrum", "Милас", "Milas"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "istanbul"
+    iata: "IST"
+    name: "Стамбул"
+    country: "Турция"
+    country_code: "TR"
+    aliases: ["Istanbul", "Константинополь", "Constantinople", "Стамбула"]
+    tags: ["sightseeing", "family"]
+  - id: "dubai"
+    iata: "DXB"
+    name: "Дубай"
+    country: "ОАЭ"
+    country_code: "AE"
+    aliases: ["Dubai", "Дубаи", "Дубая", "Дубае"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "abu-dhabi"
+    iata: "AUH"
+    name: "Абу-Даби"
+    country: "ОАЭ"
+    country_code: "AE"
+    aliases: ["Abu Dhabi", "Abu-Dhabi", "Абу Даби"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "sharjah"
+    iata: "SHJ"
+    name: "Шарджа"
+    country: "ОАЭ"
+    country_code: "AE"
+    aliases: ["Sharjah", "Шарджи", "Шардже"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "hurghada"
+    iata: "HRG"
+    name: "Хургада"
+    country: "Египет"
+    country_code: "EG"
+    aliases: ["Hurghada", "Хургаде", "Хургады", "Хургаду"]
+    tags: ["beach", "family"]
+  - id: "sharm-el-sheikh"
+    iata: "SSH"
+    name: "Шарм-эш-Шейх"
+    country: "Египет"
+    country_code: "EG"
+    aliases: ["Sharm El Sheikh", "Sharm el-Sheikh", "Шарм эль Шейх", "Шарм-эль-Шейх", "Шарм", "Sharm"]
+    tags: ["beach", "family"]
+  - id: "cairo"
+    iata: "CAI"
+    name: "Каир"
+    country: "Египет"
+    country_code: "EG"
+    aliases: ["Cairo", "Гиза", "Giza", "Каира"]
+    tags: ["sightseeing", "family"]
+  - id: "phuket"
+    iata: "HKT"
+    name: "Пхукет"
+    country: "Таиланд"
+    country_code: "TH"
+    aliases: ["Phuket", "Пхукете", "Пхукета"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "koh-samui"
+    iata: "USM"
+    name: "Самуи"
+    country: "Таиланд"
+    country_code: "TH"
+    aliases: ["Koh Samui", "Ko Samui", "Samui", "остров Самуи"]
+    tags: ["beach", "family"]
+  - id: "bangkok"
+    iata: "BKK"
+    name: "Бангкок"
+    country: "Таиланд"
+    country_code: "TH"
+    aliases: ["Bangkok", "Бангкока", "Бангкоке"]
+    tags: ["sightseeing", "family"]
+  - id: "chiang-mai"
+    iata: "CNX"
+    name: "Чиангмай"
+    country: "Таиланд"
+    country_code: "TH"
+    aliases: ["Chiang Mai", "Chiangmai", "Чианг Май", "Чианг-Май"]
+    tags: ["mountains", "sightseeing", "family"]
+  - id: "nha-trang"
+    iata: "CXR"
+    name: "Нячанг"
+    country: "Вьетнам"
+    country_code: "VN"
+    aliases: ["Nha Trang", "Ньячанг", "Нячанге", "Камрань", "Cam Ranh"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "phu-quoc"
+    iata: "PQC"
+    name: "Фукуок"
+    country: "Вьетнам"
+    country_code: "VN"
+    aliases: ["Phu Quoc", "Phuquoc", "Фу Куок", "Фукуоке"]
+    tags: ["beach", "family"]
+  - id: "da-nang"
+    iata: "DAD"
+    name: "Дананг"
+    country: "Вьетнам"
+    country_code: "VN"
+    aliases: ["Da Nang", "Danang", "Да Нанг", "Хойан", "Hoi An"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "maldives"
+    iata: "MLE"
+    name: "Мальдивы"
+    country: "Мальдивы"
+    country_code: "MV"
+    aliases: ["Maldives", "Male", "Malé", "Мале", "Мальдивах", "Мальдив"]
+    tags: ["beach", "family"]
+  - id: "sri-lanka"
+    iata: "CMB"
+    name: "Шри-Ланка"
+    country: "Шри-Ланка"
+    country_code: "LK"
+    aliases: ["Sri Lanka", "Коломбо", "Colombo", "Цейлон", "Ceylon"]
+    tags: ["beach", "mountains", "sightseeing", "family"]
+  - id: "bali"
+    iata: "DPS"
+    name: "Бали"
+    country: "Индонезия"
+    country_code: "ID"
+    aliases: ["Bali", "Денпасар", "Denpasar", "Убуд", "Ubud"]
+    tags: ["beach", "mountains", "sightseeing", "family"]
+  - id: "seychelles"
+    iata: "SEZ"
+    name: "Сейшелы"
+    country: "Сейшелы"
+    country_code: "SC"
+    aliases: ["Seychelles", "Mahe", "Mahé", "Маэ", "Сейшелах"]
+    tags: ["beach", "family"]
+  - id: "mauritius"
+    iata: "MRU"
+    name: "Маврикий"
+    country: "Маврикий"
+    country_code: "MU"
+    aliases: ["Mauritius", "Порт-Луи", "Port Louis", "Маврикии"]
+    tags: ["beach", "mountains", "sightseeing", "family"]
+  - id: "zanzibar"
+    iata: "ZNZ"
+    name: "Занзибар"
+    country: "Танзания"
+    country_code: "TZ"
+    aliases: ["Zanzibar", "Стоун-Таун", "Stone Town", "Занзибаре"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "tbilisi"
+    iata: "TBS"
+    name: "Тбилиси"
+    country: "Грузия"
+    country_code: "GE"
+    aliases: ["Tbilisi", "Тифлис", "Tiflis", "Казбеги", "Kazbegi", "Гудаури", "Gudauri"]
+    tags: ["mountains", "sightseeing", "family"]
+  - id: "batumi"
+    iata: "BUS"
+    name: "Батуми"
+    country: "Грузия"
+    country_code: "GE"
+    aliases: ["Batumi", "Аджария", "Adjara"]
+    tags: ["beach", "mountains", "sightseeing", "family"]
+  - id: "yerevan"
+    iata: "EVN"
+    name: "Ереван"
+    country: "Армения"
+    country_code: "AM"
+    aliases: ["Yerevan", "Erevan", "Цахкадзор", "Tsaghkadzor", "Севан", "Sevan"]
+    tags: ["mountains", "sightseeing", "family"]
+  - id: "baku"
+    iata: "GYD"
+    name: "Баку"
+    country: "Азербайджан"
+    country_code: "AZ"
+    aliases: ["Baku", "Baki", "Бакы"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "almaty"
+    iata: "ALA"
+    name: "Алматы"
+    country: "Казахстан"
+    country_code: "KZ"
+    aliases: ["Almaty", "Алма-Ата", "Alma Ata", "Шымбулак", "Shymbulak"]
+    tags: ["mountains", "sightseeing", "family"]
+  - id: "astana"
+    iata: "NQZ"
+    name: "Астана"
+    country: "Казахстан"
+    country_code: "KZ"
+    aliases: ["Astana", "Нур-Султан", "Nur Sultan", "TSE"]
+    tags: ["sightseeing", "family"]
+  - id: "tashkent"
+    iata: "TAS"
+    name: "Ташкент"
+    country: "Узбекистан"
+    country_code: "UZ"
+    aliases: ["Tashkent", "Toshkent"]
+    tags: ["sightseeing", "family"]
+  - id: "samarkand"
+    iata: "SKD"
+    name: "Самарканд"
+    country: "Узбекистан"
+    country_code: "UZ"
+    aliases: ["Samarkand", "Samarqand"]
+    tags: ["sightseeing", "family"]
+  - id: "bishkek"
+    iata: "BSZ"
+    name: "Бишкек"
+    country: "Кыргызстан"
+    country_code: "KG"
+    aliases: ["Bishkek", "Фрунзе", "Frunze", "Манас", "Manas", "FRU"]
+    tags: ["mountains", "sightseeing", "family"]
+  - id: "minsk"
+    iata: "MSQ"
+    name: "Минск"
+    country: "Беларусь"
+    country_code: "BY"
+    aliases: ["Minsk", "Белоруссия"]
+    tags: ["sightseeing", "family"]
+  - id: "belgrade"
+    iata: "BEG"
+    name: "Белград"
+    country: "Сербия"
+    country_code: "RS"
+    aliases: ["Belgrade", "Beograd", "Нови-Сад", "Novi Sad"]
+    tags: ["sightseeing", "family"]
+  - id: "sanya"
+    iata: "SYX"
+    name: "Санья"
+    country: "Китай"
+    country_code: "CN"
+    aliases: ["Sanya", "Хайнань", "Hainan", "Санье"]
+    tags: ["beach", "sightseeing", "family"]
+  - id: "beijing"
+    iata: "PEK"
+    name: "Пекин"
+    country: "Китай"
+    country_code: "CN"
+    aliases: ["Beijing", "Peking", "Пекине"]
+    tags: ["sightseeing", "family"]
+  - id: "tokyo"
+    iata: "NRT"
+    name: "Токио"
+    country: "Япония"
+    country_code: "JP"
+    aliases: ["Tokyo", "Narita", "Нарита"]
+    tags: ["sightseeing", "family"]

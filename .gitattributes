@@ -1,2 +1,5 @@
 # LF во всех текстовых файлах: Dockerfile и скрипты с CRLF ломаются в контейнере
 * text=auto eol=lf
+
+# Preserve the pinned upstream MIT notice byte-for-byte, including its final blank line.
+data/sources/airports-MIT-LICENSE.txt whitespace=-blank-at-eof

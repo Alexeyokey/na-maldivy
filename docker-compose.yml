@@ -4,6 +4,8 @@ services:
     env_file:
       - path: .env
         required: false # без .env агент работает на фейковой модели
+    environment:
+      DESTINATIONS_DATA_PATH: /data/destinations.yaml
     ports:
       - "${AGENT_PORT:-8000}:8000"
     volumes:
