@@ -163,8 +163,10 @@ historical `osm:node:123`/`osm:way:123`/`osm:relation:123` to the canonical
 `get_synthetic_rules`, `get_hotel_profile`, and `hotel_id_for_offer` accept known
 legacy lookup IDs but return canonical identities. New catalogue, rule, review,
 profile, place and offer outputs use canonical IDs only. This aligns the identity
-format with S4; it does not assert that S4's separate unpublished hotel list has
-been synchronized with these 72 objects.
+format with published S4. Its 60-hotel catalogue overlaps in only six objects
+(AYT: one, MLE: five, DXB: none); the remaining 66 U2 hotels have no published S4 route.
+The compatibility suite checks all six through actual U2 offers, S3 timelines and S5 rules.
+The synthetic D3 `far_transfer` override is not substituted for an S4 route duration.
 
 Review/profile filenames remain flat, e.g. `osm-node-123.json`: both `:` and `/`
 are escaped as `-`. Offer parsing separates the final digest using `rsplit("/",1)`

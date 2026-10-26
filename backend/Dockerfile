@@ -9,7 +9,8 @@ ENV UV_COMPILE_BYTECODE=1 \
     PATH="/opt/venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     DESTINATIONS_DATA_PATH=/app/data/destinations.yaml \
-    NA_MALDIVY_DATA_DIR=/app/data
+    NA_MALDIVY_DATA_DIR=/app/data \
+    TRANSFERS_PATH=/app/data/transfers/transfers.json
 
 WORKDIR /app
 
@@ -22,6 +23,7 @@ COPY data/sources/airports-MIT-LICENSE.txt ./data/sources/airports-MIT-LICENSE.t
 COPY data/routes ./data/routes
 COPY data/trains ./data/trains
 COPY data/hotels ./data/hotels
+COPY data/transfers ./data/transfers
 COPY data/hotel_reviews ./data/hotel_reviews
 COPY data/hotel_profiles ./data/hotel_profiles
 COPY data/cache ./data/cache

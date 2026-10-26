@@ -16,6 +16,8 @@
 !data/trains/**
 !data/hotels/
 !data/hotels/**
+!data/transfers/
+!data/transfers/**
 !data/hotel_reviews/
 !data/hotel_reviews/**
 !data/hotel_profiles/

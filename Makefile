@@ -1,4 +1,4 @@
-.PHONY: up down logs dev check check-fast test lint fmt destinations destinations-data schemas tool-examples u2-check u2-demo
+.PHONY: up down logs dev check check-fast test lint fmt destinations destinations-data schemas tool-examples u2-check u2-demo u2-compat-check
 
 up:
 	docker compose up --build -d --wait
@@ -46,3 +46,6 @@ u2-check:
 
 u2-demo:
 	cd backend && CACHE_MODE=replay LLM_PROVIDER=fake uv run --locked --offline python -m app.u2_cli
+
+u2-compat-check:
+	cd backend && CACHE_MODE=replay LLM_PROVIDER=fake uv run --locked --offline pytest tests/test_u2_booking_compatibility.py tests/test_data_services.py tests/test_s4_adapter.py tests/test_unknown_hotel_times.py
