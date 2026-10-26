@@ -23,17 +23,20 @@ EXAMPLES = {
     "search_trains": {"origin": "LED", "destination": "MOW", "departure_date": "2026-11-15"},
     "get_transfer": {
         "origin": {
+            "kind": "airport",
             "iata": "AYT",
             "name": "Аэропорт Антальи",
-            "latitude": 36.9,
-            "longitude": 30.8,
+            "latitude": 36.8987,
+            "longitude": 30.8005,
             "timezone": "Europe/Istanbul",
         },
         "destination": {
+            "kind": "hotel",
+            "id": "demo-ayt-budget",
             "iata": "AYT",
             "name": "Demo Hotel",
-            "latitude": 36.8,
-            "longitude": 30.7,
+            "latitude": 36.9007,
+            "longitude": 30.8025,
             "timezone": "Europe/Istanbul",
         },
         "pickup_at": "2026-11-15T12:00:00+03:00",
@@ -50,6 +53,12 @@ def test_all_six_input_schemas_resolve_and_validate_examples() -> None:
         Draft202012Validator.check_schema(spec.parameters)
         Draft202012Validator(spec.parameters).validate(EXAMPLES[spec.name])
         TOOLS[spec.name].input_model.model_validate(EXAMPLES[spec.name])
+
+
+async def test_transfer_registry_example_returns_a_valid_nonempty_alternatives_list() -> None:
+    alternatives = await run_tool("get_transfer", EXAMPLES["get_transfer"])
+    assert isinstance(alternatives, list) and alternatives
+    assert alternatives == sorted(alternatives, key=lambda item: (not item.available, item.price_rub, item.id))
 
 
 async def test_generated_specs_reach_openai_compatible_api_unchanged() -> None:

@@ -17,10 +17,9 @@ never be presented as actual conditions at the real named hotel.** In particular
 synthetic beach distance is not inferred from the real OSM coordinates.
 
 The rich output includes both layers, provenance, and a notice. Its compatibility
-`HotelOffer.name` adds `[синтетические условия]`, and `is_synthetic=true`. D1 v0 has
-no nullable stars, so this projection maps unknown OSM stars to `0`; this means
-“unknown in this adapter”, not a certified zero-star category. `min_stars > 0`
-excludes unknown stars. The richer `facts.stars` remains `null`.
+`HotelOffer.name` adds `[синтетические условия]`, and `is_synthetic=true`. D1 keeps unknown OSM stars as `null`, including the compatibility offer. `min_stars > 0`
+excludes unknown stars. Reception and early-check-in availability use explicit fields;
+`reception_closes_at=null` alone never supplies a claim of 24-hour service.
 
 ## Snapshot regions and licensing
 
@@ -61,15 +60,17 @@ backend/.venv/bin/python scripts/fetch_hotels.py --from-snapshots
 
 ## Identity, search and price scope
 
-- `hotel_id = osm:<node|way|relation>:<id>` is a stable OSM object identity across
+- `hotel_id = osm:<node|way|relation>/<id>` is a stable OSM object identity across
   dates/parties. OSM object replacement or merging can still require identity
   reconciliation; name similarity is not used as a permanent global key.
-- `offer.id = synthetic-hotel/<hotel_id>/<20-hex-query-digest>` identifies one
+- `offer.offer_id = synthetic-hotel/<hotel_id>/<20-hex-query-digest>` identifies one
   synthetic tariff query, including dates, party, filters and tariff version.
-  It is not a supplier booking token or proof of availability.
+  It is not a supplier booking token or proof of availability. `HotelOffer.hotel_id`,
+  rich result `hotel_id`, and hotel `Place.id` are identical; `Place.kind="hotel"`.
+  JSON emits `offer_id`; the legacy `id` input alias/property is provided by D1.
 - `search_hotel_results(HotelSearch)` returns rich results including `hotel_id`,
   OSM `facts`, `synthetic_rules`, the compatible `offer`, and a synthetic profile.
-- `search_hotels(HotelSearch)` returns the D1 v0 `list[HotelOffer]` projection.
+- `search_hotels(HotelSearch)` returns the D1 `list[HotelOffer]` projection.
 - `HotelSearchTool` implements the existing `Tool` protocol.
 - `hotel_id_for_offer()` extracts a known physical-object identity from a
   well-formed demo offer ID; it does not authenticate or revalidate a booking.
@@ -140,7 +141,7 @@ an explicitly configured non-fake provider and a deliberate command:
 
 ```bash
 backend/.venv/bin/python scripts/build_hotel_profiles.py \
-  --mode llm --allow-live-llm --hotel-id 'osm:node:REPLACE_WITH_KNOWN_ID'
+  --mode llm --allow-live-llm --hotel-id 'osm:node/REPLACE_WITH_KNOWN_ID'
 ```
 
 This optional command may use the configured provider and incur its charges.
@@ -153,3 +154,29 @@ O1 should agree nullable star/rule fields, stable `hotel_id` versus offer ID,
 commercial-field provenance, and how profiles attach to ranking facts. D3 data
 and independent search are usable now; A2/R2 integration remains separate. D7's
 live-model extraction and assessment on non-template data remain unverified.
+
+## Canonical ID migration
+
+The 72 selected OSM objects are unchanged. `data/hotels/id_aliases.json` maps each
+historical `osm:node:123`/`osm:way:123`/`osm:relation:123` to the canonical
+`osm:node/123`/`osm:way/123`/`osm:relation/123`. `normalize_hotel_id`,
+`get_synthetic_rules`, `get_hotel_profile`, and `hotel_id_for_offer` accept known
+legacy lookup IDs but return canonical identities. New catalogue, rule, review,
+profile, place and offer outputs use canonical IDs only. This aligns the identity
+format with S4; it does not assert that S4's separate unpublished hotel list has
+been synchronized with these 72 objects.
+
+Review/profile filenames remain flat, e.g. `osm-node-123.json`: both `:` and `/`
+are escaped as `-`. Offer parsing separates the final digest using `rsplit("/",1)`
+because the canonical hotel ID itself contains `/`. Raw OSM snapshots and their
+source hashes are not rewritten during ID migration. Synthetic fixture seed and
+inventory keys preserve the original physical identity so spelling migration
+does not by itself change prices or availability; new offer digests use canonical IDs.
+
+Offline regeneration after identity/contract changes:
+
+```bash
+backend/.venv/bin/python scripts/fetch_hotels.py --from-snapshots
+backend/.venv/bin/python scripts/build_hotel_profiles.py --generate-demo-data
+backend/.venv/bin/python scripts/build_hotel_profiles.py --check
+```

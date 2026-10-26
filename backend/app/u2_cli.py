@@ -6,6 +6,7 @@ import json
 from datetime import date, timedelta
 from pathlib import Path
 
+from app.contracts.identifiers import canonical_hotel_id
 from app.contracts.tools import FlightSearch, HotelSearch, PriceCalendarQuery, TrainSearch, Travelers
 from app.tools.currency import load_cbr_rates
 from app.tools.destinations import suggest_destinations
@@ -31,6 +32,7 @@ async def quote_demo_trip(
     Overnight arrivals are excluded from this simplified pricing example rather
     than silently omitting an extra hotel night. S3/S5 own the final timeline.
     """
+    hotel_id = canonical_hotel_id(hotel_id)
     try:
         end = day + timedelta(days=nights)
     except OverflowError:

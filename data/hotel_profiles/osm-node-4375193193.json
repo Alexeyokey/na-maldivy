@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "hotel_id": "osm:node:4375193193",
+  "hotel_id": "osm:node/4375193193",
   "is_synthetic": true,
   "notice": "Это профиль синтетического тестового корпуса, не характеристика реального отеля по реальным отзывам.",
   "review_count": 24,
   "corpus_generator": "codex-authored-synthetic-templates-v1",
-  "corpus_sha256": "423b1ce0944a1ec3d2215cf9f90c930480f0dae59044ed1ae615df3fe55be7f9",
+  "corpus_sha256": "a66666f3a68ed0000ccd6daaef7cd7b99901f090b91c2d471c06fc49181288f9",
   "extraction": {
     "method": "lexical-fixture-baseline-v1",
     "model": null,
@@ -19,7 +19,7 @@
       "review_count": 1,
       "evidence": [
         {
-          "review_id": "synthetic-review/osm:node:4375193193/family/01",
+          "review_id": "synthetic-review/osm:node/4375193193/family/01",
           "sentiment": "positive",
           "quote": "В модельном сценарии детям было удобно играть."
         }
@@ -32,22 +32,22 @@
       "review_count": 4,
       "evidence": [
         {
-          "review_id": "synthetic-review/osm:node:4375193193/family/03",
+          "review_id": "synthetic-review/osm:node/4375193193/family/03",
           "sentiment": "positive",
           "quote": "В модельном сценарии номер был чистым."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/couple/02",
+          "review_id": "synthetic-review/osm:node/4375193193/couple/02",
           "sentiment": "positive",
           "quote": "В модельном сценарии номер был чистым."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/business/05",
+          "review_id": "synthetic-review/osm:node/4375193193/business/05",
           "sentiment": "positive",
           "quote": "В модельном сценарии номер был чистым."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/pets/04",
+          "review_id": "synthetic-review/osm:node/4375193193/pets/04",
           "sentiment": "positive",
           "quote": "В модельном сценарии номер был чистым."
         }
@@ -60,22 +60,22 @@
       "review_count": 4,
       "evidence": [
         {
-          "review_id": "synthetic-review/osm:node:4375193193/family/04",
+          "review_id": "synthetic-review/osm:node/4375193193/family/04",
           "sentiment": "positive",
           "quote": "В модельном сценарии завтрак был разнообразным."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/couple/04",
+          "review_id": "synthetic-review/osm:node/4375193193/couple/04",
           "sentiment": "positive",
           "quote": "В модельном сценарии завтрак был разнообразным."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/business/04",
+          "review_id": "synthetic-review/osm:node/4375193193/business/04",
           "sentiment": "positive",
           "quote": "В модельном сценарии завтрак был разнообразным."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/pets/05",
+          "review_id": "synthetic-review/osm:node/4375193193/pets/05",
           "sentiment": "positive",
           "quote": "В модельном сценарии завтрак был разнообразным."
         }
@@ -88,22 +88,22 @@
       "review_count": 4,
       "evidence": [
         {
-          "review_id": "synthetic-review/osm:node:4375193193/family/05",
+          "review_id": "synthetic-review/osm:node/4375193193/family/05",
           "sentiment": "positive",
           "quote": "В модельном сценарии до пляжа было удобно идти."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/couple/03",
+          "review_id": "synthetic-review/osm:node/4375193193/couple/03",
           "sentiment": "positive",
           "quote": "В модельном сценарии до пляжа было удобно идти."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/business/06",
+          "review_id": "synthetic-review/osm:node/4375193193/business/06",
           "sentiment": "positive",
           "quote": "В модельном сценарии до пляжа было удобно идти."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/pets/06",
+          "review_id": "synthetic-review/osm:node/4375193193/pets/06",
           "sentiment": "positive",
           "quote": "В модельном сценарии до пляжа было удобно идти."
         }
@@ -116,22 +116,22 @@
       "review_count": 4,
       "evidence": [
         {
-          "review_id": "synthetic-review/osm:node:4375193193/family/02",
+          "review_id": "synthetic-review/osm:node/4375193193/family/02",
           "sentiment": "negative",
           "quote": "В модельном сценарии ночной шум мешал спать."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/couple/06",
+          "review_id": "synthetic-review/osm:node/4375193193/couple/06",
           "sentiment": "positive",
           "quote": "В модельном сценарии в номере было тихо."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/business/03",
+          "review_id": "synthetic-review/osm:node/4375193193/business/03",
           "sentiment": "negative",
           "quote": "В модельном сценарии ночной шум мешал спать."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/pets/03",
+          "review_id": "synthetic-review/osm:node/4375193193/pets/03",
           "sentiment": "negative",
           "quote": "В модельном сценарии ночной шум мешал спать."
         }
@@ -144,12 +144,12 @@
       "review_count": 2,
       "evidence": [
         {
-          "review_id": "synthetic-review/osm:node:4375193193/pets/01",
+          "review_id": "synthetic-review/osm:node/4375193193/pets/01",
           "sentiment": "negative",
           "quote": "В модельном сценарии размещение с собакой было запрещено."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/pets/02",
+          "review_id": "synthetic-review/osm:node/4375193193/pets/02",
           "sentiment": "negative",
           "quote": "В модельном сценарии размещение с собакой было запрещено."
         }
@@ -162,12 +162,12 @@
       "review_count": 2,
       "evidence": [
         {
-          "review_id": "synthetic-review/osm:node:4375193193/couple/01",
+          "review_id": "synthetic-review/osm:node/4375193193/couple/01",
           "sentiment": "positive",
           "quote": "В модельном сценарии сотрудники помогали вежливо и быстро."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/couple/05",
+          "review_id": "synthetic-review/osm:node/4375193193/couple/05",
           "sentiment": "negative",
           "quote": "В модельном сценарии сотрудники долго не отвечали на просьбы."
         }
@@ -180,17 +180,17 @@
       "review_count": 3,
       "evidence": [
         {
-          "review_id": "synthetic-review/osm:node:4375193193/family/06",
+          "review_id": "synthetic-review/osm:node/4375193193/family/06",
           "sentiment": "negative",
           "quote": "В модельном сценарии Wi-Fi часто прерывался."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/business/01",
+          "review_id": "synthetic-review/osm:node/4375193193/business/01",
           "sentiment": "positive",
           "quote": "В модельном сценарии Wi-Fi работал стабильно."
         },
         {
-          "review_id": "synthetic-review/osm:node:4375193193/business/02",
+          "review_id": "synthetic-review/osm:node/4375193193/business/02",
           "sentiment": "positive",
           "quote": "В модельном сценарии Wi-Fi работал стабильно."
         }
@@ -208,7 +208,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/family/01",
+              "review_id": "synthetic-review/osm:node/4375193193/family/01",
               "sentiment": "positive",
               "quote": "В модельном сценарии детям было удобно играть."
             }
@@ -221,7 +221,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/family/03",
+              "review_id": "synthetic-review/osm:node/4375193193/family/03",
               "sentiment": "positive",
               "quote": "В модельном сценарии номер был чистым."
             }
@@ -234,7 +234,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/family/04",
+              "review_id": "synthetic-review/osm:node/4375193193/family/04",
               "sentiment": "positive",
               "quote": "В модельном сценарии завтрак был разнообразным."
             }
@@ -247,7 +247,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/family/05",
+              "review_id": "synthetic-review/osm:node/4375193193/family/05",
               "sentiment": "positive",
               "quote": "В модельном сценарии до пляжа было удобно идти."
             }
@@ -260,7 +260,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/family/02",
+              "review_id": "synthetic-review/osm:node/4375193193/family/02",
               "sentiment": "negative",
               "quote": "В модельном сценарии ночной шум мешал спать."
             }
@@ -273,7 +273,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/family/06",
+              "review_id": "synthetic-review/osm:node/4375193193/family/06",
               "sentiment": "negative",
               "quote": "В модельном сценарии Wi-Fi часто прерывался."
             }
@@ -319,7 +319,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/couple/02",
+              "review_id": "synthetic-review/osm:node/4375193193/couple/02",
               "sentiment": "positive",
               "quote": "В модельном сценарии номер был чистым."
             }
@@ -332,7 +332,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/couple/04",
+              "review_id": "synthetic-review/osm:node/4375193193/couple/04",
               "sentiment": "positive",
               "quote": "В модельном сценарии завтрак был разнообразным."
             }
@@ -345,7 +345,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/couple/03",
+              "review_id": "synthetic-review/osm:node/4375193193/couple/03",
               "sentiment": "positive",
               "quote": "В модельном сценарии до пляжа было удобно идти."
             }
@@ -358,7 +358,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/couple/06",
+              "review_id": "synthetic-review/osm:node/4375193193/couple/06",
               "sentiment": "positive",
               "quote": "В модельном сценарии в номере было тихо."
             }
@@ -371,12 +371,12 @@
           "review_count": 2,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/couple/01",
+              "review_id": "synthetic-review/osm:node/4375193193/couple/01",
               "sentiment": "positive",
               "quote": "В модельном сценарии сотрудники помогали вежливо и быстро."
             },
             {
-              "review_id": "synthetic-review/osm:node:4375193193/couple/05",
+              "review_id": "synthetic-review/osm:node/4375193193/couple/05",
               "sentiment": "negative",
               "quote": "В модельном сценарии сотрудники долго не отвечали на просьбы."
             }
@@ -422,7 +422,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/business/05",
+              "review_id": "synthetic-review/osm:node/4375193193/business/05",
               "sentiment": "positive",
               "quote": "В модельном сценарии номер был чистым."
             }
@@ -435,7 +435,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/business/04",
+              "review_id": "synthetic-review/osm:node/4375193193/business/04",
               "sentiment": "positive",
               "quote": "В модельном сценарии завтрак был разнообразным."
             }
@@ -448,7 +448,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/business/06",
+              "review_id": "synthetic-review/osm:node/4375193193/business/06",
               "sentiment": "positive",
               "quote": "В модельном сценарии до пляжа было удобно идти."
             }
@@ -461,7 +461,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/business/03",
+              "review_id": "synthetic-review/osm:node/4375193193/business/03",
               "sentiment": "negative",
               "quote": "В модельном сценарии ночной шум мешал спать."
             }
@@ -474,12 +474,12 @@
           "review_count": 2,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/business/01",
+              "review_id": "synthetic-review/osm:node/4375193193/business/01",
               "sentiment": "positive",
               "quote": "В модельном сценарии Wi-Fi работал стабильно."
             },
             {
-              "review_id": "synthetic-review/osm:node:4375193193/business/02",
+              "review_id": "synthetic-review/osm:node/4375193193/business/02",
               "sentiment": "positive",
               "quote": "В модельном сценарии Wi-Fi работал стабильно."
             }
@@ -521,7 +521,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/pets/04",
+              "review_id": "synthetic-review/osm:node/4375193193/pets/04",
               "sentiment": "positive",
               "quote": "В модельном сценарии номер был чистым."
             }
@@ -534,7 +534,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/pets/05",
+              "review_id": "synthetic-review/osm:node/4375193193/pets/05",
               "sentiment": "positive",
               "quote": "В модельном сценарии завтрак был разнообразным."
             }
@@ -547,7 +547,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/pets/06",
+              "review_id": "synthetic-review/osm:node/4375193193/pets/06",
               "sentiment": "positive",
               "quote": "В модельном сценарии до пляжа было удобно идти."
             }
@@ -560,7 +560,7 @@
           "review_count": 1,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/pets/03",
+              "review_id": "synthetic-review/osm:node/4375193193/pets/03",
               "sentiment": "negative",
               "quote": "В модельном сценарии ночной шум мешал спать."
             }
@@ -573,12 +573,12 @@
           "review_count": 2,
           "evidence": [
             {
-              "review_id": "synthetic-review/osm:node:4375193193/pets/01",
+              "review_id": "synthetic-review/osm:node/4375193193/pets/01",
               "sentiment": "negative",
               "quote": "В модельном сценарии размещение с собакой было запрещено."
             },
             {
-              "review_id": "synthetic-review/osm:node:4375193193/pets/02",
+              "review_id": "synthetic-review/osm:node/4375193193/pets/02",
               "sentiment": "negative",
               "quote": "В модельном сценарии размещение с собакой было запрещено."
             }

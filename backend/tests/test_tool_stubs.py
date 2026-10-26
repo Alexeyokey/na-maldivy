@@ -1,6 +1,6 @@
 """Поведенческие проверки воспроизводимого D1-каталога без сети и моделей."""
 
-from datetime import UTC, date, datetime, timedelta
+from datetime import UTC, date, datetime, time, timedelta
 from zoneinfo import ZoneInfo
 
 import pytest
@@ -12,10 +12,13 @@ from app.contracts.tools import (
     Place,
     PriceCalendarQuery,
     TrainSearch,
+    Transfer,
+    TransferHours,
     TransferQuery,
     Travelers,
 )
-from app.tools.stubs import create_stub_tools
+from app.tools.errors import UnsupportedTransfer
+from app.tools.stubs import _next_departure, create_stub_tools
 
 
 @pytest.fixture
@@ -174,31 +177,249 @@ async def transfer_query(tools, hour=12, adults=1):
 async def test_transfer_group_vehicle_capacity_and_local_night_coefficient(tools):
     transfer_tool = tools["get_transfer"]
     query = await transfer_query(tools)
-    solo = await transfer_tool.run(query)
-    four = await transfer_tool.run(query.model_copy(update={"travelers": Travelers(adults=4)}))
-    five = await transfer_tool.run(query.model_copy(update={"travelers": Travelers(adults=5)}))
-    night = await transfer_tool.run(await transfer_query(tools, hour=23))
+
+    def taxi(options):
+        return next(item for item in options if item.mode == "taxi")
+
+    solo = taxi(await transfer_tool.run(query))
+    four = taxi(await transfer_tool.run(query.model_copy(update={"travelers": Travelers(adults=4)})))
+    five = taxi(await transfer_tool.run(query.model_copy(update={"travelers": Travelers(adults=5)})))
+    night = taxi(await transfer_tool.run(await transfer_query(tools, hour=23)))
     assert solo.price_rub == four.price_rub
     assert five.price_rub == 2 * solo.price_rub
     assert night.price_rub > solo.price_rub
     assert night.duration_minutes == solo.duration_minutes
     assert solo.price_rub > 0 and solo.duration_minutes > 0 and solo.is_synthetic
+    assert solo.vehicles == four.vehicles == 1 and five.vehicles == 2
+    assert solo.available and solo.hours is None and solo.depart_at == query.pickup_at
     # pickup_at может содержать фиксированное UTC-смещение, а не объект ZoneInfo.
     offset_only = query.model_copy(update={"pickup_at": datetime.fromisoformat("2030-11-10T23:00:00+04:00")})
-    assert (await transfer_tool.run(offset_only)).price_rub == night.price_rub
+    assert taxi(await transfer_tool.run(offset_only)).price_rub == night.price_rub
 
 
 async def test_transfer_rejects_unknown_coordinates_cross_destination_and_same_point(tools):
     query = await transfer_query(tools)
     invalid_places = [
-        Place(iata="AAA", name="Unknown", latitude=0, longitude=0, timezone="Asia/Dubai"),
+        Place(kind="city", iata="AAA", name="Unknown", latitude=0, longitude=0, timezone="Asia/Dubai"),
         query.destination.model_copy(update={"latitude": 0}),
         query.destination.model_copy(update={"iata": "AYT", "timezone": "Europe/Istanbul"}),
         query.origin,
     ]
     for destination in invalid_places:
-        with pytest.raises(ValueError, match="Unsupported demo transfer route"):
+        with pytest.raises(UnsupportedTransfer, match="Unsupported demo transfer route"):
             await tools["get_transfer"].run(query.model_copy(update={"destination": destination}))
+
+
+async def test_place_kinds_and_hotel_identity_survive_date_and_party_changes(tools):
+    query = HotelSearch(destination="DXB", check_in=date(2030, 11, 10), check_out=date(2030, 11, 12))
+    first = await tools["search_hotels"].run(query)
+    moved = await tools["search_hotels"].run(
+        query.model_copy(
+            update={
+                "check_in": date(2030, 11, 11),
+                "check_out": date(2030, 11, 13),
+                "travelers": Travelers(adults=2),
+            }
+        )
+    )
+    assert {offer.hotel_id for offer in first} == {offer.hotel_id for offer in moved}
+    for before, after in zip(first, moved, strict=True):
+        assert before.place.kind == after.place.kind == "hotel"
+        assert before.hotel_id == before.place.id == after.hotel_id == after.place.id
+        assert before.offer_id != after.offer_id
+        assert before.id == before.offer_id
+        assert before.hotel_id.startswith("demo-dxb-")
+    flights = await tools["search_flights"].run(
+        FlightSearch(
+            origin="SVO",
+            destination="DXB",
+            departure_date=date(2030, 11, 10),
+        )
+    )
+    assert flights[0].origin.kind == flights[0].destination.kind == "airport"
+    trains = await tools["search_trains"].run(
+        TrainSearch(
+            origin="LED",
+            destination="MOW",
+            departure_date=date(2030, 11, 10),
+        )
+    )
+    assert trains[0].origin.kind == trains[0].destination.kind == "city"
+
+
+async def test_hotel_reception_and_early_checkin_are_explicit_and_unknown_stays_unknown(tools):
+    hotels = await tools["search_hotels"].run(
+        HotelSearch(
+            destination="DXB",
+            check_in=date(2030, 11, 10),
+            check_out=date(2030, 11, 12),
+        )
+    )
+    budget = next(item for item in hotels if item.hotel_id == "demo-dxb-budget")
+    family = next(item for item in hotels if item.hotel_id == "demo-dxb-family")
+    assert budget.reception_24h is False and budget.reception_closes_at == time(22)
+    assert budget.early_check_in_available is False and budget.early_check_in_price_rub is None
+    assert family.reception_24h is True and family.reception_closes_at is None
+    assert family.early_check_in_available is True and family.early_check_in_price_rub > 0
+    unknown = budget.model_copy(
+        update={
+            "adults_only": None,
+            "pets_allowed": None,
+            "refundable": None,
+            "stars": None,
+            "rating": None,
+            "reception_24h": None,
+            "reception_closes_at": None,
+            "early_check_in_available": None,
+        }
+    )
+    encoded = tools["search_hotels"].output_adapter.dump_json([unknown])
+    restored = tools["search_hotels"].output_adapter.validate_json(encoded)[0]
+    assert restored.stars is None and restored.adults_only is None and restored.pets_allowed is None
+    assert restored.reception_24h is None and restored.early_check_in_available is None
+
+
+def by_mode(alternatives: list[Transfer], mode: str) -> Transfer:
+    return next(item for item in alternatives if item.mode == mode)
+
+
+async def test_transfer_list_available_first_then_full_group_price_and_public_unknown_flags(tools):
+    query = await transfer_query(tools, hour=23)
+    options = await tools["get_transfer"].run(query)
+    assert len(options) == 5
+    assert options == sorted(options, key=lambda item: (not item.available, item.price_rub, item.id))
+    assert {item.mode for item in options} == {"taxi", "minivan", "bus", "metro", "shuttle"}
+    assert all(item.pickup_at == query.pickup_at for item in options)
+    assert all(item.depart_at.astimezone(UTC) >= query.pickup_at.astimezone(UTC) for item in options)
+    assert by_mode(options, "shuttle").available is False
+    assert by_mode(options, "shuttle").depart_at.date() == date(2030, 11, 11)
+    assert by_mode(options, "shuttle").pets is None
+    assert by_mode(options, "bus").pets is False
+    assert by_mode(options, "taxi").child_seat is None
+    assert by_mode(options, "minivan").child_seat is True
+    assert by_mode(options, "metro").available is True  # Overnight 05:00–01:00 window.
+    encoded = tools["get_transfer"].output_adapter.dump_python(options, mode="json")
+    assert isinstance(encoded, list)
+    assert set(next(item for item in encoded if item["mode"] == "metro")["hours"]) == {"from", "to"}
+
+
+async def test_infants_count_towards_vehicle_capacity_but_public_fares_are_free_under_two(tools):
+    query = await transfer_query(tools, adults=4)
+    four = await tools["get_transfer"].run(query)
+    infant = await tools["get_transfer"].run(
+        query.model_copy(
+            update={
+                "travelers": Travelers(adults=4, children_ages=[1]),
+            }
+        )
+    )
+    older = await tools["get_transfer"].run(
+        query.model_copy(
+            update={
+                "travelers": Travelers(adults=4, children_ages=[2]),
+            }
+        )
+    )
+    assert by_mode(four, "taxi").vehicles == 1
+    assert by_mode(infant, "taxi").vehicles == by_mode(older, "taxi").vehicles == 2
+    assert by_mode(infant, "taxi").price_rub == 2 * by_mode(four, "taxi").price_rub
+    assert by_mode(infant, "minivan").vehicles == 1
+    assert by_mode(infant, "shuttle").price_rub == by_mode(four, "shuttle").price_rub
+    assert by_mode(older, "shuttle").price_rub == by_mode(four, "shuttle").price_rub + 600
+    assert by_mode(infant, "bus").vehicles is None
+
+
+async def test_male_late_seaplane_waits_to_next_local_day_and_boat_is_available(tools):
+    flight = (
+        await tools["search_flights"].run(
+            FlightSearch(
+                origin="SVO",
+                destination="MLE",
+                departure_date=date(2030, 11, 10),
+            )
+        )
+    )[0]
+    hotel = (
+        await tools["search_hotels"].run(
+            HotelSearch(
+                destination="MLE",
+                check_in=date(2030, 11, 10),
+                check_out=date(2030, 11, 12),
+            )
+        )
+    )[0]
+    query = TransferQuery(
+        origin=flight.destination,
+        destination=hotel.place,
+        pickup_at=datetime(2030, 12, 31, 23, 40, tzinfo=ZoneInfo("Indian/Maldives")),
+        travelers=Travelers(adults=2, children_ages=[1, 2]),
+    )
+    options = await tools["get_transfer"].run(query)
+    assert [item.mode for item in options] == ["boat", "seaplane"]
+    plane = by_mode(options, "seaplane")
+    assert plane.available is False and plane.depart_at.isoformat() == "2031-01-01T06:00:00+05:00"
+    assert plane.hours.from_ == time(6) and plane.hours.to == time(18)
+    assert plane.price_rub == 15000 * 3 and plane.vehicles is None
+    assert by_mode(options, "boat").available and by_mode(options, "boat").depart_at == query.pickup_at
+    daytime = query.model_copy(
+        update={
+            "pickup_at": datetime(2030, 11, 10, 12, tzinfo=ZoneInfo("Indian/Maldives")),
+            "travelers": Travelers(adults=1, pets=1),
+        }
+    )
+    plane_day = by_mode(await tools["get_transfer"].run(daytime), "seaplane")
+    assert plane_day.available is True and plane_day.pets is False  # Timing is separate from pet eligibility.
+
+
+@pytest.mark.parametrize(
+    "hour,minute,available,day,depart_hour",
+    [
+        (6, 0, True, 10, 6),
+        (17, 59, True, 10, 17),
+        (18, 0, False, 11, 6),
+        (5, 59, False, 10, 6),
+    ],
+)
+def test_half_open_seaplane_hours(hour, minute, available, day, depart_hour):
+    pickup = datetime(2030, 11, 10, hour, minute, tzinfo=ZoneInfo("Indian/Maldives"))
+    current, departure = _next_departure(pickup, "Indian/Maldives", TransferHours(from_=time(6), to=time(18)))
+    assert current is available and departure.day == day and departure.hour == depart_hour
+
+
+@pytest.mark.parametrize(
+    "hour,available,depart_day,depart_hour",
+    [
+        (22, True, 10, 22),
+        (5, True, 10, 5),
+        (6, False, 10, 22),
+        (21, False, 10, 22),
+    ],
+)
+def test_overnight_service_window(hour, available, depart_day, depart_hour):
+    pickup = datetime(2030, 11, 10, hour, tzinfo=ZoneInfo("Asia/Dubai"))
+    current, departure = _next_departure(pickup, "Asia/Dubai", TransferHours(from_=time(22), to=time(6)))
+    assert current is available and departure.day == depart_day and departure.hour == depart_hour
+
+
+def test_service_opening_handles_dst_gap_and_second_fold_without_negative_waits():
+    zone = ZoneInfo("Europe/Berlin")
+    gap_pickup = datetime(2030, 3, 31, 1, tzinfo=zone)
+    current, after_gap = _next_departure(gap_pickup, "Europe/Berlin", TransferHours(from_=time(2), to=time(4)))
+    assert current is False and after_gap.isoformat() == "2030-03-31T03:00:00+02:00"
+    fold_pickup = datetime(2030, 10, 27, 2, 50, tzinfo=zone, fold=0)
+    current, after_fold = _next_departure(
+        fold_pickup,
+        "Europe/Berlin",
+        TransferHours(from_=time(2, 30), to=time(2, 45)),
+    )
+    assert current is False and after_fold.fold == 1
+    assert after_fold.astimezone(UTC) - fold_pickup.astimezone(UTC) == timedelta(minutes=40)
+
+
+def test_unrepresentable_next_opening_is_explicit_and_known_24h_still_immediate():
+    pickup = datetime(9999, 12, 31, 23, 40, tzinfo=ZoneInfo("Indian/Maldives"))
+    assert _next_departure(pickup, "Indian/Maldives", TransferHours(from_=time(6), to=time(18))) == (False, None)
+    assert _next_departure(pickup, "Indian/Maldives", None) == (True, pickup)
 
 
 async def test_destinations_month_water_budget_visa_and_group_cost(tools):

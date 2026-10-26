@@ -11,8 +11,9 @@ from datetime import date, timedelta
 from decimal import ROUND_HALF_UP, Decimal, localcontext
 from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from app.contracts.identifiers import canonical_hotel_id
 from app.contracts.tools import Flight, FlightSearch, PriceCalendarQuery, Travelers
 
 Rubles = Annotated[int, Field(strict=True, ge=0)]
@@ -89,6 +90,11 @@ class TripQuote(CalendarModel):
     hotel_total_rub: Rubles
     other_total_rub: Rubles = 0
     is_synthetic: bool
+
+    @field_validator("hotel_id")
+    @classmethod
+    def stable_hotel_identity(cls, value: str) -> str:
+        return canonical_hotel_id(value)
 
     @model_validator(mode="after")
     def return_date_exists(self) -> "TripQuote":

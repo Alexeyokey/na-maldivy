@@ -7,7 +7,7 @@
   "limitations": "OSM tags are contributed reference facts, not verified availability, booking offers, ratings or hotel rules.",
   "hotels": [
     {
-      "hotel_id": "osm:node:10219505789",
+      "hotel_id": "osm:node/10219505789",
       "destination": "AYT",
       "name": "Necip Bey Hotel",
       "name_en": null,
@@ -24,7 +24,7 @@
       "distance_from_catchment_center_km": 0.16
     },
     {
-      "hotel_id": "osm:node:10219505791",
+      "hotel_id": "osm:node/10219505791",
       "destination": "AYT",
       "name": "Giges King Boutique Hotel",
       "name_en": null,
@@ -41,7 +41,7 @@
       "distance_from_catchment_center_km": 0.133
     },
     {
-      "hotel_id": "osm:node:10219505800",
+      "hotel_id": "osm:node/10219505800",
       "destination": "AYT",
       "name": "Ruin Adalia Hotel",
       "name_en": null,
@@ -58,7 +58,7 @@
       "distance_from_catchment_center_km": 0.139
     },
     {
-      "hotel_id": "osm:node:10219528157",
+      "hotel_id": "osm:node/10219528157",
       "destination": "AYT",
       "name": "Blue Paradise Boutique Hotel",
       "name_en": null,
@@ -75,7 +75,7 @@
       "distance_from_catchment_center_km": 0.17
     },
     {
-      "hotel_id": "osm:node:10220058989",
+      "hotel_id": "osm:node/10220058989",
       "destination": "AYT",
       "name": "Hotel Konak",
       "name_en": null,
@@ -92,7 +92,7 @@
       "distance_from_catchment_center_km": 0.136
     },
     {
-      "hotel_id": "osm:node:10220058990",
+      "hotel_id": "osm:node/10220058990",
       "destination": "AYT",
       "name": "Tu Casa Linda Hotel",
       "name_en": null,
@@ -109,7 +109,7 @@
       "distance_from_catchment_center_km": 0.162
     },
     {
-      "hotel_id": "osm:node:10220067938",
+      "hotel_id": "osm:node/10220067938",
       "destination": "AYT",
       "name": "Kauçuk Residence",
       "name_en": null,
@@ -126,7 +126,7 @@
       "distance_from_catchment_center_km": 0.149
     },
     {
-      "hotel_id": "osm:node:10220067952",
+      "hotel_id": "osm:node/10220067952",
       "destination": "AYT",
       "name": "Orana Resort",
       "name_en": null,
@@ -143,7 +143,7 @@
       "distance_from_catchment_center_km": 0.073
     },
     {
-      "hotel_id": "osm:node:11725204537",
+      "hotel_id": "osm:node/11725204537",
       "destination": "AYT",
       "name": "Grand Friends Butik Otel",
       "name_en": null,
@@ -160,7 +160,7 @@
       "distance_from_catchment_center_km": 0.158
     },
     {
-      "hotel_id": "osm:node:1280250536",
+      "hotel_id": "osm:node/1280250536",
       "destination": "AYT",
       "name": "Alp Paşa Hotel",
       "name_en": null,
@@ -177,7 +177,7 @@
       "distance_from_catchment_center_km": 0.108
     },
     {
-      "hotel_id": "osm:node:3623376901",
+      "hotel_id": "osm:node/3623376901",
       "destination": "AYT",
       "name": "Mia Boutique Hotel Antalya",
       "name_en": null,
@@ -194,7 +194,7 @@
       "distance_from_catchment_center_km": 0.075
     },
     {
-      "hotel_id": "osm:node:3623376904",
+      "hotel_id": "osm:node/3623376904",
       "destination": "AYT",
       "name": "Puding Marina Residence",
       "name_en": null,
@@ -211,7 +211,7 @@
       "distance_from_catchment_center_km": 0.13
     },
     {
-      "hotel_id": "osm:node:3623376905",
+      "hotel_id": "osm:node/3623376905",
       "destination": "AYT",
       "name": "Eski Masal Hotel",
       "name_en": null,
@@ -228,7 +228,7 @@
       "distance_from_catchment_center_km": 0.154
     },
     {
-      "hotel_id": "osm:node:3623393754",
+      "hotel_id": "osm:node/3623393754",
       "destination": "AYT",
       "name": "Atelya Art Hotel",
       "name_en": null,
@@ -245,7 +245,7 @@
       "distance_from_catchment_center_km": 0.094
     },
     {
-      "hotel_id": "osm:node:3623393756",
+      "hotel_id": "osm:node/3623393756",
       "destination": "AYT",
       "name": "Mediterra Art Hotel",
       "name_en": null,
@@ -262,7 +262,7 @@
       "distance_from_catchment_center_km": 0.047
     },
     {
-      "hotel_id": "osm:node:530098775",
+      "hotel_id": "osm:node/530098775",
       "destination": "AYT",
       "name": "Hotel Frankfurt",
       "name_en": null,
@@ -279,7 +279,7 @@
       "distance_from_catchment_center_km": 0.168
     },
     {
-      "hotel_id": "osm:node:6076067032",
+      "hotel_id": "osm:node/6076067032",
       "destination": "AYT",
       "name": "Kaleiçi Marina Hotel & Restaurant",
       "name_en": null,
@@ -296,7 +296,7 @@
       "distance_from_catchment_center_km": 0.149
     },
     {
-      "hotel_id": "osm:way:1064391632",
+      "hotel_id": "osm:way/1064391632",
       "destination": "AYT",
       "name": "Argos Hotel",
       "name_en": null,
@@ -313,7 +313,7 @@
       "distance_from_catchment_center_km": 0.075
     },
     {
-      "hotel_id": "osm:way:820888815",
+      "hotel_id": "osm:way/820888815",
       "destination": "AYT",
       "name": "Villa Porta",
       "name_en": null,
@@ -330,7 +330,7 @@
       "distance_from_catchment_center_km": 0.119
     },
     {
-      "hotel_id": "osm:way:820888818",
+      "hotel_id": "osm:way/820888818",
       "destination": "AYT",
       "name": "Doğan Hotel",
       "name_en": null,
@@ -347,7 +347,7 @@
       "distance_from_catchment_center_km": 0.075
     },
     {
-      "hotel_id": "osm:way:820888820",
+      "hotel_id": "osm:way/820888820",
       "destination": "AYT",
       "name": "Reutlingen Hof",
       "name_en": null,
@@ -364,7 +364,7 @@
       "distance_from_catchment_center_km": 0.135
     },
     {
-      "hotel_id": "osm:way:820888822",
+      "hotel_id": "osm:way/820888822",
       "destination": "AYT",
       "name": "Villa Tulıpan Bed&Breakfast",
       "name_en": null,
@@ -381,7 +381,7 @@
       "distance_from_catchment_center_km": 0.079
     },
     {
-      "hotel_id": "osm:way:820888823",
+      "hotel_id": "osm:way/820888823",
       "destination": "AYT",
       "name": "Hotel Aspen",
       "name_en": null,
@@ -398,7 +398,7 @@
       "distance_from_catchment_center_km": 0.143
     },
     {
-      "hotel_id": "osm:way:820888826",
+      "hotel_id": "osm:way/820888826",
       "destination": "AYT",
       "name": "Dogan Hotel",
       "name_en": null,
@@ -415,7 +415,7 @@
       "distance_from_catchment_center_km": 0.11
     },
     {
-      "hotel_id": "osm:node:10769935505",
+      "hotel_id": "osm:node/10769935505",
       "destination": "DXB",
       "name": "LEVA Hotel , Mazaya Centre",
       "name_en": "Leva Hotel and Suites, Opposite Downtown",
@@ -432,7 +432,7 @@
       "distance_from_catchment_center_km": 0.918
     },
     {
-      "hotel_id": "osm:node:11756429333",
+      "hotel_id": "osm:node/11756429333",
       "destination": "DXB",
       "name": "Rove City Walk",
       "name_en": null,
@@ -449,7 +449,7 @@
       "distance_from_catchment_center_km": 0.29
     },
     {
-      "hotel_id": "osm:node:14133488202",
+      "hotel_id": "osm:node/14133488202",
       "destination": "DXB",
       "name": "rove hotel",
       "name_en": null,
@@ -466,7 +466,7 @@
       "distance_from_catchment_center_km": 0.291
     },
     {
-      "hotel_id": "osm:node:2246385172",
+      "hotel_id": "osm:node/2246385172",
       "destination": "DXB",
       "name": "Armani Hotel",
       "name_en": "Armani Hotel",
@@ -483,7 +483,7 @@
       "distance_from_catchment_center_km": 0.907
     },
     {
-      "hotel_id": "osm:node:4375193193",
+      "hotel_id": "osm:node/4375193193",
       "destination": "DXB",
       "name": "Staybridge Suites Dubai Financial Centre",
       "name_en": null,
@@ -500,7 +500,7 @@
       "distance_from_catchment_center_km": 0.828
     },
     {
-      "hotel_id": "osm:node:6149663008",
+      "hotel_id": "osm:node/6149663008",
       "destination": "DXB",
       "name": "Waldorf Astoria Dubai International Financial Centre",
       "name_en": null,
@@ -517,7 +517,7 @@
       "distance_from_catchment_center_km": 1.312
     },
     {
-      "hotel_id": "osm:node:8777573818",
+      "hotel_id": "osm:node/8777573818",
       "destination": "DXB",
       "name": "روتانا",
       "name_en": null,
@@ -534,7 +534,7 @@
       "distance_from_catchment_center_km": 1.02
     },
     {
-      "hotel_id": "osm:node:9987573928",
+      "hotel_id": "osm:node/9987573928",
       "destination": "DXB",
       "name": "The Ritz-Carlton",
       "name_en": null,
@@ -551,7 +551,7 @@
       "distance_from_catchment_center_km": 1.267
     },
     {
-      "hotel_id": "osm:way:106309509",
+      "hotel_id": "osm:way/106309509",
       "destination": "DXB",
       "name": "العنوان - دبي مول",
       "name_en": "The Address - Dubai Mall",
@@ -568,7 +568,7 @@
       "distance_from_catchment_center_km": 0.89
     },
     {
-      "hotel_id": "osm:way:118263839",
+      "hotel_id": "osm:way/118263839",
       "destination": "DXB",
       "name": "Four Points by Sheraton",
       "name_en": "Four Points by Sheraton",
@@ -585,7 +585,7 @@
       "distance_from_catchment_center_km": 1.158
     },
     {
-      "hotel_id": "osm:way:125029561",
+      "hotel_id": "osm:way/125029561",
       "destination": "DXB",
       "name": "Dusit Thani Dubai",
       "name_en": "Dusit Thani",
@@ -602,7 +602,7 @@
       "distance_from_catchment_center_km": 0.269
     },
     {
-      "hotel_id": "osm:way:125848284",
+      "hotel_id": "osm:way/125848284",
       "destination": "DXB",
       "name": "Emirates Grand Hotel Apartments",
       "name_en": "Emirates Grand Hotel Apartments",
@@ -619,7 +619,7 @@
       "distance_from_catchment_center_km": 0.788
     },
     {
-      "hotel_id": "osm:way:125848289",
+      "hotel_id": "osm:way/125848289",
       "destination": "DXB",
       "name": "فندق جيفورا",
       "name_en": "Gevora Hotel",
@@ -636,7 +636,7 @@
       "distance_from_catchment_center_km": 1.056
     },
     {
-      "hotel_id": "osm:way:125848290",
+      "hotel_id": "osm:way/125848290",
       "destination": "DXB",
       "name": "ريزيدنس ان",
       "name_en": "Residence Inn",
@@ -653,7 +653,7 @@
       "distance_from_catchment_center_km": 0.681
     },
     {
-      "hotel_id": "osm:way:125848292",
+      "hotel_id": "osm:way/125848292",
       "destination": "DXB",
       "name": "Shangri La",
       "name_en": "Shangri La",
@@ -670,7 +670,7 @@
       "distance_from_catchment_center_km": 0.388
     },
     {
-      "hotel_id": "osm:way:125848293",
+      "hotel_id": "osm:way/125848293",
       "destination": "DXB",
       "name": "Number One Tower Suites",
       "name_en": "Number One Tower Suites",
@@ -687,7 +687,7 @@
       "distance_from_catchment_center_km": 0.69
     },
     {
-      "hotel_id": "osm:way:385729969",
+      "hotel_id": "osm:way/385729969",
       "destination": "DXB",
       "name": "Swissotel Al Murooj",
       "name_en": null,
@@ -704,7 +704,7 @@
       "distance_from_catchment_center_km": 0.723
     },
     {
-      "hotel_id": "osm:way:385731651",
+      "hotel_id": "osm:way/385731651",
       "destination": "DXB",
       "name": "Swissôtel Al Murooj Dubai",
       "name_en": "Swissôtel Al Murooj Dubai",
@@ -721,7 +721,7 @@
       "distance_from_catchment_center_km": 0.626
     },
     {
-      "hotel_id": "osm:way:389363742",
+      "hotel_id": "osm:way/389363742",
       "destination": "DXB",
       "name": "Rove",
       "name_en": null,
@@ -738,7 +738,7 @@
       "distance_from_catchment_center_km": 0.894
     },
     {
-      "hotel_id": "osm:way:479429859",
+      "hotel_id": "osm:way/479429859",
       "destination": "DXB",
       "name": "Rotana Towers",
       "name_en": "Rotana Towers",
@@ -755,7 +755,7 @@
       "distance_from_catchment_center_km": 1.015
     },
     {
-      "hotel_id": "osm:way:532833875",
+      "hotel_id": "osm:way/532833875",
       "destination": "DXB",
       "name": "Ramada Downtown Dubai",
       "name_en": "Ramada Downtown Dubai",
@@ -772,7 +772,7 @@
       "distance_from_catchment_center_km": 1.326
     },
     {
-      "hotel_id": "osm:way:532836516",
+      "hotel_id": "osm:way/532836516",
       "destination": "DXB",
       "name": "Address Boulevard",
       "name_en": "Address Boulevard",
@@ -789,7 +789,7 @@
       "distance_from_catchment_center_km": 0.697
     },
     {
-      "hotel_id": "osm:way:532855115",
+      "hotel_id": "osm:way/532855115",
       "destination": "DXB",
       "name": "Sofitel Dubai Downtown",
       "name_en": "Sofitel Dubai Downtown",
@@ -806,7 +806,7 @@
       "distance_from_catchment_center_km": 0.595
     },
     {
-      "hotel_id": "osm:way:64890199",
+      "hotel_id": "osm:way/64890199",
       "destination": "DXB",
       "name": "Rose Rayhaan by Rotana",
       "name_en": "Rose Rayhaan by Rotana",
@@ -823,7 +823,7 @@
       "distance_from_catchment_center_km": 0.961
     },
     {
-      "hotel_id": "osm:node:11182077737",
+      "hotel_id": "osm:node/11182077737",
       "destination": "MLE",
       "name": "JEN",
       "name_en": null,
@@ -840,7 +840,7 @@
       "distance_from_catchment_center_km": 0.552
     },
     {
-      "hotel_id": "osm:node:11182440938",
+      "hotel_id": "osm:node/11182440938",
       "destination": "MLE",
       "name": "Maagiri Hotel",
       "name_en": null,
@@ -857,7 +857,7 @@
       "distance_from_catchment_center_km": 0.89
     },
     {
-      "hotel_id": "osm:node:11182577537",
+      "hotel_id": "osm:node/11182577537",
       "destination": "MLE",
       "name": "Mookai Hotel",
       "name_en": null,
@@ -874,7 +874,7 @@
       "distance_from_catchment_center_km": 0.874
     },
     {
-      "hotel_id": "osm:node:11185404546",
+      "hotel_id": "osm:node/11185404546",
       "destination": "MLE",
       "name": "Unima Grand",
       "name_en": null,
@@ -891,7 +891,7 @@
       "distance_from_catchment_center_km": 0.935
     },
     {
-      "hotel_id": "osm:node:12032998414",
+      "hotel_id": "osm:node/12032998414",
       "destination": "MLE",
       "name": "Le Three",
       "name_en": null,
@@ -908,7 +908,7 @@
       "distance_from_catchment_center_km": 5.425
     },
     {
-      "hotel_id": "osm:node:13430567837",
+      "hotel_id": "osm:node/13430567837",
       "destination": "MLE",
       "name": "hathaa beach maldives",
       "name_en": null,
@@ -925,7 +925,7 @@
       "distance_from_catchment_center_km": 5.517
     },
     {
-      "hotel_id": "osm:node:13430567838",
+      "hotel_id": "osm:node/13430567838",
       "destination": "MLE",
       "name": "blue crystal view",
       "name_en": null,
@@ -942,7 +942,7 @@
       "distance_from_catchment_center_km": 5.491
     },
     {
-      "hotel_id": "osm:node:13432927102",
+      "hotel_id": "osm:node/13432927102",
       "destination": "MLE",
       "name": "newtown inn",
       "name_en": null,
@@ -959,7 +959,7 @@
       "distance_from_catchment_center_km": 5.665
     },
     {
-      "hotel_id": "osm:node:13651846501",
+      "hotel_id": "osm:node/13651846501",
       "destination": "MLE",
       "name": "Terminal 27 Hotel",
       "name_en": null,
@@ -976,7 +976,7 @@
       "distance_from_catchment_center_km": 5.091
     },
     {
-      "hotel_id": "osm:node:14019271501",
+      "hotel_id": "osm:node/14019271501",
       "destination": "MLE",
       "name": "Dusit2",
       "name_en": null,
@@ -993,7 +993,7 @@
       "distance_from_catchment_center_km": 4.977
     },
     {
-      "hotel_id": "osm:node:14142306301",
+      "hotel_id": "osm:node/14142306301",
       "destination": "MLE",
       "name": "Barceló Nasandhura Hotel",
       "name_en": null,
@@ -1010,7 +1010,7 @@
       "distance_from_catchment_center_km": 0.834
     },
     {
-      "hotel_id": "osm:node:3848614960",
+      "hotel_id": "osm:node/3848614960",
       "destination": "MLE",
       "name": "UI Hotel",
       "name_en": null,
@@ -1027,7 +1027,7 @@
       "distance_from_catchment_center_km": 5.2
     },
     {
-      "hotel_id": "osm:node:3909276657",
+      "hotel_id": "osm:node/3909276657",
       "destination": "MLE",
       "name": "Sala Boutique Hotel",
       "name_en": null,
@@ -1044,7 +1044,7 @@
       "distance_from_catchment_center_km": 0.486
     },
     {
-      "hotel_id": "osm:node:5355241555",
+      "hotel_id": "osm:node/5355241555",
       "destination": "MLE",
       "name": "Kaani Lodge",
       "name_en": null,
@@ -1061,7 +1061,7 @@
       "distance_from_catchment_center_km": 0.688
     },
     {
-      "hotel_id": "osm:node:5780125753",
+      "hotel_id": "osm:node/5780125753",
       "destination": "MLE",
       "name": "Dhon Manik Beach View Hotel",
       "name_en": null,
@@ -1078,7 +1078,7 @@
       "distance_from_catchment_center_km": 5.387
     },
     {
-      "hotel_id": "osm:node:5893296891",
+      "hotel_id": "osm:node/5893296891",
       "destination": "MLE",
       "name": "Somerset Inn",
       "name_en": null,
@@ -1095,7 +1095,7 @@
       "distance_from_catchment_center_km": 0.465
     },
     {
-      "hotel_id": "osm:node:6083399518",
+      "hotel_id": "osm:node/6083399518",
       "destination": "MLE",
       "name": "Novina",
       "name_en": null,
@@ -1112,7 +1112,7 @@
       "distance_from_catchment_center_km": 0.262
     },
     {
-      "hotel_id": "osm:node:6292959096",
+      "hotel_id": "osm:node/6292959096",
       "destination": "MLE",
       "name": "The Melrose",
       "name_en": null,
@@ -1129,7 +1129,7 @@
       "distance_from_catchment_center_km": 0.796
     },
     {
-      "hotel_id": "osm:node:8284491717",
+      "hotel_id": "osm:node/8284491717",
       "destination": "MLE",
       "name": "Samann Grand",
       "name_en": null,
@@ -1146,7 +1146,7 @@
       "distance_from_catchment_center_km": 0.921
     },
     {
-      "hotel_id": "osm:way:1317139674",
+      "hotel_id": "osm:way/1317139674",
       "destination": "MLE",
       "name": "Champa Central Hotel",
       "name_en": null,
@@ -1163,7 +1163,7 @@
       "distance_from_catchment_center_km": 0.183
     },
     {
-      "hotel_id": "osm:way:1317932596",
+      "hotel_id": "osm:way/1317932596",
       "destination": "MLE",
       "name": "Meerumaa",
       "name_en": null,
@@ -1180,7 +1180,7 @@
       "distance_from_catchment_center_km": 0.779
     },
     {
-      "hotel_id": "osm:way:133845532",
+      "hotel_id": "osm:way/133845532",
       "destination": "MLE",
       "name": "Hulhule Island Hotel",
       "name_en": null,
@@ -1197,7 +1197,7 @@
       "distance_from_catchment_center_km": 2.816
     },
     {
-      "hotel_id": "osm:way:477457657",
+      "hotel_id": "osm:way/477457657",
       "destination": "MLE",
       "name": "h78 Hotel Hulhumale",
       "name_en": null,
@@ -1214,7 +1214,7 @@
       "distance_from_catchment_center_km": 5.233
     },
     {
-      "hotel_id": "osm:way:535156293",
+      "hotel_id": "osm:way/535156293",
       "destination": "MLE",
       "name": "Umet Sea View",
       "name_en": null,

@@ -1,4 +1,4 @@
-.PHONY: up down logs dev check check-fast test lint fmt destinations destinations-data schemas u2-check u2-demo
+.PHONY: up down logs dev check check-fast test lint fmt destinations destinations-data schemas tool-examples u2-check u2-demo
 
 up:
 	docker compose up --build -d --wait
@@ -37,6 +37,9 @@ destinations-data:
 
 schemas:
 	cd backend && uv run python -m app.tools.schema
+
+tool-examples:
+	cd backend && uv run python ../scripts/export_tool_examples.py
 
 u2-check:
 	bash scripts/check_u2.sh

@@ -30,7 +30,7 @@ def tools_schema() -> dict:
         }
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "title": "D1 travel tool contracts v0 (draft for O1)",
+        "title": "D1 travel tool contracts v0.1 (draft for O1; S4 feedback)",
         "$defs": definitions,
         "type": "object",
         "properties": properties,
@@ -50,7 +50,7 @@ def main() -> None:
         type=Path,
         default=Path(__file__).resolve().parents[3] / "contracts/schema/tools.json",
     )
-    parser.add_argument("--check", action="store_true", help="Проверить сохранённую схему без перезаписи")
+    parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     path = args.output
     if args.check:

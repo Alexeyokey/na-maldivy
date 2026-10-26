@@ -11,9 +11,12 @@ from app.contracts.tools import HotelSearch
 from app.tools.hotels import (
     DATA_ROOT,
     HotelSearchTool,
+    get_hotel_profile,
     get_synthetic_rules,
+    hotel_id_filename,
     hotel_id_for_offer,
     load_hotel_catalog,
+    normalize_hotel_id,
     search_hotel_results,
     search_hotels,
 )
@@ -35,7 +38,7 @@ def test_snapshot_counts_and_raw_fact_fidelity():
         assert source["license"] == "ODbL-1.0"
         assert source["attribution"] == "© OpenStreetMap contributors"
         raw = json.loads(content)
-        elements = {f"osm:{e['type']}:{e['id']}": e for e in raw["elements"]}
+        elements = {f"osm:{e['type']}/{e['id']}": e for e in raw["elements"]}
         for record in load_hotel_catalog(source["destination"]):
             element = elements[record.hotel_id]
             assert record.name == element["tags"]["name"]
@@ -51,12 +54,17 @@ async def test_every_destination_has_offers_and_explicit_synthetic_provenance(de
     results = await search_hotel_results(query(destination=destination))
     assert len(results) >= 20
     for result in results:
+        assert result.offer.hotel_id == result.hotel_id == result.offer.place.id
+        assert result.offer.place.kind == "hotel"
+        assert result.offer.stars == result.facts.stars
+        assert result.offer.reception_24h == (result.synthetic_rules["reception_closes_at"] is None)
+        assert result.offer.early_check_in_available == result.synthetic_rules["early_check_in_available"]
         assert result.offer.is_synthetic
         assert result.synthetic_rules["is_synthetic"]
         assert "синтетические" in result.notice
         assert result.facts.source_url.startswith("https://www.openstreetmap.org/")
         assert result.offer.place.latitude == result.facts.latitude
-        assert hotel_id_for_offer(result.offer.id) == result.hotel_id
+        assert hotel_id_for_offer(result.offer.offer_id) == result.hotel_id
 
 
 async def test_hard_filters_children_pets_refund_and_unknown_stars():
@@ -107,11 +115,11 @@ async def test_identity_survives_date_and_party_changes_but_offer_identifier_cha
     shared = original.keys() & changed.keys()
     assert shared
     for hotel_id in shared:
-        assert original[hotel_id].offer.id != changed[hotel_id].offer.id
+        assert original[hotel_id].offer.offer_id != changed[hotel_id].offer.offer_id
         assert original[hotel_id].facts == changed[hotel_id].facts
     assert await search_hotels(query()) == await search_hotels(query())
     with pytest.raises(ValueError):
-        hotel_id_for_offer("synthetic-hotel/osm:node:does-not-exist/00000000000000000000")
+        hotel_id_for_offer("synthetic-hotel/osm:node/does-not-exist/00000000000000000000")
 
 
 async def test_all_five_synthetic_traps_have_reproducible_candidates():
@@ -136,7 +144,7 @@ async def test_all_five_synthetic_traps_have_reproducible_candidates():
 
 async def test_required_two_hour_airport_transfer_trap_is_explicitly_synthetic():
     results = await search_hotel_results(query(travelers={"adults": 2}))
-    trap = next(result for result in results if result.hotel_id == "osm:node:11725204537")
+    trap = next(result for result in results if result.hotel_id == "osm:node/11725204537")
     assert trap.synthetic_rules["scenario"] == "far_transfer"
     assert trap.synthetic_rules["synthetic_airport_transfer_minutes"] == 120
     assert trap.synthetic_rules["synthetic_airport_transfer_source"] == "synthetic_scenario_override"
@@ -146,3 +154,42 @@ async def test_required_two_hour_airport_transfer_trap_is_explicitly_synthetic()
         for result in results
         if result.synthetic_rules["scenario"] != "far_transfer"
     )
+
+
+def test_all_72_identity_aliases_resolve_without_changing_filenames_or_source_records():
+    aliases = json.loads((DATA_ROOT / "hotels/id_aliases.json").read_text())["aliases"]
+    records = load_hotel_catalog()
+    assert len(aliases) == len(records) == 72
+    assert set(aliases.values()) == {r.hotel_id for r in records}
+    for legacy, canonical in aliases.items():
+        assert normalize_hotel_id(legacy) == normalize_hotel_id(canonical) == canonical
+        assert get_synthetic_rules(legacy) == get_synthetic_rules(canonical)
+        assert get_synthetic_rules(legacy)["hotel_id"] == canonical
+        assert get_hotel_profile(legacy) == get_hotel_profile(canonical)
+        filename = hotel_id_filename(canonical)
+        assert filename == hotel_id_filename(legacy)
+        assert "/" not in filename and ":" not in filename
+        assert (DATA_ROOT / "hotel_reviews" / filename).is_file()
+        assert (DATA_ROOT / "hotel_profiles" / filename).is_file()
+    for directory in ("hotel_reviews", "hotel_profiles"):
+        assert len(list((DATA_ROOT / directory).glob("*.json"))) == 72
+        assert not any(p.is_dir() for p in (DATA_ROOT / directory).iterdir())
+    for record in records:
+        assert record.hotel_id == f"osm:{record.osm_type}/{record.osm_id}"
+
+
+async def test_offer_parser_accepts_both_spelling_versions_but_serializes_only_canonical_id():
+    result = (await search_hotel_results(query()))[0]
+    canonical = result.hotel_id
+    legacy = canonical.replace("/", ":")
+    digest = result.offer.offer_id.rsplit("/", 1)[1]
+    assert hotel_id_for_offer(result.offer.offer_id) == canonical
+    assert hotel_id_for_offer(f"synthetic-hotel/{legacy}/{digest}") == canonical
+    payload = result.offer.model_dump(mode="json")
+    assert payload["hotel_id"] == payload["place"]["id"] == canonical
+    assert payload["offer_id"] == result.offer.offer_id
+    assert "id" not in payload
+    assert result.offer.id == result.offer.offer_id
+    for malformed in ("osm:node/0", "osm:node/../1", "osm:hotel/1", "osm:way/not-a-number"):
+        with pytest.raises(ValueError):
+            normalize_hotel_id(malformed)

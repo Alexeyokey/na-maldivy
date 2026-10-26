@@ -79,7 +79,7 @@ def normalize_snapshot(destination: str, raw: dict, count: int = 24) -> list[dic
         stars = int(raw_stars) if raw_stars in {"1", "2", "3", "4", "5"} else None
         candidates.append(
             {
-                "hotel_id": f"osm:{element['type']}:{element['id']}",
+                "hotel_id": f"osm:{element['type']}/{element['id']}",
                 "destination": destination,
                 "name": name,
                 "name_en": tags.get("name:en"),
@@ -240,6 +240,28 @@ def main() -> None:
             json.loads(old_path.read_text())["hotels"] if old_path.exists() else []
         )
         hotels.extend(h for h in old_hotels if h["destination"] not in args.destination)
+    aliases_path = output / "id_aliases.json"
+    aliases = (
+        json.loads(aliases_path.read_text())["aliases"] if aliases_path.exists() else {}
+    )
+    aliases.update(
+        {
+            f"osm:{hotel['osm_type']}:{hotel['osm_id']}": hotel["hotel_id"]
+            for hotel in hotels
+        }
+    )
+    aliases_path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "note": "Legacy hotel IDs are accepted only as lookup aliases; all new outputs use osm:<type>/<id>.",
+                "aliases": dict(sorted(aliases.items())),
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n"
+    )
     (output / "catalog.json").write_text(
         json.dumps(
             {

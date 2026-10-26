@@ -18,7 +18,7 @@ from app.tools.hotels import DATA_ROOT, load_hotel_catalog, search_hotel_results
 
 
 def load_reviews(hotel_id):
-    file = DATA_ROOT / "hotel_reviews" / (hotel_id.replace(":", "-") + ".json")
+    file = DATA_ROOT / "hotel_reviews" / (hotel_id.replace(":", "-").replace("/", "-") + ".json")
     return [SyntheticReview.model_validate(r) for r in json.loads(file.read_text())["reviews"]]
 
 
@@ -30,7 +30,7 @@ def test_all_72_saved_profiles_match_literal_corpus_and_aggregates():
         extracted = extract_lexical(reviews)
         assert all(e.mentions == r.annotations for e, r in zip(extracted, reviews, strict=True))
         expected = build_profile(reviews, extracted)
-        file = DATA_ROOT / "hotel_profiles" / (hotel.hotel_id.replace(":", "-") + ".json")
+        file = DATA_ROOT / "hotel_profiles" / (hotel.hotel_id.replace(":", "-").replace("/", "-") + ".json")
         assert json.loads(file.read_text()) == expected
         assert set(expected["aspects"]) == {
             "cleanliness",

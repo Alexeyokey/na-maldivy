@@ -72,7 +72,7 @@ def test_overnight_year_change_and_elapsed_utc_duration():
 
 
 def test_elapsed_time_does_not_add_wall_clock_hours_through_dst_gap():
-    berlin = Place(iata="BER", name="Berlin", latitude=52.4, longitude=13.5, timezone="Europe/Berlin")
+    berlin = Place(kind="airport", iata="BER", name="Berlin", latitude=52.4, longitude=13.5, timezone="Europe/Berlin")
     departure = datetime(2030, 3, 31, 1, 30, tzinfo=ZoneInfo("Europe/Berlin"))
     arrival = arrival_after(departure, 120, berlin)
     assert (arrival.hour, arrival.minute) == (4, 30)

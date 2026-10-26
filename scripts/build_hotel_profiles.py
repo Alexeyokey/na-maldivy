@@ -25,6 +25,7 @@ from app.tools.hotel_profiles import (
     extract_reviews_llm,
     make_synthetic_reviews,
 )
+from app.tools.hotels import hotel_id_filename, normalize_hotel_id
 
 
 def synthetic_rules(hotels: list[dict]) -> list[dict]:
@@ -43,7 +44,12 @@ def synthetic_rules(hotels: list[dict]) -> list[dict]:
         for index, hotel in enumerate(
             sorted(values, key=lambda item: item["hotel_id"])
         ):
-            seed = int(hashlib.sha256(hotel["hotel_id"].encode()).hexdigest()[:8], 16)
+            seed = int(
+                hashlib.sha256(
+                    hotel["hotel_id"].replace("/", ":").encode()
+                ).hexdigest()[:8],
+                16,
+            )
             scenario = scenarios[index % len(scenarios)]
             base = {"AYT": 4500, "DXB": 6500, "MLE": 8000}[destination] + (
                 seed % 30
@@ -66,6 +72,7 @@ def synthetic_rules(hotels: list[dict]) -> list[dict]:
                     "pet_stay_surcharge_rub": 1000,
                     "check_in_time": "14:00:00",
                     "check_out_time": "12:00:00",
+                    "reception_24h": scenario != "early_arrival",
                     "reception_closes_at": "22:00:00"
                     if scenario == "early_arrival"
                     else None,
@@ -103,7 +110,7 @@ async def run(args: argparse.Namespace) -> None:
         raise ValueError(
             "--check is offline/read-only and requires lexical mode without --generate-demo-data"
         )
-    expected_names = {row["hotel_id"].replace(":", "-") + ".json" for row in hotels}
+    expected_names = {hotel_id_filename(row["hotel_id"]) for row in hotels}
     if args.check:
         if {file.name for file in reviews_dir.glob("*.json")} != expected_names:
             raise ValueError("Corpus files do not cover exactly the hotel catalogue")
@@ -131,7 +138,7 @@ async def run(args: argparse.Namespace) -> None:
         )
         for row in rules:
             reviews = make_synthetic_reviews(row["hotel_id"], row)
-            (reviews_dir / (row["hotel_id"].replace(":", "-") + ".json")).write_text(
+            (reviews_dir / (hotel_id_filename(row["hotel_id"]))).write_text(
                 json.dumps(
                     {
                         "schema_version": 1,
@@ -170,7 +177,7 @@ async def run(args: argparse.Namespace) -> None:
             reviews = [SyntheticReview.model_validate(row) for row in data["reviews"]]
             if not 20 <= len(reviews) <= 50:
                 raise ValueError(f"{file}: expected 20..50 synthetic reviews")
-            if args.hotel_id and data["hotel_id"] != args.hotel_id:
+            if args.hotel_id and data["hotel_id"] != normalize_hotel_id(args.hotel_id):
                 continue
             if client:
                 extracted, model = await extract_reviews_llm(client, reviews)

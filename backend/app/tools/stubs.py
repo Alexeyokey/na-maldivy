@@ -29,10 +29,12 @@ from app.contracts.tools import (
     Train,
     TrainSearch,
     Transfer,
+    TransferHours,
     TransferQuery,
     Travelers,
 )
 from app.tools.base import Tool
+from app.tools.errors import UnsupportedTransfer
 
 # Только неизменяемые значения: каждому вызову выдаются новые Pydantic-объекты.
 _PLACES = {
@@ -66,7 +68,14 @@ _CLIMATE = {
 
 def _place(code: str) -> Place:
     name, lat, lon, tz = _PLACES[code]
-    return Place(iata=code, name=name, latitude=lat, longitude=lon, timezone=tz)
+    return Place(
+        kind="city" if code == "MOW" else "airport",
+        iata=code,
+        name=name,
+        latitude=lat,
+        longitude=lon,
+        timezone=tz,
+    )
 
 
 def _group_price(per_person: int, travelers: Travelers, pet_fee: int = 1_500) -> int:
@@ -147,11 +156,17 @@ def _hotel_place(code: str, index: int) -> Place:
     # Фиксированные точки вблизи аэропорта, включая остров Мале.
     return place.model_copy(
         update={
+            "kind": "hotel",
+            "id": _hotel_id(code, index),
             "name": f"Demo {code} {_HOTEL_TYPES[index][0]} hotel",
             "latitude": place.latitude + (index + 1) * 0.002,
             "longitude": place.longitude + (index + 1) * 0.002,
         }
     )
+
+
+def _hotel_id(code: str, index: int) -> str:
+    return f"demo-{code.lower()}-{_HOTEL_TYPES[index][0]}"
 
 
 def _hotels(query: HotelSearch) -> list[HotelOffer]:
@@ -170,7 +185,11 @@ def _hotels(query: HotelSearch) -> list[HotelOffer]:
             continue
         offers.append(
             HotelOffer(
-                id=f"stub-hotel-{query.destination}-{suffix}-{query.check_in}-{query.check_out}-{_group_id(query.travelers)}",
+                hotel_id=_hotel_id(query.destination, index),
+                offer_id=(
+                    f"stub-hotel-{query.destination}-{suffix}-{query.check_in}-{query.check_out}"
+                    f"-{_group_id(query.travelers)}"
+                ),
                 name=f"Demo {query.destination} {suffix}",
                 place=_hotel_place(query.destination, index),
                 check_in=query.check_in,
@@ -181,7 +200,9 @@ def _hotels(query: HotelSearch) -> list[HotelOffer]:
                 adults_only=adults_only,
                 pets_allowed=pets_allowed,
                 refundable=refundable,
+                reception_24h=suffix != "budget",
                 reception_closes_at=time(22) if suffix == "budget" else None,
+                early_check_in_available=suffix != "budget",
                 early_check_in_price_rub=None if suffix == "budget" else 1_200 * rooms,
                 is_synthetic=True,
             )
@@ -198,12 +219,14 @@ def _trains(query: TrainSearch) -> list[Train]:
     destination = _place(destination_code)
     # Железнодорожная точка LED — город, а не аэропорт Пулково.
     for place in (origin, destination):
+        place.kind = "city"
         if place.iata == "LED":
             place.latitude, place.longitude = 59.9301, 30.3619
+            place.name = "Санкт-Петербург"
     fares = {"seated": 3_500, "platzkart": 4_500, "coupe": 7_000, "sv": 15_000}
     departure = datetime.combine(query.departure_date, time(23, 55), ZoneInfo(origin.timezone))
     try:
-        arrival = departure + timedelta(hours=8)
+        arrival = (departure.astimezone(UTC) + timedelta(hours=8)).astimezone(ZoneInfo(destination.timezone))
     except OverflowError:
         return []
     return [
@@ -228,45 +251,164 @@ def _demo_transfer_point(place: Place) -> bool:
     if place.iata in _DESTINATIONS:
         points.extend(_hotel_place(place.iata, index) for index in range(len(_HOTEL_TYPES)))
     if place.iata == "LED":
-        points.append(_place("LED").model_copy(update={"latitude": 59.9301, "longitude": 30.3619}))
+        points.append(_place("LED").model_copy(update={"kind": "city", "latitude": 59.9301, "longitude": 30.3619}))
     return any(
         abs(place.latitude - point.latitude) < 1e-7
         and abs(place.longitude - point.longitude) < 1e-7
         and place.timezone == point.timezone
+        and place.kind == point.kind
+        and place.id == point.id
         for point in points
     )
 
 
-def _transfer(query: TransferQuery) -> Transfer:
+def _within_hours(value: time, hours: TransferHours) -> bool:
+    """Local civil service windows are half-open, including overnight windows."""
+    if hours.from_ < hours.to:
+        return hours.from_ <= value < hours.to
+    return value >= hours.from_ or value < hours.to
+
+
+def _next_departure(pickup: datetime, timezone: str, hours: TransferHours | None) -> tuple[bool, datetime | None]:
+    """Immediate or earliest valid opening; None hours means known 24/7.
+
+    UTC round trips reject nonexistent local times. For a DST gap containing an
+    opening, seek the first real minute inside the window; both folds are checked
+    on an autumn transition. Stub schedules have minute precision.
+    """
+    zone = ZoneInfo(timezone)
+    local = pickup.astimezone(zone)
+    wall_time = local.timetz().replace(tzinfo=None)
+    if hours is None or _within_hours(wall_time, hours):
+        return True, pickup
+    requested_utc = pickup.astimezone(UTC)
+    for offset in range(3):
+        try:
+            day = local.date() + timedelta(days=offset)
+            opening = datetime.combine(day, hours.from_)
+        except OverflowError:
+            break
+        candidates = []
+        for minute in range(181):
+            try:
+                naive = opening + timedelta(minutes=minute)
+            except OverflowError:
+                break
+            for fold in (0, 1):
+                candidate = naive.replace(tzinfo=zone, fold=fold)
+                try:
+                    utc = candidate.astimezone(UTC)
+                    returned = utc.astimezone(zone)
+                except OverflowError:
+                    continue
+                if returned.replace(tzinfo=None) != naive or returned.fold != fold:
+                    continue
+                if utc >= requested_utc and _within_hours(naive.time(), hours):
+                    candidates.append(candidate)
+            if candidates:
+                return False, min(candidates, key=lambda value: value.astimezone(UTC))
+    return False, None
+
+
+def _transfer(query: TransferQuery) -> list[Transfer]:
     codes = {query.origin.iata, query.destination.iata}
     same_region = len(codes) == 1 or codes == {"SVO", "MOW"}
     if not same_region or not all(_demo_transfer_point(place) for place in (query.origin, query.destination)):
-        raise ValueError("Unsupported demo transfer route: use known demo airport/city/hotel points")
+        raise UnsupportedTransfer("Unsupported demo transfer route: use known demo airport/city/hotel points")
     lat1, lat2 = map(radians, (query.origin.latitude, query.destination.latitude))
     delta_lat = lat2 - lat1
     delta_lon = radians(query.destination.longitude - query.origin.longitude)
     distance = 6_371 * 2 * asin(min(1, sqrt(sin(delta_lat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(delta_lon / 2) ** 2)))
     if distance < 0.001:
-        raise ValueError("Unsupported demo transfer route: origin and destination are the same point")
-    distance *= 1.4  # Демонстрационный коэффициент дорожного маршрута.
-    vehicles = ceil(query.travelers.count / 4)
-    price = (500 + ceil(distance) * 80) * vehicles + query.travelers.pets * 300
+        raise UnsupportedTransfer("Unsupported demo transfer route: origin and destination are the same point")
+    road_distance = distance * 1.4  # Демонстрационный коэффициент дорожного маршрута.
     local_pickup = query.pickup_at.astimezone(ZoneInfo(query.origin.timezone))
-    if local_pickup.hour >= 22 or local_pickup.hour < 6:
-        price = ceil(price * 1.25)
-    return Transfer(
-        id=(
-            f"stub-transfer-{query.origin.iata}-{query.origin.latitude}-{query.origin.longitude}"
-            f"-{query.destination.iata}-{query.destination.latitude}-{query.destination.longitude}"
-            f"-{query.pickup_at.isoformat()}-{_group_id(query.travelers)}"
-        ),
-        origin=query.origin.model_copy(deep=True),
-        destination=query.destination.model_copy(deep=True),
-        pickup_at=query.pickup_at,
-        duration_minutes=max(5, ceil(distance / 35 * 60)),
-        price_rub=price,
-        is_synthetic=True,
-    )
+    billable_passengers = query.travelers.adults + sum(age >= 2 for age in query.travelers.children_ages)
+    alternatives = []
+
+    def add(
+        mode: str,
+        price: int,
+        minutes: int,
+        hours: TransferHours | None,
+        vehicles: int | None = None,
+        pets: bool | None = None,
+        child_seat: bool | None = None,
+    ) -> None:
+        available, departure = _next_departure(query.pickup_at, query.origin.timezone, hours)
+        alternatives.append(
+            Transfer(
+                id=(
+                    f"stub-transfer-v2-{mode}-{query.origin.kind}-{query.origin.id or query.origin.iata}"
+                    f"-{query.origin.latitude}-{query.origin.longitude}"
+                    f"-{query.destination.kind}-{query.destination.id or query.destination.iata}"
+                    f"-{query.destination.latitude}-{query.destination.longitude}"
+                    f"-{query.pickup_at.isoformat()}-{_group_id(query.travelers)}"
+                ),
+                origin=query.origin.model_copy(deep=True),
+                destination=query.destination.model_copy(deep=True),
+                pickup_at=query.pickup_at,
+                depart_at=departure,
+                duration_minutes=minutes,
+                price_rub=price,
+                mode=mode,
+                vehicles=vehicles,
+                hours=hours,
+                available=available,
+                pets=pets,
+                child_seat=child_seat,
+                is_synthetic=True,
+            )
+        )
+
+    if codes == {"MLE"}:
+        # Synthetic island graph: public fares per paying passenger, infants <2 free.
+        add("boat", billable_passengers * 4000, max(20, ceil(distance / 25 * 60)), None, pets=None, child_seat=None)
+        add(
+            "seaplane",
+            billable_passengers * 15000,
+            max(15, ceil(distance / 180 * 60)),
+            TransferHours(from_=time(6), to=time(18)),
+            pets=False,
+            child_seat=None,
+        )
+    else:
+        night_coefficient = 125 if local_pickup.hour >= 22 or local_pickup.hour < 6 else 100
+        taxis = (query.travelers.count + 3) // 4  # Capacity counts every human, including infants.
+        minivans = (query.travelers.count + 5) // 6
+        taxi_price = (500 + ceil(road_distance) * 80) * taxis + query.travelers.pets * 300
+        van_price = (750 + ceil(road_distance) * 110) * minivans + query.travelers.pets * 300
+        duration = max(5, ceil(road_distance / 35 * 60))
+        add("taxi", (taxi_price * night_coefficient + 99) // 100, duration, None, taxis, pets=True, child_seat=None)
+        add(
+            "minivan", (van_price * night_coefficient + 99) // 100, duration, None, minivans, pets=True, child_seat=True
+        )
+        add(
+            "shuttle",
+            billable_passengers * 600,
+            max(15, duration + 10),
+            TransferHours(from_=time(6), to=time(22)),
+            pets=None,
+            child_seat=None,
+        )
+        add(
+            "bus",
+            billable_passengers * 200,
+            max(20, duration + 20),
+            TransferHours(from_=time(6), to=time(23, 30)),
+            pets=False,
+            child_seat=None,
+        )
+        if codes == {"DXB"}:
+            add(
+                "metro",
+                billable_passengers * 250,
+                max(15, duration + 15),
+                TransferHours(from_=time(5), to=time(1)),
+                pets=False,
+                child_seat=None,
+            )
+    return sorted(alternatives, key=lambda item: (not item.available, item.price_rub, item.id))
 
 
 def _destinations(query: DestinationQuery) -> list[Destination]:
@@ -372,7 +514,7 @@ def create_stub_tools() -> dict[str, Tool[Any, Any]]:
             "get_transfer",
             "Синтетический трансфер только между точками демо-каталога",
             TransferQuery,
-            TypeAdapter(Transfer),
+            TypeAdapter(list[Transfer]),
             _transfer,
         ),
         StubTool(

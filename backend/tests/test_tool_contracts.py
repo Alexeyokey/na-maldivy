@@ -17,6 +17,7 @@ from app.contracts.tools import (
 )
 
 SVO = {
+    "kind": "airport",
     "iata": "SVO",
     "name": "Шереметьево",
     "latitude": 55.97,
@@ -24,6 +25,7 @@ SVO = {
     "timezone": "Europe/Moscow",
 }
 DXB = {
+    "kind": "airport",
     "iata": "DXB",
     "name": "Дубай",
     "latitude": 25.25,
@@ -98,8 +100,9 @@ def test_hotel_search_and_offer_require_positive_stay(check_out: str) -> None:
     with pytest.raises(ValidationError, match="позже даты заезда"):
         HotelOffer(
             id="hotel-1",
+            hotel_id="hotel-1",
             name="Demo Hotel",
-            place=DXB,
+            place=DXB | {"kind": "hotel", "id": "hotel-1"},
             price_rub=50000,
             stars=4,
             rating=8.5,
@@ -133,6 +136,9 @@ def test_transfer_output_rejects_nonlocal_pickup() -> None:
                 "origin": DXB,
                 "destination": DXB | {"latitude": 25.26},
                 "pickup_at": "2026-11-16T12:00:00+03:00",
+                "hours": None,
+                "available": True,
+                "depart_at": "2026-11-16T12:00:00+03:00",
                 "duration_minutes": 20,
                 "price_rub": 1000,
                 "is_synthetic": True,

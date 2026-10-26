@@ -70,8 +70,10 @@ async def test_calendar_reverse_moscow_alias_and_local_departure_date():
 
 
 async def test_dst_duration_survives_d1_validation_and_calendar_selection():
-    origin = Place(iata="BER", name="Berlin", latitude=52.4, longitude=13.5, timezone="Europe/Berlin")
-    destination = Place(iata="MUC", name="Munich", latitude=48.3, longitude=11.8, timezone="Europe/Berlin")
+    origin = Place(kind="airport", iata="BER", name="Berlin", latitude=52.4, longitude=13.5, timezone="Europe/Berlin")
+    destination = Place(
+        kind="airport", iata="MUC", name="Munich", latitude=48.3, longitude=11.8, timezone="Europe/Berlin"
+    )
     observed = []
 
     async def search(query):
