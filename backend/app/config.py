@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     llm_timeout_s: float = 60.0
     llm_max_retries: int = 2
 
+    cache_mode: Literal["record", "replay", "live"] = "replay"
+
     @model_validator(mode="after")
     def _check_llm(self) -> "Settings":
         if self.llm_provider == "openai":

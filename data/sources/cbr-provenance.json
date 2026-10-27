@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_title": "Bank of Russia official daily currency rates",
+  "source_url": "https://www.cbr.ru/scripts/XML_daily.asp",
+  "documentation_url": "https://www.cbr.ru/development/SXML/",
+  "retrieved_at": "2026-10-25T21:17:47.775434+00:00",
+  "effective_date": "2026-10-24",
+  "requested_date": null,
+  "currency_count_excluding_RUB": 54,
+  "body_sha256": "955d2e9e4cd5467af67079f1558adf16da1130b801e0ae6ed36c510156057dc4",
+  "raw_file": "data/sources/cbr-daily.xml",
+  "cache_files": [
+    "data/cache/cbr/4545dae676942968daafa8b868fa690050d1ae27f7442544c549223d9d99c5a7.json"
+  ],
+  "method": "Actual HTTPS GET through CachedHttpClient(record); original XML encoding retained. No synthetic currency rates. Effective date comes from ValCurs/@Date, not download date.",
+  "limitations": [
+    "Official CBR reference rates, not a commercial exchange or booking quote.",
+    "Offline replay remains a fixed historical snapshot; inspect effective_date and age_days before use.",
+    "No default max age is a CBR guarantee; application policy decides whether to accept stale or future-effective rates."
+  ]
+}
