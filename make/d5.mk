@@ -12,5 +12,5 @@ destinations-data:
 # Проверка сохранённого YAML и только D5-тесты, без сети и синхронизации окружения.
 destinations-check:
 	cd backend && uv run --offline --no-sync python ../scripts/build_destinations.py --check
-	cd backend && uv run --offline --no-sync pytest tests/test_destination_catalogue.py tests/test_destinations.py
+	cd backend && uv run --offline --no-sync pytest tests/test_destination_catalogue.py tests/test_destinations.py tests/test_d5_adapter.py
 
