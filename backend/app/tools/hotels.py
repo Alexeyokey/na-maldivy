@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, TypeAdapter
 from app.contracts.identifiers import canonical_hotel_id
 from app.contracts.tools import HotelOffer, HotelSearch, Place
 from app.data_paths import DEFAULT_DATA_DIR, resolve_data_dir
+from app.tools.hotel_profiles import load_hotel_profile
 
 DATA_ROOT = DEFAULT_DATA_DIR
 SYNTHETIC_NOTICE = (
@@ -81,6 +82,7 @@ class HotelSearchResult(BaseModel):
     offer: HotelOffer
     facts: HotelRecord
     synthetic_rules: dict[str, Any]
+    profile: dict[str, Any] | None = None
     rooms: int
     total_nights: int
     price_scope: str = "all_rooms_all_nights_all_travelers_including_synthetic_pet_surcharge"
@@ -182,7 +184,9 @@ async def search_hotel_results(query: HotelSearch, *, data_dir: Path | None = No
             separators=(",", ":"),
         )
         offer_id = f"synthetic-hotel/{record.hotel_id}/{hashlib.sha256(fingerprint.encode()).hexdigest()[:20]}"
+        profile = load_hotel_profile(record.hotel_id, data_dir=data_dir)
         offer = HotelOffer(
+            review_profile=profile,
             hotel_id=record.hotel_id,
             offer_id=offer_id,
             name=record.name,
@@ -219,6 +223,7 @@ async def search_hotel_results(query: HotelSearch, *, data_dir: Path | None = No
                 offer=offer,
                 facts=record,
                 synthetic_rules=rules,
+                profile=profile.model_dump(mode="json") if profile else None,
                 rooms=rooms,
                 total_nights=nights,
             )

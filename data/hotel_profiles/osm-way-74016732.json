@@ -1,0 +1,614 @@
+{
+  "schema_version": 1,
+  "hotel_id": "osm:way/74016732",
+  "is_synthetic": true,
+  "notice": "Это профиль синтетического тестового корпуса, не характеристика реального отеля по реальным отзывам.",
+  "review_count": 24,
+  "corpus_generator": "codex-authored-synthetic-templates-v1",
+  "corpus_sha256": "2d0a9d2d4655cf8bbc054139b23a4f370e226976f43b7d8581a89b6493ded24f",
+  "extraction": {
+    "method": "lexical-fixture-baseline-v1",
+    "model": null,
+    "live_model_run": false
+  },
+  "aspects": {
+    "children": {
+      "positive_count": 1,
+      "negative_count": 0,
+      "mention_count": 1,
+      "review_count": 1,
+      "evidence": [
+        {
+          "review_id": "synthetic-review/osm:way/74016732/family/01",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии детям было удобно играть."
+        }
+      ]
+    },
+    "cleanliness": {
+      "positive_count": 4,
+      "negative_count": 0,
+      "mention_count": 4,
+      "review_count": 4,
+      "evidence": [
+        {
+          "review_id": "synthetic-review/osm:way/74016732/family/03",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии номер был чистым."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/couple/02",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии номер был чистым."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/business/05",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии номер был чистым."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/pets/04",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии номер был чистым."
+        }
+      ]
+    },
+    "food": {
+      "positive_count": 4,
+      "negative_count": 0,
+      "mention_count": 4,
+      "review_count": 4,
+      "evidence": [
+        {
+          "review_id": "synthetic-review/osm:way/74016732/family/04",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии завтрак был разнообразным."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/couple/04",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии завтрак был разнообразным."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/business/04",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии завтрак был разнообразным."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/pets/05",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии завтрак был разнообразным."
+        }
+      ]
+    },
+    "location": {
+      "positive_count": 4,
+      "negative_count": 0,
+      "mention_count": 4,
+      "review_count": 4,
+      "evidence": [
+        {
+          "review_id": "synthetic-review/osm:way/74016732/family/05",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/couple/03",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/business/06",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/pets/06",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
+        }
+      ]
+    },
+    "noise": {
+      "positive_count": 1,
+      "negative_count": 3,
+      "mention_count": 4,
+      "review_count": 4,
+      "evidence": [
+        {
+          "review_id": "synthetic-review/osm:way/74016732/family/02",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии ночной шум мешал спать."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/couple/06",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии в номере было тихо."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/business/03",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии ночной шум мешал спать."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/pets/03",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии ночной шум мешал спать."
+        }
+      ]
+    },
+    "pets": {
+      "positive_count": 0,
+      "negative_count": 2,
+      "mention_count": 2,
+      "review_count": 2,
+      "evidence": [
+        {
+          "review_id": "synthetic-review/osm:way/74016732/pets/01",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии размещение с собакой было запрещено."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/pets/02",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии размещение с собакой было запрещено."
+        }
+      ]
+    },
+    "staff": {
+      "positive_count": 1,
+      "negative_count": 1,
+      "mention_count": 2,
+      "review_count": 2,
+      "evidence": [
+        {
+          "review_id": "synthetic-review/osm:way/74016732/couple/01",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии сотрудники помогали вежливо и быстро."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/couple/05",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии сотрудники долго не отвечали на просьбы."
+        }
+      ]
+    },
+    "wifi": {
+      "positive_count": 2,
+      "negative_count": 1,
+      "mention_count": 3,
+      "review_count": 3,
+      "evidence": [
+        {
+          "review_id": "synthetic-review/osm:way/74016732/family/06",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии Wi-Fi часто прерывался."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/business/01",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии Wi-Fi работал стабильно."
+        },
+        {
+          "review_id": "synthetic-review/osm:way/74016732/business/02",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии Wi-Fi работал стабильно."
+        }
+      ]
+    }
+  },
+  "guest_profiles": {
+    "family": {
+      "review_count": 6,
+      "aspects": {
+        "children": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/family/01",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии детям было удобно играть."
+            }
+          ]
+        },
+        "cleanliness": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/family/03",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии номер был чистым."
+            }
+          ]
+        },
+        "food": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/family/04",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии завтрак был разнообразным."
+            }
+          ]
+        },
+        "location": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/family/05",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии до пляжа было удобно идти."
+            }
+          ]
+        },
+        "noise": {
+          "positive_count": 0,
+          "negative_count": 1,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/family/02",
+              "sentiment": "negative",
+              "quote": "В модельном сценарии ночной шум мешал спать."
+            }
+          ]
+        },
+        "wifi": {
+          "positive_count": 0,
+          "negative_count": 1,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/family/06",
+              "sentiment": "negative",
+              "quote": "В модельном сценарии Wi-Fi часто прерывался."
+            }
+          ]
+        }
+      },
+      "pros": [
+        {
+          "aspect": "children",
+          "count": 1
+        },
+        {
+          "aspect": "cleanliness",
+          "count": 1
+        },
+        {
+          "aspect": "food",
+          "count": 1
+        },
+        {
+          "aspect": "location",
+          "count": 1
+        }
+      ],
+      "cons": [
+        {
+          "aspect": "noise",
+          "count": 1
+        },
+        {
+          "aspect": "wifi",
+          "count": 1
+        }
+      ]
+    },
+    "couple": {
+      "review_count": 6,
+      "aspects": {
+        "cleanliness": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/couple/02",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии номер был чистым."
+            }
+          ]
+        },
+        "food": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/couple/04",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии завтрак был разнообразным."
+            }
+          ]
+        },
+        "location": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/couple/03",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии до пляжа было удобно идти."
+            }
+          ]
+        },
+        "noise": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/couple/06",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии в номере было тихо."
+            }
+          ]
+        },
+        "staff": {
+          "positive_count": 1,
+          "negative_count": 1,
+          "mention_count": 2,
+          "review_count": 2,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/couple/01",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии сотрудники помогали вежливо и быстро."
+            },
+            {
+              "review_id": "synthetic-review/osm:way/74016732/couple/05",
+              "sentiment": "negative",
+              "quote": "В модельном сценарии сотрудники долго не отвечали на просьбы."
+            }
+          ]
+        }
+      },
+      "pros": [
+        {
+          "aspect": "cleanliness",
+          "count": 1
+        },
+        {
+          "aspect": "food",
+          "count": 1
+        },
+        {
+          "aspect": "location",
+          "count": 1
+        },
+        {
+          "aspect": "noise",
+          "count": 1
+        },
+        {
+          "aspect": "staff",
+          "count": 1
+        }
+      ],
+      "cons": [
+        {
+          "aspect": "staff",
+          "count": 1
+        }
+      ]
+    },
+    "business": {
+      "review_count": 6,
+      "aspects": {
+        "cleanliness": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/business/05",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии номер был чистым."
+            }
+          ]
+        },
+        "food": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/business/04",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии завтрак был разнообразным."
+            }
+          ]
+        },
+        "location": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/business/06",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии до пляжа было удобно идти."
+            }
+          ]
+        },
+        "noise": {
+          "positive_count": 0,
+          "negative_count": 1,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/business/03",
+              "sentiment": "negative",
+              "quote": "В модельном сценарии ночной шум мешал спать."
+            }
+          ]
+        },
+        "wifi": {
+          "positive_count": 2,
+          "negative_count": 0,
+          "mention_count": 2,
+          "review_count": 2,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/business/01",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии Wi-Fi работал стабильно."
+            },
+            {
+              "review_id": "synthetic-review/osm:way/74016732/business/02",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии Wi-Fi работал стабильно."
+            }
+          ]
+        }
+      },
+      "pros": [
+        {
+          "aspect": "wifi",
+          "count": 2
+        },
+        {
+          "aspect": "cleanliness",
+          "count": 1
+        },
+        {
+          "aspect": "food",
+          "count": 1
+        },
+        {
+          "aspect": "location",
+          "count": 1
+        }
+      ],
+      "cons": [
+        {
+          "aspect": "noise",
+          "count": 1
+        }
+      ]
+    },
+    "pets": {
+      "review_count": 6,
+      "aspects": {
+        "cleanliness": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/pets/04",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии номер был чистым."
+            }
+          ]
+        },
+        "food": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/pets/05",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии завтрак был разнообразным."
+            }
+          ]
+        },
+        "location": {
+          "positive_count": 1,
+          "negative_count": 0,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/pets/06",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии до пляжа было удобно идти."
+            }
+          ]
+        },
+        "noise": {
+          "positive_count": 0,
+          "negative_count": 1,
+          "mention_count": 1,
+          "review_count": 1,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/pets/03",
+              "sentiment": "negative",
+              "quote": "В модельном сценарии ночной шум мешал спать."
+            }
+          ]
+        },
+        "pets": {
+          "positive_count": 0,
+          "negative_count": 2,
+          "mention_count": 2,
+          "review_count": 2,
+          "evidence": [
+            {
+              "review_id": "synthetic-review/osm:way/74016732/pets/01",
+              "sentiment": "negative",
+              "quote": "В модельном сценарии размещение с собакой было запрещено."
+            },
+            {
+              "review_id": "synthetic-review/osm:way/74016732/pets/02",
+              "sentiment": "negative",
+              "quote": "В модельном сценарии размещение с собакой было запрещено."
+            }
+          ]
+        }
+      },
+      "pros": [
+        {
+          "aspect": "cleanliness",
+          "count": 1
+        },
+        {
+          "aspect": "food",
+          "count": 1
+        },
+        {
+          "aspect": "location",
+          "count": 1
+        }
+      ],
+      "cons": [
+        {
+          "aspect": "pets",
+          "count": 2
+        },
+        {
+          "aspect": "noise",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

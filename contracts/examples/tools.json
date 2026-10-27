@@ -374,6 +374,7 @@
         "reception_24h": false,
         "reception_closes_at": "22:00:00",
         "refundable": false,
+        "review_profile": null,
         "stars": 3
       },
       {
@@ -403,6 +404,7 @@
         "reception_24h": true,
         "reception_closes_at": null,
         "refundable": true,
+        "review_profile": null,
         "stars": 4
       },
       {
@@ -432,6 +434,7 @@
         "reception_24h": true,
         "reception_closes_at": null,
         "refundable": true,
+        "review_profile": null,
         "stars": 5
       },
       {
@@ -461,6 +464,7 @@
         "reception_24h": true,
         "reception_closes_at": null,
         "refundable": true,
+        "review_profile": null,
         "stars": 5
       }
     ]
