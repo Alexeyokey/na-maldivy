@@ -1,0 +1,107 @@
+{
+  "code_commit": "24abfa834825b519eb1039fc5aae80884e934f7d",
+  "backend_source_sha256": "02b3094ac300ede23ffdcc0b56e832e9fc85a39b189c94ffb2d59b9792662f23",
+  "schema_version": 1,
+  "scope": "data_only",
+  "end_to_end_payment_status": "not_run",
+  "network": "forbidden",
+  "runs": [
+    {
+      "run": 1,
+      "status": "passed",
+      "scope": "data_only_no_chat_or_booking",
+      "payload_sha256": "2cbca63b9e19feed6915c8662d5caeba90547b603b81bba77fd3ae28b773ad26",
+      "duration_seconds": 0.2277,
+      "hotel_count": 12,
+      "date_saving_count": 1,
+      "registry_tools": [
+        "get_transfer",
+        "price_calendar",
+        "search_flights",
+        "search_hotels",
+        "search_trains",
+        "suggest_destinations"
+      ]
+    },
+    {
+      "run": 2,
+      "status": "passed",
+      "scope": "data_only_no_chat_or_booking",
+      "payload_sha256": "2cbca63b9e19feed6915c8662d5caeba90547b603b81bba77fd3ae28b773ad26",
+      "duration_seconds": 0.0775,
+      "hotel_count": 12,
+      "date_saving_count": 1,
+      "registry_tools": [
+        "get_transfer",
+        "price_calendar",
+        "search_flights",
+        "search_hotels",
+        "search_trains",
+        "suggest_destinations"
+      ]
+    },
+    {
+      "run": 3,
+      "status": "passed",
+      "scope": "data_only_no_chat_or_booking",
+      "payload_sha256": "2cbca63b9e19feed6915c8662d5caeba90547b603b81bba77fd3ae28b773ad26",
+      "duration_seconds": 0.0655,
+      "hotel_count": 12,
+      "date_saving_count": 1,
+      "registry_tools": [
+        "get_transfer",
+        "price_calendar",
+        "search_flights",
+        "search_hotels",
+        "search_trains",
+        "suggest_destinations"
+      ]
+    },
+    {
+      "run": 4,
+      "status": "passed",
+      "scope": "data_only_no_chat_or_booking",
+      "payload_sha256": "2cbca63b9e19feed6915c8662d5caeba90547b603b81bba77fd3ae28b773ad26",
+      "duration_seconds": 0.0769,
+      "hotel_count": 12,
+      "date_saving_count": 1,
+      "registry_tools": [
+        "get_transfer",
+        "price_calendar",
+        "search_flights",
+        "search_hotels",
+        "search_trains",
+        "suggest_destinations"
+      ]
+    },
+    {
+      "run": 5,
+      "status": "passed",
+      "scope": "data_only_no_chat_or_booking",
+      "payload_sha256": "2cbca63b9e19feed6915c8662d5caeba90547b603b81bba77fd3ae28b773ad26",
+      "duration_seconds": 0.0775,
+      "hotel_count": 12,
+      "date_saving_count": 1,
+      "registry_tools": [
+        "get_transfer",
+        "price_calendar",
+        "search_flights",
+        "search_hotels",
+        "search_trains",
+        "suggest_destinations"
+      ]
+    }
+  ],
+  "source_commits": {
+    "origin/main": "0c78496067a3faf40d2c9a2f803983977126915d",
+    "codex/D2-flights-pr": "63348b4dec734f62ca9eca6ff23b26e87ab1aa2c",
+    "codex/D3-hotels-pr": "276cd85b6c0c8ff5c0721fdcb464bf82ac268395",
+    "codex/D4-cache-currency-pr": "d8688694feb425a64837e9850d19e9e87df958f6",
+    "codex/D5-catalog-pr": "cf5ac2494d537dd0e343036ab42f1e1b61cd6435",
+    "codex/D6-trains-pr": "bb13220df2305f159159bffd44d03e31b1734515",
+    "codex/D7-hotel-profiles-pr": "748701fec3d5c9903a34c823d8e6900094c461ee",
+    "codex/D8-price-calendar-pr": "bca07b367ab70297338876f84bc2a4cab6bf36be",
+    "codex/tools-registry-integration": "0b8ddf6ad5797869bc069d9111491b97ac95bd96",
+    "codex/O2-D9-demo-preparation": "7616bfce4adb1adb55fe8f7c0b1ebbe66d51efa4"
+  }
+}
