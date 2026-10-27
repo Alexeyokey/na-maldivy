@@ -1,0 +1,579 @@
+{
+  "get_transfer": {
+    "input": {
+      "airport": "MLE",
+      "hotel_id": "demo-mle-budget",
+      "pickup_at": "2026-11-18T23:40:00+05:00",
+      "travelers": {
+        "adults": 1,
+        "children_ages": [],
+        "pets": 0
+      }
+    },
+    "output": [
+      {
+        "available": true,
+        "child_seat": null,
+        "depart_at": "2026-11-18T23:40:00+05:00",
+        "destination": {
+          "iata": "MLE",
+          "id": "demo-mle-budget",
+          "kind": "hotel",
+          "latitude": 4.1937999999999995,
+          "longitude": 73.5311,
+          "name": "Demo MLE budget hotel",
+          "timezone": "Indian/Maldives"
+        },
+        "distance_km": 0.314,
+        "duration_minutes": 20,
+        "hours": null,
+        "id": "stub-transfer-v2-boat-airport-MLE-4.1918-73.5291-hotel-demo-mle-budget-4.1937999999999995-73.5311-2026-11-18T23:40:00+05:00-a1-cnone-p0",
+        "is_synthetic": true,
+        "issues": [
+          "luggage_limit"
+        ],
+        "luggage_limit": "Демо: одна сумка на пассажира",
+        "mode": "boat",
+        "origin": {
+          "iata": "MLE",
+          "id": null,
+          "kind": "airport",
+          "latitude": 4.1918,
+          "longitude": 73.5291,
+          "name": "Мале",
+          "timezone": "Indian/Maldives"
+        },
+        "pets": null,
+        "pickup_at": "2026-11-18T23:40:00+05:00",
+        "prebook_hours": 2,
+        "price_rub": 4000,
+        "vehicles": null
+      },
+      {
+        "available": false,
+        "child_seat": null,
+        "depart_at": "2026-11-19T06:00:00+05:00",
+        "destination": {
+          "iata": "MLE",
+          "id": "demo-mle-budget",
+          "kind": "hotel",
+          "latitude": 4.1937999999999995,
+          "longitude": 73.5311,
+          "name": "Demo MLE budget hotel",
+          "timezone": "Indian/Maldives"
+        },
+        "distance_km": 0.314,
+        "duration_minutes": 15,
+        "hours": {
+          "from": "06:00:00",
+          "to": "18:00:00"
+        },
+        "id": "stub-transfer-v2-seaplane-airport-MLE-4.1918-73.5291-hotel-demo-mle-budget-4.1937999999999995-73.5311-2026-11-18T23:40:00+05:00-a1-cnone-p0",
+        "is_synthetic": true,
+        "issues": [
+          "unavailable_at_pickup",
+          "prebook_required",
+          "luggage_limit"
+        ],
+        "luggage_limit": "Демо: багаж до 20 кг на оплаченного пассажира",
+        "mode": "seaplane",
+        "origin": {
+          "iata": "MLE",
+          "id": null,
+          "kind": "airport",
+          "latitude": 4.1918,
+          "longitude": 73.5291,
+          "name": "Мале",
+          "timezone": "Indian/Maldives"
+        },
+        "pets": false,
+        "pickup_at": "2026-11-18T23:40:00+05:00",
+        "prebook_hours": 24,
+        "price_rub": 15000,
+        "vehicles": null
+      }
+    ]
+  },
+  "price_calendar": {
+    "input": {
+      "destination": "MLE",
+      "month": "2026-11",
+      "origin": "SVO",
+      "travelers": {
+        "adults": 1,
+        "children_ages": [],
+        "pets": 0
+      }
+    },
+    "output": [
+      {
+        "date": "2026-11-01",
+        "is_synthetic": true,
+        "price_rub": 42250
+      },
+      {
+        "date": "2026-11-02",
+        "is_synthetic": true,
+        "price_rub": 42500
+      },
+      {
+        "date": "2026-11-03",
+        "is_synthetic": true,
+        "price_rub": 42750
+      },
+      {
+        "date": "2026-11-04",
+        "is_synthetic": true,
+        "price_rub": 43000
+      },
+      {
+        "date": "2026-11-05",
+        "is_synthetic": true,
+        "price_rub": 43250
+      },
+      {
+        "date": "2026-11-06",
+        "is_synthetic": true,
+        "price_rub": 43500
+      },
+      {
+        "date": "2026-11-07",
+        "is_synthetic": true,
+        "price_rub": 42000
+      },
+      {
+        "date": "2026-11-08",
+        "is_synthetic": true,
+        "price_rub": 42250
+      },
+      {
+        "date": "2026-11-09",
+        "is_synthetic": true,
+        "price_rub": 42500
+      },
+      {
+        "date": "2026-11-10",
+        "is_synthetic": true,
+        "price_rub": 42750
+      },
+      {
+        "date": "2026-11-11",
+        "is_synthetic": true,
+        "price_rub": 43000
+      },
+      {
+        "date": "2026-11-12",
+        "is_synthetic": true,
+        "price_rub": 43250
+      },
+      {
+        "date": "2026-11-13",
+        "is_synthetic": true,
+        "price_rub": 43500
+      },
+      {
+        "date": "2026-11-14",
+        "is_synthetic": true,
+        "price_rub": 42000
+      },
+      {
+        "date": "2026-11-15",
+        "is_synthetic": true,
+        "price_rub": 42250
+      },
+      {
+        "date": "2026-11-16",
+        "is_synthetic": true,
+        "price_rub": 42500
+      },
+      {
+        "date": "2026-11-17",
+        "is_synthetic": true,
+        "price_rub": 42750
+      },
+      {
+        "date": "2026-11-18",
+        "is_synthetic": true,
+        "price_rub": 43000
+      },
+      {
+        "date": "2026-11-19",
+        "is_synthetic": true,
+        "price_rub": 43250
+      },
+      {
+        "date": "2026-11-20",
+        "is_synthetic": true,
+        "price_rub": 43500
+      },
+      {
+        "date": "2026-11-21",
+        "is_synthetic": true,
+        "price_rub": 42000
+      },
+      {
+        "date": "2026-11-22",
+        "is_synthetic": true,
+        "price_rub": 42250
+      },
+      {
+        "date": "2026-11-23",
+        "is_synthetic": true,
+        "price_rub": 42500
+      },
+      {
+        "date": "2026-11-24",
+        "is_synthetic": true,
+        "price_rub": 42750
+      },
+      {
+        "date": "2026-11-25",
+        "is_synthetic": true,
+        "price_rub": 43000
+      },
+      {
+        "date": "2026-11-26",
+        "is_synthetic": true,
+        "price_rub": 43250
+      },
+      {
+        "date": "2026-11-27",
+        "is_synthetic": true,
+        "price_rub": 43500
+      },
+      {
+        "date": "2026-11-28",
+        "is_synthetic": true,
+        "price_rub": 42000
+      },
+      {
+        "date": "2026-11-29",
+        "is_synthetic": true,
+        "price_rub": 42250
+      },
+      {
+        "date": "2026-11-30",
+        "is_synthetic": true,
+        "price_rub": 42500
+      }
+    ]
+  },
+  "search_flights": {
+    "input": {
+      "departure_date": "2026-11-18",
+      "destination": "MLE",
+      "direct_only": false,
+      "max_price_rub": null,
+      "origin": "SVO",
+      "travelers": {
+        "adults": 1,
+        "children_ages": [],
+        "pets": 0
+      }
+    },
+    "output": [
+      {
+        "arrival_at": "2026-11-18T20:00:00+05:00",
+        "baggage_price_rub": 2000,
+        "carrier": "Demo Air (synthetic)",
+        "departure_at": "2026-11-18T09:00:00+03:00",
+        "destination": {
+          "iata": "MLE",
+          "id": null,
+          "kind": "airport",
+          "latitude": 4.1918,
+          "longitude": 73.5291,
+          "name": "Мале",
+          "timezone": "Indian/Maldives"
+        },
+        "id": "stub-flight-SVO-MLE-2026-11-18-0-a1-cnone-p0",
+        "is_overnight": false,
+        "is_synthetic": true,
+        "origin": {
+          "iata": "SVO",
+          "id": null,
+          "kind": "airport",
+          "latitude": 55.9726,
+          "longitude": 37.4146,
+          "name": "Шереметьево",
+          "timezone": "Europe/Moscow"
+        },
+        "price_rub": 43000,
+        "stops": 0
+      },
+      {
+        "arrival_at": "2026-11-19T10:30:00+05:00",
+        "baggage_price_rub": 2000,
+        "carrier": "Demo Air (synthetic)",
+        "departure_at": "2026-11-18T23:30:00+03:00",
+        "destination": {
+          "iata": "MLE",
+          "id": null,
+          "kind": "airport",
+          "latitude": 4.1918,
+          "longitude": 73.5291,
+          "name": "Мале",
+          "timezone": "Indian/Maldives"
+        },
+        "id": "stub-flight-SVO-MLE-2026-11-18-1-a1-cnone-p0",
+        "is_overnight": true,
+        "is_synthetic": true,
+        "origin": {
+          "iata": "SVO",
+          "id": null,
+          "kind": "airport",
+          "latitude": 55.9726,
+          "longitude": 37.4146,
+          "name": "Шереметьево",
+          "timezone": "Europe/Moscow"
+        },
+        "price_rub": 44000,
+        "stops": 0
+      }
+    ]
+  },
+  "search_hotels": {
+    "input": {
+      "check_in": "2026-11-18",
+      "check_out": "2026-11-25",
+      "destination": "MLE",
+      "max_price_rub": null,
+      "min_stars": 0,
+      "refundable_only": false,
+      "travelers": {
+        "adults": 1,
+        "children_ages": [],
+        "pets": 0
+      }
+    },
+    "output": [
+      {
+        "adults_only": false,
+        "check_in": "2026-11-18",
+        "check_in_time": "14:00:00",
+        "check_out": "2026-11-25",
+        "check_out_time": "12:00:00",
+        "early_check_in_available": false,
+        "early_check_in_price_rub": null,
+        "hotel_id": "demo-mle-budget",
+        "is_synthetic": true,
+        "name": "Demo MLE budget",
+        "offer_id": "stub-hotel-MLE-budget-2026-11-18-2026-11-25-a1-cnone-p0",
+        "pets_allowed": false,
+        "place": {
+          "iata": "MLE",
+          "id": "demo-mle-budget",
+          "kind": "hotel",
+          "latitude": 4.1937999999999995,
+          "longitude": 73.5311,
+          "name": "Demo MLE budget hotel",
+          "timezone": "Indian/Maldives"
+        },
+        "price_rub": 67200,
+        "rating": 7.5,
+        "reception_24h": false,
+        "reception_closes_at": "22:00:00",
+        "refundable": false,
+        "stars": 3
+      },
+      {
+        "adults_only": false,
+        "check_in": "2026-11-18",
+        "check_in_time": "14:00:00",
+        "check_out": "2026-11-25",
+        "check_out_time": "12:00:00",
+        "early_check_in_available": true,
+        "early_check_in_price_rub": 1200,
+        "hotel_id": "demo-mle-family",
+        "is_synthetic": true,
+        "name": "Demo MLE family",
+        "offer_id": "stub-hotel-MLE-family-2026-11-18-2026-11-25-a1-cnone-p0",
+        "pets_allowed": true,
+        "place": {
+          "iata": "MLE",
+          "id": "demo-mle-family",
+          "kind": "hotel",
+          "latitude": 4.195799999999999,
+          "longitude": 73.5331,
+          "name": "Demo MLE family hotel",
+          "timezone": "Indian/Maldives"
+        },
+        "price_rub": 100800,
+        "rating": 8.0,
+        "reception_24h": true,
+        "reception_closes_at": null,
+        "refundable": true,
+        "stars": 4
+      },
+      {
+        "adults_only": true,
+        "check_in": "2026-11-18",
+        "check_in_time": "14:00:00",
+        "check_out": "2026-11-25",
+        "check_out_time": "12:00:00",
+        "early_check_in_available": true,
+        "early_check_in_price_rub": 1200,
+        "hotel_id": "demo-mle-adults",
+        "is_synthetic": true,
+        "name": "Demo MLE adults",
+        "offer_id": "stub-hotel-MLE-adults-2026-11-18-2026-11-25-a1-cnone-p0",
+        "pets_allowed": false,
+        "place": {
+          "iata": "MLE",
+          "id": "demo-mle-adults",
+          "kind": "hotel",
+          "latitude": 4.1978,
+          "longitude": 73.5351,
+          "name": "Demo MLE adults hotel",
+          "timezone": "Indian/Maldives"
+        },
+        "price_rub": 84000,
+        "rating": 8.5,
+        "reception_24h": true,
+        "reception_closes_at": null,
+        "refundable": true,
+        "stars": 5
+      },
+      {
+        "adults_only": false,
+        "check_in": "2026-11-18",
+        "check_in_time": "14:00:00",
+        "check_out": "2026-11-25",
+        "check_out_time": "12:00:00",
+        "early_check_in_available": true,
+        "early_check_in_price_rub": 1200,
+        "hotel_id": "demo-mle-premium",
+        "is_synthetic": true,
+        "name": "Demo MLE premium",
+        "offer_id": "stub-hotel-MLE-premium-2026-11-18-2026-11-25-a1-cnone-p0",
+        "pets_allowed": true,
+        "place": {
+          "iata": "MLE",
+          "id": "demo-mle-premium",
+          "kind": "hotel",
+          "latitude": 4.1998,
+          "longitude": 73.5371,
+          "name": "Demo MLE premium hotel",
+          "timezone": "Indian/Maldives"
+        },
+        "price_rub": 168000,
+        "rating": 9.0,
+        "reception_24h": true,
+        "reception_closes_at": null,
+        "refundable": true,
+        "stars": 5
+      }
+    ]
+  },
+  "search_trains": {
+    "input": {
+      "departure_date": "2026-11-18",
+      "destination": "MOW",
+      "origin": "LED",
+      "seat_class": "coupe",
+      "travelers": {
+        "adults": 1,
+        "children_ages": [],
+        "pets": 0
+      }
+    },
+    "output": [
+      {
+        "arrival_at": "2026-11-19T07:55:00+03:00",
+        "departure_at": "2026-11-18T23:55:00+03:00",
+        "destination": {
+          "iata": "MOW",
+          "id": null,
+          "kind": "city",
+          "latitude": 55.7558,
+          "longitude": 37.6173,
+          "name": "Москва",
+          "timezone": "Europe/Moscow"
+        },
+        "id": "stub-train-LED-MOW-2026-11-18-coupe-a1-cnone-p0",
+        "is_synthetic": true,
+        "number": "DEMO-002",
+        "origin": {
+          "iata": "LED",
+          "id": null,
+          "kind": "city",
+          "latitude": 59.9301,
+          "longitude": 30.3619,
+          "name": "Санкт-Петербург",
+          "timezone": "Europe/Moscow"
+        },
+        "price_rub": 7000,
+        "seat_class": "coupe"
+      }
+    ]
+  },
+  "suggest_destinations": {
+    "input": {
+      "budget_rub": null,
+      "min_water_temperature_c": 24.0,
+      "month": 11,
+      "nights": 7,
+      "origin": "SVO",
+      "travelers": {
+        "adults": 1,
+        "children_ages": [],
+        "pets": 0
+      },
+      "visa_free_only": false
+    },
+    "output": [
+      {
+        "air_temperature_c": 30.0,
+        "country": "ОАЭ",
+        "estimated_total_price_rub": 111300,
+        "flight_duration_minutes": 330,
+        "is_synthetic": true,
+        "month": 11,
+        "place": {
+          "iata": "DXB",
+          "id": null,
+          "kind": "airport",
+          "latitude": 25.2532,
+          "longitude": 55.3657,
+          "name": "Дубай",
+          "timezone": "Asia/Dubai"
+        },
+        "risks": [
+          "Демонстрационные климат, цены и визовые условия; требуется проверка реальных источников"
+        ],
+        "tags": [
+          "море",
+          "synthetic"
+        ],
+        "visa_required": false,
+        "water_temperature_c": 27.0
+      },
+      {
+        "air_temperature_c": 29.0,
+        "country": "Мальдивы",
+        "estimated_total_price_rub": 185300,
+        "flight_duration_minutes": 540,
+        "is_synthetic": true,
+        "month": 11,
+        "place": {
+          "iata": "MLE",
+          "id": null,
+          "kind": "airport",
+          "latitude": 4.1918,
+          "longitude": 73.5291,
+          "name": "Мале",
+          "timezone": "Indian/Maldives"
+        },
+        "risks": [
+          "Демонстрационные климат, цены и визовые условия; требуется проверка реальных источников"
+        ],
+        "tags": [
+          "море",
+          "synthetic"
+        ],
+        "visa_required": false,
+        "water_temperature_c": 28.0
+      }
+    ]
+  }
+}

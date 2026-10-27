@@ -1,4 +1,4 @@
-.PHONY: up down logs dev check check-fast test lint fmt d4-check d4-test d4-demo
+.PHONY: up down logs dev check check-fast test lint fmt schemas tool-examples up down logs dev check check-fast test lint fmt d4-check d4-test d4-demo
 
 up:
 	docker compose up --build -d --wait
@@ -28,6 +28,12 @@ lint:
 
 fmt:
 	cd backend && uv run ruff format . && uv run ruff check --fix .
+
+schemas:
+	cd backend && uv run python -m app.tools.schema
+
+tool-examples:
+	cd backend && uv run python ../scripts/export_tool_examples.py
 
 d4-check:
 	UV_OFFLINE=1 bash scripts/check.sh lint test

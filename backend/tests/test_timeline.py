@@ -226,6 +226,8 @@ def test_accepts_d1_contract_models() -> None:
         check_in=date(2026, 11, 19),
         check_out=date(2026, 11, 25),
         price_rub=100000,
+        check_in_time=time(14),
+        check_out_time=time(12),
         is_synthetic=True,
     )
 
