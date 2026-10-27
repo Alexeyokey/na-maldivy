@@ -7,7 +7,6 @@ Travelers, коды issues и UnsupportedTransfer общие с D1; модели
 
 import json
 import math
-import os
 from collections.abc import Iterator
 from datetime import datetime, time, timedelta
 from functools import lru_cache
@@ -19,10 +18,11 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from app.contracts.tools import TransferIssue as Issue
 from app.contracts.tools import Travelers
+from app.data_paths import DEFAULT_DATA_DIR, resolve_data_dir
 from app.tools.errors import UnsupportedTransfer
 
 # backend/app/tools/transfers.py → корень репозитория; в docker это /data (см. docker-compose.yml)
-DEFAULT_PATH = Path(__file__).resolve().parents[3] / "data" / "transfers" / "transfers.json"
+DEFAULT_PATH = DEFAULT_DATA_DIR / "transfers" / "transfers.json"
 
 Mode = Literal["taxi", "private_minivan", "shuttle", "metro", "speedboat", "seaplane", "flight_speedboat"]
 CHILD_SEAT_MAX_AGE = 12  # детям младше нужно кресло в машине, старше платят как взрослые
@@ -100,7 +100,7 @@ class TransferBase:
 
     @classmethod
     def load(cls, path: Path | None = None) -> "TransferBase":
-        path = path or Path(os.environ.get("TRANSFERS_PATH", DEFAULT_PATH))
+        path = path or resolve_data_dir() / "transfers/transfers.json"
         data = json.loads(path.read_text(encoding="utf-8"))
         return cls([HotelTransfers.model_validate(r) for r in data["transfers"]])
 
@@ -114,9 +114,13 @@ class TransferBase:
         return iter(self._records.values())
 
 
-@lru_cache
-def default_base() -> TransferBase:
-    return TransferBase.load()
+@lru_cache(maxsize=8)
+def _base_at(data_dir: Path) -> TransferBase:
+    return TransferBase.load(data_dir / "transfers/transfers.json")
+
+
+def default_base(data_dir: Path | None = None) -> TransferBase:
+    return _base_at(resolve_data_dir(data_dir))
 
 
 def quote_transfers(
