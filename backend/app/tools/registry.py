@@ -14,21 +14,32 @@ type ToolRegistry = dict[str, Tool[Any, Any]]
 def create_tools(settings: Settings) -> ToolRegistry:
     if settings.tools_mode == "stub":
         return create_stub_tools()
-    # Imports stay lazy: the default stub mode also works before D2/D3 are merged.
+    # Imports stay lazy: the default stub mode also works before implementation PRs are merged.
     try:
         from app.tools.d5_adapter import DestinationTool
         from app.tools.flights import FlightTool
         from app.tools.hotels import HotelSearchTool
+        from app.tools.price_calendar import PriceCalendarTool
         from app.tools.s4_adapter import S4TransferTool
+        from app.tools.trains import TrainTool
     except ModuleNotFoundError as exc:
-        if exc.name not in {"app.tools.d5_adapter", "app.tools.flights", "app.tools.hotels"}:
+        if exc.name not in {
+            "app.tools.d5_adapter",
+            "app.tools.flights",
+            "app.tools.hotels",
+            "app.tools.trains",
+            "app.tools.price_calendar",
+        }:
             raise
-        raise RuntimeError("TOOLS_MODE=real requires the D2, D3 and D5 implementation PRs") from None
+        raise RuntimeError("TOOLS_MODE=real requires the D2, D3, D5, D6 and D8 implementation PRs") from None
+    flights = FlightTool(data_dir=settings.data_dir)
     tools = (
-        FlightTool(data_dir=settings.data_dir),
+        flights,
         HotelSearchTool(data_dir=settings.data_dir),
         DestinationTool(data_dir=settings.data_dir),
         S4TransferTool(data_dir=settings.data_dir),
+        TrainTool(data_dir=settings.data_dir),
+        PriceCalendarTool(flights=flights),
     )
     return {tool.name: tool for tool in tools}
 

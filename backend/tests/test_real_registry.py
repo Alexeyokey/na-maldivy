@@ -11,9 +11,19 @@ from app.data_paths import DEFAULT_DATA_DIR
 from app.tools.registry import create_tools, run_tool, tool_specs
 from app.tools.s4_adapter import transfer_leg
 
-REAL_NAMES = {"search_flights", "search_hotels", "suggest_destinations", "get_transfer"}
-ASSEMBLED = all(importlib.util.find_spec(name) is not None for name in ("app.tools.flights", "app.tools.hotels"))
-assembled = pytest.mark.skipif(not ASSEMBLED, reason="Full registry requires independent D2 #57 and D3 #55")
+REAL_NAMES = {
+    "search_flights",
+    "search_hotels",
+    "suggest_destinations",
+    "get_transfer",
+    "search_trains",
+    "price_calendar",
+}
+ASSEMBLED = all(
+    importlib.util.find_spec(name) is not None
+    for name in ("app.tools.flights", "app.tools.hotels", "app.tools.trains", "app.tools.price_calendar")
+)
+assembled = pytest.mark.skipif(not ASSEMBLED, reason="Full registry requires D2/D3/D6/D8 implementation PRs")
 
 
 def test_missing_implementation_is_explicit_and_never_falls_back_to_stubs(monkeypatch):
@@ -25,7 +35,7 @@ def test_missing_implementation_is_explicit_and_never_falls_back_to_stubs(monkey
         return real_import(name, *args, **kwargs)
 
     monkeypatch.setattr(builtins, "__import__", missing)
-    with pytest.raises(RuntimeError, match="requires the D2, D3 and D5"):
+    with pytest.raises(RuntimeError, match="requires the D2, D3, D5, D6 and D8"):
         create_tools(Settings(_env_file=None, tools_mode="real"))
 
 
@@ -87,17 +97,27 @@ async def test_public_dispatch_and_shared_hotel_identity_for_all_destinations(ai
     destinations = await run_tool("suggest_destinations", {"origin": "SVO", "month": 11}, tools=tools)
     assert len(destinations) == 48
     assert all(item.estimated_total_price_rub is None for item in destinations)
+    calendar = await run_tool(
+        "price_calendar", {"origin": "SVO", "destination": airport, "month": "2026-11"}, tools=tools
+    )
+    assert len(calendar) == 30 and all(item.price_rub > 0 for item in calendar)
+    trains = await run_tool(
+        "search_trains", {"origin": "LED", "destination": "MOW", "departure_date": "2026-11-18"}, tools=tools
+    )
+    assert trains and trains[0].origin.kind == "city"
     with pytest.raises(KeyError):
-        await run_tool("price_calendar", {"origin": "SVO", "destination": airport, "month": "2026-11"}, tools=tools)
+        await run_tool("unsupported_tool", {}, tools=tools)
 
 
 @assembled
-async def test_same_settings_root_is_used_by_all_four_tools(tmp_path):
+async def test_same_settings_root_is_used_by_all_six_tools(tmp_path):
     shutil.copytree(DEFAULT_DATA_DIR, tmp_path / "data")
     settings = Settings(_env_file=None, tools_mode="real", data_dir=tmp_path / "data")
     tools = create_tools(settings)
     assert tools["search_flights"].routes_path == settings.data_dir / "routes/network.json"
-    assert all(tools[name].data_dir == settings.data_dir for name in REAL_NAMES - {"search_flights"})
+    assert all(tools[name].data_dir == settings.data_dir for name in REAL_NAMES - {"search_flights", "price_calendar"})
+    assert tools["price_calendar"].flights is tools["search_flights"]
+    assert tools["search_trains"].model_path == settings.data_dir / "trains/model.json"
     assert await run_tool("suggest_destinations", {"origin": "LED", "month": 11}, tools=tools)
 
 
