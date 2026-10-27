@@ -74,7 +74,7 @@ async def quote_demo_trip(
     )
 
 
-async def demo_payload(*, seed: int = 42, destination: str = "DXB", departure: date = date(2026, 11, 18)) -> dict:
+async def demo_payload(*, seed: int = 42, destination: str = "DXB", departure: date = date(2026, 11, 17)) -> dict:
     try:
         end = departure + timedelta(days=7)
     except OverflowError as exc:
@@ -119,9 +119,12 @@ async def demo_payload(*, seed: int = 42, destination: str = "DXB", departure: d
         "price_calendar",
     }:
         raise ValueError("Rehearsal requires the complete six-tool registry")
-    maldives = await FlightTool().run(FlightSearch(origin="SVO", destination="MLE", departure_date=departure))
+    trap_day = date(2026, 11, 18)
+    maldives = await FlightTool().run(FlightSearch(origin="SVO", destination="MLE", departure_date=trap_day))
     evening_arrival = next(item for item in maldives if item.departure_at.hour == 9)
-    stays = await search_hotel_results(HotelSearch(destination="MLE", check_in=departure, check_out=end))
+    stays = await search_hotel_results(
+        HotelSearch(destination="MLE", check_in=trap_day, check_out=trap_day + timedelta(days=7))
+    )
     conrad = next(item for item in stays if item.hotel_id == "osm:node/4455235191")
     transfer_tool = registry["get_transfer"]
     from app.contracts.tools import TransferRequest
@@ -185,7 +188,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--destination", choices=("AYT", "DXB", "MLE"), default="DXB")
-    parser.add_argument("--departure-date", type=date.fromisoformat, default=date(2026, 11, 18))
+    parser.add_argument("--departure-date", type=date.fromisoformat, default=date(2026, 11, 17))
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
