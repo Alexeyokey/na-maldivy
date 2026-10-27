@@ -6,15 +6,15 @@ is_synthetic even when its route was measured by OSRM.
 """
 
 import json
-import os
 from datetime import UTC, timedelta
 from pathlib import Path
 
 from pydantic import TypeAdapter
 
 from app.contracts.tools import Place, Transfer, TransferHours, TransferQuery, TransferRequest
+from app.data_paths import resolve_data_dir
 from app.tools.errors import UnsupportedTransfer
-from app.tools.transfers import DEFAULT_PATH, TransferBase, default_base, quote_transfers
+from app.tools.transfers import TransferBase, default_base, quote_transfers
 
 MODE_MAP = {"private_minivan": "minivan", "speedboat": "boat"}
 
@@ -27,10 +27,10 @@ class S4TransferTool:
 
     def __init__(self, *, base: TransferBase | None = None, data_dir: Path | None = None) -> None:
         self.base = base
-        self.data_dir = data_dir or Path(os.environ.get("TRANSFERS_PATH", DEFAULT_PATH)).parent.parent
+        self.data_dir = resolve_data_dir(data_dir)
 
     async def run(self, input: TransferRequest) -> list[Transfer]:
-        base = self.base if self.base is not None else default_base()
+        base = self.base if self.base is not None else default_base(self.data_dir)
         record = base.get(input.hotel_id, input.airport)
         airports = json.loads((self.data_dir / "transfers/airports.json").read_text(encoding="utf-8"))["airports"]
         hotels = json.loads((self.data_dir / "hotels/osm_hotels.json").read_text(encoding="utf-8"))["hotels"]
