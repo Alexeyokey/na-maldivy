@@ -309,11 +309,11 @@ class Destination(Contract):
     place: Place
     country: str
     month: int = Field(ge=1, le=12)
-    air_temperature_c: float
-    water_temperature_c: float
-    flight_duration_minutes: int = Field(gt=0)
-    visa_required: bool
-    estimated_total_price_rub: Rubles
+    air_temperature_c: float | None
+    water_temperature_c: float | None
+    flight_duration_minutes: int | None = Field(gt=0)
+    visa_required: KnownBoolean | None
+    estimated_total_price_rub: Rubles | None
     tags: list[str] = Field(default_factory=list)
     risks: list[str] = Field(default_factory=list)
     is_synthetic: bool

@@ -4,6 +4,7 @@ import argparse
 import json
 from datetime import date
 
+from app.config import Settings
 from app.tools.destinations import Preferences, load_catalogue, resolve_iata, suggest_destinations
 
 
@@ -27,6 +28,7 @@ def main() -> None:
     parser.add_argument("--resolve", help="Найти IATA по названию/alias")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
+    args.data_path = args.data_path or Settings().data_dir / "destinations.yaml"
     if args.resolve is not None:
         print(json.dumps(resolve_iata(args.resolve, data_path=args.data_path), ensure_ascii=False))
         return

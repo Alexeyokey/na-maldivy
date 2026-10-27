@@ -31,22 +31,43 @@
       "additionalProperties": false,
       "properties": {
         "air_temperature_c": {
-          "title": "Air Temperature C",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Air Temperature C"
         },
         "country": {
           "title": "Country",
           "type": "string"
         },
         "estimated_total_price_rub": {
-          "minimum": 0,
-          "title": "Estimated Total Price Rub",
-          "type": "integer"
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Estimated Total Price Rub"
         },
         "flight_duration_minutes": {
-          "exclusiveMinimum": 0,
-          "title": "Flight Duration Minutes",
-          "type": "integer"
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Flight Duration Minutes"
         },
         "is_synthetic": {
           "title": "Is Synthetic",
@@ -76,12 +97,26 @@
           "type": "array"
         },
         "visa_required": {
-          "title": "Visa Required",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Visa Required"
         },
         "water_temperature_c": {
-          "title": "Water Temperature C",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Water Temperature C"
         }
       },
       "required": [

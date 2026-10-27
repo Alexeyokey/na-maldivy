@@ -6,7 +6,6 @@ city. Climate values are monthly climatology, never a weather forecast. Flight
 durations are estimates, not a promise that a direct flight exists.
 """
 
-import os
 import unicodedata
 from collections.abc import Mapping
 from datetime import date, timedelta
@@ -19,6 +18,8 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, field_serializer, field_validator, model_validator
+
+from app.data_paths import resolve_data_dir
 
 Month = Annotated[int, Field(strict=True, ge=1, le=12)]
 Rubles = Annotated[int, Field(strict=True, ge=0)]
@@ -218,10 +219,7 @@ class Catalogue(FrozenModel):
 
 
 def _data_path(path: str | Path | None) -> Path:
-    selected = path if path is not None else os.environ.get("DESTINATIONS_DATA_PATH")
-    if selected is None:
-        selected = Path(__file__).resolve().parents[3] / "data" / "destinations.yaml"
-    return Path(selected).expanduser().resolve()
+    return Path(path).expanduser().resolve() if path else resolve_data_dir() / "destinations.yaml"
 
 
 @lru_cache(maxsize=4)
@@ -234,7 +232,7 @@ def _load_catalogue(path: Path) -> Catalogue:
 def load_catalogue(path: str | Path | None = None) -> Catalogue:
     """Load and validate once per path/process. Restart after editing a catalogue.
 
-    DESTINATIONS_DATA_PATH supports deployments where data is outside the repo.
+    DATA_DIR supports deployments where data is outside the repo.
     Models, nested tuples, and the source mapping are immutable, so callers cannot
     mutate a cached result and affect later requests.
     """
@@ -306,8 +304,8 @@ class SuggestionQuery(FrozenModel):
     preferences: Preferences = Preferences()
     origin: Literal["MOW", "LED"]
     budget: Rubles | None = None
-    nights: Annotated[int, Field(strict=True, ge=1, le=90)] = 7
-    travelers: Annotated[int, Field(strict=True, ge=1, le=20)] = 1
+    nights: Annotated[int, Field(strict=True, ge=1)] = 7
+    travelers: Annotated[int, Field(strict=True, ge=1)] = 1
     limit: Annotated[int, Field(strict=True, ge=1, le=100)] = 10
     departure_date: date | None = None
 

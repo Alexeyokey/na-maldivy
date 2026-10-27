@@ -426,8 +426,8 @@ def test_catalogue_rejects_future_snapshot_claims(raw_catalogue: dict) -> None:
 def test_catalogue_safe_load_cache_env_override_immutability_and_json(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, raw_catalogue: dict
 ) -> None:
-    path = write_catalogue(tmp_path / "catalogue.yaml", raw_catalogue)
-    monkeypatch.setenv("DESTINATIONS_DATA_PATH", str(path))
+    path = write_catalogue(tmp_path / "destinations.yaml", raw_catalogue)
+    monkeypatch.setenv("DATA_DIR", str(path.parent))
     clear_catalogue_cache()
 
     data = load_catalogue()
