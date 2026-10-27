@@ -1,0 +1,273 @@
+[
+  {
+    "description": "Requested 23:40; next daytime seaplane after 06:00.",
+    "id": "male-night-seaplane",
+    "input": {
+      "airport": "MLE",
+      "hotel_id": "demo-mle-budget",
+      "pickup_at": "2026-11-18T23:40:00+05:00",
+      "travelers": {
+        "adults": 1,
+        "children_ages": [],
+        "pets": 0
+      }
+    },
+    "output": [
+      {
+        "available": true,
+        "child_seat": null,
+        "depart_at": "2026-11-18T23:40:00+05:00",
+        "destination": {
+          "iata": "MLE",
+          "id": "demo-mle-budget",
+          "kind": "hotel",
+          "latitude": 4.1937999999999995,
+          "longitude": 73.5311,
+          "name": "Demo MLE budget hotel",
+          "timezone": "Indian/Maldives"
+        },
+        "distance_km": 0.314,
+        "duration_minutes": 20,
+        "hours": null,
+        "id": "stub-transfer-v2-boat-airport-MLE-4.1918-73.5291-hotel-demo-mle-budget-4.1937999999999995-73.5311-2026-11-18T23:40:00+05:00-a1-cnone-p0",
+        "is_synthetic": true,
+        "issues": [
+          "luggage_limit"
+        ],
+        "luggage_limit": "Демо: одна сумка на пассажира",
+        "mode": "boat",
+        "origin": {
+          "iata": "MLE",
+          "id": null,
+          "kind": "airport",
+          "latitude": 4.1918,
+          "longitude": 73.5291,
+          "name": "Мале",
+          "timezone": "Indian/Maldives"
+        },
+        "pets": null,
+        "pickup_at": "2026-11-18T23:40:00+05:00",
+        "prebook_hours": 2,
+        "price_rub": 4000,
+        "vehicles": null
+      },
+      {
+        "available": false,
+        "child_seat": null,
+        "depart_at": "2026-11-19T06:00:00+05:00",
+        "destination": {
+          "iata": "MLE",
+          "id": "demo-mle-budget",
+          "kind": "hotel",
+          "latitude": 4.1937999999999995,
+          "longitude": 73.5311,
+          "name": "Demo MLE budget hotel",
+          "timezone": "Indian/Maldives"
+        },
+        "distance_km": 0.314,
+        "duration_minutes": 15,
+        "hours": {
+          "from": "06:00:00",
+          "to": "18:00:00"
+        },
+        "id": "stub-transfer-v2-seaplane-airport-MLE-4.1918-73.5291-hotel-demo-mle-budget-4.1937999999999995-73.5311-2026-11-18T23:40:00+05:00-a1-cnone-p0",
+        "is_synthetic": true,
+        "issues": [
+          "unavailable_at_pickup",
+          "prebook_required",
+          "luggage_limit"
+        ],
+        "luggage_limit": "Демо: багаж до 20 кг на оплаченного пассажира",
+        "mode": "seaplane",
+        "origin": {
+          "iata": "MLE",
+          "id": null,
+          "kind": "airport",
+          "latitude": 4.1918,
+          "longitude": 73.5291,
+          "name": "Мале",
+          "timezone": "Indian/Maldives"
+        },
+        "pets": false,
+        "pickup_at": "2026-11-18T23:40:00+05:00",
+        "prebook_hours": 24,
+        "price_rub": 15000,
+        "vehicles": null
+      }
+    ]
+  },
+  {
+    "description": "Five humans use two taxis; infant passenger fares are free.",
+    "id": "group-five-including-infant",
+    "input": {
+      "airport": "AYT",
+      "hotel_id": "demo-ayt-budget",
+      "pickup_at": "2026-11-18T12:00:00+03:00",
+      "travelers": {
+        "adults": 4,
+        "children_ages": [
+          1
+        ],
+        "pets": 0
+      }
+    },
+    "output": [
+      {
+        "available": true,
+        "child_seat": null,
+        "depart_at": "2026-11-18T12:00:00+03:00",
+        "destination": {
+          "iata": "AYT",
+          "id": "demo-ayt-budget",
+          "kind": "hotel",
+          "latitude": 36.9007,
+          "longitude": 30.8025,
+          "name": "Demo AYT budget hotel",
+          "timezone": "Europe/Istanbul"
+        },
+        "distance_km": 0.399,
+        "duration_minutes": 25,
+        "hours": {
+          "from": "06:00:00",
+          "to": "23:30:00"
+        },
+        "id": "stub-transfer-v2-bus-airport-AYT-36.8987-30.8005-hotel-demo-ayt-budget-36.9007-30.8025-2026-11-18T12:00:00+03:00-a4-c1-p0",
+        "is_synthetic": true,
+        "issues": [],
+        "luggage_limit": null,
+        "mode": "bus",
+        "origin": {
+          "iata": "AYT",
+          "id": null,
+          "kind": "airport",
+          "latitude": 36.8987,
+          "longitude": 30.8005,
+          "name": "Анталья",
+          "timezone": "Europe/Istanbul"
+        },
+        "pets": false,
+        "pickup_at": "2026-11-18T12:00:00+03:00",
+        "prebook_hours": 0,
+        "price_rub": 800,
+        "vehicles": null
+      },
+      {
+        "available": true,
+        "child_seat": true,
+        "depart_at": "2026-11-18T12:00:00+03:00",
+        "destination": {
+          "iata": "AYT",
+          "id": "demo-ayt-budget",
+          "kind": "hotel",
+          "latitude": 36.9007,
+          "longitude": 30.8025,
+          "name": "Demo AYT budget hotel",
+          "timezone": "Europe/Istanbul"
+        },
+        "distance_km": 0.399,
+        "duration_minutes": 5,
+        "hours": null,
+        "id": "stub-transfer-v2-minivan-airport-AYT-36.8987-30.8005-hotel-demo-ayt-budget-36.9007-30.8025-2026-11-18T12:00:00+03:00-a4-c1-p0",
+        "is_synthetic": true,
+        "issues": [],
+        "luggage_limit": null,
+        "mode": "minivan",
+        "origin": {
+          "iata": "AYT",
+          "id": null,
+          "kind": "airport",
+          "latitude": 36.8987,
+          "longitude": 30.8005,
+          "name": "Анталья",
+          "timezone": "Europe/Istanbul"
+        },
+        "pets": true,
+        "pickup_at": "2026-11-18T12:00:00+03:00",
+        "prebook_hours": 2,
+        "price_rub": 860,
+        "vehicles": 1
+      },
+      {
+        "available": true,
+        "child_seat": null,
+        "depart_at": "2026-11-18T12:00:00+03:00",
+        "destination": {
+          "iata": "AYT",
+          "id": "demo-ayt-budget",
+          "kind": "hotel",
+          "latitude": 36.9007,
+          "longitude": 30.8025,
+          "name": "Demo AYT budget hotel",
+          "timezone": "Europe/Istanbul"
+        },
+        "distance_km": 0.399,
+        "duration_minutes": 5,
+        "hours": null,
+        "id": "stub-transfer-v2-taxi-airport-AYT-36.8987-30.8005-hotel-demo-ayt-budget-36.9007-30.8025-2026-11-18T12:00:00+03:00-a4-c1-p0",
+        "is_synthetic": true,
+        "issues": [
+          "extra_vehicle",
+          "child_seat_unknown"
+        ],
+        "luggage_limit": null,
+        "mode": "taxi",
+        "origin": {
+          "iata": "AYT",
+          "id": null,
+          "kind": "airport",
+          "latitude": 36.8987,
+          "longitude": 30.8005,
+          "name": "Анталья",
+          "timezone": "Europe/Istanbul"
+        },
+        "pets": true,
+        "pickup_at": "2026-11-18T12:00:00+03:00",
+        "prebook_hours": 0,
+        "price_rub": 1160,
+        "vehicles": 2
+      },
+      {
+        "available": true,
+        "child_seat": null,
+        "depart_at": "2026-11-18T12:00:00+03:00",
+        "destination": {
+          "iata": "AYT",
+          "id": "demo-ayt-budget",
+          "kind": "hotel",
+          "latitude": 36.9007,
+          "longitude": 30.8025,
+          "name": "Demo AYT budget hotel",
+          "timezone": "Europe/Istanbul"
+        },
+        "distance_km": 0.399,
+        "duration_minutes": 15,
+        "hours": {
+          "from": "06:00:00",
+          "to": "22:00:00"
+        },
+        "id": "stub-transfer-v2-shuttle-airport-AYT-36.8987-30.8005-hotel-demo-ayt-budget-36.9007-30.8025-2026-11-18T12:00:00+03:00-a4-c1-p0",
+        "is_synthetic": true,
+        "issues": [
+          "prebook_required",
+          "luggage_limit"
+        ],
+        "luggage_limit": "Демо: один стандартный чемодан на пассажира",
+        "mode": "shuttle",
+        "origin": {
+          "iata": "AYT",
+          "id": null,
+          "kind": "airport",
+          "latitude": 36.8987,
+          "longitude": 30.8005,
+          "name": "Анталья",
+          "timezone": "Europe/Istanbul"
+        },
+        "pets": null,
+        "pickup_at": "2026-11-18T12:00:00+03:00",
+        "prebook_hours": 24,
+        "price_rub": 2400,
+        "vehicles": null
+      }
+    ]
+  }
+]

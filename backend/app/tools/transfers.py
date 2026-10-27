@@ -1,6 +1,7 @@
 """Трансферы аэропорт → отель по базе data/transfers/transfers.json (S4, #16).
 
-Модели временные: когда контракты D1 (#2) попадут в main, quote_transfers станет реализацией get_transfer.
+Публичный D1 get_transfer подключается через S4TransferTool (app.tools.s4_adapter).
+Travelers, коды issues и UnsupportedTransfer общие с D1; модели тарифной базы остаются внутренними S4.
 Как устроена база и что значат метки — data/transfers/README.md.
 """
 
@@ -16,29 +17,17 @@ from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.contracts.tools import TransferIssue as Issue
+from app.contracts.tools import Travelers
+from app.tools.errors import UnsupportedTransfer
+
 # backend/app/tools/transfers.py → корень репозитория; в docker это /data (см. docker-compose.yml)
 DEFAULT_PATH = Path(__file__).resolve().parents[3] / "data" / "transfers" / "transfers.json"
 
 Mode = Literal["taxi", "private_minivan", "shuttle", "metro", "speedboat", "seaplane", "flight_speedboat"]
-Issue = Literal[
-    "unavailable_at_pickup",  # в это время не ходит, depart_at — ближайший рейс по расписанию
-    "pets_forbidden",
-    "pets_unknown",
-    "child_seat_missing",
-    "child_seat_unknown",
-    "extra_vehicle",  # группа не помещается в одну машину
-    "night_surcharge",
-    "long_transfer",  # дольше 90 минут
-    "prebook_required",  # бронировать заранее, за prebook_hours
-    "luggage_limit",
-]
 CHILD_SEAT_MAX_AGE = 12  # детям младше нужно кресло в машине, старше платят как взрослые
 INFANT_MAX_AGE = 2  # младше — бесплатно в транспорте с оплатой за человека
 LONG_TRANSFER_MIN = 90
-
-
-class UnsupportedTransfer(ValueError):
-    """В базе нет трансфера из этого аэропорта в этот отель."""
 
 
 class Hours(BaseModel):
@@ -89,12 +78,6 @@ class HotelTransfers(BaseModel):
     tz: str
     labels: list[str]
     options: list[TransferOption] = Field(min_length=1)
-
-
-class Travelers(BaseModel):
-    adults: int = Field(default=1, ge=1)
-    children_ages: list[int] = Field(default_factory=list)
-    pets: int = Field(default=0, ge=0)
 
 
 class TransferQuote(BaseModel):
