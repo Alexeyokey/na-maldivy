@@ -16,6 +16,7 @@ def test_integrated_demo_protocol_does_not_claim_unperformed_passes():
 
 def test_missing_implementations_cannot_create_a_successful_data_report(tmp_path):
     import shutil
+
     sandbox = tmp_path / "standalone"
     (sandbox / "scripts").mkdir(parents=True)
     (sandbox / "backend/app/tools").mkdir(parents=True)
