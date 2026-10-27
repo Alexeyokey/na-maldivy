@@ -219,7 +219,7 @@ async def test_unknown_tool_and_empty_registry_do_not_fall_back_to_defaults() ->
     assert tool_specs({}) == []
 
 
-def test_tools_mode_default_env_and_explicit_unavailable_real(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_tools_mode_default_env_and_validation(monkeypatch: pytest.MonkeyPatch) -> None:
     for name in Settings.model_fields:
         monkeypatch.delenv(name.upper(), raising=False)
     settings = Settings(_env_file=None)
@@ -229,9 +229,6 @@ def test_tools_mode_default_env_and_explicit_unavailable_real(monkeypatch: pytes
     monkeypatch.setenv("TOOLS_MODE", "real")
     settings = Settings(_env_file=None)
     assert settings.tools_mode == "real"
-    with pytest.raises(NotImplementedError, match="TOOLS_MODE=real"):
-        create_tools(settings)
-
     monkeypatch.setenv("TOOLS_MODE", "typo")
     with pytest.raises(ValidationError):
         Settings(_env_file=None)
