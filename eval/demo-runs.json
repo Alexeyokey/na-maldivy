@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "scope": "integrated_product_through_demo_payment_and_voucher",
+  "target_seconds": 300,
+  "required_consecutive_passes": 5,
+  "runs": [
+    {"run": 1, "status": "not_run", "duration_seconds": null, "trace": null},
+    {"run": 2, "status": "not_run", "duration_seconds": null, "trace": null},
+    {"run": 3, "status": "not_run", "duration_seconds": null, "trace": null},
+    {"run": 4, "status": "not_run", "duration_seconds": null, "trace": null},
+    {"run": 5, "status": "not_run", "duration_seconds": null, "trace": null}
+  ]
+}
