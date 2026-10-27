@@ -91,5 +91,17 @@
         "suggest_destinations"
       ]
     }
-  ]
+  ],
+  "source_commits": {
+    "origin/main": "0c78496067a3faf40d2c9a2f803983977126915d",
+    "codex/D2-flights-pr": "63348b4dec734f62ca9eca6ff23b26e87ab1aa2c",
+    "codex/D3-hotels-pr": "276cd85b6c0c8ff5c0721fdcb464bf82ac268395",
+    "codex/D4-cache-currency-pr": "d8688694feb425a64837e9850d19e9e87df958f6",
+    "codex/D5-catalog-pr": "cf5ac2494d537dd0e343036ab42f1e1b61cd6435",
+    "codex/D6-trains-pr": "bb13220df2305f159159bffd44d03e31b1734515",
+    "codex/D7-hotel-profiles-pr": "748701fec3d5c9903a34c823d8e6900094c461ee",
+    "codex/D8-price-calendar-pr": "bca07b367ab70297338876f84bc2a4cab6bf36be",
+    "codex/tools-registry-integration": "0b8ddf6ad5797869bc069d9111491b97ac95bd96",
+    "codex/O2-D9-demo-preparation": "7616bfce4adb1adb55fe8f7c0b1ebbe66d51efa4"
+  }
 }
