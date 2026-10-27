@@ -1,6 +1,6 @@
 # Реестр D2/D3/D5/D6/D8/S4
 
-После слияния D5 #54, D3 #55 , D2 #57, D6 и D8 фабрика `create_tools(Settings(tools_mode="real"))`
+После слияния D5 #54, D3 #55, D2 #57, D6 #60 и D8 #59 фабрика `create_tools(Settings(tools_mode="real"))`
 предоставляет шесть инструментов: `search_flights`, `search_hotels`,
 `suggest_destinations`, `get_transfer`, `search_trains`, `price_calendar`. Все используют один `Settings.data_dir`
 (переменная `DATA_DIR`, по умолчанию корневой `data/`), без сети и ключей.
