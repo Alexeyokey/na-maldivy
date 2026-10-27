@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from pydantic import AliasChoices, AwareDatetime, BaseModel, Field, StringConstraints, field_validator, model_validator
 
+from app.contracts.hotel_profiles import HotelReviewProfile
 from app.contracts.identifiers import canonical_hotel_id
 
 IATACode = Annotated[str, StringConstraints(pattern=r"^[A-Z]{3}$")]
@@ -128,6 +129,7 @@ class HotelSearch(Contract):
 class HotelOffer(Contract):
     hotel_id: str
     offer_id: str = Field(min_length=1, validation_alias=AliasChoices("offer_id", "id"))
+    review_profile: HotelReviewProfile | None = None
     name: str
     place: Place
     check_in: date
@@ -165,6 +167,8 @@ class HotelOffer(Contract):
 
     @model_validator(mode="after")
     def positive_stay(self) -> "HotelOffer":
+        if self.review_profile is not None and self.review_profile.hotel_id != self.hotel_id:
+            raise ValueError("Review profile must belong to the offered hotel")
         if self.check_out <= self.check_in:
             raise ValueError("Дата выезда должна быть позже даты заезда")
         if self.place.kind != "hotel" or self.place.id != self.hotel_id:

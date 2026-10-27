@@ -1,5 +1,76 @@
 {
   "$defs": {
+    "AspectCount": {
+      "additionalProperties": false,
+      "properties": {
+        "aspect": {
+          "enum": [
+            "children",
+            "noise",
+            "cleanliness",
+            "food",
+            "staff",
+            "location",
+            "wifi",
+            "pets"
+          ],
+          "title": "Aspect",
+          "type": "string"
+        },
+        "count": {
+          "exclusiveMinimum": 0,
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "aspect",
+        "count"
+      ],
+      "title": "AspectCount",
+      "type": "object"
+    },
+    "AspectSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/ProfileEvidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "mention_count": {
+          "minimum": 0,
+          "title": "Mention Count",
+          "type": "integer"
+        },
+        "negative_count": {
+          "minimum": 0,
+          "title": "Negative Count",
+          "type": "integer"
+        },
+        "positive_count": {
+          "minimum": 0,
+          "title": "Positive Count",
+          "type": "integer"
+        },
+        "review_count": {
+          "minimum": 0,
+          "title": "Review Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "positive_count",
+        "negative_count",
+        "mention_count",
+        "review_count",
+        "evidence"
+      ],
+      "title": "AspectSummary",
+      "type": "object"
+    },
     "DayPrice": {
       "additionalProperties": false,
       "properties": {
@@ -194,6 +265,41 @@
       "title": "DestinationQuery",
       "type": "object"
     },
+    "ExtractionMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "live_model_run": {
+          "title": "Live Model Run",
+          "type": "boolean"
+        },
+        "method": {
+          "enum": [
+            "lexical-fixture-baseline-v1",
+            "llm-literal-evidence-v1"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model"
+        }
+      },
+      "required": [
+        "method",
+        "model",
+        "live_model_run"
+      ],
+      "title": "ExtractionMetadata",
+      "type": "object"
+    },
     "Flight": {
       "additionalProperties": false,
       "properties": {
@@ -309,6 +415,57 @@
         "departure_date"
       ],
       "title": "FlightSearch",
+      "type": "object"
+    },
+    "GuestProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "aspects": {
+          "additionalProperties": {
+            "$ref": "#/$defs/AspectSummary"
+          },
+          "propertyNames": {
+            "enum": [
+              "children",
+              "noise",
+              "cleanliness",
+              "food",
+              "staff",
+              "location",
+              "wifi",
+              "pets"
+            ]
+          },
+          "title": "Aspects",
+          "type": "object"
+        },
+        "cons": {
+          "items": {
+            "$ref": "#/$defs/AspectCount"
+          },
+          "title": "Cons",
+          "type": "array"
+        },
+        "pros": {
+          "items": {
+            "$ref": "#/$defs/AspectCount"
+          },
+          "title": "Pros",
+          "type": "array"
+        },
+        "review_count": {
+          "minimum": 0,
+          "title": "Review Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "review_count",
+        "aspects",
+        "pros",
+        "cons"
+      ],
+      "title": "GuestProfile",
       "type": "object"
     },
     "HotelOffer": {
@@ -476,6 +633,17 @@
           "default": null,
           "title": "Refundable"
         },
+        "review_profile": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HotelReviewProfile"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "stars": {
           "anyOf": [
             {
@@ -502,6 +670,97 @@
         "is_synthetic"
       ],
       "title": "HotelOffer",
+      "type": "object"
+    },
+    "HotelReviewProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "aspects": {
+          "additionalProperties": {
+            "$ref": "#/$defs/AspectSummary"
+          },
+          "propertyNames": {
+            "enum": [
+              "children",
+              "noise",
+              "cleanliness",
+              "food",
+              "staff",
+              "location",
+              "wifi",
+              "pets"
+            ]
+          },
+          "title": "Aspects",
+          "type": "object"
+        },
+        "corpus_generator": {
+          "minLength": 1,
+          "title": "Corpus Generator",
+          "type": "string"
+        },
+        "corpus_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Corpus Sha256",
+          "type": "string"
+        },
+        "extraction": {
+          "$ref": "#/$defs/ExtractionMetadata"
+        },
+        "guest_profiles": {
+          "additionalProperties": {
+            "$ref": "#/$defs/GuestProfile"
+          },
+          "propertyNames": {
+            "enum": [
+              "family",
+              "couple",
+              "business",
+              "pets"
+            ]
+          },
+          "title": "Guest Profiles",
+          "type": "object"
+        },
+        "hotel_id": {
+          "title": "Hotel Id",
+          "type": "string"
+        },
+        "is_synthetic": {
+          "const": true,
+          "title": "Is Synthetic",
+          "type": "boolean"
+        },
+        "notice": {
+          "minLength": 1,
+          "title": "Notice",
+          "type": "string"
+        },
+        "review_count": {
+          "maximum": 50,
+          "minimum": 20,
+          "title": "Review Count",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema_version",
+        "hotel_id",
+        "is_synthetic",
+        "notice",
+        "review_count",
+        "corpus_generator",
+        "corpus_sha256",
+        "extraction",
+        "aspects",
+        "guest_profiles"
+      ],
+      "title": "HotelReviewProfile",
       "type": "object"
     },
     "HotelSearch": {
@@ -651,6 +910,36 @@
         "month"
       ],
       "title": "PriceCalendarQuery",
+      "type": "object"
+    },
+    "ProfileEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "review_id": {
+          "minLength": 1,
+          "title": "Review Id",
+          "type": "string"
+        },
+        "sentiment": {
+          "enum": [
+            "positive",
+            "negative"
+          ],
+          "title": "Sentiment",
+          "type": "string"
+        }
+      },
+      "required": [
+        "review_id",
+        "sentiment",
+        "quote"
+      ],
+      "title": "ProfileEvidence",
       "type": "object"
     },
     "Train": {
