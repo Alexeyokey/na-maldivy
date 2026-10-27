@@ -58,6 +58,7 @@ Rule = Literal[
     "reception_closed",
     "nonrefundable_rate",
     "visa_required",
+    "hotel_times_unknown",
 ]
 
 AIRPORT_WAIT_WARNING_MIN = 120
@@ -122,6 +123,7 @@ def validate_trip(
         _transfer_before_arrival,
         _night_arrival_with_infant,
         _hotel_rules,
+        _hotel_times_unknown,
         _reception_closed,
         _nonrefundable_rate,
         _visa_required,
@@ -210,7 +212,7 @@ def _early_hotel_arrival(ctx: _Context, *_: TransferLeg | None) -> list[Issue]:
         fixes.append(
             Fix(label="Запросить ранний заезд у отеля", price_delta_rub=None, patch={"kind": "request_early_check_in"})
         )
-    if ctx.timeline.booked_check_in.date() == wait.start.date():
+    if ctx.timeline.booked_check_in is not None and ctx.timeline.booked_check_in.date() == wait.start.date():
         before = ctx.stay.check_in - timedelta(days=1)
         fixes.append(
             ctx.night_fix(
@@ -232,6 +234,8 @@ def _early_hotel_arrival(ctx: _Context, *_: TransferLeg | None) -> list[Issue]:
 
 def _wasted_first_night(ctx: _Context, *_: TransferLeg | None) -> list[Issue]:
     arrival, booked = ctx.timeline.hotel_arrival_at, ctx.timeline.booked_check_in
+    if booked is None or ctx.stay.check_in_time is None:
+        return []
     late_days = (arrival.date() - booked.date()).days
     if late_days <= 0:
         return []
@@ -280,7 +284,7 @@ def _late_hotel_departure(ctx: _Context, *_: TransferLeg | None) -> list[Issue]:
 
 def _wasted_last_night(ctx: _Context, *_: TransferLeg | None) -> list[Issue]:
     leave = ctx.timeline.hotel_departure_at
-    if leave is None:
+    if leave is None or ctx.timeline.booked_check_out is None:
         return []
     wasted = (ctx.timeline.booked_check_out.date() - leave.date()).days
     if wasted <= 0:
@@ -377,6 +381,26 @@ def _night_arrival_with_infant(ctx: _Context, *_: TransferLeg | None) -> list[Is
     return [Issue(rule="night_arrival_with_infant", severity="warning", at=landed.at, message=message, fixes=[fix])]
 
 
+def _hotel_times_unknown(ctx: _Context, *_: TransferLeg | None) -> list[Issue]:
+    missing = [name for name in ("check_in_time", "check_out_time") if ctx.hotel(name) is None]
+    if not missing:
+        return []
+    return [
+        Issue(
+            rule="hotel_times_unknown",
+            severity="warning",
+            message="Время заселения или выезда неизвестно: уточнить у отеля до оплаты",
+            fixes=[
+                Fix(
+                    label="Уточнить время заселения и выезда",
+                    price_delta_rub=None,
+                    patch={"kind": "request_hotel_times", "fields": missing},
+                )
+            ],
+        )
+    ]
+
+
 def _hotel_rules(ctx: _Context, *_: TransferLeg | None) -> list[Issue]:
     issues: list[Issue] = []
     name = ctx.stay.name
@@ -442,9 +466,19 @@ def _reception_closed(ctx: _Context, *_: TransferLeg | None) -> list[Issue]:
         return [
             Issue(rule="reception_closed", severity="critical", at=arrival, message=message, fixes=[notify, stopover])
         ]
-    if always_open is None and (night_arrival or arrival.time() >= time(22)):
+    if (always_open is None or always_open is False and closes is None) and (
+        night_arrival or arrival.time() >= time(22)
+    ):
         message = f"Приезд в {arrival:%H:%M}: неизвестно, работает ли ресепшен ночью"
-        return [Issue(rule="reception_closed", severity="info", at=arrival, message=message, fixes=[notify])]
+        return [
+            Issue(
+                rule="reception_closed",
+                severity="warning" if always_open is False else "info",
+                at=arrival,
+                message=message,
+                fixes=[notify],
+            )
+        ]
     return []
 
 

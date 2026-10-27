@@ -1,12 +1,12 @@
 """Трансферы аэропорт → отель по базе data/transfers/transfers.json (S4, #16).
 
-Модели временные: когда контракты D1 (#2) попадут в main, quote_transfers станет реализацией get_transfer.
+Публичный D1 get_transfer подключается через S4TransferTool (app.tools.s4_adapter).
+Travelers, коды issues и UnsupportedTransfer общие с D1; модели тарифной базы остаются внутренними S4.
 Как устроена база и что значат метки — data/transfers/README.md.
 """
 
 import json
 import math
-import os
 from collections.abc import Iterator
 from datetime import datetime, time, timedelta
 from functools import lru_cache
@@ -16,29 +16,18 @@ from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.contracts.tools import TransferIssue as Issue
+from app.contracts.tools import Travelers
+from app.data_paths import DEFAULT_DATA_DIR, resolve_data_dir
+from app.tools.errors import UnsupportedTransfer
+
 # backend/app/tools/transfers.py → корень репозитория; в docker это /data (см. docker-compose.yml)
-DEFAULT_PATH = Path(__file__).resolve().parents[3] / "data" / "transfers" / "transfers.json"
+DEFAULT_PATH = DEFAULT_DATA_DIR / "transfers" / "transfers.json"
 
 Mode = Literal["taxi", "private_minivan", "shuttle", "metro", "speedboat", "seaplane", "flight_speedboat"]
-Issue = Literal[
-    "unavailable_at_pickup",  # в это время не ходит, depart_at — ближайший рейс по расписанию
-    "pets_forbidden",
-    "pets_unknown",
-    "child_seat_missing",
-    "child_seat_unknown",
-    "extra_vehicle",  # группа не помещается в одну машину
-    "night_surcharge",
-    "long_transfer",  # дольше 90 минут
-    "prebook_required",  # бронировать заранее, за prebook_hours
-    "luggage_limit",
-]
 CHILD_SEAT_MAX_AGE = 12  # детям младше нужно кресло в машине, старше платят как взрослые
 INFANT_MAX_AGE = 2  # младше — бесплатно в транспорте с оплатой за человека
 LONG_TRANSFER_MIN = 90
-
-
-class UnsupportedTransfer(ValueError):
-    """В базе нет трансфера из этого аэропорта в этот отель."""
 
 
 class Hours(BaseModel):
@@ -91,12 +80,6 @@ class HotelTransfers(BaseModel):
     options: list[TransferOption] = Field(min_length=1)
 
 
-class Travelers(BaseModel):
-    adults: int = Field(default=1, ge=1)
-    children_ages: list[int] = Field(default_factory=list)
-    pets: int = Field(default=0, ge=0)
-
-
 class TransferQuote(BaseModel):
     option_id: str
     mode: Mode
@@ -117,7 +100,7 @@ class TransferBase:
 
     @classmethod
     def load(cls, path: Path | None = None) -> "TransferBase":
-        path = path or Path(os.environ.get("TRANSFERS_PATH", DEFAULT_PATH))
+        path = path or resolve_data_dir() / "transfers/transfers.json"
         data = json.loads(path.read_text(encoding="utf-8"))
         return cls([HotelTransfers.model_validate(r) for r in data["transfers"]])
 
@@ -131,9 +114,13 @@ class TransferBase:
         return iter(self._records.values())
 
 
-@lru_cache
-def default_base() -> TransferBase:
-    return TransferBase.load()
+@lru_cache(maxsize=8)
+def _base_at(data_dir: Path) -> TransferBase:
+    return TransferBase.load(data_dir / "transfers/transfers.json")
+
+
+def default_base(data_dir: Path | None = None) -> TransferBase:
+    return _base_at(resolve_data_dir(data_dir))
 
 
 def quote_transfers(

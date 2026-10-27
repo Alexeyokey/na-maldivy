@@ -59,8 +59,8 @@ class StayLike(Protocol):
     place: PlaceLike
     check_in: date
     check_out: date
-    check_in_time: time
-    check_out_time: time
+    check_in_time: time | None
+    check_out_time: time | None
 
 
 EventKind = Literal[
@@ -117,8 +117,8 @@ class Timeline(BaseModel):
     events: list[TimelineEvent]
     waits: list[Wait]
     notes: list[str]
-    booked_check_in: AwareDatetime  # заселение по брони: дата заезда и время заселения отеля
-    booked_check_out: AwareDatetime
+    booked_check_in: AwareDatetime | None  # None — время отеля неизвестно, не подставляем 14:00
+    booked_check_out: AwareDatetime | None
     hotel_arrival_at: AwareDatetime  # когда гость реально приезжает в отель
     hotel_departure_at: AwareDatetime | None  # когда уезжает, если известен обратный рейс
 
@@ -189,30 +189,45 @@ def build_timeline(
         hotel_arrival = ready
 
     zone = ZoneInfo(hotel_tz)
-    booked_check_in = datetime.combine(stay.check_in, stay.check_in_time, tzinfo=zone)
-    booked_check_out = datetime.combine(stay.check_out, stay.check_out_time, tzinfo=zone)
-    wait("hotel_before_check_in", hotel_arrival, booked_check_in, stay.name, hotel_tz)
-    add("check_in", max(hotel_arrival, booked_check_in), stay.name, hotel_tz, f"Заселение: {stay.name}", stay.hotel_id)
+    booked_check_in = datetime.combine(stay.check_in, stay.check_in_time, tzinfo=zone) if stay.check_in_time else None
+    booked_check_out = (
+        datetime.combine(stay.check_out, stay.check_out_time, tzinfo=zone) if stay.check_out_time else None
+    )
+    if booked_check_in is None:
+        notes.append("Время заселения неизвестно: уточнить у отеля, ожидание до заселения не рассчитано")
+    else:
+        wait("hotel_before_check_in", hotel_arrival, booked_check_in, stay.name, hotel_tz)
+        add(
+            "check_in",
+            max(hotel_arrival, booked_check_in),
+            stay.name,
+            hotel_tz,
+            f"Заселение: {stay.name}",
+            stay.hotel_id,
+        )
+    if booked_check_out is None:
+        notes.append("Время выезда неизвестно: уточнить у отеля, ожидание после выезда не рассчитано")
 
     hotel_departure: datetime | None = None
-    if inbound is None:
+    if inbound is None and booked_check_out is not None:
         add("check_out", booked_check_out, stay.name, hotel_tz, f"Выезд: {stay.name}", stay.hotel_id)
-    else:
+    elif inbound is not None:
         deadline = inbound.departure_at - timedelta(minutes=AIRPORT_BEFORE_DEPARTURE_MIN)
         if departure_transfer:
             hotel_departure = departure_transfer.depart_at
         else:
             notes.append("Нет трансфера в аэропорт: выезд считается впритык к сроку приезда в аэропорт")
             hotel_departure = deadline
-        add(
-            "check_out",
-            min(hotel_departure, booked_check_out),
-            stay.name,
-            hotel_tz,
-            f"Выезд: {stay.name}",
-            stay.hotel_id,
-        )
-        wait("after_check_out", booked_check_out, hotel_departure, stay.name, hotel_tz)
+        if booked_check_out is not None:
+            add(
+                "check_out",
+                min(hotel_departure, booked_check_out),
+                stay.name,
+                hotel_tz,
+                f"Выезд: {stay.name}",
+                stay.hotel_id,
+            )
+            wait("after_check_out", booked_check_out, hotel_departure, stay.name, hotel_tz)
         if departure_transfer:
             add(
                 "departure_transfer_departure",

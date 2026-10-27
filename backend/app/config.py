@@ -1,9 +1,12 @@
 """Настройки сервиса: переменные окружения и .env (образец — .env.example в корне репозитория)."""
 
+from pathlib import Path
 from typing import Literal
 
-from pydantic import SecretStr, model_validator
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from app.data_paths import resolve_data_dir
 
 
 class Settings(BaseSettings):
@@ -12,6 +15,8 @@ class Settings(BaseSettings):
 
     log_level: str = "INFO"
     cors_origins: str = "http://localhost:5173,http://localhost:3000"
+    tools_mode: Literal["stub", "real"] = "stub"
+    data_dir: Path = Field(default_factory=resolve_data_dir)
 
     llm_provider: Literal["fake", "openai"] = "fake"
     llm_base_url: str | None = None
