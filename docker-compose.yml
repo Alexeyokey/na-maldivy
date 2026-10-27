@@ -4,12 +4,10 @@ services:
     env_file:
       - path: .env
         required: false # без .env агент работает на фейковой модели
+    environment:
+      DATA_DIR: /data
     ports:
       - "${AGENT_PORT:-8000}:8000"
-    environment:
-      CACHE_MODE: ${CACHE_MODE:-replay}
-      DATA_CACHE_DIR: ${DATA_CACHE_DIR:-/data/cache}
-      LLM_PROVIDER: ${LLM_PROVIDER:-fake}
     volumes:
       - ./data:/data:ro # справочники и базы инструментов, например data/transfers
     restart: unless-stopped

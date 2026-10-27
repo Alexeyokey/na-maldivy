@@ -22,6 +22,8 @@ from xml.etree import ElementTree
 
 import httpx
 
+from app.tools.http_cache import CacheError
+
 CBR_DAILY_URL = "https://www.cbr.ru/scripts/XML_daily.asp"
 _MAX_XML_BYTES = 1_000_000
 _CODE = re.compile(r"[A-Z]{3}\Z")
@@ -263,6 +265,6 @@ async def load_cbr_rates(client: CurrencyHttpClient, date: Date | None = None) -
     try:
         response = await client.get(CBR_DAILY_URL, params=params)
         response.raise_for_status()
-    except httpx.HTTPError:
+    except (httpx.HTTPError, CacheError):
         raise CurrencyFetchError("Could not load official CBR currency rates") from None
     return CurrencyRates.from_xml(response.content, requested_date=date)

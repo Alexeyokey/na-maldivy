@@ -29,12 +29,6 @@ curl -N localhost:8000/api/chat -H 'Content-Type: application/json' -d '{"messag
 а результат передаётся в S3/S5 через `transfer_leg()`. Инструкция — в
 [docs/d1-s4-migration.md](docs/d1-s4-migration.md). Остальные решения TripState и событий интерфейса остаются O1.
 
-**Кэш данных и валюты D4.** `CachedHttpClient` поддерживает `record`/`replay`/`live`,
-а валютное ядро считает через `Decimal` с учётом номинала ЦБ. Сохранённый снимок
-за 24.10.2026 работает без сети: `make d4-demo`; проверки — `make d4-check`.
-Режим задаётся `CACHE_MODE`, для демо и проверок принудительно используется `replay`.
-Инструкция и границы готовности — в [docs/data-cache.md](docs/data-cache.md).
-
 **Бэкенд без Docker** (нужен [uv](https://docs.astral.sh/uv/)):
 
 ```bash
@@ -251,3 +245,9 @@ make check-fast   # то же без Docker
 - [В работе](https://github.com/ostrovok-hackathon-2026/na-maldivy/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22%D0%B2%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B5%22)
 - [Открытые P0](https://github.com/ostrovok-hackathon-2026/na-maldivy/issues?q=is%3Aissue%20is%3Aopen%20label%3AP0)
 - [Никто не взял](https://github.com/ostrovok-hackathon-2026/na-maldivy/issues?q=is%3Aissue%20is%3Aopen%20no%3Aassignee)
+
+**Кэш данных и валюты D4.** `CachedHttpClient` поддерживает `record`/`replay`/`live`,
+а валютное ядро считает через `Decimal` с учётом номинала ЦБ. Сохранённый снимок
+за 24.10.2026 работает без сети: `make d4-demo`; проверки — `make d4-check`.
+Режим задаётся `CACHE_MODE`, для демо и проверок принудительно используется `replay`.
+Инструкция и границы готовности — в [docs/data-cache.md](docs/data-cache.md).

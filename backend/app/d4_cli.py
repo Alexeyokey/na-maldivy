@@ -6,7 +6,6 @@ import argparse
 import asyncio
 import json
 import sys
-from pathlib import Path
 from typing import Any
 
 from pydantic import ValidationError
@@ -15,13 +14,11 @@ from app.config import Settings
 from app.tools.currency import CurrencyDataError, CurrencyFetchError, load_cbr_rates
 from app.tools.http_cache import CachedHttpClient, CacheError
 
-DATA_CACHE_ROOT = Path(__file__).resolve().parents[2] / "data/cache"
-
 
 async def run_demo(*, settings: Settings | None = None, amount: str = "100", currency: str = "USD") -> dict[str, Any]:
     """Use configured cache mode without connecting the chat or supplier tools."""
     settings = settings if settings is not None else Settings()
-    cache_root = settings.data_cache_dir if settings.data_cache_dir is not None else DATA_CACHE_ROOT
+    cache_root = settings.data_dir / "cache"
     async with CachedHttpClient(mode=settings.cache_mode, cache_dir=cache_root / "cbr") as client:
         rates = await load_cbr_rates(client)
     conversion = rates.convert(amount, currency)

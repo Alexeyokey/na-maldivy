@@ -1,4 +1,7 @@
-.PHONY: up down logs dev check check-fast test lint fmt schemas tool-examples up down logs dev check check-fast test lint fmt d4-check d4-test d4-demo
+.PHONY: up down logs dev check check-fast test lint fmt schemas tool-examples
+
+# Независимые инструменты добавляют команды без конфликтов в корневом Makefile.
+-include make/*.mk
 
 up:
 	docker compose up --build -d --wait
@@ -34,14 +37,3 @@ schemas:
 
 tool-examples:
 	cd backend && uv run python ../scripts/export_tool_examples.py
-
-d4-check:
-	UV_OFFLINE=1 bash scripts/check.sh lint test
-	$(MAKE) d4-demo
-
-d4-test:
-	cd backend && CACHE_MODE=replay LLM_PROVIDER=fake uv run --locked --offline pytest \
-		tests/test_http_cache.py tests/test_currency.py tests/test_cbr_snapshot.py tests/test_d4_demo.py
-
-d4-demo:
-	cd backend && CACHE_MODE=replay LLM_PROVIDER=fake uv run --locked --offline python -m app.d4_cli

@@ -13,8 +13,8 @@ import pytest
 
 from app.config import Settings
 from app.d4_cli import main, run_demo
-from app.tools.currency import CurrencyRates
-from app.tools.http_cache import CachedHttpClient, CacheMiss
+from app.tools.currency import CurrencyFetchError, CurrencyRates
+from app.tools.http_cache import CachedHttpClient
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def configured_offline(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("LLM_PROVIDER", "fake")
     monkeypatch.setenv("CACHE_MODE", "replay")
-    monkeypatch.delenv("DATA_CACHE_DIR", raising=False)
+    monkeypatch.delenv("DATA_DIR", raising=False)
 
 
 @pytest.fixture
@@ -73,11 +73,11 @@ def test_real_snapshot_demo_is_repeatable_without_network_or_cache_writes(
 async def test_settings_environment_selects_cache_root_and_replay(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, no_network: None
 ) -> None:
-    shutil.copytree(ROOT / "data/cache/cbr", tmp_path / "provider-cache/cbr")
-    monkeypatch.setenv("DATA_CACHE_DIR", str(tmp_path / "provider-cache"))
+    shutil.copytree(ROOT / "data/cache/cbr", tmp_path / "provider-cache/cache/cbr")
+    monkeypatch.setenv("DATA_DIR", str(tmp_path / "provider-cache"))
     settings = Settings(_env_file=None)
     assert settings.cache_mode == "replay"
-    assert settings.data_cache_dir == tmp_path / "provider-cache"
+    assert settings.data_dir == tmp_path / "provider-cache"
     payload = await run_demo(settings=settings, amount="1", currency="RUB")
     assert payload["conversion"]["amount_rub"] == 1
     assert sorted(path.name for path in tmp_path.iterdir()) == ["provider-cache"]
@@ -87,8 +87,8 @@ async def test_replay_miss_from_configured_directory_never_creates_cache(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, no_network: None
 ) -> None:
     missing_root = tmp_path / "not-recorded"
-    monkeypatch.setenv("DATA_CACHE_DIR", str(missing_root))
-    with pytest.raises(CacheMiss):
+    monkeypatch.setenv("DATA_DIR", str(missing_root))
+    with pytest.raises(CurrencyFetchError):
         await run_demo(settings=Settings(_env_file=None))
     assert not missing_root.exists()
 
@@ -97,11 +97,11 @@ def test_cli_reports_safe_miss_and_nonzero_status(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, no_network: None, capsys: pytest.CaptureFixture[str]
 ) -> None:
     missing_root = tmp_path / "secret-in-path"
-    monkeypatch.setenv("DATA_CACHE_DIR", str(missing_root))
+    monkeypatch.setenv("DATA_DIR", str(missing_root))
     assert main(["--json"]) == 2
     captured = capsys.readouterr()
     assert captured.out == ""
-    assert "No recorded public response" in captured.err
+    assert "Could not load official CBR currency rates" in captured.err
     assert "secret-in-path" not in captured.err
     assert not missing_root.exists()
 
@@ -120,7 +120,7 @@ async def test_settings_mode_reaches_real_http_wrapper(
         return httpx.Response(200, content=xml, headers={"Content-Type": "text/xml; charset=windows-1251"})
 
     monkeypatch.setenv("CACHE_MODE", mode)
-    monkeypatch.setenv("DATA_CACHE_DIR", str(tmp_path))
+    monkeypatch.setenv("DATA_DIR", str(tmp_path))
     async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as transport:
 
         def configured_client(**kwargs: object) -> CachedHttpClient:
@@ -132,7 +132,7 @@ async def test_settings_mode_reaches_real_http_wrapper(
     assert payload["cache_mode"] == mode
     assert len(seen) == 1
     assert str(seen[0].url) == "https://www.cbr.ru/scripts/XML_daily.asp"
-    assert bool(list((tmp_path / "cbr").glob("*.json"))) == (mode == "record")
+    assert bool(list((tmp_path / "cache/cbr").glob("*.json"))) == (mode == "record")
     assert Decimal(payload["conversion"]["exact_amount"]) > 0
 
 

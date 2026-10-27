@@ -24,6 +24,8 @@ from urllib.parse import parse_qsl, quote, quote_plus, unquote, urlencode, urlsp
 
 import httpx
 
+from app.data_paths import resolve_data_dir
+
 CacheMode = Literal["record", "replay", "live"]
 _REDACTED = "[REDACTED]"
 _SECRET_NAMES = {
@@ -341,7 +343,7 @@ class CachedHttpClient:
         self,
         *,
         mode: CacheMode = "replay",
-        cache_dir: str | Path = "data/cache",
+        cache_dir: str | Path | None = None,
         client: httpx.AsyncClient | None = None,
         secret_values: Iterable[str] = (),
         timeout: float = 20,
@@ -349,7 +351,7 @@ class CachedHttpClient:
         if mode not in {"record", "replay", "live"}:
             raise ValueError("Cache mode must be record, replay or live")
         self.mode = mode
-        self.cache_dir = Path(cache_dir)
+        self.cache_dir = Path(cache_dir) if cache_dir is not None else resolve_data_dir() / "cache"
         self._client = client
         self._owns_client = client is None
         self._secret_values = tuple(secret_values)
@@ -438,8 +440,8 @@ class CachedHttpClient:
                 stream.flush()
                 # Sanitized public fixtures must remain readable after Docker
                 # COPY changes ownership to root and the app runs as non-root.
-                os.fchmod(stream.fileno(), 0o644)
                 os.fsync(stream.fileno())
+            os.chmod(temporary, 0o644)
             os.replace(temporary, self.cache_dir / f"{key}.json")
         except OSError:
             raise CacheError("Cannot atomically write HTTP cache") from None

@@ -27,7 +27,6 @@ class Settings(BaseSettings):
     llm_max_retries: int = 2
 
     cache_mode: Literal["record", "replay", "live"] = "replay"
-    data_cache_dir: Path | None = None
 
     @model_validator(mode="after")
     def _check_llm(self) -> "Settings":
