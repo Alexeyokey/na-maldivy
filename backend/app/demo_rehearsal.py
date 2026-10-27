@@ -74,7 +74,7 @@ async def quote_demo_trip(
     )
 
 
-async def demo_payload(*, seed: int = 42, destination: str = "DXB", departure: date = date(2026, 11, 15)) -> dict:
+async def demo_payload(*, seed: int = 42, destination: str = "DXB", departure: date = date(2026, 11, 18)) -> dict:
     try:
         end = departure + timedelta(days=7)
     except OverflowError as exc:
