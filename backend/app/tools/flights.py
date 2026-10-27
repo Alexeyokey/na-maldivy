@@ -16,7 +16,8 @@ from zoneinfo import ZoneInfo
 import httpx
 from pydantic import AwareDatetime, BaseModel, Field, TypeAdapter, ValidationError
 
-from app.contracts.tools import Flight, FlightSearch, Place
+from app.contracts.tools import Flight, FlightSearch, Place, Travelers
+from app.data_paths import resolve_data_dir
 from app.tools.transport import (
     DATA_DIR,
     ProviderNotConfigured,
@@ -28,7 +29,18 @@ from app.tools.transport import (
 )
 
 ROUTES_PATH = DATA_DIR / "routes" / "network.json"
+PRICING_VERSION = "infant-v2"
 AVIASALES_URL = "https://api.travelpayouts.com/aviasales/v3/prices_for_dates"
+
+
+def seated_count(travelers: Travelers) -> int:
+    return travelers.adults + sum(age >= 2 for age in travelers.children_ages)
+
+
+def group_fare(seat_price: int, travelers: Travelers) -> int:
+    """Synthetic rule: under-two lap infants pay 10%, rounded half up once."""
+    infants = sum(age < 2 for age in travelers.children_ages)
+    return (seat_price * (10 * seated_count(travelers) + infants) + 5) // 10 + 1500 * travelers.pets
 
 
 class FlightHttpClient(Protocol):
@@ -67,8 +79,9 @@ def _route(origin: str, destination: str, path: Path = ROUTES_PATH) -> dict[str,
     return None
 
 
-def generate_flights(query: FlightSearch, *, seed: int = 42, routes_path: Path = ROUTES_PATH) -> list[Flight]:
+def generate_flights(query: FlightSearch, *, seed: int = 42, routes_path: Path | None = None) -> list[Flight]:
     """Pure reproducible demo shared with D8: same day/group/seed => same fares."""
+    routes_path = routes_path or resolve_data_dir() / "routes/network.json"
     route = _route(query.origin, query.destination, routes_path)
     if route is None or (query.direct_only and route["stops"]):
         return []
@@ -84,13 +97,13 @@ def generate_flights(query: FlightSearch, *, seed: int = 42, routes_path: Path =
         except OverflowError:
             continue
         per_person = route["synthetic_base_price_rub"] * season * (900 + entropy % 201) // 1_000_000
-        price = (per_person + variant * 1000) * query.travelers.count + 1500 * query.travelers.pets
+        price = group_fare(per_person + variant * 1000, query.travelers)
         if query.max_price_rub is not None and price > query.max_price_rub:
             continue
         flights.append(
             Flight(
                 id=f"synthetic-flight-{origin.iata}-{destination.iata}-{query.departure_date}-{variant}"
-                f"-{party_id(query.travelers)}-s{seed}",
+                f"-{party_id(query.travelers)}-s{seed}-{PRICING_VERSION}",
                 origin=origin.model_copy(deep=True),
                 destination=destination.model_copy(deep=True),
                 departure_at=departure,
@@ -98,7 +111,7 @@ def generate_flights(query: FlightSearch, *, seed: int = 42, routes_path: Path =
                 price_rub=price,
                 carrier="Demo Air (synthetic timetable and fare)",
                 stops=route["stops"],
-                baggage_price_rub=2000 * query.travelers.count,
+                baggage_price_rub=2000 * seated_count(query.travelers),
                 is_overnight=arrival.date() > departure.date(),
                 is_synthetic=True,
             )
@@ -122,10 +135,13 @@ class FlightQuote(BaseModel):
 
 
 class AviasalesDataClient:
-    def __init__(self, http: FlightHttpClient, token: str | None = None, *, max_pages: int = 5):
+    def __init__(
+        self, http: FlightHttpClient, token: str | None = None, *, max_pages: int = 5, routes_path: Path | None = None
+    ):
         if max_pages < 1:
             raise ValueError("max_pages must be positive")
         self.http, self.token, self.max_pages = http, token, max_pages
+        self.routes_path = routes_path or resolve_data_dir() / "routes/network.json"
 
     async def prices_for_dates(self, query: FlightSearch) -> list[FlightQuote]:
         if not self.token and self.http.mode != "replay":
@@ -151,8 +167,11 @@ class AviasalesDataClient:
                 },
                 headers={"X-Access-Token": self.token} if self.token else None,
             )
-            response.raise_for_status()
-            payload = response.json()
+            try:
+                response.raise_for_status()
+                payload = response.json()
+            except (httpx.HTTPStatusError, ValueError):
+                raise ProviderResponseError("Aviasales returned an HTTP error or invalid JSON") from None
             if not isinstance(payload, dict) or payload.get("success") is not True:
                 raise ProviderResponseError("Aviasales returned an unsuccessful or malformed response")
             if not isinstance(payload.get("data"), list):
@@ -174,7 +193,7 @@ class AviasalesDataClient:
                     raise ProviderResponseError("Malformed Aviasales one-way quote") from exc
                 if quote.origin_airport != origin or quote.destination_airport != destination:
                     continue
-                local_departure = provider_datetime(quote.departure_at.isoformat(), _airport(origin))
+                local_departure = provider_datetime(quote.departure_at.isoformat(), _airport(origin, self.routes_path))
                 if local_departure.date() != query.departure_date or (query.direct_only and quote.transfers):
                     continue
                 quotes.append(quote)
@@ -203,16 +222,18 @@ class FlightTool:
         seed: int = 42,
         http: FlightHttpClient | None = None,
         token: str | None = None,
+        data_dir: Path | None = None,
     ):
         if mode not in ("synthetic", "provider"):
             raise ValueError("Unknown flight mode")
         self.mode, self.seed = mode, seed
-        self.provider = AviasalesDataClient(http, token) if http is not None else None
+        self.routes_path = resolve_data_dir(data_dir) / "routes/network.json"
+        self.provider = AviasalesDataClient(http, token, routes_path=self.routes_path) if http is not None else None
 
     async def search_with_provenance(self, query: FlightSearch) -> FlightSearchResult:
         if self.mode == "synthetic":
-            flights = generate_flights(query, seed=self.seed)
-            route = _route(query.origin, query.destination)
+            flights = generate_flights(query, seed=self.seed, routes_path=self.routes_path)
+            route = _route(query.origin, query.destination, self.routes_path)
             return FlightSearchResult(
                 tuple(flights),
                 (),
@@ -223,6 +244,8 @@ class FlightTool:
                         "prices": "synthetic",
                         "route_sources": list(route["sources"]) if route else [],
                         "seed": self.seed,
+                        "pricing_version": PRICING_VERSION,
+                        "infants": "under 2: 10% fare without seat; no standard baggage allowance",
                     }
                     for item in flights
                 ),
@@ -232,9 +255,12 @@ class FlightTool:
         quotes = await self.provider.prices_for_dates(query)
         flights, provenance = [], []
         for quote in quotes:
-            origin, destination = _airport(quote.origin_airport), _airport(quote.destination_airport)
+            origin, destination = (
+                _airport(quote.origin_airport, self.routes_path),
+                _airport(quote.destination_airport, self.routes_path),
+            )
             departure = provider_datetime(quote.departure_at.isoformat(), origin)
-            route = _route(origin.iata, destination.iata)
+            route = _route(origin.iata, destination.iata, self.routes_path)
             if quote.duration_to is not None:
                 duration, duration_source = quote.duration_to, "provider cached duration_to"
             elif route is not None:
@@ -242,10 +268,10 @@ class FlightTool:
             else:
                 raise ProviderResponseError("No provider duration or modelled route duration")
             arrival = arrival_after(departure, duration, destination)
-            price = quote.price * query.travelers.count + 1500 * query.travelers.pets
+            price = group_fare(quote.price, query.travelers)
             if query.max_price_rub is not None and price > query.max_price_rub:
                 continue
-            identifier = stable_number(quote.model_dump(mode="json"), party_id(query.travelers))
+            identifier = stable_number(quote.model_dump(mode="json"), party_id(query.travelers), PRICING_VERSION)
             flight = Flight(
                 id=f"provider-mixed-flight-{identifier:x}",
                 origin=origin,
@@ -255,7 +281,7 @@ class FlightTool:
                 price_rub=price,
                 carrier=f"{quote.airline} (cached quote; synthetic group/extras)",
                 stops=quote.transfers,
-                baggage_price_rub=2000 * query.travelers.count,
+                baggage_price_rub=2000 * seated_count(query.travelers),
                 is_overnight=arrival.date() > departure.date(),
                 is_synthetic=True,
             )
@@ -267,8 +293,11 @@ class FlightTool:
                     "provider_url": AVIASALES_URL,
                     "departure": "provider cached observation, not current availability",
                     "duration": duration_source,
-                    "group_price": "single-seat cached quote × people + synthetic pet fee",
-                    "baggage": "synthetic 2000 RUB/person",
+                    "group_price": (
+                        "single-seat cached quote × seated passengers + 10% per infant under 2 "
+                        "without a seat + synthetic pet fee"
+                    ),
+                    "baggage": "synthetic 2000 RUB/seated passenger; no infant allowance",
                     "quote": quote.model_dump(mode="json"),
                 }
             )

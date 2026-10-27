@@ -128,7 +128,7 @@ async def test_unconfigured_and_provider_error_never_fallback():
         await FlightTool(mode="provider").run(flight_query())
     async with httpx.AsyncClient(transport=httpx.MockTransport(lambda _: httpx.Response(503))) as source:
         http = MockFlightHttpClient(source)
-        with pytest.raises(httpx.HTTPStatusError):
+        with pytest.raises(ProviderResponseError):
             await FlightTool(mode="provider", http=http, token="TEST").run(flight_query())
 
 

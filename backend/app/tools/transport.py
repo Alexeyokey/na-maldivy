@@ -2,15 +2,14 @@
 
 import hashlib
 import json
-import os
 from datetime import UTC, datetime, timedelta
-from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
 from app.contracts.tools import Place, Travelers
+from app.data_paths import DEFAULT_DATA_DIR
 
-DATA_DIR = Path(os.environ.get("NA_MALDIVY_DATA_DIR") or Path(__file__).resolve().parents[3] / "data")
+DATA_DIR = DEFAULT_DATA_DIR
 
 
 class ProviderNotConfigured(RuntimeError):
