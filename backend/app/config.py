@@ -12,6 +12,7 @@ class Settings(BaseSettings):
 
     log_level: str = "INFO"
     cors_origins: str = "http://localhost:5173,http://localhost:3000"
+    tools_mode: Literal["stub", "real"] = "stub"
 
     llm_provider: Literal["fake", "openai"] = "fake"
     llm_base_url: str | None = None
