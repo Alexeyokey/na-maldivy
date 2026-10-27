@@ -227,9 +227,9 @@ async def test_family_pet_group_prices_and_unknown_transfer_constraints_reach_s5
     )
     by_rule = {issue.rule: issue for issue in issues}
 
-    # Five people occupy three rooms; the pet fee is once for the whole stay.
+    # Two adults, two paying children and an infant share one synthetic family room.
     assert party.count == 5
-    assert stay.price_rub == single.price_rub * 3 + 1000
+    assert stay.price_rub == single.price_rub + 1000
     assert stay.hotel_id == single.hotel_id and stay.offer_id != single.offer_id
     # S4 quotes the whole party: two vehicles with its 20% night surcharge.
     # The D3 pet fee is not multiplied into the transfer price.

@@ -15,7 +15,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-GENERATOR = "synthetic-hotel-rules-v2"
+GENERATOR = "synthetic-hotel-rules-v3"
 HOTEL_ID = re.compile(r"osm:(node|way|relation)/([1-9][0-9]*)\Z")
 
 
@@ -50,7 +50,7 @@ def synthetic_rules(hotels: list[dict]) -> list[dict]:
             rows.append(
                 {
                     "hotel_id": hotel["hotel_id"],
-                    "version": "synthetic-hotel-v2",
+                    "version": "synthetic-hotel-v3",
                     "seed": seed,
                     "is_synthetic": True,
                     "scenario": scenario,
@@ -58,7 +58,9 @@ def synthetic_rules(hotels: list[dict]) -> list[dict]:
                         "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля."
                     ),
                     "base_room_night_rub": base,
-                    "room_capacity_people": 2,
+                    "room_capacity_people": 4,
+                    "room_capacity_adults": 2,
+                    "infant_max_age": 2,
                     "adults_only": scenario == "adults_only",
                     "pets_allowed": scenario not in {"no_pets", "adults_only"},
                     "refundable": scenario != "cheap_nonrefundable",
@@ -83,7 +85,7 @@ def synthetic_rules(hotels: list[dict]) -> list[dict]:
                     "synthetic_amenities": ["wifi", "breakfast"]
                     + (["family_room"] if scenario != "adults_only" else []),
                     "pricing_note": (
-                        "Synthetic RUB per room/night, two people per room; children count as full places. "
+                        "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. "
                         "Seasonal factor is deterministic; pet surcharge is once per pet per stay, "
                         "included in group total."
                     ),

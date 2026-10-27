@@ -66,6 +66,7 @@ async def test_every_destination_has_offers_and_explicit_synthetic_provenance(de
         assert result.offer.stars == result.facts.stars
         assert result.offer.reception_24h == (result.synthetic_rules["reception_closes_at"] is None)
         assert result.offer.early_check_in_available == result.synthetic_rules["early_check_in_available"]
+        assert result.offer.name == result.facts.name
         assert result.offer.is_synthetic
         assert result.synthetic_rules["is_synthetic"]
         assert "синтетические" in result.notice
@@ -100,9 +101,9 @@ async def test_group_price_rooms_nights_and_pet_surcharge_are_not_per_person():
     pet = {r.hotel_id: r for r in await search_hotel_results(query(travelers={"adults": 1, "pets": 1}))}
     assert three and pet
     for hotel_id in three:
-        assert three[hotel_id].rooms == 2
-        assert three[hotel_id].offer.price_rub == 2 * one[hotel_id].offer.price_rub
-        assert four[hotel_id].offer.price_rub == three[hotel_id].offer.price_rub
+        assert three[hotel_id].rooms == 1
+        assert three[hotel_id].offer.price_rub == one[hotel_id].offer.price_rub
+        assert four[hotel_id].offer.price_rub == 2 * three[hotel_id].offer.price_rub
     for hotel_id in pet:
         assert pet[hotel_id].offer.price_rub == one[hotel_id].offer.price_rub + 1000
 

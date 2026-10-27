@@ -29,9 +29,9 @@ def test_checked_rules_reproduce_all_sixty_policies_and_provenance():
     saved = json.loads((ROOT / "data/hotels/synthetic_rules.json").read_text())
     assert expected == saved
     assert len(expected["hotels"]) == 60
-    assert expected["generator"] == "synthetic-hotel-rules-v2"
+    assert expected["generator"] == "synthetic-hotel-rules-v3"
     assert expected["is_synthetic"] and expected["not_real_hotel_policies"]
-    assert all(row["version"] == "synthetic-hotel-v2" and row["is_synthetic"] for row in expected["hotels"])
+    assert all(row["version"] == "synthetic-hotel-v3" and row["is_synthetic"] for row in expected["hotels"])
 
 
 @pytest.mark.parametrize("mutation", ["duplicate", "invalid_identity", "unsupported_destination"])

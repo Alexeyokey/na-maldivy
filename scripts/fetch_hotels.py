@@ -87,7 +87,7 @@ def build_outputs(root: Path = ROOT) -> dict[Path, dict]:
     counts = Counter(row["destination"] for row in hotels)
     if set(counts) != set(ANCHORS):
         raise ValueError("The shared catalogue must cover AYT, DXB and MLE")
-    transfers = json.loads((root / "data/transfers/transfers.json").read_text())[
+    transfers = json.loads((root / "data/transfers/transfers.json").read_text(encoding="utf-8"))[
         "transfers"
     ]
     pairs = [(row["hotel_id"], row["airport"]) for row in transfers]
@@ -157,7 +157,7 @@ def main() -> None:
     for path, data in outputs.items():
         expected = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
         if args.check:
-            if not path.exists() or path.read_text() != expected:
+            if not path.exists() or path.read_text(encoding="utf-8") != expected:
                 raise SystemExit(
                     f"Shared hotel projection is stale: {path}; run scripts/fetch_hotels.py"
                 )

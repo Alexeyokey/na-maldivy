@@ -1,18 +1,20 @@
 {
   "schema_version": 1,
-  "generator": "synthetic-hotel-rules-v2",
+  "generator": "synthetic-hotel-rules-v3",
   "is_synthetic": true,
   "not_real_hotel_policies": true,
   "hotels": [
     {
       "hotel_id": "osm:node/11182077737",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 124473981,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6565,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -31,17 +33,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/11212357332",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3934439263,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9300,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -59,17 +63,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/1155036334",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2894574669,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 4810,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -88,17 +94,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/12180426387",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3705518504,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 7900,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -116,17 +124,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/12299353871",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1377990396,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 7100,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -145,17 +155,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/12480115865",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3281708057,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 8200,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -174,17 +186,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/1852010185",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2733440099,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 4810,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -203,17 +217,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/1882917900",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 978918675,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6000,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -231,17 +247,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/2130527272",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1270884657,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9200,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -260,17 +278,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/2266976150",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2716918867,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5200,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -289,17 +309,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/2286514995",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 988358470,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5500,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -318,17 +340,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/2300063902",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3423236346,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5100,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -347,17 +371,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/2301596616",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3277815289,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 4160,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -376,17 +402,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/2399000167",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 39943522,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6700,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -404,17 +432,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/2457795615",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1609439810,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 10000,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -433,17 +463,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/2466747618",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2337863813,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6800,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -462,17 +494,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/3050967398",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3157017538,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6045,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -491,17 +525,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/3623376904",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2580942097,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5200,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -520,17 +556,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/3988586285",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3164377837,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 8700,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -549,17 +587,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/4453897027",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1442889524,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5900,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -578,17 +618,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/4455235191",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 532514782,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 10200,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -607,17 +649,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/4511016805",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1553885721,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 8600,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -635,17 +679,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/4778124107",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2265049116,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 7100,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -664,17 +710,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/4802569136",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 346576411,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5265,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -693,17 +741,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/4889565597",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3895854143,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 8800,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -722,17 +772,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/5156483845",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 432902335,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 10500,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -750,17 +802,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/5228528653",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1596098415,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9500,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -779,17 +833,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/5369319975",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3149185542,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 3705,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -808,17 +864,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/5560886023",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2187643589,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 10900,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -837,17 +895,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/622290137",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3425778611,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9100,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -866,17 +926,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/773451744",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1165991166,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5590,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -895,17 +957,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/8284491717",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3187905203,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 10300,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -923,17 +987,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/8565810442",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1524954603,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 8300,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -952,17 +1018,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/8960913745",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1883076334,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 4900,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -980,17 +1048,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/897383953",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1968540782,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 4700,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1009,17 +1079,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/920059974",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 874107759,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5400,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1038,17 +1110,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/9268048974",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3746995213,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9300,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1067,17 +1141,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:node/9852338432",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 4112544859,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9900,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -1096,17 +1172,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/126601133",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1407937976,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9100,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -1125,17 +1203,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/1317139674",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2567443243,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6045,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -1154,17 +1234,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/133845532",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 960901038,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9800,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -1182,17 +1264,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/169356188",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 4207308556,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5265,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -1211,17 +1295,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/187650251",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2469711906,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5100,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -1240,17 +1326,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/187650749",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3811021035,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 3900,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -1269,17 +1357,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/19882871",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2295941721,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 10100,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1298,17 +1388,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/199500497",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 819939481,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6600,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -1326,17 +1418,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/364882234",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2201464736,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 10600,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1355,17 +1449,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/433249157",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 43877348,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5300,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -1383,17 +1479,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/514827143",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2508050351,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 7600,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1412,17 +1510,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/532818899",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1468929209,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9400,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1441,17 +1541,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/532818903",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3268352990,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 8500,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -1470,17 +1572,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/535156293",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3623403619,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 9900,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -1499,17 +1603,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/536065296",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 826910567,
       "is_synthetic": true,
       "scenario": "cheap_nonrefundable",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5330,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": false,
@@ -1528,17 +1634,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/591560667",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 4199446361,
       "is_synthetic": true,
       "scenario": "adults_only",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 7600,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": true,
       "pets_allowed": false,
       "refundable": true,
@@ -1556,17 +1664,19 @@
         "wifi",
         "breakfast"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/721802993",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3506780625,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 8000,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1585,17 +1695,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/73172644",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 2996056005,
       "is_synthetic": true,
       "scenario": "early_arrival",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6000,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1614,17 +1726,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/73333722",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1968655981,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 4600,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1643,17 +1757,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/74016732",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3257000885,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 5000,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -1672,17 +1788,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/89790675",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 1365349530,
       "is_synthetic": true,
       "scenario": "far_transfer",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6500,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": true,
       "refundable": true,
@@ -1701,17 +1819,19 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     },
     {
       "hotel_id": "osm:way/98642884",
-      "version": "synthetic-hotel-v2",
+      "version": "synthetic-hotel-v3",
       "seed": 3748709282,
       "is_synthetic": true,
       "scenario": "no_pets",
       "notice": "Все поля этой записи вымышлены для демонстрации и не являются правилами реального OSM-отеля.",
       "base_room_night_rub": 6700,
-      "room_capacity_people": 2,
+      "room_capacity_people": 4,
+      "room_capacity_adults": 2,
+      "infant_max_age": 2,
       "adults_only": false,
       "pets_allowed": false,
       "refundable": true,
@@ -1730,7 +1850,7 @@
         "breakfast",
         "family_room"
       ],
-      "pricing_note": "Synthetic RUB per room/night, two people per room; children count as full places. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
+      "pricing_note": "Synthetic RUB per room/night, up to two adults and four paying occupants per family room; infants under two do not add rooms. Seasonal factor is deterministic; pet surcharge is once per pet per stay, included in group total."
     }
   ]
 }

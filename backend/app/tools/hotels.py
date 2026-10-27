@@ -10,7 +10,6 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-import os
 import re
 from datetime import time
 from functools import lru_cache
@@ -21,8 +20,9 @@ from pydantic import BaseModel, ConfigDict, Field, TypeAdapter
 
 from app.contracts.identifiers import canonical_hotel_id
 from app.contracts.tools import HotelOffer, HotelSearch, Place
+from app.data_paths import DEFAULT_DATA_DIR, resolve_data_dir
 
-DATA_ROOT = Path(os.environ.get("NA_MALDIVY_DATA_DIR", Path(__file__).resolve().parents[3] / "data"))
+DATA_ROOT = DEFAULT_DATA_DIR
 SYNTHETIC_NOTICE = (
     "Демонстрационное предложение: цена, наличие, рейтинг, удобства и правила синтетические; "
     "они не описывают фактические условия этого реального отеля."
@@ -31,14 +31,14 @@ TIMEZONES = {"AYT": "Europe/Istanbul", "DXB": "Asia/Dubai", "MLE": "Indian/Maldi
 _CANONICAL_HOTEL_ID = re.compile(r"osm:(node|way|relation)/([1-9][0-9]*)\Z")
 
 
-@lru_cache(maxsize=1)
-def _hotel_id_aliases() -> dict[str, str]:
-    return json.loads((DATA_ROOT / "hotels/id_aliases.json").read_text())["aliases"]
+@lru_cache(maxsize=8)
+def _hotel_id_aliases(data_dir: Path) -> dict[str, str]:
+    return json.loads((data_dir / "hotels/id_aliases.json").read_text(encoding="utf-8"))["aliases"]
 
 
-def normalize_hotel_id(hotel_id: str) -> str:
+def normalize_hotel_id(hotel_id: str, *, data_dir: Path | None = None) -> str:
     """Accept known historical colon IDs; always return the canonical slash ID."""
-    canonical = canonical_hotel_id(_hotel_id_aliases().get(hotel_id, hotel_id))
+    canonical = canonical_hotel_id(_hotel_id_aliases(resolve_data_dir(data_dir)).get(hotel_id, hotel_id))
     if not _CANONICAL_HOTEL_ID.fullmatch(canonical):
         raise ValueError("Hotel identity must use osm:<node|way|relation>/<positive id>")
     return canonical
@@ -51,7 +51,7 @@ def hotel_id_filename(hotel_id: str) -> str:
 
 def _legacy_identity_hash_key(hotel_id: str) -> str:
     # Internal only: preserve existing fixture prices/inventory across spelling migration.
-    return normalize_hotel_id(hotel_id).replace("/", ":")
+    return canonical_hotel_id(hotel_id).replace("/", ":")
 
 
 class HotelRecord(BaseModel):
@@ -89,26 +89,32 @@ class HotelSearchResult(BaseModel):
     notice: str = SYNTHETIC_NOTICE
 
 
-@lru_cache(maxsize=1)
-def _all_hotels() -> tuple[HotelRecord, ...]:
-    data = json.loads((DATA_ROOT / "hotels/catalog.json").read_text())
+@lru_cache(maxsize=8)
+def _all_hotels(data_dir: Path) -> tuple[HotelRecord, ...]:
+    data = json.loads((data_dir / "hotels/catalog.json").read_text(encoding="utf-8"))
     return tuple(HotelRecord.model_validate(row) for row in data["hotels"])
 
 
-def load_hotel_catalog(destination: str | None = None) -> list[HotelRecord]:
+def load_hotel_catalog(destination: str | None = None, *, data_dir: Path | None = None) -> list[HotelRecord]:
     """Return OSM facts; an unsupported destination gives no candidates."""
-    return [record for record in _all_hotels() if destination is None or record.destination == destination]
+    return [
+        record
+        for record in _all_hotels(resolve_data_dir(data_dir))
+        if destination is None or record.destination == destination
+    ]
 
 
-@lru_cache(maxsize=1)
-def _rules_by_hotel() -> dict[str, dict[str, Any]]:
-    data = json.loads((DATA_ROOT / "hotels/synthetic_rules.json").read_text())
+@lru_cache(maxsize=8)
+def _rules_by_hotel(data_dir: Path) -> dict[str, dict[str, Any]]:
+    data = json.loads((data_dir / "hotels/synthetic_rules.json").read_text(encoding="utf-8"))
     return {row["hotel_id"]: row for row in data["hotels"]}
 
 
-def get_synthetic_rules(hotel_id: str) -> dict[str, Any]:
+def get_synthetic_rules(hotel_id: str, *, data_dir: Path | None = None) -> dict[str, Any]:
     """A copy prevents callers from mutating cached demo policies."""
-    return json.loads(json.dumps(_rules_by_hotel()[normalize_hotel_id(hotel_id)]))
+    return json.loads(
+        json.dumps(_rules_by_hotel(resolve_data_dir(data_dir))[normalize_hotel_id(hotel_id, data_dir=data_dir)])
+    )
 
 
 def hotel_id_for_offer(offer_id: str) -> str:
@@ -120,7 +126,7 @@ def hotel_id_for_offer(offer_id: str) -> str:
     except ValueError as exc:
         raise ValueError("Malformed synthetic hotel offer identifier") from exc
     canonical = normalize_hotel_id(identity)
-    if canonical not in _rules_by_hotel():
+    if canonical not in _rules_by_hotel(resolve_data_dir()):
         raise ValueError("Unknown synthetic hotel offer identifier")
     if len(digest) != 20 or any(c not in "0123456789abcdef" for c in digest):
         raise ValueError("Malformed synthetic hotel offer identifier")
@@ -139,7 +145,7 @@ def _available(hotel_id: str, query: HotelSearch) -> bool:
     )
 
 
-async def search_hotel_results(query: HotelSearch) -> list[HotelSearchResult]:
+async def search_hotel_results(query: HotelSearch, *, data_dir: Path | None = None) -> list[HotelSearchResult]:
     """Search the saved OSM snapshot and synthetic inventory with hard filters.
 
     No unavailable/adults-only-with-child/pet-incompatible/nonrefundable-only
@@ -147,9 +153,13 @@ async def search_hotel_results(query: HotelSearch) -> list[HotelSearchResult]:
     """
     results = []
     nights = (query.check_out - query.check_in).days
-    rooms = math.ceil(query.travelers.count / 2)
-    for record in load_hotel_catalog(query.destination):
-        rules = get_synthetic_rules(record.hotel_id)
+    for record in load_hotel_catalog(query.destination, data_dir=data_dir):
+        rules = get_synthetic_rules(record.hotel_id, data_dir=data_dir)
+        paying = query.travelers.adults + sum(age >= rules["infant_max_age"] for age in query.travelers.children_ages)
+        rooms = max(
+            math.ceil(query.travelers.adults / rules["room_capacity_adults"]),
+            math.ceil(paying / rules["room_capacity_people"]),
+        )
         if query.min_stars and (record.stars is None or record.stars < query.min_stars):
             continue
         if query.travelers.children_ages and rules["adults_only"]:
@@ -175,7 +185,7 @@ async def search_hotel_results(query: HotelSearch) -> list[HotelSearchResult]:
         offer = HotelOffer(
             hotel_id=record.hotel_id,
             offer_id=offer_id,
-            name=record.name + " [синтетические условия]",
+            name=record.name,
             place=Place(
                 kind="hotel",
                 id=record.hotel_id,
@@ -216,9 +226,9 @@ async def search_hotel_results(query: HotelSearch) -> list[HotelSearchResult]:
     return sorted(results, key=lambda result: (result.offer.price_rub, result.hotel_id))
 
 
-async def search_hotels(query: HotelSearch) -> list[HotelOffer]:
+async def search_hotels(query: HotelSearch, *, data_dir: Path | None = None) -> list[HotelOffer]:
     """D1 compatibility projection; use rich results for truthful provenance."""
-    return [result.offer for result in await search_hotel_results(query)]
+    return [result.offer for result in await search_hotel_results(query, data_dir=data_dir)]
 
 
 class HotelSearchTool:
@@ -227,5 +237,8 @@ class HotelSearchTool:
     input_model = HotelSearch
     output_adapter = TypeAdapter(list[HotelOffer])
 
+    def __init__(self, *, data_dir: Path | None = None):
+        self.data_dir = resolve_data_dir(data_dir)
+
     async def run(self, input: HotelSearch) -> list[HotelOffer]:
-        return await search_hotels(input)
+        return await search_hotels(input, data_dir=self.data_dir)
