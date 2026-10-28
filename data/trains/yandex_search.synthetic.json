@@ -1,0 +1,21 @@
+{
+  "fixture_metadata": {
+    "kind": "synthetic",
+    "is_captured_provider_response": false,
+    "source_schema": "https://yandex.ru/dev/rasp/doc/ru/reference/schedule-point-point",
+    "note": "Handwritten Yandex-shaped test payload. Schedule, number, uid and prices are invented."
+  },
+  "response": {
+    "pagination": {"total": 1, "limit": 100, "offset": 0},
+    "interval_segments": [],
+    "segments": [{
+      "from": {"code": "s2004001", "title": "Санкт-Петербург (Московский вокзал)", "station_type": "train_station", "transport_type": "train"},
+      "to": {"code": "s2006004", "title": "Москва (Ленинградский вокзал)", "station_type": "train_station", "transport_type": "train"},
+      "departure": "2030-11-18T23:55:00+03:00", "arrival": "2030-11-19T07:55:00+03:00",
+      "duration": 28800, "has_transfers": false,
+      "thread": {"number": "DEMO002", "uid": "synthetic-led-mow-002", "transport_type": "train", "title": "Санкт-Петербург — Москва", "short_title": "СПб — Москва"},
+      "tickets_info": {"et_marker": false, "places": []}
+    }],
+    "search": {"date": "2030-11-18", "from": {"code": "c146"}, "to": {"code": "c213"}}
+  }
+}

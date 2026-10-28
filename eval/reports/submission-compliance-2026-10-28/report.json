@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-10-28T21:00:57.928683+00:00",
+  "scope": "preparation_for_submission_not_final_handoff",
+  "status": "technical_package_passed_pending_main_video_handoff",
+  "source_head": "1c1a0233469b0fd728324335138b4b6fb4bed540",
+  "technical_package_static": "passed",
+  "technical_package_runtime": "passed_clean_git_archive_default_compose",
+  "first_build_duration": {
+    "baseline_ready_observed_within_seconds": 31.634,
+    "final_ready_observed_within_seconds": 9.863,
+    "cache": "warm",
+    "cold_network_build_measured": false
+  },
+  "public_locked_python_packages": 45,
+  "all_python_packages_anonymously_accessible": true,
+  "private_dependency_required": false,
+  "frontend_npm_dependencies": 0,
+  "remote_submission_tag": "absent_at_checked_snapshot",
+  "submission_tag_action": "deferred_by_explicit_owner_request_do_not_create",
+  "main_integration": "not_merged_PR64_remains_draft",
+  "video_url": "not_provided",
+  "video_incognito_check": "not_performed",
+  "deadline": "not_provided_no_schedule_created",
+  "repo_license": "no_root_license_team_choice_not_a_stated_submission_gate",
+  "tracked_sensitive_path_check": {
+    "suspect_paths": [],
+    "passed": true,
+    "scope": "tracked_filenames_only_not_complete_history_or_image_layer_scan"
+  },
+  "source_file_sha256": {
+    "docker-compose.yml": "484d0dfef12a818804b20838e761e27ba5b3abcf191bfc89ceabf7809d99f74a",
+    ".env.example": "52fd9958dd30632f8609b3049122a87203b4f8293b1c5215d92c71616490dec9",
+    "backend/Dockerfile.demo": "3ada143a59472d5bc12bc5e6b2a54a6d8df92276a97615aa739f7a7ebb8cc85e",
+    "frontend/Dockerfile": "b02320c0a97b4cdbf7cd09da085750595bfc9a034988c87228f06d33c40afe6a",
+    "backend/uv.lock": "002a7387b61fea3015409c263a838f20e9b6a556942fd9f58dcbd8ed629bee7b",
+    "frontend/package.json": "ba1251a5cfdc9ad65ce9bf46fda25a9cabba495bdeadb109d40b0fa19989ef24",
+    ".dockerignore": "8b50537a33c8d6c8e22033e08b164f19dbcd19c1c50637c210dc5d11546cf741",
+    "frontend/dist/api-model.js": "d0096f6e0ed34e5224c31e6afe7607d02e4eba8c5531d414bdc56f0e9d1b25d5",
+    "frontend/dist/api-app.js": "19e0fa0598f9378c358809f4736c32ff7941817615c569e83ea3865398f1f5a0"
+  },
+  "evidence_files": [
+    "github-state.json",
+    "pr64-before-update.json",
+    "dependencies.json",
+    "package-static.json",
+    "docker-runtime.json",
+    "clean-start-baseline.json",
+    "package-http-baseline.json",
+    "three-destinations.json",
+    "three-destinations-after-restart.json",
+    "clean-start.json",
+    "package-http.json",
+    "three-destinations-final.json",
+    "three-destinations-final-after-restart.json",
+    "local-ui.json",
+    "automated-checks.json",
+    "pr64-after-update.json"
+  ],
+  "limits": [
+    "Technical package success does not establish full submission completion.",
+    "Remote facts are timestamped snapshots; before-update evidence is preserved separately.",
+    "No final tag, main merge, video recording/upload, production deployment, or automation was performed by this preparation.",
+    "Default fake/rules model and mixed recorded/synthetic data do not prove production model quality or live booking availability."
+  ],
+  "automated_checks": {
+    "make_check": "passed",
+    "backend_tests": 1268,
+    "frontend_unit_tests": 130,
+    "frontend_http_tests": 11,
+    "container_smoke": "passed",
+    "frontend_after_recovery_fix": {
+      "unit_tests": 135,
+      "http_tests": 11,
+      "syntax": "passed",
+      "status": "passed"
+    }
+  },
+  "local_api_acceptance": {
+    "destinations_passed": 3,
+    "after_restart_passed": 3,
+    "orders_and_document_hashes_preserved": true
+  },
+  "local_ui_acceptance": {
+    "checkout": "passed",
+    "ordinary_reload_and_downloads": "passed",
+    "paid_documents_after_backend_restart": "passed",
+    "second_reload_session_lost": "passed",
+    "new_search_preserves_paid_history": "passed"
+  },
+  "upstream_main_included": "63b4c2f54bf55553028438730ba89f78af7d981b",
+  "handoff_certified": false,
+  "pr64_after_update": {
+    "snapshot": "pr64-after-update.json",
+    "head_at_checked_snapshot": "426bd075e69894218a6497bc0909a2953651d9d5",
+    "draft": true,
+    "mergeable": true,
+    "mergeable_state": "clean"
+  }
+}

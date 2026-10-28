@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T19:50:18.636228+00:00",
+  "status": "passed",
+  "url": "https://na-maldivy.eu.cc",
+  "scope": "add_domain_to_existing_owner_only_codex_site",
+  "dns": {
+    "a": [
+      "201.8.90.64"
+    ],
+    "verified_from": "Mac system recursive resolver and VPS resolver; HTTPS ACME certificate validated",
+    "registrar_changes_made": false
+  },
+  "tls": {
+    "validated": true,
+    "not_before": "Oct 28 18:50:13 2026 GMT",
+    "not_after": "Jan 26 18:50:12 2027 GMT",
+    "san": [
+      [
+        "DNS",
+        "na-maldivy.eu.cc"
+      ]
+    ],
+    "version": "TLSv1.3"
+  },
+  "authentication": "same owner password; common Caddy protection for domain and IP; credentials not in source or report",
+  "model": "gpt-6-luna",
+  "reasoning_effort": "low",
+  "real_authenticated_https_chat": {
+    "validated_model_calls": 2,
+    "elapsed_seconds": 16.891,
+    "option_count": 2,
+    "known_totals_rub": [
+      83234,
+      112856
+    ]
+  },
+  "checks": {
+    "anonymous_requests": "401 with Basic challenge and no-store",
+    "foreign_or_cross_host_origin": "403 before model invocation",
+    "unauthorized_model_calls": 0,
+    "old_paid_demo_orders_and_documents_preserved": 6,
+    "frontend_unit_tests_passed": 82,
+    "frontend_http_integration_tests_passed": 11,
+    "syntax_and_diff_checks": "passed",
+    "backend_http_port": "not published",
+    "existing_ip": "HTTP and HTTPS redirect 308 to canonical domain, preserving URI; no IP login prompt"
+  },
+  "images": {
+    "backend": "na-maldivy-private-agent:20261028-1 (unchanged)",
+    "frontend": "na-maldivy-private-web:20261028-domain1",
+    "gateway": "caddy:2.11.7-alpine"
+  },
+  "data_boundaries": "Existing D4 replay/mock travel data and simulated payment remain; domain setup is not live booking or D7 extraction",
+  "browser_ui_status": "Existing user-authenticated Chrome tab inspected read-only: rendered trip cards and subsequent successful agent reply visible. Automated BasicAuth login and full new browser checkout not claimed.",
+  "evidence": [
+    "access-gate.json",
+    "chat.json",
+    "original-orders-preserved.json",
+    "private-orders-preserved.json",
+    "origin-and-ip-regression.json",
+    "canonical-address.json"
+  ],
+  "canonical_address_checked_at": "2026-10-28T19:53:43.877101+00:00"
+}

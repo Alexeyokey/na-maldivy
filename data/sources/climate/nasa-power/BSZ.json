@@ -1,0 +1,79 @@
+{
+  "request_url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=T2M%2CPRECTOTCORR&community=AG&longitude=74.477508&latitude=43.061272&start=1991&end=2020&format=JSON",
+  "retrieved_at": "2026-10-25",
+  "response": {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        74.478,
+        43.061,
+        721.28
+      ]
+    },
+    "properties": {
+      "parameter": {
+        "PRECTOTCORR": {
+          "JAN": 0.72,
+          "FEB": 0.96,
+          "MAR": 1.21,
+          "APR": 1.83,
+          "MAY": 1.55,
+          "JUN": 1.02,
+          "JUL": 0.64,
+          "AUG": 0.43,
+          "SEP": 0.51,
+          "OCT": 1.03,
+          "NOV": 1.17,
+          "DEC": 0.93,
+          "ANN": 1.0
+        },
+        "T2M": {
+          "JAN": 0.54,
+          "FEB": 2.41,
+          "MAR": 7.65,
+          "APR": 13.58,
+          "MAY": 19.0,
+          "JUN": 24.65,
+          "JUL": 27.53,
+          "AUG": 26.03,
+          "SEP": 20.26,
+          "OCT": 13.01,
+          "NOV": 6.15,
+          "DEC": 1.72,
+          "ANN": 13.6
+        }
+      }
+    },
+    "header": {
+      "title": "NASA/POWER Source Native Resolution Climatology Climatologies",
+      "api": {
+        "version": "v2.10.1",
+        "name": "POWER Climatology API"
+      },
+      "sources": [
+        "MERRA2"
+      ],
+      "fill_value": -999.0,
+      "time_standard": "LST",
+      "range": "30-year Meteorological and Solar Monthly & Annual Climatologies (January 1991 - December 2020)"
+    },
+    "messages": [
+      "The requested parameters are computed for a custom climatological period (January 1991 - December 2020)"
+    ],
+    "parameters": {
+      "PRECTOTCORR": {
+        "units": "mm/day",
+        "longname": "Precipitation Corrected"
+      },
+      "T2M": {
+        "units": "C",
+        "longname": "Temperature at 2 Meters"
+      }
+    },
+    "times": {
+      "data": 0.101,
+      "process": 0.06
+    }
+  }
+}

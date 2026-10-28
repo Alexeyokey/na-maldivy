@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T20:18:15.750570+00:00",
+  "status": "passed",
+  "scope": "manual_chat_recovery_after_connection_loss",
+  "local_browser_fault_injection": {
+    "url": "http://127.0.0.1:18810/",
+    "model": "fake fixture; real app backend/cache and frontend",
+    "first_stream_cut_after_partial_answer": true,
+    "chat_posts": 2,
+    "request_ids_equal": true,
+    "original_payload_equal": true,
+    "retry_flags": [
+      false,
+      true
+    ],
+    "agent_run_count": 1,
+    "user_messages": 1,
+    "assistant_messages": 1,
+    "manual_retry_without_reload": true,
+    "draft_preserved": true,
+    "transcript_and_draft_restored_after_reload": true
+  },
+  "checks": {
+    "backend_tests_passed": 1216,
+    "backend_recovery_tests_passed": 18,
+    "frontend_unit_tests_passed": 103,
+    "frontend_recovery_tests_passed": 12,
+    "frontend_http_integration_tests_passed": 11,
+    "syntax_ruff_and_diff_checks": "passed"
+  },
+  "limits": {
+    "browser_storage": "sessionStorage for current tab; no traveler form or complete payment documents",
+    "reply_cache_ttl_seconds": 1800,
+    "reply_cache_capacity": 256,
+    "reply_cache_bytes": 33554432,
+    "accepted_request_ledger": "persistent SQLite; ID, SHA256 payload, acceptance timestamp only; mode 0600",
+    "server_restart_or_expired_response": "410 and deliberate new search; transcript retained; accepted action not repeated"
+  },
+  "screenshots": [
+    "interrupted.jpg",
+    "recovered.jpg"
+  ],
+  "live_verification": "live.json"
+}

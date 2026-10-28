@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "commit": "1c1a0233469b0fd728324335138b4b6fb4bed540",
+  "created_from": "git archive HEAD",
+  "private_env_or_artifacts_included": false,
+  "launch_command": "docker compose up --build",
+  "timing_note": "Warm Docker image/layer cache; no cold-network benchmark",
+  "launch_started_unix": 1793221110.1683142,
+  "first_healthy_observed_unix": 1793221120.031132,
+  "health": {
+    "status": "ok",
+    "llm_provider": "fake"
+  },
+  "ui_http_status": 200,
+  "ready_observed_within_seconds": 9.863,
+  "status": "passed",
+  "scope": "clean_git_archive_default_compose_after_paid_document_fix",
+  "checked_at": "2026-10-28T20:59:31.717036+00:00",
+  "source_private_env_loaded": false,
+  "external_model_used": false,
+  "services": {
+    "agent": {
+      "healthy": true,
+      "image_architecture": "amd64",
+      "user": "1000:1000",
+      "published_ports": {
+        "8000/tcp": null
+      },
+      "nonempty_provider_keys": false,
+      "runtime": {
+        "uid": 1000,
+        "data_files": 247,
+        "data_bytes": 3082896,
+        "database_permissions": "0o600",
+        "dev_toolchain_absent": true
+      }
+    },
+    "app": {
+      "healthy": true,
+      "image_architecture": "amd64",
+      "user": "1000:1000",
+      "published_ports": {
+        "8080/tcp": [
+          {
+            "HostIp": "0.0.0.0",
+            "HostPort": "8080"
+          },
+          {
+            "HostIp": "::",
+            "HostPort": "8080"
+          }
+        ]
+      },
+      "nonempty_provider_keys": false,
+      "runtime": {
+        "uid": 1000,
+        "node": "v22.23.4",
+        "port": "8080",
+        "api_model_sha256": "d0096f6e0ed34e5224c31e6afe7607d02e4eba8c5531d414bdc56f0e9d1b25d5"
+      }
+    }
+  },
+  "host": {
+    "cpu": "Apple M3",
+    "ram_bytes": 17179869184,
+    "architecture": "arm64",
+    "docker_version": "Docker version 29.8.2, build 7fc2dff",
+    "compose_version": "5.5.1"
+  },
+  "notice": "Warm Docker cache; time is an upper bound to first HTTP readiness, not a cold-network benchmark. No final submission certification.",
+  "source_commit": "1c1a0233469b0fd728324335138b4b6fb4bed540"
+}

@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "scope": "actual_public_vps_deployment",
+  "status": "passed",
+  "verified_at": "2026-10-28T18:14:43.706322+00:00",
+  "base_url": "http://201.8.90.64",
+  "deployed_commit": "faf779edab3e9237ed626b51526d2589ba453dd7",
+  "deployment_project": "na-maldivy-public",
+  "release_directory": "/srv/na-maldivy/releases/faf779edab3e9237ed626b51526d2589ba453dd7",
+  "mode": {
+    "llm": "fake",
+    "flights": "demo_with_provider_replay_and_explicit_mocks",
+    "trains": "synthetic",
+    "cache": "replay",
+    "payment": "simulated"
+  },
+  "public_http": {
+    "base_url": "http://201.8.90.64",
+    "health": {
+      "status": "ok",
+      "llm_provider": "fake"
+    },
+    "paths": {
+      "/": {
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "cache_control": "no-store"
+      },
+      "/config.js": {
+        "status": 200,
+        "content_type": "text/javascript; charset=utf-8",
+        "cache_control": "no-store"
+      },
+      "/api-app.js": {
+        "status": 200,
+        "content_type": "text/javascript; charset=utf-8",
+        "cache_control": "no-store"
+      },
+      "/api-model.js": {
+        "status": 200,
+        "content_type": "text/javascript; charset=utf-8",
+        "cache_control": "no-store"
+      },
+      "/docs": {
+        "status": 404
+      },
+      "/.env": {
+        "status": 404
+      }
+    },
+    "private_ports": {
+      "5173": "not_accessible",
+      "8000": "not_accessible",
+      "8080": "not_accessible"
+    }
+  },
+  "initial_three_destinations": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T18:09:06.307127+00:00",
+    "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+    "mode": "initial_run",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway.health",
+      "AYT.search_sources",
+      "AYT.d7_evidence",
+      "AYT.d8_comparison",
+      "AYT.confirm_unpaid_cart",
+      "AYT.decline_approve_retry",
+      "AYT.private_downloads",
+      "DXB.search_sources",
+      "DXB.d7_evidence",
+      "DXB.d8_comparison",
+      "DXB.confirm_unpaid_cart",
+      "DXB.decline_approve_retry",
+      "DXB.private_downloads",
+      "MLE.search_sources",
+      "MLE.d7_evidence",
+      "MLE.d8_comparison",
+      "MLE.confirm_unpaid_cart",
+      "MLE.decline_approve_retry",
+      "MLE.private_downloads",
+      "gateway.save_private_context"
+    ],
+    "stage_timings_seconds": {
+      "gateway.health": 0.246,
+      "AYT.search_sources": 1.757,
+      "AYT.d7_evidence": 0.98,
+      "AYT.d8_comparison": 2.511,
+      "AYT.confirm_unpaid_cart": 1.009,
+      "AYT.decline_approve_retry": 1.08,
+      "AYT.private_downloads": 2.167,
+      "DXB.search_sources": 3.059,
+      "DXB.d7_evidence": 0.809,
+      "DXB.d8_comparison": 4.116,
+      "DXB.confirm_unpaid_cart": 1.354,
+      "DXB.decline_approve_retry": 1.156,
+      "DXB.private_downloads": 1.317,
+      "MLE.search_sources": 1.129,
+      "MLE.d7_evidence": 0.978,
+      "MLE.d8_comparison": 4.416,
+      "MLE.confirm_unpaid_cart": 0.947,
+      "MLE.decline_approve_retry": 1.089,
+      "MLE.private_downloads": 1.272,
+      "gateway.save_private_context": 0.001
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "full_d9_acceptance_status": "not_completed_by_this_report",
+    "destinations": [
+      {
+        "destination": "AYT",
+        "status": "passed",
+        "known_total_rub": 83234,
+        "leg_sources": [
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 11251
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 14147
+          }
+        ],
+        "package_sha256": "ee65483f258ee9144c6057e1881348734d6063fecff46f2106c3890491ca3805",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "d7d5640f9cc3ec172c64f28860fa4973a272e30e048ad8e57fcc2eb5fdd3bb7b"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 1,
+          "contains_mock": false,
+          "state_preserved": true,
+          "facts_sha256": "e4dc6fdf938fa91e6d29fe3d027949d14a73468cfdec2080d4ee860e00d9cf70"
+        },
+        "order_sha256": "bf1f9e3d341daf09ddb25fb29752fb77985b21ec4309891b2a03e9e35f450f55",
+        "voucher_sha256": "df99aa908795fc904ad76b83c5154e624b1621084e3f457201cafd84dea93885",
+        "calendar_sha256": "f35fcbe35381976cdd206fc572a27fec93050fa0ca233bcdb796bb7ade25ab43"
+      },
+      {
+        "destination": "DXB",
+        "status": "passed",
+        "known_total_rub": 131161,
+        "leg_sources": [
+          {
+            "kind": "deterministic_mock",
+            "provider_evidence": false
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 19547
+          }
+        ],
+        "package_sha256": "56a5dcafa0a62ca71afc46629ffd22f110c84536433dbf0fdf5d82f74d8febf2",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "c9b1ded6c12c95cb1587b7745fc4ee467dd71d1930e6fbe87ca813a9ab8f734a"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 0,
+          "contains_mock": true,
+          "state_preserved": true,
+          "facts_sha256": "3ce258609bf2fa225bd1934b6754b39feca2bc49033933c8774cd6c515243c1d"
+        },
+        "order_sha256": "bb1c45dc6a65755144eef0026404e13f193eba3593592f09bc88d69416a42325",
+        "voucher_sha256": "ec81a7045856c0fab2324de6b2531ca599013ba0d0066cd974a96a2d69e8e167",
+        "calendar_sha256": "77bf2c4854dc473bee50908c7e7bb9b2cdbb004d57ad8e77f1392abfc3801b92"
+      },
+      {
+        "destination": "MLE",
+        "status": "passed",
+        "known_total_rub": 216983,
+        "leg_sources": [
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 32488
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 46070
+          }
+        ],
+        "package_sha256": "6c64e36fe9dfdadc00e0d38d73c11f95d02f0718ecf6018fead3c525af2883d9",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "78c409cb9cb137ee236007da589fc9362966c53837eed9e91067ebdb8810a8ea"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 2,
+          "contains_mock": false,
+          "state_preserved": true,
+          "facts_sha256": "0dd4ed435a8093e25a3556284aabb31cb8c35662b15aa3f8f46c310a650aa262"
+        },
+        "order_sha256": "f41cffc961dab5893a490e19bbf53d41f3fa4c41f8370d854dc13a8ffc8beda0",
+        "voucher_sha256": "877b157bdfa9dba7ed77f1491a9d79f33437ed556a6fbab51a949fcacb904b68",
+        "calendar_sha256": "37029f4fac659ba41080572d3dbe132aeefceffb9bd29394949e6695d617b9b4"
+      }
+    ],
+    "external_model_used": false,
+    "destinations_passed": 3,
+    "duration_seconds": 31.395
+  },
+  "after_backend_restart": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T18:12:13.405915+00:00",
+    "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+    "mode": "resume_after_restart",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway.load_private_context",
+      "gateway.health",
+      "AYT.restart_order_and_artifacts",
+      "DXB.restart_order_and_artifacts",
+      "MLE.restart_order_and_artifacts"
+    ],
+    "stage_timings_seconds": {
+      "gateway.load_private_context": 0.0,
+      "gateway.health": 0.577,
+      "AYT.restart_order_and_artifacts": 1.538,
+      "DXB.restart_order_and_artifacts": 1.387,
+      "MLE.restart_order_and_artifacts": 2.916
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "full_d9_acceptance_status": "not_completed_by_this_report",
+    "destinations": [
+      {
+        "destination": "AYT",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "bf1f9e3d341daf09ddb25fb29752fb77985b21ec4309891b2a03e9e35f450f55",
+        "voucher_sha256": "df99aa908795fc904ad76b83c5154e624b1621084e3f457201cafd84dea93885",
+        "calendar_sha256": "f35fcbe35381976cdd206fc572a27fec93050fa0ca233bcdb796bb7ade25ab43"
+      },
+      {
+        "destination": "DXB",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "bb1c45dc6a65755144eef0026404e13f193eba3593592f09bc88d69416a42325",
+        "voucher_sha256": "ec81a7045856c0fab2324de6b2531ca599013ba0d0066cd974a96a2d69e8e167",
+        "calendar_sha256": "77bf2c4854dc473bee50908c7e7bb9b2cdbb004d57ad8e77f1392abfc3801b92"
+      },
+      {
+        "destination": "MLE",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "f41cffc961dab5893a490e19bbf53d41f3fa4c41f8370d854dc13a8ffc8beda0",
+        "voucher_sha256": "877b157bdfa9dba7ed77f1491a9d79f33437ed556a6fbab51a949fcacb904b68",
+        "calendar_sha256": "37029f4fac659ba41080572d3dbe132aeefceffb9bd29394949e6695d617b9b4"
+      }
+    ],
+    "external_model_used": false,
+    "destinations_passed": 3,
+    "duration_seconds": 6.419
+  },
+  "runtime": {
+    "release_commit": "faf779edab3e9237ed626b51526d2589ba453dd7",
+    "docker_enabled": "enabled",
+    "services": {
+      "agent": {
+        "running": true,
+        "health": "healthy",
+        "image": "na-maldivy-public-agent:faf779edab3e9237ed626b51526d2589ba453dd7",
+        "restart_policy": "unless-stopped",
+        "published_ports": {},
+        "memory_limit_bytes": 402653184,
+        "capability_paths_in_logs": 0,
+        "network_internal_flags": [
+          true
+        ],
+        "provider_keys_empty": true,
+        "access_log_disabled": true,
+        "checkout_file_permissions": {
+          "mode": "0o600",
+          "uid": 1000
+        }
+      },
+      "web": {
+        "running": true,
+        "health": "healthy",
+        "image": "na-maldivy-public-web:faf779edab3e9237ed626b51526d2589ba453dd7",
+        "restart_policy": "unless-stopped",
+        "published_ports": {},
+        "memory_limit_bytes": 134217728,
+        "capability_paths_in_logs": 0,
+        "network_internal_flags": [
+          true
+        ]
+      },
+      "edge": {
+        "running": true,
+        "health": "healthy",
+        "image": "nginx:alpine",
+        "restart_policy": "unless-stopped",
+        "published_ports": {
+          "80/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "80"
+            }
+          ]
+        },
+        "memory_limit_bytes": 67108864,
+        "capability_paths_in_logs": 0,
+        "network_internal_flags": [
+          false,
+          true
+        ]
+      }
+    },
+    "memory_usage": "na-maldivy-public-edge-1: 3.367MiB / 64MiB\nna-maldivy-public-web-1: 64.15MiB / 128MiB\nna-maldivy-public-agent-1: 69.67MiB / 384MiB\n",
+    "source_env_present": false
+  },
+  "visible_ui_evidence": "eval/reports/vps-deployment-2026-10-28/ui-check.json",
+  "notice": "Public HTTP demo with fictional travelers only; no provider or deployment credentials included. The external model and real purchasing are not enabled."
+}

@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-10-28T20:59:09.291620+00:00",
+  "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+  "mode": "initial_run",
+  "status": "passed",
+  "integrated_ui_status": "not_run",
+  "completed_stages": [
+    "gateway.health",
+    "AYT.search_sources",
+    "AYT.d7_evidence",
+    "AYT.d8_comparison",
+    "AYT.confirm_unpaid_cart",
+    "AYT.decline_approve_retry",
+    "AYT.private_downloads",
+    "DXB.search_sources",
+    "DXB.d7_evidence",
+    "DXB.d8_comparison",
+    "DXB.confirm_unpaid_cart",
+    "DXB.decline_approve_retry",
+    "DXB.private_downloads",
+    "MLE.search_sources",
+    "MLE.d7_evidence",
+    "MLE.d8_comparison",
+    "MLE.confirm_unpaid_cart",
+    "MLE.decline_approve_retry",
+    "MLE.private_downloads",
+    "gateway.save_private_context"
+  ],
+  "stage_timings_seconds": {
+    "gateway.health": 0.034,
+    "AYT.search_sources": 0.239,
+    "AYT.d7_evidence": 0.173,
+    "AYT.d8_comparison": 0.631,
+    "AYT.confirm_unpaid_cart": 0.036,
+    "AYT.decline_approve_retry": 0.03,
+    "AYT.private_downloads": 0.018,
+    "DXB.search_sources": 0.28,
+    "DXB.d7_evidence": 0.019,
+    "DXB.d8_comparison": 0.774,
+    "DXB.confirm_unpaid_cart": 0.024,
+    "DXB.decline_approve_retry": 0.021,
+    "DXB.private_downloads": 0.015,
+    "MLE.search_sources": 0.05,
+    "MLE.d7_evidence": 0.016,
+    "MLE.d8_comparison": 0.19,
+    "MLE.confirm_unpaid_cart": 0.018,
+    "MLE.decline_approve_retry": 0.017,
+    "MLE.private_downloads": 0.012,
+    "gateway.save_private_context": 0.001
+  },
+  "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+  "full_d9_acceptance_status": "not_completed_by_this_report",
+  "destinations": [
+    {
+      "destination": "AYT",
+      "status": "passed",
+      "known_total_rub": 83234,
+      "leg_sources": [
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 11251
+        },
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 14147
+        }
+      ],
+      "package_sha256": "ee65483f258ee9144c6057e1881348734d6063fecff46f2106c3890491ca3805",
+      "d7": {
+        "is_synthetic": true,
+        "live_model_run": false,
+        "facts_sha256": "d7d5640f9cc3ec172c64f28860fa4973a272e30e048ad8e57fcc2eb5fdd3bb7b"
+      },
+      "d8": {
+        "comparable_dates": 6,
+        "suggestions_count": 1,
+        "contains_mock": false,
+        "state_preserved": true,
+        "facts_sha256": "e4dc6fdf938fa91e6d29fe3d027949d14a73468cfdec2080d4ee860e00d9cf70"
+      },
+      "order_sha256": "48af30a230977f8db2effefb8a15d9903736b5e794500e4311039dad98932f97",
+      "voucher_sha256": "8e24dc6fba63d684e01acedbf4d04e02a5889472ac330005d91995105f60d068",
+      "calendar_sha256": "3fb21a3a91a81095000846d7fcc319cac90b324645598b2e41b97766ce884f9e"
+    },
+    {
+      "destination": "DXB",
+      "status": "passed",
+      "known_total_rub": 131161,
+      "leg_sources": [
+        {
+          "kind": "deterministic_mock",
+          "provider_evidence": false
+        },
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 19547
+        }
+      ],
+      "package_sha256": "56a5dcafa0a62ca71afc46629ffd22f110c84536433dbf0fdf5d82f74d8febf2",
+      "d7": {
+        "is_synthetic": true,
+        "live_model_run": false,
+        "facts_sha256": "c9b1ded6c12c95cb1587b7745fc4ee467dd71d1930e6fbe87ca813a9ab8f734a"
+      },
+      "d8": {
+        "comparable_dates": 6,
+        "suggestions_count": 0,
+        "contains_mock": true,
+        "state_preserved": true,
+        "facts_sha256": "3ce258609bf2fa225bd1934b6754b39feca2bc49033933c8774cd6c515243c1d"
+      },
+      "order_sha256": "cef2d70454f6d58ba0113a05149d7f8b23c46840a17a5438202bb94d2b03d76f",
+      "voucher_sha256": "e6c816b343ab264ac7271a3e66d8c9e92e1dfa4cf53d77397e69ee95113968b5",
+      "calendar_sha256": "3bbe1c6b608ec98fbac32ab99523cb75896b8bb34e79329152c55e906b347dcc"
+    },
+    {
+      "destination": "MLE",
+      "status": "passed",
+      "known_total_rub": 216983,
+      "leg_sources": [
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 32488
+        },
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 46070
+        }
+      ],
+      "package_sha256": "6c64e36fe9dfdadc00e0d38d73c11f95d02f0718ecf6018fead3c525af2883d9",
+      "d7": {
+        "is_synthetic": true,
+        "live_model_run": false,
+        "facts_sha256": "78c409cb9cb137ee236007da589fc9362966c53837eed9e91067ebdb8810a8ea"
+      },
+      "d8": {
+        "comparable_dates": 6,
+        "suggestions_count": 2,
+        "contains_mock": false,
+        "state_preserved": true,
+        "facts_sha256": "0dd4ed435a8093e25a3556284aabb31cb8c35662b15aa3f8f46c310a650aa262"
+      },
+      "order_sha256": "86bda50ab81bd812b075c842be4b52df3a2ff6fb46719f37db8ac33962e33e15",
+      "voucher_sha256": "f2dc7c7b33536b026f75f611113d4d91b226fdd95d40798acabb16068a859efd",
+      "calendar_sha256": "13d131edea6f3302048e4342eef37baa1b33682b6cca6bf6c55bfe502a3475e0"
+    }
+  ],
+  "external_model_used": false,
+  "destinations_passed": 3,
+  "duration_seconds": 2.598,
+  "source_commit": "1c1a0233469b0fd728324335138b4b6fb4bed540"
+}

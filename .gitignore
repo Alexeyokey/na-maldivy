@@ -9,3 +9,7 @@ node_modules/
 .vscode/
 .DS_Store
 .cache/
+data/cache/aviasales/
+data/cache/yandex/
+.runtime/
+artifacts/

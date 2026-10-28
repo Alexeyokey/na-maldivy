@@ -7,7 +7,6 @@ Travelers, коды issues и UnsupportedTransfer общие с D1; модели
 
 import json
 import math
-import os
 from collections.abc import Iterator
 from datetime import datetime, time, timedelta
 from functools import lru_cache
@@ -15,14 +14,15 @@ from pathlib import Path
 from typing import Literal
 from zoneinfo import ZoneInfo
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.contracts.tools import TransferIssue as Issue
 from app.contracts.tools import Travelers
+from app.data_paths import DEFAULT_DATA_DIR, resolve_data_dir
 from app.tools.errors import UnsupportedTransfer
 
 # backend/app/tools/transfers.py → корень репозитория; в docker это /data (см. docker-compose.yml)
-DEFAULT_PATH = Path(__file__).resolve().parents[3] / "data" / "transfers" / "transfers.json"
+DEFAULT_PATH = DEFAULT_DATA_DIR / "transfers" / "transfers.json"
 
 Mode = Literal["taxi", "private_minivan", "shuttle", "metro", "speedboat", "seaplane", "flight_speedboat"]
 CHILD_SEAT_MAX_AGE = 12  # детям младше нужно кресло в машине, старше платят как взрослые
@@ -56,6 +56,12 @@ class Pricing(BaseModel):
     night_multiplier: float = Field(default=1.0, ge=1.0)
     night_hours: Hours | None = None
 
+    @model_validator(mode="after")
+    def require_vehicle_capacity(self) -> "Pricing":
+        if self.type == "per_vehicle" and self.capacity is None:
+            raise ValueError("per_vehicle pricing requires capacity")
+        return self
+
 
 class TransferOption(BaseModel):
     id: str
@@ -79,6 +85,12 @@ class HotelTransfers(BaseModel):
     labels: list[str]
     options: list[TransferOption] = Field(min_length=1)
 
+    @model_validator(mode="after")
+    def unique_option_ids(self) -> "HotelTransfers":
+        if len({option.id for option in self.options}) != len(self.options):
+            raise ValueError("Transfer option IDs must be unique for each hotel and airport")
+        return self
+
 
 class TransferQuote(BaseModel):
     option_id: str
@@ -96,11 +108,16 @@ class TransferQuote(BaseModel):
 
 class TransferBase:
     def __init__(self, records: list[HotelTransfers]) -> None:
-        self._records = {(r.hotel_id, r.airport): r for r in records}
+        self._records = {}
+        for record in records:
+            key = (record.hotel_id, record.airport)
+            if key in self._records:
+                raise ValueError("Duplicate transfer record for the same hotel and airport")
+            self._records[key] = record
 
     @classmethod
     def load(cls, path: Path | None = None) -> "TransferBase":
-        path = path or Path(os.environ.get("TRANSFERS_PATH", DEFAULT_PATH))
+        path = path or resolve_data_dir() / "transfers/transfers.json"
         data = json.loads(path.read_text(encoding="utf-8"))
         return cls([HotelTransfers.model_validate(r) for r in data["transfers"]])
 
@@ -114,9 +131,13 @@ class TransferBase:
         return iter(self._records.values())
 
 
-@lru_cache
-def default_base() -> TransferBase:
-    return TransferBase.load()
+@lru_cache(maxsize=8)
+def _base_at(data_dir: Path) -> TransferBase:
+    return TransferBase.load(data_dir / "transfers/transfers.json")
+
+
+def default_base(data_dir: Path | None = None) -> TransferBase:
+    return _base_at(resolve_data_dir(data_dir))
 
 
 def quote_transfers(
@@ -186,7 +207,8 @@ def _price(pricing: Pricing, travelers: Travelers, depart: datetime) -> tuple[in
     )
     multiplier = pricing.night_multiplier if night else 1.0
     if pricing.type == "per_vehicle":
-        assert pricing.capacity, "у per_vehicle должна быть вместимость"
+        if pricing.capacity is None:
+            raise ValueError("per_vehicle pricing requires capacity")
         vehicles = math.ceil((travelers.adults + len(travelers.children_ages)) / pricing.capacity)
         return round(vehicles * pricing.price_rub * multiplier), vehicles, night
     child_price = pricing.child_price_rub if pricing.child_price_rub is not None else pricing.price_rub

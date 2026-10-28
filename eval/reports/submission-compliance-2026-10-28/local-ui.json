@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T21:00:57.928035+00:00",
+  "source_commit": "1c1a0233469b0fd728324335138b4b6fb4bed540",
+  "base_url": "http://localhost:8080",
+  "scope": "real_browser_private_local_demo_simulated_checkout",
+  "status": "passed",
+  "external_model_used": false,
+  "synthetic_travelers_only": true,
+  "steps": [
+    "homepage_preset_search",
+    "server_package_selection",
+    "confirm_package",
+    "two_explicit_demo_acknowledgements",
+    "simulated_payment",
+    "backend_container_restart",
+    "browser_reload_session_absent",
+    "reopen_durable_order",
+    "voucher_download_success_toast",
+    "calendar_download_success_toast",
+    "second_browser_reload_session_lost_persisted",
+    "new_search_preserves_order_history",
+    "history_reopens_documents"
+  ],
+  "screenshots": [
+    "ui-paid-after-backend-restart.png",
+    "ui-session-expired-documents.png"
+  ],
+  "notice": "Local fake/rules model; no real booking or payment. Browser documents confirmed through visible dialogs and successful download messages. Old paid documents no longer depend on the volatile chat session."
+}

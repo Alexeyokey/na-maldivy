@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "scope": "integrated_product_through_demo_payment_and_voucher",
+  "target_seconds": 300,
+  "required_consecutive_passes": 5,
+  "method": "computer_use_ui_automation",
+  "notice": "Five automated visible-UI runs. Not human speech rehearsals. Download notices verified; file contents independently checked through backend proxy. Warm-up browser file-path wait exceeded speed target and was excluded.",
+  "runs": [
+    {
+      "run": 1,
+      "status": "passed",
+      "method": "computer_use_ui_automation",
+      "started_at": "2026-10-28T17:20:37.401Z",
+      "finished_at": "2026-10-28T17:20:46.648Z",
+      "duration_seconds": 9.247,
+      "app_version": "a728e37",
+      "trace": "eval/reports/ui-rehearsal-2026-10-28/run-01.json"
+    },
+    {
+      "run": 2,
+      "status": "passed",
+      "method": "computer_use_ui_automation",
+      "started_at": "2026-10-28T17:20:55.161Z",
+      "finished_at": "2026-10-28T17:21:02.377Z",
+      "duration_seconds": 7.216,
+      "app_version": "a728e37",
+      "trace": "eval/reports/ui-rehearsal-2026-10-28/run-02.json"
+    },
+    {
+      "run": 3,
+      "status": "passed",
+      "method": "computer_use_ui_automation",
+      "started_at": "2026-10-28T17:21:02.888Z",
+      "finished_at": "2026-10-28T17:21:10.675Z",
+      "duration_seconds": 7.787,
+      "app_version": "a728e37",
+      "trace": "eval/reports/ui-rehearsal-2026-10-28/run-03.json"
+    },
+    {
+      "run": 4,
+      "status": "passed",
+      "method": "computer_use_ui_automation",
+      "started_at": "2026-10-28T17:21:18.850Z",
+      "finished_at": "2026-10-28T17:21:25.424Z",
+      "duration_seconds": 6.574,
+      "app_version": "a728e37",
+      "trace": "eval/reports/ui-rehearsal-2026-10-28/run-04.json"
+    },
+    {
+      "run": 5,
+      "status": "passed",
+      "method": "computer_use_ui_automation",
+      "started_at": "2026-10-28T17:21:25.902Z",
+      "finished_at": "2026-10-28T17:21:32.629Z",
+      "duration_seconds": 6.727,
+      "app_version": "a728e37",
+      "trace": "eval/reports/ui-rehearsal-2026-10-28/run-05.json"
+    }
+  ]
+}

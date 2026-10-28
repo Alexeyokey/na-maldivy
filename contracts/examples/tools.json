@@ -276,6 +276,7 @@
         "arrival_at": "2026-11-18T20:00:00+05:00",
         "baggage_price_rub": 2000,
         "carrier": "Demo Air (synthetic)",
+        "demo_source": null,
         "departure_at": "2026-11-18T09:00:00+03:00",
         "destination": {
           "iata": "MLE",
@@ -299,12 +300,14 @@
           "timezone": "Europe/Moscow"
         },
         "price_rub": 43000,
+        "price_source": null,
         "stops": 0
       },
       {
         "arrival_at": "2026-11-19T10:30:00+05:00",
         "baggage_price_rub": 2000,
         "carrier": "Demo Air (synthetic)",
+        "demo_source": null,
         "departure_at": "2026-11-18T23:30:00+03:00",
         "destination": {
           "iata": "MLE",
@@ -328,6 +331,7 @@
           "timezone": "Europe/Moscow"
         },
         "price_rub": 44000,
+        "price_source": null,
         "stops": 0
       }
     ]
@@ -374,6 +378,7 @@
         "reception_24h": false,
         "reception_closes_at": "22:00:00",
         "refundable": false,
+        "review_profile": null,
         "stars": 3
       },
       {
@@ -403,6 +408,7 @@
         "reception_24h": true,
         "reception_closes_at": null,
         "refundable": true,
+        "review_profile": null,
         "stars": 4
       },
       {
@@ -432,6 +438,7 @@
         "reception_24h": true,
         "reception_closes_at": null,
         "refundable": true,
+        "review_profile": null,
         "stars": 5
       },
       {
@@ -461,6 +468,7 @@
         "reception_24h": true,
         "reception_closes_at": null,
         "refundable": true,
+        "review_profile": null,
         "stars": 5
       }
     ]
@@ -510,6 +518,7 @@
   "suggest_destinations": {
     "input": {
       "budget_rub": null,
+      "departure_date": null,
       "min_water_temperature_c": 24.0,
       "month": 11,
       "nights": 7,
@@ -524,6 +533,7 @@
     "output": [
       {
         "air_temperature_c": 30.0,
+        "as_of": null,
         "country": "ОАЭ",
         "estimated_total_price_rub": 111300,
         "flight_duration_minutes": 330,
@@ -541,15 +551,18 @@
         "risks": [
           "Демонстрационные климат, цены и визовые условия; требуется проверка реальных источников"
         ],
+        "sources": [],
         "tags": [
           "море",
           "synthetic"
         ],
+        "visa": null,
         "visa_required": false,
         "water_temperature_c": 27.0
       },
       {
         "air_temperature_c": 29.0,
+        "as_of": null,
         "country": "Мальдивы",
         "estimated_total_price_rub": 185300,
         "flight_duration_minutes": 540,
@@ -567,10 +580,12 @@
         "risks": [
           "Демонстрационные климат, цены и визовые условия; требуется проверка реальных источников"
         ],
+        "sources": [],
         "tags": [
           "море",
           "synthetic"
         ],
+        "visa": null,
         "visa_required": false,
         "water_temperature_c": 28.0
       }

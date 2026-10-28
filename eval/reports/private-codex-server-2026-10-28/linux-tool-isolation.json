@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T19:19:47.172228+00:00",
+  "method": "linux_local_fake_responses_no_account_inference",
+  "credential_isolation": "fresh temporary HOME and CODEX_HOME; synthetic provider key only; no saved auth read",
+  "cli_path": "/srv/na-maldivy/private-access/codex-preflight/package/vendor/x86_64-unknown-linux-musl/bin/codex",
+  "cases": [
+    {
+      "case": "baseline",
+      "model": "gpt-6-luna",
+      "reasoning_effort": "low",
+      "returncode": 0,
+      "elapsed_seconds": 2.398,
+      "provider_requests": 1,
+      "tool_catalogs": [
+        []
+      ],
+      "requested_models": [
+        "gpt-6-luna"
+      ],
+      "request_reasoning": [
+        {
+          "effort": "low",
+          "context": "all_turns"
+        }
+      ],
+      "output": {
+        "text": "LINUX_AUDIT_OK",
+        "tool_calls": []
+      },
+      "turn_completed": true,
+      "forbidden_exec_marker_exists": false,
+      "router_reported_unsupported_call": false
+    },
+    {
+      "case": "injected_exec_command",
+      "model": "gpt-6-luna",
+      "reasoning_effort": "low",
+      "returncode": 0,
+      "elapsed_seconds": 1.266,
+      "provider_requests": 2,
+      "tool_catalogs": [
+        [],
+        []
+      ],
+      "requested_models": [
+        "gpt-6-luna",
+        "gpt-6-luna"
+      ],
+      "request_reasoning": [
+        {
+          "effort": "low",
+          "context": "all_turns"
+        },
+        {
+          "effort": "low",
+          "context": "all_turns"
+        }
+      ],
+      "output": {
+        "text": "LINUX_AUDIT_OK",
+        "tool_calls": []
+      },
+      "turn_completed": true,
+      "forbidden_exec_marker_exists": false,
+      "router_reported_unsupported_call": true
+    }
+  ],
+  "cli_version": "codex-cli 0.163.0-alpha.11",
+  "production_config": {
+    "approval_policy": "never",
+    "web_search": "disabled",
+    "model_reasoning_effort": "low",
+    "features.skip_host_skill_discovery": true,
+    "features.shell_tool": false,
+    "features.apps": false,
+    "features.plugins": false,
+    "features.multi_agent": false,
+    "features.hooks": false,
+    "features.memories": false,
+    "features.goals": false,
+    "features.remote_plugin": false,
+    "features.request_permissions_tool": false,
+    "features.view_image": false,
+    "features.browser_use": false,
+    "features.browser_use_external": false,
+    "features.computer_use": false,
+    "features.image_generation": false,
+    "features.in_app_browser": false,
+    "features.sleep_tool": false,
+    "features.tool_suggest": false,
+    "features.workspace_dependencies": false,
+    "features.skill_search": false,
+    "features.skill_mcp_dependency_install": false
+  },
+  "passed": true
+}

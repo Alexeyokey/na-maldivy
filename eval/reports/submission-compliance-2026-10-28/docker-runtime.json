@@ -1,0 +1,82 @@
+{
+  "platform": "linux/amd64",
+  "builds": [
+    "backend-context",
+    "root-demo-context",
+    "frontend-context",
+    "root-gateway-context"
+  ],
+  "backend_runtime": {
+    "uid": 1000,
+    "python": "3.12.16",
+    "architecture": "x86_64",
+    "uv": null,
+    "gcc": null,
+    "make": null,
+    "pytest": false,
+    "ruff": false,
+    "checkout_mode": "0o600"
+  },
+  "backend_image": {
+    "architecture": "amd64",
+    "user": "1000:1000",
+    "exposed_ports": [
+      "8000/tcp"
+    ]
+  },
+  "demo_runtime": {
+    "uid": 1000,
+    "python": "3.12.16",
+    "architecture": "x86_64",
+    "uv": null,
+    "gcc": null,
+    "make": null,
+    "pytest": false,
+    "ruff": false,
+    "checkout_mode": "0o600"
+  },
+  "demo_data": {
+    "hotels": true,
+    "transfers": true,
+    "demo_quotes": true
+  },
+  "web_image": {
+    "architecture": "amd64",
+    "user": "1000:1000",
+    "exposed_ports": [
+      "8080/tcp"
+    ]
+  },
+  "gateway_image": {
+    "architecture": "amd64",
+    "user": "101:101",
+    "exposed_ports": [
+      "80/tcp",
+      "8080/tcp"
+    ]
+  },
+  "default_ui": {
+    "uid": 1000,
+    "port": "8080",
+    "ui_status": 200,
+    "html": true,
+    "health": {
+      "status": "ok",
+      "llm_provider": "fake"
+    }
+  },
+  "legacy_ui": {
+    "uid": 1000,
+    "port": "5173",
+    "status": 200
+  },
+  "gateway_runtime": {
+    "uid": 101,
+    "health": {
+      "status": "ok",
+      "llm_provider": "fake"
+    },
+    "read_only_with_tmpfs": true
+  },
+  "all_healthy": true
+}

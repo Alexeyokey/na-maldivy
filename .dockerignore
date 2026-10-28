@@ -1,0 +1,14 @@
+.git
+.env
+.env.*
+.runtime
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/node_modules
+data/cache/aviasales
+data/cache/yandex
+data/hotel_profiles_llm
+eval/reports
+artifacts

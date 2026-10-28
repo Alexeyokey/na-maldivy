@@ -1,0 +1,509 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-26",
+  "nationality": "RU",
+  "passport_type": "ordinary",
+  "purpose": "tourism",
+  "scope": "Conservative country-level reference policies for the 48 destination seeds. This is not an entry admissibility decision.",
+  "limitations": [
+    "Regime-level rules now have official-source references for all 21 foreign countries. Unknown numeric stay limits remain null. This does not establish full admission requirements or the remaining permitted stay. Some KDMID pages were available only as indexed official text (30 September 2026 snapshot) while direct requests returned maintenance; see country conditions.",
+    "Visa exemption does not guarantee admission or remove passport, insurance, declaration, proof-of-funds and other entry requirements.",
+    "Null day limits and dates mean not established by this snapshot, never unlimited stay.",
+    "Previous travel history, dual nationality, special passports, work/study/residence, transit and travel with animals are outside this snapshot."
+  ],
+  "policies": [
+    {
+      "country_code": "AE",
+      "regime": "exempt",
+      "max_stay_days": 90,
+      "rolling_window_days": 180,
+      "effective_from": "2019-02-17",
+      "effective_to": null,
+      "checked_on": "2026-10-25",
+      "conditions": [
+        "Обычный паспорт Российской Федерации со сроком действия не менее шести месяцев.",
+        "Без работы, учёбы и постоянного проживания.",
+        "Общее пребывание не превышает 90 дней в любом 180-дневном периоде; история предыдущих поездок здесь не проверяется."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "ae-moscow-visa-waiver",
+          "title": "UAE Embassy in Moscow — Visas: Mutual Visa Waiver Agreement between Russia and the UAE",
+          "url": "https://www.mofa.gov.ae/en/Missions/Moscow/search?content=&faq=&keyword=&news=&page=6&services=",
+          "checked_on": "2026-10-25"
+        }
+      ]
+    },
+    {
+      "country_code": "AM",
+      "regime": "exempt",
+      "max_stay_days": 180,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Все категории паспортов РФ освобождены от виз. Общая страница mfa.am/ru/visa/ указывает до 180 дней в течение года, если иное не установлено соглашением; предыдущие поездки не проверены. Тип годового окна не кодируется как 365 дней."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "am-official-20261026",
+          "title": "Armenia MFA — reciprocal visa exemption, Russian Federation row",
+          "url": "https://www.mfa.am/ru/whoneedvisa",
+          "checked_on": "2026-10-26"
+        },
+        {
+          "id": "am-visa-general",
+          "title": "Armenia MFA — general stay limit",
+          "url": "https://www.mfa.am/ru/visa/",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "AZ",
+      "regime": "exempt",
+      "max_stay_days": 90,
+      "rolling_window_days": null,
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "С 1 января 2025 суммарно не более 90 дней в календарном году. Это календарный год, а не скользящее окно; rolling_window_days оставлено null. Предыдущие поездки и регистрация здесь не проверены."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "az-official-20261026",
+          "title": "Azerbaijan State Migration Service — Russian nationals, Decision 561",
+          "url": "https://migration.gov.az/index.php/en/press_detail/3024",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "BY",
+      "regime": "exempt",
+      "max_stay_days": null,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Без визы по соглашению о свободе передвижения граждан Союзного государства; специальные территории и документы для детей проверяются отдельно. Не переносим на граждан РФ правила кратких безвизовых поездок для граждан третьих стран."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "by-official-20261026",
+          "title": "Russian Consular Department — Belarus entry requirements",
+          "url": "https://www.kdmid.ru/docs/belarus/information-about-the-country/",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "CN",
+      "regime": "exempt",
+      "max_stay_days": 30,
+      "rolling_window_days": null,
+      "effective_from": "2026-05-20",
+      "effective_to": "2027-12-31",
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Обычный паспорт РФ, в том числе туризм: до 30 дней. Объявлено продление до 24:00 31 декабря 2027; применимость к поездкам позже этого срока не подтверждена. Территории с особыми правилами въезда не покрываются этой записью."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "cn-official-20261026",
+          "title": "Chinese Embassy in Russia — extension of visa exemption, 20 May 2026",
+          "url": "https://ru.china-embassy.gov.cn/rus/lsfw_143010/zytz_142816/202605/t20260520_11914284.htm",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "EG",
+      "regime": "on_arrival",
+      "max_stay_days": null,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Визу можно оформить по прибытии; россияне явно включены в перечень. Срок и сбор не фиксируем: актуальные официальные страницы расходятся по стоимости. E-visa также доступна через visa2egypt.gov.eg. Узкие синайские исключения не переносятся на весь Египет."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "eg-official-20261026",
+          "title": "Egyptian Consulate UK — visa FAQ",
+          "url": "https://egyptconsulate.co.uk/faq/",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "GE",
+      "regime": "exempt",
+      "max_stay_days": null,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Гражданам РФ виза не нужна; срок до одного календарного года. Фиксированное число дней не установлено в этом снимке. Действительный загранпаспорт и остальные требования въезда проверяются отдельно."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "ge-official-20261026",
+          "title": "Russian Consular Department — Georgia entry requirements",
+          "url": "https://www.kdmid.ru/docs/georgia/information-about-the-country/",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "ID",
+      "regime": "on_arrival",
+      "max_stay_days": 30,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Обычная туристическая VoA на 30 дней, возможно однократное продление ещё на 30 дней; Россия в перечне. Только разрешённые пункты въезда, возможны изменения перечня. Сбор и возможность оплаты здесь не подтверждены."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "id-official-20261026",
+          "title": "Indonesia Embassy Doha — Visa on Arrival",
+          "url": "https://kemlu.go.id/doha/pelayanan-perwakilan/visa/visa-saat-kedatangan",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "JP",
+      "regime": "required",
+      "max_stay_days": null,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Россиянам необходимо получить визу до поездки; визы по прибытии нет. Срок пребывания определяется выданной визой, а не этой справкой."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "jp-official-20261026",
+          "title": "Embassy of Japan in Russia — visa FAQ, 10 April 2026",
+          "url": "https://www.ru.emb-japan.go.jp/itpr_ru/FAQ.html",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "KG",
+      "regime": "exempt",
+      "max_stay_days": null,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Гражданам РФ виза не нужна по многостороннему соглашению. Численный лимит пребывания в этом снимке не устанавливаем: в 2026 изменён порядок регистрации; проверьте действующий акт №600 от 4 сентября 2026 и предыдущие поездки. Визовое освобождение не равно отсутствию регистрационных обязанностей."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "ru-consular-regimes-20260930",
+          "title": "Russian Consular Department — visa regimes as of 30 September 2026 (indexed official text)",
+          "url": "https://www.kdmid.ru/info-for-traveling-abroad/reference-information-for-traveling-abroad/list-of-countries-with-simplified-entry/",
+          "checked_on": "2026-10-26"
+        },
+        {
+          "id": "kg-registration-20260904",
+          "title": "Kyrgyz Ministry of Justice — registration rules, Decision 600 of 4 September 2026",
+          "url": "https://cbd.minjust.gov.kg/230051568/edition/59274/ru",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "KZ",
+      "regime": "exempt",
+      "max_stay_days": 90,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "В таблице МИД для обычного паспорта РФ указан безвизовый срок до 90 дней. Совокупные ограничения, регистрация и предыдущие поездки требуют отдельной проверки; таблица не устанавливает в этой строке размер скользящего окна."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "kz-official-20261026",
+          "title": "Kazakhstan MFA — visa regime, Russian Federation ordinary passport row",
+          "url": "https://www.gov.kz/org/mfa/activities/34747?lang=en",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "LK",
+      "regime": "evisa",
+      "max_stay_days": 30,
+      "rolling_window_days": null,
+      "effective_from": "2026-05-25",
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Для обычного паспорта РФ туристическая ETA на 30 дней без визового сбора; требуется оформить ETA до прибытия. Бесплатная ETA не означает отсутствие предварительного разрешения. Двойной въезд в пределах тех же 30 дней."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "lk-official-20261026",
+          "title": "Sri Lanka Immigration — tourist ETA notice effective 25 May 2026",
+          "url": "https://www.immigration.gov.lk/pages_e.php?id=60",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "MU",
+      "regime": "exempt",
+      "max_stay_days": 60,
+      "rolling_window_days": 180,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Туризм/деловые поездки: до 60 дней за поездку, суммарно до 90 из 180 дней; предыдущие поездки не проверены. Нужны обратный билет, средства и подтверждение проживания. Освобождение также подтверждено посольством Маврикия в Москве."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "mu-official-20261026",
+          "title": "Russian Consular Department — Mauritius entry requirements",
+          "url": "https://www.kdmid.ru/docs/mauritius/information-about-the-country/",
+          "checked_on": "2026-10-26"
+        },
+        {
+          "id": "mu-moscow-consular",
+          "title": "Mauritius Embassy Moscow — Russian passport holders",
+          "url": "https://mauritius-moscow.govmu.org/Pages/Services%20to%20Mauritians/CONSULAR-SERVICES.aspx?csf=1",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "MV",
+      "regime": "exempt",
+      "max_stay_days": 90,
+      "rolling_window_days": null,
+      "effective_from": "2019-07-25",
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Официальная таблица КД МИД от 30 сентября 2026 указывает без визы до 90 дней по соглашению от 25 июня 2019. Проверен индексированный текст: прямой доступ к КД МИД во время проверки возвращал технические работы. Туризм, без работы/учёбы/постоянного проживания; общие условия Immigration Maldives, декларация и обратный билет проверяются отдельно."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "ru-consular-regimes-20260930",
+          "title": "Russian Consular Department — visa regimes as of 30 September 2026 (indexed official text)",
+          "url": "https://www.kdmid.ru/info-for-traveling-abroad/reference-information-for-traveling-abroad/list-of-countries-with-simplified-entry/",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "RS",
+      "regime": "exempt",
+      "max_stay_days": 30,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Владельцы обычных паспортов РФ: без визы до 30 дней. Правила регистрации пребывания и общие требования въезда проверяются отдельно."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "rs-official-20261026",
+          "title": "Serbia MFA — Visa regime for entering Serbia: Russia",
+          "url": "https://mfa.gov.rs/en/citizens/travel-serbia/visa-regime/ruska-federacija",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "RU",
+      "regime": "domestic",
+      "max_stay_days": null,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-25",
+      "conditions": [
+        "Для граждан РФ это внутренняя поездка. Запись не оценивает документы детей, перевозку животных и иные специальные требования."
+      ],
+      "verification_status": "domestic",
+      "sources": []
+    },
+    {
+      "country_code": "SC",
+      "regime": "exempt",
+      "max_stay_days": null,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Виза не требуется, но обязательна электронная Travel Authorisation до вылета. Visitor permit первоначально до трёх календарных месяцев; не переводим месяцы в фиксированные 90 дней. Нужны обратный/дальнейший билет, проживание и средства; разрешение выдаётся на границе."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "sc-official-20261026",
+          "title": "Seychelles Immigration — Visitors Permit",
+          "url": "https://www.ics.gov.sc/permits/visitors-permit",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "TH",
+      "regime": "exempt",
+      "max_stay_days": 30,
+      "rolling_window_days": null,
+      "effective_from": "2026-09-15",
+      "effective_to": null,
+      "checked_on": "2026-10-25",
+      "conditions": [
+        "Обычный паспорт Российской Федерации; туризм.",
+        "С 15 сентября 2026 года прежнее освобождение на 60 дней отменено; для РФ сохраняется освобождение на 30 дней по двустороннему соглашению.",
+        "Допуск к въезду и разрешённый срок определяют пограничные органы; остальные условия нужно проверить перед поездкой."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "th-moscow-visa-revision-2026",
+          "title": "Royal Thai Embassy in Moscow — Revision of Thailand’s Visa Exemption and Visa on Arrival Schemes",
+          "url": "https://moscow.thaiembassy.org/en/publicservice/revision-of-thailand-s-visa-exemption-and-visa-on-arrival-schemes?cate=5d843b6a15e39c1abc005152&menu=5d843dbb15e39c1abc00583c",
+          "checked_on": "2026-10-25",
+          "source_updated_on": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "country_code": "TR",
+      "regime": "exempt",
+      "max_stay_days": 60,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-25",
+      "conditions": [
+        "Обычный паспорт Российской Федерации.",
+        "Туристическая или деловая поездка; источник указывает до 60 дней.",
+        "Остаток разрешённых дней по истории поездок и прочие требования въезда должны проверяться отдельно."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "tr-mfa-visa-information",
+          "title": "Visa Information For Foreigners — Republic of Türkiye Ministry of Foreign Affairs",
+          "url": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa",
+          "checked_on": "2026-10-25"
+        }
+      ]
+    },
+    {
+      "country_code": "TZ",
+      "regime": "required",
+      "max_stay_days": null,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Необходима виза. Посольство Танзании в Москве не гарантирует выдачу визы по прибытии и рекомендует оформить её заранее. Срок определяется выданным разрешением; по этой записи нельзя обещать въезд или визу на границе. Для Занзибара дополнительные требования проверяются отдельно."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "ru-consular-regimes-20260930",
+          "title": "Russian Consular Department — visa regimes as of 30 September 2026 (indexed official text)",
+          "url": "https://www.kdmid.ru/info-for-traveling-abroad/reference-information-for-traveling-abroad/list-of-countries-with-simplified-entry/",
+          "checked_on": "2026-10-26"
+        },
+        {
+          "id": "tz-moscow-visa",
+          "title": "Tanzania Embassy Moscow — visa FAQ",
+          "url": "https://ru.tzembassy.go.tz/services/visa-fee",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "UZ",
+      "regime": "exempt",
+      "max_stay_days": null,
+      "rolling_window_days": null,
+      "effective_from": null,
+      "effective_to": null,
+      "checked_on": "2026-10-26",
+      "conditions": [
+        "Россия включена в безвизовый перечень без ограничения срока визового освобождения, все категории паспортов. Это не освобождает от правил регистрации, пребывания и иных миграционных обязанностей."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "uz-official-20261026",
+          "title": "Uzbekistan Embassy in Kyrgyzstan — visa regime",
+          "url": "https://kyrgyzstan.mfa.uz/page/414?language=ru",
+          "checked_on": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "country_code": "VN",
+      "regime": "exempt",
+      "max_stay_days": 45,
+      "rolling_window_days": null,
+      "effective_from": "2025-03-15",
+      "effective_to": "2028-03-14",
+      "checked_on": "2026-10-25",
+      "conditions": [
+        "Обычный паспорт Российской Федерации; выполнены общие условия въезда.",
+        "Одностороннее освобождение действует с 15 марта 2025 года по 14 марта 2028 года; проверка пересечения периода действия правил с датами поездки обязательна."
+      ],
+      "verification_status": "official_verified",
+      "sources": [
+        {
+          "id": "vn-moscow-exemption-list",
+          "title": "Embassy of Viet Nam in Moscow — Viet Nam’s visa exemption list",
+          "url": "https://vnembassy-moscow.mofa.gov.vn/web/guest/tin-chi-tiet/chi-tiet/viet-nam-39-s-visa-exemption-list-57163-596.html",
+          "checked_on": "2026-10-25"
+        },
+        {
+          "id": "vn-mfa-exemption-list",
+          "title": "Ministry of Foreign Affairs of Viet Nam — Danh mục miễn thị thực của Việt Nam với các nước",
+          "url": "https://mofa.gov.vn/tin-chi-tiet/chi-tiet/danh-muc-mien-thi-thuc-cua-viet-nam-voi-cac-nuoc-57162-172.html",
+          "checked_on": "2026-10-25"
+        }
+      ]
+    }
+  ]
+}

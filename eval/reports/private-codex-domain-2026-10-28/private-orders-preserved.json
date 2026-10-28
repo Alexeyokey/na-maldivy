@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-10-28T19:49:29.582405+00:00",
+  "scope": "preserved_orders_and_documents_on_new_domain",
+  "mode": "resume_after_restart",
+  "status": "passed",
+  "integrated_ui_status": "not_run",
+  "completed_stages": [
+    "gateway.load_private_context",
+    "gateway.health",
+    "AYT.restart_order_and_artifacts",
+    "DXB.restart_order_and_artifacts",
+    "MLE.restart_order_and_artifacts"
+  ],
+  "stage_timings_seconds": {
+    "gateway.load_private_context": 0.0,
+    "gateway.health": 0.596,
+    "AYT.restart_order_and_artifacts": 3.015,
+    "DXB.restart_order_and_artifacts": 2.507,
+    "MLE.restart_order_and_artifacts": 2.71
+  },
+  "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+  "full_d9_acceptance_status": "not_completed_by_this_report",
+  "destinations": [
+    {
+      "destination": "AYT",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "43406902da743da9c59097445f74f26488f3b9cf90534cee45eddd365ad4af67",
+      "voucher_sha256": "2bf007771f4cbeca5a920dd33d3545003cd96787655b8c47194dd67b5857e770",
+      "calendar_sha256": "1f4412b4deb44f223b0b1d019d9a1541ce588b0c2c53a88df79e3e7d62b9a70b"
+    },
+    {
+      "destination": "DXB",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "2d050525bc82b045d7bd5ba5bd7f7c459f015bbced140ece66badd585b938cef",
+      "voucher_sha256": "78d62c33991bc44ad7c11923d94a11dc82a3153956a5ce2a18be603ad70975e8",
+      "calendar_sha256": "e05560e003b37d0301a3b92df12373f0c5ed21429ca1850c14ea94372afb4ea4"
+    },
+    {
+      "destination": "MLE",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "535cc1e8500d298acd20aee7a8863eea78a463cd9ab3a32cda30544502dee782",
+      "voucher_sha256": "34394dc55b44f277ef65706f16cb762fcf6ba2a0283abe73c81e272cd0c64577",
+      "calendar_sha256": "b6f2da176cb11e579352516df4615670c677843d4681760c1123391647a60ea1"
+    }
+  ],
+  "model_invoked_by_resume": false,
+  "destinations_passed": 3,
+  "original_context": "private-gate"
+}

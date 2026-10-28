@@ -1,0 +1,91 @@
+{
+  "scope": "private_https_access_gate",
+  "checks": [
+    {
+      "path": "/",
+      "status": 308,
+      "no_store": false
+    },
+    {
+      "path": "/health",
+      "status": 200,
+      "no_store": true
+    },
+    {
+      "path": "/",
+      "status": 401,
+      "no_store": true
+    },
+    {
+      "path": "/config.js",
+      "status": 401,
+      "no_store": true
+    },
+    {
+      "path": "/health",
+      "status": 401,
+      "no_store": true
+    },
+    {
+      "path": "/api/session/private-test",
+      "status": 401,
+      "no_store": true
+    },
+    {
+      "path": "/api/checkout/orders/private-test/voucher",
+      "status": 401,
+      "no_store": true
+    },
+    {
+      "path": "/api/chat",
+      "status": 401,
+      "no_store": true
+    },
+    {
+      "path": "/health",
+      "status": 401,
+      "no_store": true
+    },
+    {
+      "path": "/api/chat",
+      "status": 403,
+      "no_store": true
+    },
+    {
+      "path": "/health",
+      "status": 403,
+      "no_store": true
+    },
+    {
+      "path": "/health",
+      "status": 403,
+      "no_store": true
+    },
+    {
+      "path": "/health",
+      "status": 200,
+      "no_store": true
+    },
+    {
+      "path": "/health",
+      "status": 200,
+      "no_store": true
+    }
+  ],
+  "unauthorized_model_calls": 0,
+  "tls": {
+    "validated": true,
+    "not_before": "Oct 28 18:50:13 2026 GMT",
+    "not_after": "Jan 26 18:50:12 2027 GMT",
+    "san": [
+      [
+        "DNS",
+        "na-maldivy.eu.cc"
+      ]
+    ],
+    "version": "TLSv1.3"
+  },
+  "status": "passed",
+  "provider": "codex_private",
+  "model": "gpt-6-luna"
+}

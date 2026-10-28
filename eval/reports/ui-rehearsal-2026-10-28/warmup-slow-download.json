@@ -1,0 +1,27 @@
+{
+  "run": 1,
+  "started_at": "2026-10-28T16:19:22.407Z",
+  "app_version": "a728e37",
+  "observed_steps": [
+    "search",
+    "D7",
+    "D8",
+    "select",
+    "server_cart",
+    "fictitious_travelers",
+    "two_acknowledgments",
+    "payment_declined",
+    "payment_approved",
+    "voucher_download"
+  ],
+  "observations": [
+    "Sky Business Hotel 83 234 RUB; both legs labelled cached Aviasales; unknown extras shown.",
+    "D7:24 synthetic reviews, family segment6; literal child-play/noise quotes; baseline notice.",
+    "D8:6dates; Nov16=71086,saving12148; originalNov18 remains.",
+    "UI payment succeeded and document controls invoked; browser download wait exceeded 300s, excluded from consecutive speed protocol.",
+    "Calendar was not yet observed in this slow warm-up."
+  ],
+  "finished_at": "2026-10-28T17:16:07.604Z",
+  "duration_seconds": 3405.197,
+  "status": "failed"
+}

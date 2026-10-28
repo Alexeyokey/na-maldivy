@@ -1,3 +1,4 @@
+import {mountApiApp} from './api-app.js';
 import {cancelDemoBooking,isBookingCancelled} from './bookings.js';
 import {streamChat,checkAgentHealth,fetchSessionCanvas} from './api.js';
 import {CANVAS_FIELDS,CANVAS_PLACES,emptyCanvas,restoreCanvas,applyCanvasEvent,canvasFields,canvasEditMessage} from './trip-canvas.js';
@@ -10,7 +11,7 @@ const icon=(name,cls='')=>`<svg class="${cls}" viewBox="0 0 24 24" fill="none" s
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const config=window.NA_MALDIVY_CONFIG||{mode:'demo',apiEnabled:false};
 let preferredMode;try{preferredMode=localStorage.getItem('na-maldivy-mode');}catch{}
-const CHAT_MODE=config.apiEnabled&&((preferredMode||config.mode)==='api')?'api':'demo';
+const CHAT_MODE=config.apiEnabled&&config.mode==='api'?'api':'demo';
 const key='ostrovok-chat-demo-v2'+(CHAT_MODE==='api'?':api':'');
 let connectionStatus=CHAT_MODE==='api'?'connecting':'demo',agentProvider='fake';
 let requestGeneration=0,activeRequest=null,modalOpener=null,unread=false;
@@ -352,7 +353,7 @@ async function restoreAgentCanvas(){
  }
 }
 function modeModal(){
- openModal('О!дин запрос',`<p class="about-text">Выберите, с кем продолжить разговор. История каждого режима сохраняется отдельно.</p><div class="mode-switch"><button class="${CHAT_MODE==='demo'?'on':''}" data-action="set-mode" data-mode="demo"><b>Демонстрация</b><small>Подбор поездки без ключей. Все предложения учебные.</small></button><button class="${CHAT_MODE==='api'?'on':''}" data-action="set-mode" data-mode="api" ${config.apiEnabled?'':'disabled'}><b>Агент проекта</b><small>${config.apiEnabled?'Ответы сервера na-maldivy в реальном времени.':'Доступен при запуске интерфейса из репозитория.'}</small></button></div>${CHAT_MODE==='api'?`<div class="demo-note">${connectionStatus==='offline'?'Сервер недоступен. Убедитесь, что сервис agent запущен.':agentProvider==='fake'?(agentCanvas.brief?'Агент работает без ключа. Панель показывает холст, который сервер передаёт вместе с ответом.':'Сервер пока передаёт только текст. Панель появится, когда агент пришлёт холст поездки.'):'Подключён сервер репозитория. Интерфейс показывает только фактические ответы API.'}</div><button class="secondary-button" data-action="check-connection">${icon('refresh')}Проверить подключение</button>`:''}`,'','Островок · команда «На Мальдивы»');
+ openModal('О!дин запрос',`<p class="about-text">Выберите, с кем продолжить разговор. История каждого режима сохраняется отдельно.</p><div class="mode-switch"><button class="${CHAT_MODE==='demo'?'on':''}" data-action="set-mode" data-mode="demo"><b>Демонстрация</b><small>Подбор поездки без ключей. Все предложения учебные.</small></button><button class="${CHAT_MODE==='api'?'on':''}" data-action="set-mode" data-mode="api" ${config.apiEnabled?'':'disabled'}><b>Агент проекта</b><small>${config.apiEnabled?'Ответы сервера na-maldivy в реальном времени.':'Доступен при запуске интерфейса из репозитория.'}</small></button></div>${CHAT_MODE==='api'?`<div class="demo-note">${connectionStatus==='offline'?'Сервер недоступен. Убедитесь, что сервис agent запущен.':agentProvider==='fake'?'Демо-агент работает по правилам. Поиск, карточки и оформление приходят с сервера.':'Подключён сервер репозитория. Интерфейс показывает только фактические ответы API.'}</div><button class="secondary-button" data-action="check-connection">${icon('refresh')}Проверить подключение</button>`:''}`,'','Островок · команда «На Мальдивы»');
 }
 function validateSelection(){if(state.selectedHotel&&!searchHotels(state).some(h=>h.id===state.selectedHotel)){state.selectedHotel=null;toast('Выбранный отель не подходит к новым условиям. Подобрали замену.');}}
 function updateParameters(label,{message=true}={}){
@@ -366,6 +367,7 @@ function closeFilters(){root.querySelector('.sidebar').classList.remove('open');
 function newTrip(){requestGeneration++;activeRequest?.abort();activeRequest=null;busy=false;unread=false;agentCanvas=emptyCanvas();canvasPreview=null;const input=root.querySelector('#chat-input');if(input)input.value='';state={...defaultState(),budget:state.budget,breakfast:state.breakfast,cancel:state.cancel,pets:state.pets,quiet:state.quiet};messages=[];comparison=[];metrics.started++;metrics.firstRecommendationMs=null;persist();closeModal();render();toast(CHAT_MODE==='api'?'Новый разговор с агентом.':'Новая поездка. Ваши предпочтения сохранены.');}
 
 document.addEventListener('click',e=>{
+ if(CHAT_MODE==='api')return;
  const button=e.target.closest('[data-action],[data-prompt]');if(!button||button.disabled)return;
  if(button.dataset.prompt){closeModal();send(button.dataset.prompt);return;}
  const a=button.dataset.action;const id=button.dataset.id;const feature=button.dataset.feature;
@@ -425,22 +427,26 @@ document.addEventListener('click',e=>{
  }
 });
 document.addEventListener('submit',e=>{
+ if(CHAT_MODE==='api')return;
  if(e.target.id==='chat-form'){e.preventDefault();const input=document.getElementById('chat-input');send(input.value);}
  if(e.target.id==='checkout-form'){e.preventDefault();completeBooking(e.target);}
  if(e.target.id==='booking-dates'){e.preventDefault();const form=e.target;const b=editableBooking(form.dataset.id);if(!b)return;const data=new FormData(form);const start=String(data.get('checkIn')),end=String(data.get('checkOut'));if(start>=end){toast('Дата выезда должна быть позже даты заезда.');return;}b.state.checkIn=start;b.state.checkOut=end;b.total=planTotal(b.state,getHotel(b.hotel,b.state));persist();bookingsModal();toast('Даты отеля, дороги и трансфера изменены вместе.');}
 });
 document.addEventListener('keydown',e=>{
+ if(CHAT_MODE==='api')return;
  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();root.querySelector('#chat-input')?.focus();return;}
  if(e.target.id==='chat-input'&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send(e.target.value);}
  if(e.key==='Escape')closeFilters();
  if(e.key==='Tab'&&root.querySelector('.sidebar.open')){const side=root.querySelector('.sidebar');const focusable=[...side.querySelectorAll('button:not(:disabled),select,input')];const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
 });
 document.addEventListener('input',e=>{
+ if(CHAT_MODE==='api')return;
  if(e.target.id==='chat-input'){e.target.style.height='28px';e.target.style.height=Math.min(100,e.target.scrollHeight)+'px';}
  if(e.target.dataset.field==='totalBudget'||e.target.dataset.canvasField==='budget_rub'){const v=Number(e.target.value);document.getElementById('budget-value').textContent=money(v);e.target.style.setProperty('--progress',(v-Number(e.target.min))/(Number(e.target.max)-Number(e.target.min))*100+'%');e.target.setAttribute('aria-valuetext',money(v)+' на всю поездку');}
  if(e.target.form?.id==='booking-dates'&&e.target.name==='checkIn'){e.target.form.elements.checkOut.min=addDays(e.target.value,1);}
 });
 document.addEventListener('change',e=>{
+ if(CHAT_MODE==='api')return;
  if(e.target.dataset.canvasField){editCanvas(e.target.dataset.canvasField,e.target.value);return;}
  const f=e.target.dataset.field;if(!f||e.target.dataset.action)return;state.known[f]=true;
  if(f==='totalBudget'){state.totalBudget=Number(e.target.value);state.budget=100000;}
@@ -450,7 +456,6 @@ document.addEventListener('change',e=>{
  else state[f]=e.target.value;
  updateParameters(({totalBudget:'общий бюджет',checkIn:'даты',checkOut:'даты',city:'направление',origin:'город отправления',sort:'порядок вариантов'})[f]||'параметры',{message:f!=='sort'});
 });
-modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeModal();}});
-render();
-refreshConnection();
-restoreAgentCanvas();
+modal.addEventListener('click',e=>{if(CHAT_MODE==='api')return;if(e.target===modal){const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeModal();}});
+if(CHAT_MODE==='api')mountApiApp({root,modal,icon,config});
+else{render();refreshConnection();}

@@ -1,0 +1,73 @@
+{
+  "recorded_at": "2026-10-28T09:50:54.727505+00:00",
+  "request": {
+    "body": "",
+    "headers": [],
+    "method": "GET",
+    "url": "https://api.travelpayouts.com/aviasales/v3/prices_for_dates?currency=rub&departure_at=2026-11-29&destination=SVO&direct=false&limit=100&market=ru&one_way=true&origin=AYT&page=1&sorting=price&unique=false"
+  },
+  "response": {
+    "body_base64": "eyJjdXJyZW5jeSI6InJ1YiIsImRhdGEiOlt7ImFpcmxpbmUiOiJBNCIsImRlcGFydHVyZV9hdCI6IjIwMjYtMTEtMjlUMjA6MzA6MDArMDM6MDAiLCJkZXN0aW5hdGlvbiI6Ik1PVyIsImRlc3RpbmF0aW9uX2FpcnBvcnQiOiJTVk8iLCJkdXJhdGlvbiI6MTM4MCwiZHVyYXRpb25fYmFjayI6MCwiZHVyYXRpb25fdG8iOjM0MCwiZmxpZ2h0X251bWJlciI6IjUwNTIiLCJnYXRlIjoiU3VwZXJLYXNzYSIsImxpbmsiOiIvc2VhcmNoL0FZVDI5MTFTVk8xP3Q9RFAxNzk1OTg0MjAwMTc5NjA2NzAwMDAwMTM4MEFZVEFFUlNWT18zYjFjMmY2YWJlY2I4OTFkMjg5MTJlODA3MjE1Y2YxMl8xNjgyNSZzZWFyY2hfZGF0ZT0yODEwMjAyNiZleHBlY3RlZF9wcmljZV91dWlkPTAxYTE4MWU2LTE4ZDYtODAzMC0yNTM3LTNlOGQyN2JhZWE5MCZzdGF0aWNfZmFyZV9rZXk9VFklN0NQMCU3Q0gxJTdDTDAlN0NDSDElN0NSMCU3Q1RCQzAmaXRpbmVyYXJ5X2tleT1QcEh5QVR6VVgydTJBdzhhODJWMURnJmRlc3RpbmF0aW9uX2FpcnBvcnRzPTAmZXhwZWN0ZWRfcHJpY2Vfc291cmNlPXNoYXJlJmV4cGVjdGVkX3ByaWNlX2N1cnJlbmN5PXJ1YiZleHBlY3RlZF9wcmljZT0xNjc3MiIsIm9yaWdpbiI6IkFZVCIsIm9yaWdpbl9haXJwb3J0IjoiQVlUIiwicHJpY2UiOjE2NzcyLCJyZXR1cm5fdHJhbnNmZXJzIjowLCJ0cmFuc2ZlcnMiOjF9XSwic3VjY2VzcyI6dHJ1ZX0=",
+    "body_sha256": "81a57d5a47f4be2d395c47ad4520a1618a60c66e8ddec2cdd5f83f9f3a654846",
+    "headers": [
+      [
+        "content-type",
+        "application/json; charset=utf-8"
+      ],
+      [
+        "connection",
+        "keep-alive"
+      ],
+      [
+        "date",
+        "Wed, 28 Oct 2026 09:50:54 GMT"
+      ],
+      [
+        "x-robots-tag",
+        "noindex"
+      ],
+      [
+        "vary",
+        "Accept-Encoding"
+      ],
+      [
+        "x-rate-limit",
+        "600"
+      ],
+      [
+        "x-rate-limit-remaining",
+        "599"
+      ],
+      [
+        "x-rate-limit-reset",
+        "60"
+      ],
+      [
+        "x-request-id",
+        "35c16964cf76e7764ccba57c8761e556"
+      ],
+      [
+        "x-cache",
+        "Miss from cloudfront"
+      ],
+      [
+        "via",
+        "1.1 e2b2960acb3b050648b3477a3e78810e.cloudfront.net (CloudFront)"
+      ],
+      [
+        "x-amz-cf-pop",
+        "AMS56-P1"
+      ],
+      [
+        "x-amz-cf-id",
+        "ePEB_Fb1FdJpHkUWBxKaL5UT4eE9xLkCL4QrgwC43vXK90VFw4bK9A=="
+      ],
+      [
+        "content-length",
+        "707"
+      ]
+    ],
+    "status_code": 200
+  },
+  "schema_version": 1
+}

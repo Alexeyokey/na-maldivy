@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "scope": "actual_ui_proxy_backend_three_destinations_and_restart",
+  "status": "passed",
+  "notice": "Independent HTTP checks through the same web proxy; visible UI runs are recorded separately. No credentials, capabilities or traveler data included.",
+  "app_version": "a728e37",
+  "agent_internet_isolated": true,
+  "api_keys_empty": true,
+  "web_port": 18085,
+  "initial_run": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T16:14:53.744706+00:00",
+    "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+    "mode": "initial_run",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway.health",
+      "AYT.search_sources",
+      "AYT.d7_evidence",
+      "AYT.d8_comparison",
+      "AYT.confirm_unpaid_cart",
+      "AYT.decline_approve_retry",
+      "AYT.private_downloads",
+      "DXB.search_sources",
+      "DXB.d7_evidence",
+      "DXB.d8_comparison",
+      "DXB.confirm_unpaid_cart",
+      "DXB.decline_approve_retry",
+      "DXB.private_downloads",
+      "MLE.search_sources",
+      "MLE.d7_evidence",
+      "MLE.d8_comparison",
+      "MLE.confirm_unpaid_cart",
+      "MLE.decline_approve_retry",
+      "MLE.private_downloads",
+      "gateway.save_private_context"
+    ],
+    "stage_timings_seconds": {
+      "gateway.health": 0.018,
+      "AYT.search_sources": 0.18,
+      "AYT.d7_evidence": 0.018,
+      "AYT.d8_comparison": 0.197,
+      "AYT.confirm_unpaid_cart": 0.033,
+      "AYT.decline_approve_retry": 0.028,
+      "AYT.private_downloads": 0.02,
+      "DXB.search_sources": 0.181,
+      "DXB.d7_evidence": 0.021,
+      "DXB.d8_comparison": 0.502,
+      "DXB.confirm_unpaid_cart": 0.032,
+      "DXB.decline_approve_retry": 0.027,
+      "DXB.private_downloads": 0.054,
+      "MLE.search_sources": 0.07,
+      "MLE.d7_evidence": 0.014,
+      "MLE.d8_comparison": 0.283,
+      "MLE.confirm_unpaid_cart": 0.029,
+      "MLE.decline_approve_retry": 0.026,
+      "MLE.private_downloads": 0.024,
+      "gateway.save_private_context": 0.001
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "full_d9_acceptance_status": "not_completed_by_this_report",
+    "destinations": [
+      {
+        "destination": "AYT",
+        "status": "passed",
+        "known_total_rub": 83234,
+        "leg_sources": [
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 11251
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 14147
+          }
+        ],
+        "package_sha256": "ee65483f258ee9144c6057e1881348734d6063fecff46f2106c3890491ca3805",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "d7d5640f9cc3ec172c64f28860fa4973a272e30e048ad8e57fcc2eb5fdd3bb7b"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 1,
+          "contains_mock": false,
+          "state_preserved": true,
+          "facts_sha256": "e4dc6fdf938fa91e6d29fe3d027949d14a73468cfdec2080d4ee860e00d9cf70"
+        },
+        "order_sha256": "b6471217d01f83b26b93ef201783c723eb3bb17d3830d55a74fa992ff0f537cd",
+        "voucher_sha256": "20536c426fa8dbf44f74536f4669382aaba71d8649fc6ade484b28ea98787d17",
+        "calendar_sha256": "09d313594d38d4444ebe1c6126b71a4dde5318493036e210623ba1f8b5d3b691"
+      },
+      {
+        "destination": "DXB",
+        "status": "passed",
+        "known_total_rub": 131161,
+        "leg_sources": [
+          {
+            "kind": "deterministic_mock",
+            "provider_evidence": false
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 19547
+          }
+        ],
+        "package_sha256": "56a5dcafa0a62ca71afc46629ffd22f110c84536433dbf0fdf5d82f74d8febf2",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "c9b1ded6c12c95cb1587b7745fc4ee467dd71d1930e6fbe87ca813a9ab8f734a"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 0,
+          "contains_mock": true,
+          "state_preserved": true,
+          "facts_sha256": "3ce258609bf2fa225bd1934b6754b39feca2bc49033933c8774cd6c515243c1d"
+        },
+        "order_sha256": "acac41d3502d6b64a1d5c743d77f05377d4265710bcef8be0aa794b442d6e498",
+        "voucher_sha256": "2bddd68785c764eb5bdb102119ae4481382b14afe6b42bb99e1c793b97207a24",
+        "calendar_sha256": "f166dc0facdefdd217718d28bf87dc523adc43843352559d37805e52d8933c2c"
+      },
+      {
+        "destination": "MLE",
+        "status": "passed",
+        "known_total_rub": 216983,
+        "leg_sources": [
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 32488
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 46070
+          }
+        ],
+        "package_sha256": "6c64e36fe9dfdadc00e0d38d73c11f95d02f0718ecf6018fead3c525af2883d9",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "78c409cb9cb137ee236007da589fc9362966c53837eed9e91067ebdb8810a8ea"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 2,
+          "contains_mock": false,
+          "state_preserved": true,
+          "facts_sha256": "0dd4ed435a8093e25a3556284aabb31cb8c35662b15aa3f8f46c310a650aa262"
+        },
+        "order_sha256": "dc26cd00ecfce6adc52f8489ba9c6b40c022627465e1e426aa69ce07c597c212",
+        "voucher_sha256": "3c809b3cc95257b0031af25b69d3ad47a7b9cba2d43a798892a34c593f7e460b",
+        "calendar_sha256": "3288a92117ff58d1d1570f1dd6cdd6c88a02bd897c0a43d7fbc9314e92165fe8"
+      }
+    ],
+    "external_model_used": false,
+    "destinations_passed": 3,
+    "duration_seconds": 1.758
+  },
+  "after_agent_restart": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T17:23:08.450532+00:00",
+    "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+    "mode": "resume_after_restart",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway.load_private_context",
+      "gateway.health",
+      "AYT.restart_order_and_artifacts",
+      "DXB.restart_order_and_artifacts",
+      "MLE.restart_order_and_artifacts"
+    ],
+    "stage_timings_seconds": {
+      "gateway.load_private_context": 0.001,
+      "gateway.health": 0.01,
+      "AYT.restart_order_and_artifacts": 0.043,
+      "DXB.restart_order_and_artifacts": 0.02,
+      "MLE.restart_order_and_artifacts": 0.014
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "full_d9_acceptance_status": "not_completed_by_this_report",
+    "destinations": [
+      {
+        "destination": "AYT",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "b6471217d01f83b26b93ef201783c723eb3bb17d3830d55a74fa992ff0f537cd",
+        "voucher_sha256": "20536c426fa8dbf44f74536f4669382aaba71d8649fc6ade484b28ea98787d17",
+        "calendar_sha256": "09d313594d38d4444ebe1c6126b71a4dde5318493036e210623ba1f8b5d3b691"
+      },
+      {
+        "destination": "DXB",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "acac41d3502d6b64a1d5c743d77f05377d4265710bcef8be0aa794b442d6e498",
+        "voucher_sha256": "2bddd68785c764eb5bdb102119ae4481382b14afe6b42bb99e1c793b97207a24",
+        "calendar_sha256": "f166dc0facdefdd217718d28bf87dc523adc43843352559d37805e52d8933c2c"
+      },
+      {
+        "destination": "MLE",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "dc26cd00ecfce6adc52f8489ba9c6b40c022627465e1e426aa69ce07c597c212",
+        "voucher_sha256": "3c809b3cc95257b0031af25b69d3ad47a7b9cba2d43a798892a34c593f7e460b",
+        "calendar_sha256": "3288a92117ff58d1d1570f1dd6cdd6c88a02bd897c0a43d7fbc9314e92165fe8"
+      }
+    ],
+    "external_model_used": false,
+    "destinations_passed": 3,
+    "duration_seconds": 0.086
+  },
+  "visible_ui_protocol": "eval/demo-runs.json"
+}

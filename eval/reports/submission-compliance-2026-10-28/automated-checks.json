@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "full_make_check": {
+    "source_commit": "1419c9279b758b94d35117aaa1ffde1fb14ac172",
+    "backend_tests": 1268,
+    "backend_seconds": 117.03,
+    "frontend_unit_tests": 130,
+    "frontend_http_tests": 11,
+    "lint": "passed",
+    "syntax": "passed",
+    "docker_smoke": "passed"
+  },
+  "frontend_after_document_recovery_fix": {
+    "source_commit": "1c1a0233469b0fd728324335138b4b6fb4bed540",
+    "unit_tests": 135,
+    "http_tests": 11,
+    "new_regressions": 5,
+    "syntax": "passed",
+    "independent_focused_review_tests": 25
+  },
+  "scope_note": "Only frontend and its tests changed after the full make check. Backend/config/data were not changed; frontend checks and clean Docker/UI acceptance were rerun for the new commit."
+}

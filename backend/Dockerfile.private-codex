@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1.7
+# Owner-only runtime, built on the already verified offline demo image.
+# codex-runtime is a separate, secret-free build context containing only /codex.
+ARG BASE_IMAGE=na-maldivy-public-agent:faf779edab3e9237ed626b51526d2589ba453dd7
+FROM ${BASE_IMAGE}
+USER root
+COPY --from=codex-runtime /codex /usr/local/bin/codex
+RUN python -c "import hashlib; from pathlib import Path; p=Path('/usr/local/bin/codex'); assert hashlib.file_digest(p.open('rb'),'sha256').hexdigest() == 'ff3a6a3ed13735b8a8938c40141eb38b688efd6b02ee0fd5358187111fe9966a'; p.chmod(0o755)" \
+    && codex --version
+COPY backend/app /app/app
+ENV HOME=/home/agent CODEX_HOME=/codex-auth CODEX_BINARY=/usr/local/bin/codex
+USER agent
+CMD ["uvicorn", "app.personal_codex:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]

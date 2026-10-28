@@ -1,5 +1,76 @@
 {
   "$defs": {
+    "AspectCount": {
+      "additionalProperties": false,
+      "properties": {
+        "aspect": {
+          "enum": [
+            "children",
+            "noise",
+            "cleanliness",
+            "food",
+            "staff",
+            "location",
+            "wifi",
+            "pets"
+          ],
+          "title": "Aspect",
+          "type": "string"
+        },
+        "count": {
+          "exclusiveMinimum": 0,
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "aspect",
+        "count"
+      ],
+      "title": "AspectCount",
+      "type": "object"
+    },
+    "AspectSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/ProfileEvidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "mention_count": {
+          "minimum": 0,
+          "title": "Mention Count",
+          "type": "integer"
+        },
+        "negative_count": {
+          "minimum": 0,
+          "title": "Negative Count",
+          "type": "integer"
+        },
+        "positive_count": {
+          "minimum": 0,
+          "title": "Positive Count",
+          "type": "integer"
+        },
+        "review_count": {
+          "minimum": 0,
+          "title": "Review Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "positive_count",
+        "negative_count",
+        "mention_count",
+        "review_count",
+        "evidence"
+      ],
+      "title": "AspectSummary",
+      "type": "object"
+    },
     "DayPrice": {
       "additionalProperties": false,
       "properties": {
@@ -31,22 +102,56 @@
       "additionalProperties": false,
       "properties": {
         "air_temperature_c": {
-          "title": "Air Temperature C",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Air Temperature C"
+        },
+        "as_of": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "As Of"
         },
         "country": {
           "title": "Country",
           "type": "string"
         },
         "estimated_total_price_rub": {
-          "minimum": 0,
-          "title": "Estimated Total Price Rub",
-          "type": "integer"
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Estimated Total Price Rub"
         },
         "flight_duration_minutes": {
-          "exclusiveMinimum": 0,
-          "title": "Flight Duration Minutes",
-          "type": "integer"
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Flight Duration Minutes"
         },
         "is_synthetic": {
           "title": "Is Synthetic",
@@ -68,6 +173,13 @@
           "title": "Risks",
           "type": "array"
         },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/ReferenceSource"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
         "tags": {
           "items": {
             "type": "string"
@@ -75,13 +187,38 @@
           "title": "Tags",
           "type": "array"
         },
+        "visa": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VisaEvidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "visa_required": {
-          "title": "Visa Required",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Visa Required"
         },
         "water_temperature_c": {
-          "title": "Water Temperature C",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Water Temperature C"
         }
       },
       "required": [
@@ -113,6 +250,19 @@
           ],
           "default": null,
           "title": "Budget Rub"
+        },
+        "departure_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Departure Date"
         },
         "min_water_temperature_c": {
           "anyOf": [
@@ -159,6 +309,41 @@
       "title": "DestinationQuery",
       "type": "object"
     },
+    "ExtractionMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "live_model_run": {
+          "title": "Live Model Run",
+          "type": "boolean"
+        },
+        "method": {
+          "enum": [
+            "lexical-fixture-baseline-v1",
+            "llm-literal-evidence-v1"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model"
+        }
+      },
+      "required": [
+        "method",
+        "model",
+        "live_model_run"
+      ],
+      "title": "ExtractionMetadata",
+      "type": "object"
+    },
     "Flight": {
       "additionalProperties": false,
       "properties": {
@@ -176,6 +361,17 @@
         "carrier": {
           "title": "Carrier",
           "type": "string"
+        },
+        "demo_source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FlightDemoSource"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "departure_at": {
           "format": "date-time",
@@ -208,6 +404,17 @@
           "title": "Price Rub",
           "type": "integer"
         },
+        "price_source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FlightPriceSource"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "stops": {
           "default": 0,
           "minimum": 0,
@@ -226,6 +433,120 @@
         "carrier"
       ],
       "title": "Flight",
+      "type": "object"
+    },
+    "FlightDemoSource": {
+      "additionalProperties": false,
+      "description": "Explicit offline-demo provenance; never attributes generated prices to a provider.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "provider_replay",
+            "deterministic_mock"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "notice": {
+          "minLength": 1,
+          "title": "Notice",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "cache_miss",
+                "no_matching_quotes"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "kind",
+        "notice"
+      ],
+      "title": "FlightDemoSource",
+      "type": "object"
+    },
+    "FlightPriceSource": {
+      "additionalProperties": false,
+      "description": "Public quote evidence only; credentials and HTTP request headers are never part of this model.",
+      "properties": {
+        "baggage_price_is_modelled": {
+          "const": true,
+          "default": true,
+          "title": "Baggage Price Is Modelled",
+          "type": "boolean"
+        },
+        "cache_hit": {
+          "title": "Cache Hit",
+          "type": "boolean"
+        },
+        "cache_mode": {
+          "enum": [
+            "record",
+            "replay",
+            "live"
+          ],
+          "title": "Cache Mode",
+          "type": "string"
+        },
+        "currency": {
+          "const": "RUB",
+          "default": "RUB",
+          "title": "Currency",
+          "type": "string"
+        },
+        "duration_is_modelled": {
+          "title": "Duration Is Modelled",
+          "type": "boolean"
+        },
+        "group_price_is_modelled": {
+          "const": true,
+          "default": true,
+          "title": "Group Price Is Modelled",
+          "type": "boolean"
+        },
+        "provider": {
+          "const": "aviasales_data_api",
+          "default": "aviasales_data_api",
+          "title": "Provider",
+          "type": "string"
+        },
+        "recorded_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recorded At"
+        },
+        "seat_price_rub": {
+          "minimum": 0,
+          "title": "Seat Price Rub",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "seat_price_rub",
+        "cache_mode",
+        "cache_hit",
+        "duration_is_modelled"
+      ],
+      "title": "FlightPriceSource",
       "type": "object"
     },
     "FlightSearch": {
@@ -274,6 +595,57 @@
         "departure_date"
       ],
       "title": "FlightSearch",
+      "type": "object"
+    },
+    "GuestProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "aspects": {
+          "additionalProperties": {
+            "$ref": "#/$defs/AspectSummary"
+          },
+          "propertyNames": {
+            "enum": [
+              "children",
+              "noise",
+              "cleanliness",
+              "food",
+              "staff",
+              "location",
+              "wifi",
+              "pets"
+            ]
+          },
+          "title": "Aspects",
+          "type": "object"
+        },
+        "cons": {
+          "items": {
+            "$ref": "#/$defs/AspectCount"
+          },
+          "title": "Cons",
+          "type": "array"
+        },
+        "pros": {
+          "items": {
+            "$ref": "#/$defs/AspectCount"
+          },
+          "title": "Pros",
+          "type": "array"
+        },
+        "review_count": {
+          "minimum": 0,
+          "title": "Review Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "review_count",
+        "aspects",
+        "pros",
+        "cons"
+      ],
+      "title": "GuestProfile",
       "type": "object"
     },
     "HotelOffer": {
@@ -441,6 +813,17 @@
           "default": null,
           "title": "Refundable"
         },
+        "review_profile": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HotelReviewProfile"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "stars": {
           "anyOf": [
             {
@@ -467,6 +850,97 @@
         "is_synthetic"
       ],
       "title": "HotelOffer",
+      "type": "object"
+    },
+    "HotelReviewProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "aspects": {
+          "additionalProperties": {
+            "$ref": "#/$defs/AspectSummary"
+          },
+          "propertyNames": {
+            "enum": [
+              "children",
+              "noise",
+              "cleanliness",
+              "food",
+              "staff",
+              "location",
+              "wifi",
+              "pets"
+            ]
+          },
+          "title": "Aspects",
+          "type": "object"
+        },
+        "corpus_generator": {
+          "minLength": 1,
+          "title": "Corpus Generator",
+          "type": "string"
+        },
+        "corpus_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Corpus Sha256",
+          "type": "string"
+        },
+        "extraction": {
+          "$ref": "#/$defs/ExtractionMetadata"
+        },
+        "guest_profiles": {
+          "additionalProperties": {
+            "$ref": "#/$defs/GuestProfile"
+          },
+          "propertyNames": {
+            "enum": [
+              "family",
+              "couple",
+              "business",
+              "pets"
+            ]
+          },
+          "title": "Guest Profiles",
+          "type": "object"
+        },
+        "hotel_id": {
+          "title": "Hotel Id",
+          "type": "string"
+        },
+        "is_synthetic": {
+          "const": true,
+          "title": "Is Synthetic",
+          "type": "boolean"
+        },
+        "notice": {
+          "minLength": 1,
+          "title": "Notice",
+          "type": "string"
+        },
+        "review_count": {
+          "maximum": 50,
+          "minimum": 20,
+          "title": "Review Count",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema_version",
+        "hotel_id",
+        "is_synthetic",
+        "notice",
+        "review_count",
+        "corpus_generator",
+        "corpus_sha256",
+        "extraction",
+        "aspects",
+        "guest_profiles"
+      ],
+      "title": "HotelReviewProfile",
       "type": "object"
     },
     "HotelSearch": {
@@ -616,6 +1090,73 @@
         "month"
       ],
       "title": "PriceCalendarQuery",
+      "type": "object"
+    },
+    "ProfileEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "review_id": {
+          "minLength": 1,
+          "title": "Review Id",
+          "type": "string"
+        },
+        "sentiment": {
+          "enum": [
+            "positive",
+            "negative"
+          ],
+          "title": "Sentiment",
+          "type": "string"
+        }
+      },
+      "required": [
+        "review_id",
+        "sentiment",
+        "quote"
+      ],
+      "title": "ProfileEvidence",
+      "type": "object"
+    },
+    "ReferenceSource": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "format": "date",
+          "title": "As Of",
+          "type": "string"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Period"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "url",
+        "as_of"
+      ],
+      "title": "ReferenceSource",
       "type": "object"
     },
     "Train": {
@@ -985,6 +1526,108 @@
         }
       },
       "title": "Travelers",
+      "type": "object"
+    },
+    "VisaEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "checked_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checked On"
+        },
+        "conditions": {
+          "title": "Conditions",
+          "type": "string"
+        },
+        "effective_from": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective From"
+        },
+        "effective_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective Until"
+        },
+        "max_stay_days": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Stay Days"
+        },
+        "regime": {
+          "enum": [
+            "domestic",
+            "exempt",
+            "on_arrival",
+            "evisa",
+            "required",
+            "unknown"
+          ],
+          "title": "Regime",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "verification_status": {
+          "enum": [
+            "official_verified",
+            "partial",
+            "unknown",
+            "domestic"
+          ],
+          "title": "Verification Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "regime",
+        "verification_status",
+        "conditions"
+      ],
+      "title": "VisaEvidence",
       "type": "object"
     }
   },

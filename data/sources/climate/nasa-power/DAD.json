@@ -1,0 +1,79 @@
+{
+  "request_url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=T2M%2CPRECTOTCORR&community=AG&longitude=108.1989974976&latitude=16.0438995361&start=1991&end=2020&format=JSON",
+  "retrieved_at": "2026-10-25",
+  "response": {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        108.199,
+        16.044,
+        155.61
+      ]
+    },
+    "properties": {
+      "parameter": {
+        "PRECTOTCORR": {
+          "JAN": 2.65,
+          "FEB": 1.1,
+          "MAR": 1.18,
+          "APR": 1.73,
+          "MAY": 2.88,
+          "JUN": 2.62,
+          "JUL": 2.97,
+          "AUG": 5.03,
+          "SEP": 12.21,
+          "OCT": 19.13,
+          "NOV": 14.0,
+          "DEC": 8.52,
+          "ANN": 6.19
+        },
+        "T2M": {
+          "JAN": 20.96,
+          "FEB": 21.75,
+          "MAR": 23.69,
+          "APR": 25.98,
+          "MAY": 27.57,
+          "JUN": 28.34,
+          "JUL": 28.28,
+          "AUG": 28.13,
+          "SEP": 27.14,
+          "OCT": 25.55,
+          "NOV": 23.89,
+          "DEC": 21.81,
+          "ANN": 25.27
+        }
+      }
+    },
+    "header": {
+      "title": "NASA/POWER Source Native Resolution Climatology Climatologies",
+      "api": {
+        "version": "v2.10.1",
+        "name": "POWER Climatology API"
+      },
+      "sources": [
+        "MERRA2"
+      ],
+      "fill_value": -999.0,
+      "time_standard": "LST",
+      "range": "30-year Meteorological and Solar Monthly & Annual Climatologies (January 1991 - December 2020)"
+    },
+    "messages": [
+      "The requested parameters are computed for a custom climatological period (January 1991 - December 2020)"
+    ],
+    "parameters": {
+      "PRECTOTCORR": {
+        "units": "mm/day",
+        "longname": "Precipitation Corrected"
+      },
+      "T2M": {
+        "units": "C",
+        "longname": "Temperature at 2 Meters"
+      }
+    },
+    "times": {
+      "data": 0.099,
+      "process": 0.06
+    }
+  }
+}

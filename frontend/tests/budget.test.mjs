@@ -11,6 +11,17 @@ test('Поездка ровно в бюджет доступна, на рубл�
  assert.ok(!searchHotels({...s,totalBudget:34599}).some(h=>h.id==='spb-light'));
 });
 
+test('Ночной лимит учитывает завтрак и питомца, а общий лимит дополнительно проверяет всю поездку',()=>{
+ const s={...base,breakfast:true,pets:true,budget:7150,totalBudget:100000};
+ const h=allHotels(s).find(row=>row.id==='spb-light');
+ assert.equal(h.price,7150);
+ assert.ok(searchHotels(s).some(row=>row.id===h.id));
+ assert.ok(!searchHotels({...s,budget:7149}).some(row=>row.id===h.id));
+ const total=planTotal(s,h);
+ assert.ok(searchHotels({...s,totalBudget:total}).some(row=>row.id===h.id));
+ assert.ok(!searchHotels({...s,totalBudget:total-1}).some(row=>row.id===h.id));
+});
+
 test('Дешёвый отель не проходит, если дорога с трансфером превышают остаток',()=>{
  const s={...base,totalBudget:20000};
  assert.ok(allHotels(s).some(h=>h.price*3<20000));

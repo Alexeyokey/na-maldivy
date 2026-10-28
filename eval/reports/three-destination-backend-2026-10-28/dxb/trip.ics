@@ -1,0 +1,39 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//na-maldivy//DEMO checkout//RU
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:DEMO-THREEDEST-ORDER-outbound@na-maldivy.demo
+DTSTAMP:20261028T134439Z
+DTSTART:20261118T060000Z
+DTEND:20261118T124200Z
+SUMMARY:ДЕМО перелёт SVO → DXB
+DESCRIPTION:ДЕМО: деньги не списаны\; билеты не 
+ выписаны\; отель и трансферы не забронир
+ ованы.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:DEMO-THREEDEST-ORDER-inbound@na-maldivy.demo
+DTSTAMP:20261028T134439Z
+DTSTART:20261125T160500Z
+DTEND:20261126T003500Z
+SUMMARY:ДЕМО перелёт DXB → SVO
+DESCRIPTION:ДЕМО: деньги не списаны\; билеты не 
+ выписаны\; отель и трансферы не забронир
+ ованы.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:DEMO-THREEDEST-ORDER-hotel@na-maldivy.demo
+DTSTAMP:20261028T134439Z
+DTSTART;VALUE=DATE:20261118
+DTEND;VALUE=DATE:20261125
+SUMMARY:ДЕМО проживание: Mövenpick Hotel Jumeirah Beach
+DESCRIPTION:ДЕМО: деньги не списаны\; билеты не 
+ выписаны\; отель и трансферы не забронир
+ ованы. Время заезда и выезда уточняется 
+ отдельно.
+STATUS:TENTATIVE
+END:VEVENT
+END:VCALENDAR

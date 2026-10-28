@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T10:20:40.112666+00:00",
+  "status": "passed",
+  "scope": "exported_offline_package_backend_http_and_restart",
+  "archive": {
+    "relative_path": "artifacts/na-maldivy-offline-20261028-final.tar.gz",
+    "bytes": 120449102,
+    "sha256": "dd984d994382e703580e381689808d65e2dd3fc6ad9c510ea830702b286becc0",
+    "architecture": [
+      "linux/arm64"
+    ],
+    "tracked_in_git": false
+  },
+  "start": {
+    "image_source": "docker_load_from_images_tar",
+    "pull_policy": "never",
+    "build_performed_on_start": false,
+    "inner_checksums": "passed"
+  },
+  "initial_run": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T10:19:44.615451+00:00",
+    "scope": "running_gateway_http_backend_simulated_checkout",
+    "mode": "initial_run",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway_health",
+      "search_recorded_aviasales_fares",
+      "d7_synthetic_review_evidence",
+      "d8_comparison_arithmetic_and_state",
+      "select_and_confirm_unpaid_cart",
+      "synthetic_travelers",
+      "deliberate_payment_decline",
+      "approved_simulated_payment_and_retry",
+      "private_order_and_downloads",
+      "save_private_restart_context"
+    ],
+    "stage_timings_seconds": {
+      "gateway_health": 0.007,
+      "search_recorded_aviasales_fares": 0.179,
+      "d7_synthetic_review_evidence": 0.004,
+      "d8_comparison_arithmetic_and_state": 0.099,
+      "select_and_confirm_unpaid_cart": 0.018,
+      "synthetic_travelers": 0.008,
+      "deliberate_payment_decline": 0.004,
+      "approved_simulated_payment_and_retry": 0.009,
+      "private_order_and_downloads": 0.008,
+      "save_private_restart_context": 0.003
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "external_model_used": false,
+    "seat_quotes_rub": [
+      11251,
+      14147
+    ],
+    "known_total_rub": 83234,
+    "package_snapshot_sha256": "037cad066bcb703360145dcc9037cb1aa463c38b47a6ee1af4660bbda1c4a307",
+    "d7_profile_evidence_sha256": "d7d5640f9cc3ec172c64f28860fa4973a272e30e048ad8e57fcc2eb5fdd3bb7b",
+    "d8": {
+      "status": "compared",
+      "comparable_dates": 6,
+      "suggestions_count": 1,
+      "state_preserved": true,
+      "facts_sha256": "f53e160be4f2b84134a68f9b1e364d0871153fc41d073374555ba88d61b824ec"
+    },
+    "order_snapshot_sha256": "d5bf179c782b624b2ba7419b32adf14610fb3edb4ee2d409cdaeacda5d5881c4",
+    "voucher_sha256": "bec45ff8874d44a5b8c7a9ecef02269e07fce78cf83f3f5dcddd3985bd915f30",
+    "calendar_sha256": "399e5915cb8430f515bd7ae269f7266248e005890f500431bcfc1bb93fddb567",
+    "duration_seconds": 0.34
+  },
+  "after_restart": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T10:20:39.933973+00:00",
+    "scope": "running_gateway_http_backend_simulated_checkout",
+    "mode": "resume_after_restart",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "load_private_context",
+      "gateway_health_after_restart",
+      "volatile_session_absent_after_restart",
+      "durable_order_after_restart",
+      "identical_downloads_after_restart"
+    ],
+    "stage_timings_seconds": {
+      "load_private_context": 0.0,
+      "gateway_health_after_restart": 0.009,
+      "volatile_session_absent_after_restart": 0.005,
+      "durable_order_after_restart": 0.021,
+      "identical_downloads_after_restart": 0.006
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "external_model_used": false,
+    "order_snapshot_sha256": "d5bf179c782b624b2ba7419b32adf14610fb3edb4ee2d409cdaeacda5d5881c4",
+    "voucher_sha256": "bec45ff8874d44a5b8c7a9ecef02269e07fce78cf83f3f5dcddd3985bd915f30",
+    "calendar_sha256": "399e5915cb8430f515bd7ae269f7266248e005890f500431bcfc1bb93fddb567",
+    "duration_seconds": 0.041
+  },
+  "privacy": {
+    "private_credentials_in_exported_image_or_decoded_gzip_layers": false,
+    "private_runtime_database_exported": false,
+    "env_exported": false
+  },
+  "limits": [
+    "Requires Docker and Compose installed before offline use",
+    "Images checked on linux/arm64 only",
+    "Backend HTTP only; integrated frontend not verified",
+    "Payment simulated; no real tickets, bookings or inventory verification"
+  ]
+}

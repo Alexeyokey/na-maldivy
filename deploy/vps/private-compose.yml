@@ -1,0 +1,43 @@
+# Apply together with compose.yml. Only the TLS gateway has public app ports.
+# Both required paths are server-only files; no credentials are put in this YAML.
+services:
+  edge:
+    ports: !reset []
+
+  private-gateway:
+    image: caddy:2.11.7-alpine
+    user: "0:0"
+    volumes:
+      - ${NA_PRIVATE_CADDYFILE:?required}:/etc/caddy/Caddyfile:ro
+      - ${NA_PRIVATE_AUTH_FILE:?required}:/run/secrets/site-users.caddy:ro
+      - private-tls-data:/data
+      - private-tls-config:/config
+    depends_on:
+      edge:
+        condition: service_healthy
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    networks:
+      - private-demo
+      - default
+    mem_limit: 96m
+    cpus: 0.5
+    pids_limit: 128
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    restart: unless-stopped
+
+volumes:
+  private-tls-data:
+  private-tls-config:

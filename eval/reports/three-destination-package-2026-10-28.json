@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T15:56:37.722698+00:00",
+  "status": "passed",
+  "scope": "exported_three_destination_package_backend_http_and_restart",
+  "archive": {
+    "path": "artifacts/na-maldivy-offline-20261028-three-destinations.tar.gz",
+    "bytes": 120696103,
+    "sha256": "87734956977751e3c2d49e076d1184987aeee29bd360234b91adde8618352266",
+    "architecture": [
+      "linux/arm64"
+    ],
+    "git_tracked": false
+  },
+  "startup": {
+    "image_source": "docker_load_from_images_tar",
+    "pull_policy": "never",
+    "build_on_start": false,
+    "checksums": "passed"
+  },
+  "slides": {
+    "file": "docs/defense-slides.pptx",
+    "sha256": "1e70ba94e1a9bfd97e241e861aa083fdd7314f0c27da249155f7555587e93141",
+    "slides": 8,
+    "editable_chart_with_embedded_workbook": true,
+    "visual_review": "all_8_final_slides",
+    "native_powerpoint_opened": false
+  },
+  "initial_run": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T15:55:17.462436+00:00",
+    "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+    "mode": "initial_run",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway.health",
+      "AYT.search_sources",
+      "AYT.d7_evidence",
+      "AYT.d8_comparison",
+      "AYT.confirm_unpaid_cart",
+      "AYT.decline_approve_retry",
+      "AYT.private_downloads",
+      "DXB.search_sources",
+      "DXB.d7_evidence",
+      "DXB.d8_comparison",
+      "DXB.confirm_unpaid_cart",
+      "DXB.decline_approve_retry",
+      "DXB.private_downloads",
+      "MLE.search_sources",
+      "MLE.d7_evidence",
+      "MLE.d8_comparison",
+      "MLE.confirm_unpaid_cart",
+      "MLE.decline_approve_retry",
+      "MLE.private_downloads",
+      "gateway.save_private_context"
+    ],
+    "stage_timings_seconds": {
+      "gateway.health": 0.007,
+      "AYT.search_sources": 0.094,
+      "AYT.d7_evidence": 0.006,
+      "AYT.d8_comparison": 0.091,
+      "AYT.confirm_unpaid_cart": 0.019,
+      "AYT.decline_approve_retry": 0.016,
+      "AYT.private_downloads": 0.019,
+      "DXB.search_sources": 0.083,
+      "DXB.d7_evidence": 0.006,
+      "DXB.d8_comparison": 0.19,
+      "DXB.confirm_unpaid_cart": 0.014,
+      "DXB.decline_approve_retry": 0.014,
+      "DXB.private_downloads": 0.009,
+      "MLE.search_sources": 0.03,
+      "MLE.d7_evidence": 0.006,
+      "MLE.d8_comparison": 0.112,
+      "MLE.confirm_unpaid_cart": 0.011,
+      "MLE.decline_approve_retry": 0.01,
+      "MLE.private_downloads": 0.008,
+      "gateway.save_private_context": 0.001
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "full_d9_acceptance_status": "not_completed_by_this_report",
+    "destinations": [
+      {
+        "destination": "AYT",
+        "status": "passed",
+        "known_total_rub": 83234,
+        "leg_sources": [
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 11251
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 14147
+          }
+        ],
+        "package_sha256": "ee65483f258ee9144c6057e1881348734d6063fecff46f2106c3890491ca3805",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "d7d5640f9cc3ec172c64f28860fa4973a272e30e048ad8e57fcc2eb5fdd3bb7b"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 1,
+          "contains_mock": false,
+          "state_preserved": true,
+          "facts_sha256": "e4dc6fdf938fa91e6d29fe3d027949d14a73468cfdec2080d4ee860e00d9cf70"
+        },
+        "order_sha256": "37d6f6a1af895dbb15ace1d0b2ec4cfb007db83700ac2ad35c5d2bbbfc112ff9",
+        "voucher_sha256": "b0831e0626eba98168a7b97b353c29a56b9cc8eeb80c11ba2a49407d8d7d7bc7",
+        "calendar_sha256": "ec00c1b155a0afbe379ba7bc61e6ecd3726159f93dceec9504358c25a80068b5"
+      },
+      {
+        "destination": "DXB",
+        "status": "passed",
+        "known_total_rub": 131161,
+        "leg_sources": [
+          {
+            "kind": "deterministic_mock",
+            "provider_evidence": false
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 19547
+          }
+        ],
+        "package_sha256": "56a5dcafa0a62ca71afc46629ffd22f110c84536433dbf0fdf5d82f74d8febf2",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "c9b1ded6c12c95cb1587b7745fc4ee467dd71d1930e6fbe87ca813a9ab8f734a"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 0,
+          "contains_mock": true,
+          "state_preserved": true,
+          "facts_sha256": "3ce258609bf2fa225bd1934b6754b39feca2bc49033933c8774cd6c515243c1d"
+        },
+        "order_sha256": "0eec185c6e21e013393935a5e40f82eb388a68728ebd918bb55cccb6adedcc73",
+        "voucher_sha256": "e7bee9a4302171677b54898c41525b9f75636bd479a9eb28cbde029b6e86c249",
+        "calendar_sha256": "cd85df444e806e8ee34a939f1687cf210096e2451bf6c3348624b298bd1c864b"
+      },
+      {
+        "destination": "MLE",
+        "status": "passed",
+        "known_total_rub": 216983,
+        "leg_sources": [
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 32488
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 46070
+          }
+        ],
+        "package_sha256": "6c64e36fe9dfdadc00e0d38d73c11f95d02f0718ecf6018fead3c525af2883d9",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "78c409cb9cb137ee236007da589fc9362966c53837eed9e91067ebdb8810a8ea"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 2,
+          "contains_mock": false,
+          "state_preserved": true,
+          "facts_sha256": "0dd4ed435a8093e25a3556284aabb31cb8c35662b15aa3f8f46c310a650aa262"
+        },
+        "order_sha256": "1d47c6a2469597319bc2c72a3fa889c551340bd1fdf608a223e31ef753fddd1f",
+        "voucher_sha256": "7c217865c3486a673da0c888f217fe5ae3a5c3f9379145959dfb833a2c3ef93f",
+        "calendar_sha256": "5a8174304b3b889239a50e47ac4d4e49308cbc9a515c013b4cf382da7954f080"
+      }
+    ],
+    "external_model_used": false,
+    "destinations_passed": 3,
+    "duration_seconds": 0.746
+  },
+  "after_restart": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T15:56:37.485177+00:00",
+    "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+    "mode": "resume_after_restart",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway.load_private_context",
+      "gateway.health",
+      "AYT.restart_order_and_artifacts",
+      "DXB.restart_order_and_artifacts",
+      "MLE.restart_order_and_artifacts"
+    ],
+    "stage_timings_seconds": {
+      "gateway.load_private_context": 0.001,
+      "gateway.health": 0.009,
+      "AYT.restart_order_and_artifacts": 0.031,
+      "DXB.restart_order_and_artifacts": 0.01,
+      "MLE.restart_order_and_artifacts": 0.012
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "full_d9_acceptance_status": "not_completed_by_this_report",
+    "destinations": [
+      {
+        "destination": "AYT",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "37d6f6a1af895dbb15ace1d0b2ec4cfb007db83700ac2ad35c5d2bbbfc112ff9",
+        "voucher_sha256": "b0831e0626eba98168a7b97b353c29a56b9cc8eeb80c11ba2a49407d8d7d7bc7",
+        "calendar_sha256": "ec00c1b155a0afbe379ba7bc61e6ecd3726159f93dceec9504358c25a80068b5"
+      },
+      {
+        "destination": "DXB",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "0eec185c6e21e013393935a5e40f82eb388a68728ebd918bb55cccb6adedcc73",
+        "voucher_sha256": "e7bee9a4302171677b54898c41525b9f75636bd479a9eb28cbde029b6e86c249",
+        "calendar_sha256": "cd85df444e806e8ee34a939f1687cf210096e2451bf6c3348624b298bd1c864b"
+      },
+      {
+        "destination": "MLE",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "1d47c6a2469597319bc2c72a3fa889c551340bd1fdf608a223e31ef753fddd1f",
+        "voucher_sha256": "7c217865c3486a673da0c888f217fe5ae3a5c3f9379145959dfb833a2c3ef93f",
+        "calendar_sha256": "5a8174304b3b889239a50e47ac4d4e49308cbc9a515c013b4cf382da7954f080"
+      }
+    ],
+    "external_model_used": false,
+    "destinations_passed": 3,
+    "duration_seconds": 0.062
+  },
+  "privacy": {
+    "private_credentials_in_decoded_images_public_responses_or_slides": false,
+    "private_runtime_database_exported": false,
+    "env_exported": false
+  },
+  "limits": [
+    "Docker and Compose must be installed before offline use",
+    "Checked linux/arm64 only",
+    "Backend HTTP only, full UI D9 not completed",
+    "Simulated payment; no real bookings or inventory verification"
+  ]
+}

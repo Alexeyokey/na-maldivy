@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-10-28T19:36:40.987888+00:00",
+  "scope": "preserved_orders_and_documents_after_private_codex_upgrade",
+  "mode": "resume_after_restart",
+  "status": "passed",
+  "integrated_ui_status": "not_run",
+  "completed_stages": [
+    "gateway.load_private_context",
+    "gateway.health",
+    "AYT.restart_order_and_artifacts",
+    "DXB.restart_order_and_artifacts",
+    "MLE.restart_order_and_artifacts"
+  ],
+  "stage_timings_seconds": {
+    "gateway.load_private_context": 0.0,
+    "gateway.health": 0.434,
+    "AYT.restart_order_and_artifacts": 1.883,
+    "DXB.restart_order_and_artifacts": 1.908,
+    "MLE.restart_order_and_artifacts": 2.219
+  },
+  "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+  "full_d9_acceptance_status": "not_completed_by_this_report",
+  "destinations": [
+    {
+      "destination": "AYT",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "bf1f9e3d341daf09ddb25fb29752fb77985b21ec4309891b2a03e9e35f450f55",
+      "voucher_sha256": "df99aa908795fc904ad76b83c5154e624b1621084e3f457201cafd84dea93885",
+      "calendar_sha256": "f35fcbe35381976cdd206fc572a27fec93050fa0ca233bcdb796bb7ade25ab43"
+    },
+    {
+      "destination": "DXB",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "bb1c45dc6a65755144eef0026404e13f193eba3593592f09bc88d69416a42325",
+      "voucher_sha256": "ec81a7045856c0fab2324de6b2531ca599013ba0d0066cd974a96a2d69e8e167",
+      "calendar_sha256": "77bf2c4854dc473bee50908c7e7bb9b2cdbb004d57ad8e77f1392abfc3801b92"
+    },
+    {
+      "destination": "MLE",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "f41cffc961dab5893a490e19bbf53d41f3fa4c41f8370d854dc13a8ffc8beda0",
+      "voucher_sha256": "877b157bdfa9dba7ed77f1491a9d79f33437ed556a6fbab51a949fcacb904b68",
+      "calendar_sha256": "37029f4fac659ba41080572d3dbe132aeefceffb9bd29394949e6695d617b9b4"
+    }
+  ],
+  "model_invoked_by_resume": false,
+  "destinations_passed": 3,
+  "original_context": "original-public"
+}

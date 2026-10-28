@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T18:38:59.258932+00:00",
+  "cli_version": "codex-cli 0.163.0-alpha.11",
+  "method": "local_fake_responses_no_account_inference",
+  "credential_isolation": "fresh temporary HOME and CODEX_HOME; synthetic local provider key only; no copying or reading saved auth by audit script",
+  "common_command_flags": [
+    "exec",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--ephemeral",
+    "--sandbox",
+    "read-only",
+    "--skip-git-repo-check",
+    "--json",
+    "--strict-config",
+    "--output-schema",
+    "SCHEMA_FILE",
+    "--output-last-message",
+    "OUTPUT_FILE",
+    "-C",
+    "EMPTY_TEMP_DIRECTORY",
+    "-"
+  ],
+  "production_config": {
+    "approval_policy": "never",
+    "web_search": "disabled",
+    "features.shell_tool": false,
+    "features.apps": false,
+    "features.plugins": false,
+    "features.multi_agent": false,
+    "features.hooks": false,
+    "features.memories": false,
+    "features.goals": false,
+    "features.remote_plugin": false,
+    "features.request_permissions_tool": false,
+    "features.view_image": false,
+    "features.browser_use": false,
+    "features.browser_use_external": false,
+    "features.computer_use": false,
+    "features.image_generation": false,
+    "features.in_app_browser": false,
+    "features.sleep_tool": false,
+    "features.tool_suggest": false,
+    "features.workspace_dependencies": false,
+    "features.skill_search": false,
+    "features.skill_mcp_dependency_install": false,
+    "features.skip_host_skill_discovery": true
+  },
+  "results": [
+    {
+      "case": "known_bundled_model_metadata",
+      "model": "gpt-6.1-sol",
+      "exit_code": 0,
+      "turn_completed": true,
+      "tool_catalogs": [
+        []
+      ]
+    },
+    {
+      "case": "unknown_model_fallback_metadata",
+      "model": "stub-model",
+      "exit_code": 0,
+      "turn_completed": true,
+      "tool_catalogs": [
+        [
+          "request_user_input"
+        ]
+      ],
+      "note": "Only Plan-mode request_user_input is offered; no coding or file capabilities."
+    },
+    {
+      "case": "unadvertised_exec_command_injected_by_stub",
+      "exit_code": 0,
+      "turn_completed": true,
+      "tool_catalogs": [
+        [],
+        []
+      ],
+      "command_execution_marker_exists": false,
+      "router_reported_unsupported_call": true,
+      "provider_requests": 2
+    }
+  ],
+  "compatibility_notes": [
+    "tools.view_image is rejected by --strict-config in this version; features.view_image=false is accepted.",
+    "skip_host_skill_discovery=true emits an item.completed error warning about an under-development feature while the turn still succeeds; do not treat every error item as turn failure.",
+    "The tests use a local fake provider and cannot establish actual account entitlement, model quality, quota or latency."
+  ]
+}

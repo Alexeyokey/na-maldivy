@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T10:17:19.699770+00:00",
+  "status": "passed",
+  "scope": "docker_gateway_backend_http_through_simulated_payment_then_restart",
+  "external_model_used": false,
+  "integrated_ui_status": "not_run",
+  "container": {
+    "image_id": "sha256:b9f4f995d180e89c8335decab3ee8e4977dee45bcf9873b0924b4184d119037f",
+    "user": "agent",
+    "agent_networks": [
+      {
+        "internal": true,
+        "driver": "bridge"
+      }
+    ],
+    "all_agent_networks_internal": true,
+    "checked_provider_keys_empty": true,
+    "published_agent_ports": {}
+  },
+  "initial_run": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T10:17:47.400342+00:00",
+    "scope": "running_gateway_http_backend_simulated_checkout",
+    "mode": "initial_run",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway_health",
+      "search_recorded_aviasales_fares",
+      "d7_synthetic_review_evidence",
+      "d8_comparison_arithmetic_and_state",
+      "select_and_confirm_unpaid_cart",
+      "synthetic_travelers",
+      "deliberate_payment_decline",
+      "approved_simulated_payment_and_retry",
+      "private_order_and_downloads",
+      "save_private_restart_context"
+    ],
+    "stage_timings_seconds": {
+      "gateway_health": 0.006,
+      "search_recorded_aviasales_fares": 0.116,
+      "d7_synthetic_review_evidence": 0.003,
+      "d8_comparison_arithmetic_and_state": 0.089,
+      "select_and_confirm_unpaid_cart": 0.012,
+      "synthetic_travelers": 0.006,
+      "deliberate_payment_decline": 0.004,
+      "approved_simulated_payment_and_retry": 0.007,
+      "private_order_and_downloads": 0.005,
+      "save_private_restart_context": 0.001
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "external_model_used": false,
+    "seat_quotes_rub": [
+      11251,
+      14147
+    ],
+    "known_total_rub": 83234,
+    "package_snapshot_sha256": "037cad066bcb703360145dcc9037cb1aa463c38b47a6ee1af4660bbda1c4a307",
+    "d7_profile_evidence_sha256": "d7d5640f9cc3ec172c64f28860fa4973a272e30e048ad8e57fcc2eb5fdd3bb7b",
+    "d8": {
+      "status": "compared",
+      "comparable_dates": 6,
+      "suggestions_count": 1,
+      "state_preserved": true,
+      "facts_sha256": "f53e160be4f2b84134a68f9b1e364d0871153fc41d073374555ba88d61b824ec"
+    },
+    "order_snapshot_sha256": "c46e6a5e52bc1e9c9923276e4cb8311fd798b80ff99a0b6971d67f0bcf2fbd5d",
+    "voucher_sha256": "3b4db5486232ccff5759b29522ee7418ee6e95ff91f8f29ac7e4c29a2b712bed",
+    "calendar_sha256": "f5e87c24b920270e3dd98b44bfc37e5f2c654ae39b555ff9c21d2f905685b000",
+    "duration_seconds": 0.25
+  },
+  "after_restart": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T10:18:31.608799+00:00",
+    "scope": "running_gateway_http_backend_simulated_checkout",
+    "mode": "resume_after_restart",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "load_private_context",
+      "gateway_health_after_restart",
+      "volatile_session_absent_after_restart",
+      "durable_order_after_restart",
+      "identical_downloads_after_restart"
+    ],
+    "stage_timings_seconds": {
+      "load_private_context": 0.0,
+      "gateway_health_after_restart": 0.007,
+      "volatile_session_absent_after_restart": 0.004,
+      "durable_order_after_restart": 0.017,
+      "identical_downloads_after_restart": 0.004
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "external_model_used": false,
+    "order_snapshot_sha256": "c46e6a5e52bc1e9c9923276e4cb8311fd798b80ff99a0b6971d67f0bcf2fbd5d",
+    "voucher_sha256": "3b4db5486232ccff5759b29522ee7418ee6e95ff91f8f29ac7e4c29a2b712bed",
+    "calendar_sha256": "f5e87c24b920270e3dd98b44bfc37e5f2c654ae39b555ff9c21d2f905685b000",
+    "duration_seconds": 0.032
+  },
+  "known_limitations": [
+    "Backend HTTP only; no integrated frontend rehearsal",
+    "Payment is simulated; tickets and accommodation are not booked",
+    "Session state is volatile; paid demo orders persist separately"
+  ]
+}

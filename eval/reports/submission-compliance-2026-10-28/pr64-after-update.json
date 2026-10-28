@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-10-28T21:01:47.513866+00:00",
+  "scope": "after_updating_existing_PR64_preparation_only",
+  "number": 64,
+  "url": "https://github.com/ostrovok-hackathon-2026/na-maldivy/pull/64",
+  "title": "Сборка для жюри: Docker на 8080, три направления и восстановление чата",
+  "author": "Alexeyokey",
+  "state": "open",
+  "draft": true,
+  "head_branch": "codex/submission-readiness",
+  "head_sha": "426bd075e69894218a6497bc0909a2953651d9d5",
+  "remote_main_sha": "63b4c2f54bf55553028438730ba89f78af7d981b",
+  "mergeable": true,
+  "mergeable_state": "clean",
+  "comments": 0,
+  "review_comments": 0,
+  "submission_tag_exists": false,
+  "actions_performed": [
+    "fast_forward_our_private_branch",
+    "fast_forward_existing_PR64_head",
+    "update_existing_PR64_title_and_description"
+  ],
+  "actions_not_performed": [
+    "main_merge",
+    "tag_creation",
+    "video_upload",
+    "production_deployment",
+    "new_comment_or_message"
+  ]
+}

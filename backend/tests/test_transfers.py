@@ -149,6 +149,42 @@ def test_unknown_hotel_and_naive_time_raise() -> None:
         quote_transfers("h", "DXB", datetime(2026, 11, 18, 12), Travelers(), base=base)
 
 
+def test_loading_conflicting_hotel_records_never_silently_replaces_the_fare(tmp_path) -> None:
+    original = record().model_dump(mode="json", by_alias=True)
+    changed = record(pricing={"type": "per_vehicle", "price_rub": 1, "capacity": 4}).model_dump(
+        mode="json", by_alias=True
+    )
+    path = tmp_path / "transfers.json"
+    path.write_text(json.dumps({"transfers": [original, changed]}), encoding="utf-8")
+    with pytest.raises(ValueError, match="Duplicate transfer record"):
+        TransferBase.load(path)
+
+
+def test_loading_ambiguous_option_identity_rejects_both_fares(tmp_path) -> None:
+    saved = record().model_dump(mode="json", by_alias=True)
+    conflicting = json.loads(json.dumps(saved["options"][0]))
+    conflicting["pricing"]["price_rub"] = 1
+    saved["options"].append(conflicting)
+    path = tmp_path / "transfers.json"
+    path.write_text(json.dumps({"transfers": [saved]}), encoding="utf-8")
+    with pytest.raises(ValueError, match="Transfer option IDs must be unique"):
+        TransferBase.load(path)
+
+
+@pytest.mark.parametrize("missing", [True, False])
+def test_missing_vehicle_capacity_is_rejected_when_loading_the_dataset(tmp_path, missing) -> None:
+    saved = record().model_dump(mode="json", by_alias=True)
+    pricing = saved["options"][0]["pricing"]
+    if missing:
+        del pricing["capacity"]
+    else:
+        pricing["capacity"] = None
+    path = tmp_path / "transfers.json"
+    path.write_text(json.dumps({"transfers": [saved]}), encoding="utf-8")
+    with pytest.raises(ValueError, match="per_vehicle pricing requires capacity"):
+        TransferBase.load(path)
+
+
 # --- Настоящая база data/transfers/transfers.json
 
 

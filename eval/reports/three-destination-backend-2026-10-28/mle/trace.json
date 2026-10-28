@@ -1,0 +1,4307 @@
+[
+  {
+    "stage": "search_and_verify_every_leg",
+    "message": "Из Москвы в Мале 18 ноября 2026 на неделю вдвоём",
+    "events": [
+      {
+        "type": "status",
+        "data": {
+          "stage": "analyze",
+          "text": "Разбираю запрос"
+        }
+      },
+      {
+        "type": "brief",
+        "data": {
+          "brief": {
+            "transport": "flight",
+            "seat_class": "coupe",
+            "origin": "MOW",
+            "destination": "MLE",
+            "month": 11,
+            "year": 2026,
+            "start_date": "2026-11-18",
+            "nights": 7,
+            "adults": 2,
+            "children_ages": [],
+            "pets": 0,
+            "budget_rub": null,
+            "max_flight_minutes": null,
+            "direct_only": false,
+            "late_departure": false,
+            "refundable_only": false,
+            "min_stars": null,
+            "min_water_temperature_c": null,
+            "visa_free_only": false,
+            "needs": [],
+            "mood": null
+          },
+          "sources": {
+            "origin": "explicit",
+            "destination": "explicit",
+            "month": "inferred",
+            "year": "inferred",
+            "start_date": "explicit",
+            "nights": "explicit",
+            "adults": "inferred"
+          },
+          "changes": [
+            {
+              "field": "origin",
+              "label": "город отправления",
+              "old": null,
+              "new": "MOW",
+              "source": "explicit"
+            },
+            {
+              "field": "destination",
+              "label": "направление",
+              "old": null,
+              "new": "MLE",
+              "source": "explicit"
+            },
+            {
+              "field": "month",
+              "label": "месяц поездки",
+              "old": null,
+              "new": 11,
+              "source": "inferred"
+            },
+            {
+              "field": "year",
+              "label": "год поездки",
+              "old": null,
+              "new": 2026,
+              "source": "inferred"
+            },
+            {
+              "field": "start_date",
+              "label": "дата отправления",
+              "old": null,
+              "new": "2026-11-18",
+              "source": "explicit"
+            },
+            {
+              "field": "nights",
+              "label": "число ночей",
+              "old": null,
+              "new": 7,
+              "source": "explicit"
+            },
+            {
+              "field": "adults",
+              "label": "взрослые",
+              "old": 1,
+              "new": 2,
+              "source": "inferred"
+            }
+          ],
+          "rejected": [],
+          "needs": []
+        }
+      },
+      {
+        "type": "status",
+        "data": {
+          "stage": "search",
+          "text": "Собираю поездку: рейсы, отели, трансферы"
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "origin": "MOW",
+            "destination": "MLE",
+            "departure_date": "2026-11-18",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-4e80f564c8ba9402",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 32488,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T07:33:19.542263Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_hotels",
+          "arguments": {
+            "destination": "MLE",
+            "check_in": "2026-11-19",
+            "check_out": "2026-11-26",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "min_stars": 0,
+            "refundable_only": false
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_hotels",
+          "ok": true,
+          "count": 17
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "origin": "MLE",
+            "destination": "MOW",
+            "departure_date": "2026-11-26",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-8f14124841cafd0f",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 46070,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:05.428153Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/4802569136",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/773451744",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/11182077737",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/4455235191",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/5156483845",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:way/133845532",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/9268048974",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/5228528653",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:way/364882234",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/8565810442",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/9852338432",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/2457795615",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/8284491717",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/622290137",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/5560886023",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/11212357332",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:way/19882871",
+            "pickup_at": "2026-11-19T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "options",
+        "data": {
+          "kind": "packages",
+          "items": [
+            {
+              "index": 1,
+              "kind": "package",
+              "label": "Оптимальный · дешевле всех",
+              "destination": "MLE",
+              "hotel": {
+                "hotel_id": "osm:node/11182077737",
+                "offer_id": "synthetic-hotel/osm:node/11182077737/a1f77bd0d35b21a05e52",
+                "name": "JEN",
+                "stars": 4,
+                "rating": 9.1,
+                "check_in": "2026-11-19",
+                "check_out": "2026-11-26",
+                "nights": 7,
+                "price_rub": 50547,
+                "refundable": false,
+                "adults_only": false,
+                "pets_allowed": true,
+                "review_profile": {
+                  "schema_version": 1,
+                  "hotel_id": "osm:node/11182077737",
+                  "is_synthetic": true,
+                  "notice": "Это профиль синтетического тестового корпуса, не характеристика реального отеля по реальным отзывам.",
+                  "review_count": 24,
+                  "corpus_generator": "codex-authored-synthetic-templates-v1",
+                  "corpus_sha256": "68b836bce1a7a50d4fcba5e7a2bbde977faa943dbd4f25a59bf405a708443d6e",
+                  "extraction": {
+                    "method": "lexical-fixture-baseline-v1",
+                    "model": null,
+                    "live_model_run": false
+                  },
+                  "aspects": {
+                    "children": {
+                      "positive_count": 1,
+                      "negative_count": 0,
+                      "mention_count": 1,
+                      "review_count": 1,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/family/01",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии детям было удобно играть."
+                        }
+                      ]
+                    },
+                    "cleanliness": {
+                      "positive_count": 4,
+                      "negative_count": 0,
+                      "mention_count": 4,
+                      "review_count": 4,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/family/03",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии номер был чистым."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/couple/02",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии номер был чистым."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/business/05",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии номер был чистым."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/pets/04",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии номер был чистым."
+                        }
+                      ]
+                    },
+                    "food": {
+                      "positive_count": 4,
+                      "negative_count": 0,
+                      "mention_count": 4,
+                      "review_count": 4,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/family/04",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии завтрак был разнообразным."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/couple/04",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии завтрак был разнообразным."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/business/04",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии завтрак был разнообразным."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/pets/05",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии завтрак был разнообразным."
+                        }
+                      ]
+                    },
+                    "location": {
+                      "positive_count": 4,
+                      "negative_count": 0,
+                      "mention_count": 4,
+                      "review_count": 4,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/family/05",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии до пляжа было удобно идти."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/couple/03",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии до пляжа было удобно идти."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/business/06",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии до пляжа было удобно идти."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/pets/06",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии до пляжа было удобно идти."
+                        }
+                      ]
+                    },
+                    "noise": {
+                      "positive_count": 1,
+                      "negative_count": 3,
+                      "mention_count": 4,
+                      "review_count": 4,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/family/02",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии ночной шум мешал спать."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/couple/06",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии в номере было тихо."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/business/03",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии ночной шум мешал спать."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/pets/03",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии ночной шум мешал спать."
+                        }
+                      ]
+                    },
+                    "pets": {
+                      "positive_count": 2,
+                      "negative_count": 0,
+                      "mention_count": 2,
+                      "review_count": 2,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/pets/01",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии с собакой разместили без затруднений."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/pets/02",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии с собакой разместили без затруднений."
+                        }
+                      ]
+                    },
+                    "staff": {
+                      "positive_count": 1,
+                      "negative_count": 1,
+                      "mention_count": 2,
+                      "review_count": 2,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/couple/01",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии сотрудники помогали вежливо и быстро."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/couple/05",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии сотрудники долго не отвечали на просьбы."
+                        }
+                      ]
+                    },
+                    "wifi": {
+                      "positive_count": 2,
+                      "negative_count": 1,
+                      "mention_count": 3,
+                      "review_count": 3,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/family/06",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии Wi-Fi часто прерывался."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/business/01",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии Wi-Fi работал стабильно."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/11182077737/business/02",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии Wi-Fi работал стабильно."
+                        }
+                      ]
+                    }
+                  },
+                  "guest_profiles": {
+                    "family": {
+                      "review_count": 6,
+                      "aspects": {
+                        "children": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/family/01",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии детям было удобно играть."
+                            }
+                          ]
+                        },
+                        "cleanliness": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/family/03",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии номер был чистым."
+                            }
+                          ]
+                        },
+                        "food": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/family/04",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии завтрак был разнообразным."
+                            }
+                          ]
+                        },
+                        "location": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/family/05",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии до пляжа было удобно идти."
+                            }
+                          ]
+                        },
+                        "noise": {
+                          "positive_count": 0,
+                          "negative_count": 1,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/family/02",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии ночной шум мешал спать."
+                            }
+                          ]
+                        },
+                        "wifi": {
+                          "positive_count": 0,
+                          "negative_count": 1,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/family/06",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии Wi-Fi часто прерывался."
+                            }
+                          ]
+                        }
+                      },
+                      "pros": [
+                        {
+                          "aspect": "children",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "cleanliness",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "food",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "location",
+                          "count": 1
+                        }
+                      ],
+                      "cons": [
+                        {
+                          "aspect": "noise",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "wifi",
+                          "count": 1
+                        }
+                      ]
+                    },
+                    "couple": {
+                      "review_count": 6,
+                      "aspects": {
+                        "cleanliness": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/couple/02",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии номер был чистым."
+                            }
+                          ]
+                        },
+                        "food": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/couple/04",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии завтрак был разнообразным."
+                            }
+                          ]
+                        },
+                        "location": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/couple/03",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии до пляжа было удобно идти."
+                            }
+                          ]
+                        },
+                        "noise": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/couple/06",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии в номере было тихо."
+                            }
+                          ]
+                        },
+                        "staff": {
+                          "positive_count": 1,
+                          "negative_count": 1,
+                          "mention_count": 2,
+                          "review_count": 2,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/couple/01",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии сотрудники помогали вежливо и быстро."
+                            },
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/couple/05",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии сотрудники долго не отвечали на просьбы."
+                            }
+                          ]
+                        }
+                      },
+                      "pros": [
+                        {
+                          "aspect": "cleanliness",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "food",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "location",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "noise",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "staff",
+                          "count": 1
+                        }
+                      ],
+                      "cons": [
+                        {
+                          "aspect": "staff",
+                          "count": 1
+                        }
+                      ]
+                    },
+                    "business": {
+                      "review_count": 6,
+                      "aspects": {
+                        "cleanliness": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/business/05",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии номер был чистым."
+                            }
+                          ]
+                        },
+                        "food": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/business/04",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии завтрак был разнообразным."
+                            }
+                          ]
+                        },
+                        "location": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/business/06",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии до пляжа было удобно идти."
+                            }
+                          ]
+                        },
+                        "noise": {
+                          "positive_count": 0,
+                          "negative_count": 1,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/business/03",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии ночной шум мешал спать."
+                            }
+                          ]
+                        },
+                        "wifi": {
+                          "positive_count": 2,
+                          "negative_count": 0,
+                          "mention_count": 2,
+                          "review_count": 2,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/business/01",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии Wi-Fi работал стабильно."
+                            },
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/business/02",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии Wi-Fi работал стабильно."
+                            }
+                          ]
+                        }
+                      },
+                      "pros": [
+                        {
+                          "aspect": "wifi",
+                          "count": 2
+                        },
+                        {
+                          "aspect": "cleanliness",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "food",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "location",
+                          "count": 1
+                        }
+                      ],
+                      "cons": [
+                        {
+                          "aspect": "noise",
+                          "count": 1
+                        }
+                      ]
+                    },
+                    "pets": {
+                      "review_count": 6,
+                      "aspects": {
+                        "cleanliness": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/pets/04",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии номер был чистым."
+                            }
+                          ]
+                        },
+                        "food": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/pets/05",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии завтрак был разнообразным."
+                            }
+                          ]
+                        },
+                        "location": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/pets/06",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии до пляжа было удобно идти."
+                            }
+                          ]
+                        },
+                        "noise": {
+                          "positive_count": 0,
+                          "negative_count": 1,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/pets/03",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии ночной шум мешал спать."
+                            }
+                          ]
+                        },
+                        "pets": {
+                          "positive_count": 2,
+                          "negative_count": 0,
+                          "mention_count": 2,
+                          "review_count": 2,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/pets/01",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии с собакой разместили без затруднений."
+                            },
+                            {
+                              "review_id": "synthetic-review/osm:node/11182077737/pets/02",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии с собакой разместили без затруднений."
+                            }
+                          ]
+                        }
+                      },
+                      "pros": [
+                        {
+                          "aspect": "pets",
+                          "count": 2
+                        },
+                        {
+                          "aspect": "cleanliness",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "food",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "location",
+                          "count": 1
+                        }
+                      ],
+                      "cons": [
+                        {
+                          "aspect": "noise",
+                          "count": 1
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "outbound": {
+                "id": "provider-mixed-flight-4e80f564c8ba9402",
+                "carrier": "GF (cached quote; synthetic group/extras)",
+                "from": "SVO",
+                "to": "MLE",
+                "departure_at": "2026-11-18T12:50:00+03:00",
+                "arrival_at": "2026-11-19T02:05:00+05:00",
+                "origin_timezone": "Europe/Moscow",
+                "destination_timezone": "Indian/Maldives",
+                "stops": 1,
+                "price_rub": 64976,
+                "baggage_price_rub": 4000,
+                "is_overnight": true,
+                "price_source": {
+                  "provider": "aviasales_data_api",
+                  "seat_price_rub": 32488,
+                  "currency": "RUB",
+                  "cache_mode": "replay",
+                  "cache_hit": true,
+                  "recorded_at": "2026-10-28T07:33:19.542263Z",
+                  "duration_is_modelled": false,
+                  "group_price_is_modelled": true,
+                  "baggage_price_is_modelled": true
+                },
+                "demo_source": {
+                  "kind": "provider_replay",
+                  "reason": null,
+                  "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                }
+              },
+              "inbound": {
+                "id": "provider-mixed-flight-8f14124841cafd0f",
+                "carrier": "J2 (cached quote; synthetic group/extras)",
+                "from": "MLE",
+                "to": "SVO",
+                "departure_at": "2026-11-26T11:10:00+05:00",
+                "arrival_at": "2026-11-26T23:40:00+03:00",
+                "origin_timezone": "Indian/Maldives",
+                "destination_timezone": "Europe/Moscow",
+                "stops": 2,
+                "price_rub": 92140,
+                "baggage_price_rub": 4000,
+                "is_overnight": false,
+                "price_source": {
+                  "provider": "aviasales_data_api",
+                  "seat_price_rub": 46070,
+                  "currency": "RUB",
+                  "cache_mode": "replay",
+                  "cache_hit": true,
+                  "recorded_at": "2026-10-28T13:31:05.428153Z",
+                  "duration_is_modelled": false,
+                  "group_price_is_modelled": true,
+                  "baggage_price_is_modelled": true
+                },
+                "demo_source": {
+                  "kind": "provider_replay",
+                  "reason": null,
+                  "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                }
+              },
+              "transfer": {
+                "id": "osm:node/11182077737:MLE:taxi",
+                "mode": "taxi",
+                "duration_minutes": 26,
+                "price_rub": 1320,
+                "available": true,
+                "depart_at": "2026-11-19T02:50:00+05:00"
+              },
+              "total_rub": 216983,
+              "known_total_rub": 216983,
+              "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+              "party_price_scope": "whole_party",
+              "travelers": {
+                "adults": 2,
+                "children_ages": [],
+                "pets": 0
+              },
+              "pet_transport_status": "not_requested",
+              "unpriced_components": [
+                "return_transfer",
+                "visa_and_other_required_extras"
+              ],
+              "validation_status": "checked",
+              "timeline": {
+                "events": [
+                  {
+                    "kind": "outbound_departure",
+                    "at": "2026-11-18T12:50:00+03:00",
+                    "place": "Москва, Шереметьево",
+                    "timezone": "Europe/Moscow",
+                    "title": "Вылет: Москва, Шереметьево",
+                    "ref": "provider-mixed-flight-4e80f564c8ba9402"
+                  },
+                  {
+                    "kind": "outbound_arrival",
+                    "at": "2026-11-19T02:05:00+05:00",
+                    "place": "Мале, Велана",
+                    "timezone": "Indian/Maldives",
+                    "title": "Прилёт: Мале, Велана",
+                    "ref": "provider-mixed-flight-4e80f564c8ba9402"
+                  },
+                  {
+                    "kind": "arrival_transfer_departure",
+                    "at": "2026-11-19T02:50:00+05:00",
+                    "place": "Мале, Велана",
+                    "timezone": "Indian/Maldives",
+                    "title": "Трансфер в отель: такси",
+                    "ref": "osm:node/11182077737:MLE:taxi"
+                  },
+                  {
+                    "kind": "arrival_transfer_arrival",
+                    "at": "2026-11-19T03:16:00+05:00",
+                    "place": "JEN",
+                    "timezone": "Indian/Maldives",
+                    "title": "Приезд в отель: JEN",
+                    "ref": "osm:node/11182077737:MLE:taxi"
+                  },
+                  {
+                    "kind": "check_in",
+                    "at": "2026-11-19T14:00:00+05:00",
+                    "place": "JEN",
+                    "timezone": "Indian/Maldives",
+                    "title": "Заселение: JEN",
+                    "ref": "osm:node/11182077737"
+                  },
+                  {
+                    "kind": "check_out",
+                    "at": "2026-11-26T09:10:00+05:00",
+                    "place": "JEN",
+                    "timezone": "Indian/Maldives",
+                    "title": "Выезд: JEN",
+                    "ref": "osm:node/11182077737"
+                  },
+                  {
+                    "kind": "return_departure",
+                    "at": "2026-11-26T11:10:00+05:00",
+                    "place": "Мале, Велана",
+                    "timezone": "Indian/Maldives",
+                    "title": "Обратный вылет: Мале, Велана",
+                    "ref": "provider-mixed-flight-8f14124841cafd0f"
+                  },
+                  {
+                    "kind": "return_arrival",
+                    "at": "2026-11-26T23:40:00+03:00",
+                    "place": "Москва, Шереметьево",
+                    "timezone": "Europe/Moscow",
+                    "title": "Прилёт домой: Москва, Шереметьево",
+                    "ref": "provider-mixed-flight-8f14124841cafd0f"
+                  }
+                ],
+                "waits": [
+                  {
+                    "kind": "hotel_before_check_in",
+                    "start": "2026-11-19T03:16:00+05:00",
+                    "end": "2026-11-19T14:00:00+05:00",
+                    "place": "JEN",
+                    "minutes": 644
+                  }
+                ],
+                "notes": [
+                  "Нет трансфера в аэропорт: выезд считается впритык к сроку приезда в аэропорт"
+                ],
+                "booked_check_in": "2026-11-19T14:00:00+05:00",
+                "booked_check_out": "2026-11-26T12:00:00+05:00",
+                "hotel_arrival_at": "2026-11-19T03:16:00+05:00",
+                "hotel_departure_at": "2026-11-26T09:10:00+05:00"
+              },
+              "validation": {
+                "checked_rules": [
+                  "early_arrival_vs_checkin",
+                  "airport_overnight_wait",
+                  "hotel_rules",
+                  "transfer_compatibility"
+                ]
+              },
+              "can_confirm": true,
+              "issues": [
+                {
+                  "rule": "early_hotel_arrival",
+                  "severity": "warning",
+                  "message": "Приезд в отель в 03:16, заселение с 14:00: ждать 10 ч 44 мин",
+                  "fixes": [
+                    {
+                      "label": "Ранний заезд за 3 610 ₽",
+                      "price_delta_rub": 3610,
+                      "price_estimated": false,
+                      "patch": {
+                        "kind": "early_check_in"
+                      }
+                    },
+                    {
+                      "label": "Добавить ночь 18.11 и заселиться сразу",
+                      "price_delta_rub": 7200,
+                      "price_estimated": true,
+                      "patch": {
+                        "kind": "add_night_before",
+                        "check_in": "2026-11-18"
+                      }
+                    },
+                    {
+                      "label": "Другой отель с ранним заездом",
+                      "price_delta_rub": null,
+                      "price_estimated": false,
+                      "patch": {
+                        "kind": "replace_hotel",
+                        "require": [
+                          "early_check_in"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "rule": "nonrefundable_rate",
+                  "severity": "info",
+                  "message": "Тариф JEN невозвратный: при переносе дат деньги не вернут",
+                  "fixes": [
+                    {
+                      "label": "Другой отель",
+                      "price_delta_rub": null,
+                      "price_estimated": false,
+                      "patch": {
+                        "kind": "replace_hotel",
+                        "require": [
+                          "refundable"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "why": [
+                "авиацены основаны на котировках из поискового кэша Aviasales",
+                "ресепшен круглосуточно",
+                "трансфер 26 мин за 1 320 ₽",
+                "модельная доплата за багаж включена: 8 000 ₽"
+              ],
+              "tradeoffs": [
+                "отель без возврата денег при отмене",
+                "ночной перелёт туда"
+              ],
+              "risks": [
+                "Котировки Aviasales не подтверждают наличие мест; цена группы и багаж рассчитаны моделью",
+                "Обратный трансфер, виза и прочие обязательные доплаты не оценены",
+                "Приезд в отель в 03:16, заселение с 14:00: ждать 10 ч 44 мин"
+              ],
+              "is_synthetic": true
+            },
+            {
+              "index": 2,
+              "kind": "package",
+              "label": "Комфорт",
+              "destination": "MLE",
+              "hotel": {
+                "hotel_id": "osm:node/9852338432",
+                "offer_id": "synthetic-hotel/osm:node/9852338432/b9a93f7abae792e8c0d0",
+                "name": "Hilton Maldives Amingiri Resort & Spa",
+                "stars": 5,
+                "rating": 7.7,
+                "check_in": "2026-11-19",
+                "check_out": "2026-11-26",
+                "nights": 7,
+                "price_rub": 76230,
+                "refundable": true,
+                "adults_only": false,
+                "pets_allowed": false,
+                "review_profile": {
+                  "schema_version": 1,
+                  "hotel_id": "osm:node/9852338432",
+                  "is_synthetic": true,
+                  "notice": "Это профиль синтетического тестового корпуса, не характеристика реального отеля по реальным отзывам.",
+                  "review_count": 24,
+                  "corpus_generator": "codex-authored-synthetic-templates-v1",
+                  "corpus_sha256": "345daa48c080b3887000ffefdff7a1a973723666ceb2c0964114321f65984f24",
+                  "extraction": {
+                    "method": "lexical-fixture-baseline-v1",
+                    "model": null,
+                    "live_model_run": false
+                  },
+                  "aspects": {
+                    "children": {
+                      "positive_count": 1,
+                      "negative_count": 0,
+                      "mention_count": 1,
+                      "review_count": 1,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/family/01",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии детям было удобно играть."
+                        }
+                      ]
+                    },
+                    "cleanliness": {
+                      "positive_count": 4,
+                      "negative_count": 0,
+                      "mention_count": 4,
+                      "review_count": 4,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/family/03",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии номер был чистым."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/couple/02",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии номер был чистым."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/business/05",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии номер был чистым."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/pets/04",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии номер был чистым."
+                        }
+                      ]
+                    },
+                    "food": {
+                      "positive_count": 4,
+                      "negative_count": 0,
+                      "mention_count": 4,
+                      "review_count": 4,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/family/04",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии завтрак был разнообразным."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/couple/04",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии завтрак был разнообразным."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/business/04",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии завтрак был разнообразным."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/pets/05",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии завтрак был разнообразным."
+                        }
+                      ]
+                    },
+                    "location": {
+                      "positive_count": 4,
+                      "negative_count": 0,
+                      "mention_count": 4,
+                      "review_count": 4,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/family/05",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии до пляжа было удобно идти."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/couple/03",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии до пляжа было удобно идти."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/business/06",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии до пляжа было удобно идти."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/pets/06",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии до пляжа было удобно идти."
+                        }
+                      ]
+                    },
+                    "noise": {
+                      "positive_count": 1,
+                      "negative_count": 3,
+                      "mention_count": 4,
+                      "review_count": 4,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/family/02",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии ночной шум мешал спать."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/couple/06",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии в номере было тихо."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/business/03",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии ночной шум мешал спать."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/pets/03",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии ночной шум мешал спать."
+                        }
+                      ]
+                    },
+                    "pets": {
+                      "positive_count": 0,
+                      "negative_count": 2,
+                      "mention_count": 2,
+                      "review_count": 2,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/pets/01",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии размещение с собакой было запрещено."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/pets/02",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии размещение с собакой было запрещено."
+                        }
+                      ]
+                    },
+                    "staff": {
+                      "positive_count": 1,
+                      "negative_count": 1,
+                      "mention_count": 2,
+                      "review_count": 2,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/couple/01",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии сотрудники помогали вежливо и быстро."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/couple/05",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии сотрудники долго не отвечали на просьбы."
+                        }
+                      ]
+                    },
+                    "wifi": {
+                      "positive_count": 2,
+                      "negative_count": 1,
+                      "mention_count": 3,
+                      "review_count": 3,
+                      "evidence": [
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/family/06",
+                          "sentiment": "negative",
+                          "quote": "В модельном сценарии Wi-Fi часто прерывался."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/business/01",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии Wi-Fi работал стабильно."
+                        },
+                        {
+                          "review_id": "synthetic-review/osm:node/9852338432/business/02",
+                          "sentiment": "positive",
+                          "quote": "В модельном сценарии Wi-Fi работал стабильно."
+                        }
+                      ]
+                    }
+                  },
+                  "guest_profiles": {
+                    "family": {
+                      "review_count": 6,
+                      "aspects": {
+                        "children": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/family/01",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии детям было удобно играть."
+                            }
+                          ]
+                        },
+                        "cleanliness": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/family/03",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии номер был чистым."
+                            }
+                          ]
+                        },
+                        "food": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/family/04",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии завтрак был разнообразным."
+                            }
+                          ]
+                        },
+                        "location": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/family/05",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии до пляжа было удобно идти."
+                            }
+                          ]
+                        },
+                        "noise": {
+                          "positive_count": 0,
+                          "negative_count": 1,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/family/02",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии ночной шум мешал спать."
+                            }
+                          ]
+                        },
+                        "wifi": {
+                          "positive_count": 0,
+                          "negative_count": 1,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/family/06",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии Wi-Fi часто прерывался."
+                            }
+                          ]
+                        }
+                      },
+                      "pros": [
+                        {
+                          "aspect": "children",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "cleanliness",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "food",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "location",
+                          "count": 1
+                        }
+                      ],
+                      "cons": [
+                        {
+                          "aspect": "noise",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "wifi",
+                          "count": 1
+                        }
+                      ]
+                    },
+                    "couple": {
+                      "review_count": 6,
+                      "aspects": {
+                        "cleanliness": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/couple/02",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии номер был чистым."
+                            }
+                          ]
+                        },
+                        "food": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/couple/04",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии завтрак был разнообразным."
+                            }
+                          ]
+                        },
+                        "location": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/couple/03",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии до пляжа было удобно идти."
+                            }
+                          ]
+                        },
+                        "noise": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/couple/06",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии в номере было тихо."
+                            }
+                          ]
+                        },
+                        "staff": {
+                          "positive_count": 1,
+                          "negative_count": 1,
+                          "mention_count": 2,
+                          "review_count": 2,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/couple/01",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии сотрудники помогали вежливо и быстро."
+                            },
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/couple/05",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии сотрудники долго не отвечали на просьбы."
+                            }
+                          ]
+                        }
+                      },
+                      "pros": [
+                        {
+                          "aspect": "cleanliness",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "food",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "location",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "noise",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "staff",
+                          "count": 1
+                        }
+                      ],
+                      "cons": [
+                        {
+                          "aspect": "staff",
+                          "count": 1
+                        }
+                      ]
+                    },
+                    "business": {
+                      "review_count": 6,
+                      "aspects": {
+                        "cleanliness": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/business/05",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии номер был чистым."
+                            }
+                          ]
+                        },
+                        "food": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/business/04",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии завтрак был разнообразным."
+                            }
+                          ]
+                        },
+                        "location": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/business/06",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии до пляжа было удобно идти."
+                            }
+                          ]
+                        },
+                        "noise": {
+                          "positive_count": 0,
+                          "negative_count": 1,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/business/03",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии ночной шум мешал спать."
+                            }
+                          ]
+                        },
+                        "wifi": {
+                          "positive_count": 2,
+                          "negative_count": 0,
+                          "mention_count": 2,
+                          "review_count": 2,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/business/01",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии Wi-Fi работал стабильно."
+                            },
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/business/02",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии Wi-Fi работал стабильно."
+                            }
+                          ]
+                        }
+                      },
+                      "pros": [
+                        {
+                          "aspect": "wifi",
+                          "count": 2
+                        },
+                        {
+                          "aspect": "cleanliness",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "food",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "location",
+                          "count": 1
+                        }
+                      ],
+                      "cons": [
+                        {
+                          "aspect": "noise",
+                          "count": 1
+                        }
+                      ]
+                    },
+                    "pets": {
+                      "review_count": 6,
+                      "aspects": {
+                        "cleanliness": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/pets/04",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии номер был чистым."
+                            }
+                          ]
+                        },
+                        "food": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/pets/05",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии завтрак был разнообразным."
+                            }
+                          ]
+                        },
+                        "location": {
+                          "positive_count": 1,
+                          "negative_count": 0,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/pets/06",
+                              "sentiment": "positive",
+                              "quote": "В модельном сценарии до пляжа было удобно идти."
+                            }
+                          ]
+                        },
+                        "noise": {
+                          "positive_count": 0,
+                          "negative_count": 1,
+                          "mention_count": 1,
+                          "review_count": 1,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/pets/03",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии ночной шум мешал спать."
+                            }
+                          ]
+                        },
+                        "pets": {
+                          "positive_count": 0,
+                          "negative_count": 2,
+                          "mention_count": 2,
+                          "review_count": 2,
+                          "evidence": [
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/pets/01",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии размещение с собакой было запрещено."
+                            },
+                            {
+                              "review_id": "synthetic-review/osm:node/9852338432/pets/02",
+                              "sentiment": "negative",
+                              "quote": "В модельном сценарии размещение с собакой было запрещено."
+                            }
+                          ]
+                        }
+                      },
+                      "pros": [
+                        {
+                          "aspect": "cleanliness",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "food",
+                          "count": 1
+                        },
+                        {
+                          "aspect": "location",
+                          "count": 1
+                        }
+                      ],
+                      "cons": [
+                        {
+                          "aspect": "pets",
+                          "count": 2
+                        },
+                        {
+                          "aspect": "noise",
+                          "count": 1
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "outbound": {
+                "id": "provider-mixed-flight-4e80f564c8ba9402",
+                "carrier": "GF (cached quote; synthetic group/extras)",
+                "from": "SVO",
+                "to": "MLE",
+                "departure_at": "2026-11-18T12:50:00+03:00",
+                "arrival_at": "2026-11-19T02:05:00+05:00",
+                "origin_timezone": "Europe/Moscow",
+                "destination_timezone": "Indian/Maldives",
+                "stops": 1,
+                "price_rub": 64976,
+                "baggage_price_rub": 4000,
+                "is_overnight": true,
+                "price_source": {
+                  "provider": "aviasales_data_api",
+                  "seat_price_rub": 32488,
+                  "currency": "RUB",
+                  "cache_mode": "replay",
+                  "cache_hit": true,
+                  "recorded_at": "2026-10-28T07:33:19.542263Z",
+                  "duration_is_modelled": false,
+                  "group_price_is_modelled": true,
+                  "baggage_price_is_modelled": true
+                },
+                "demo_source": {
+                  "kind": "provider_replay",
+                  "reason": null,
+                  "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                }
+              },
+              "inbound": {
+                "id": "provider-mixed-flight-8f14124841cafd0f",
+                "carrier": "J2 (cached quote; synthetic group/extras)",
+                "from": "MLE",
+                "to": "SVO",
+                "departure_at": "2026-11-26T11:10:00+05:00",
+                "arrival_at": "2026-11-26T23:40:00+03:00",
+                "origin_timezone": "Indian/Maldives",
+                "destination_timezone": "Europe/Moscow",
+                "stops": 2,
+                "price_rub": 92140,
+                "baggage_price_rub": 4000,
+                "is_overnight": false,
+                "price_source": {
+                  "provider": "aviasales_data_api",
+                  "seat_price_rub": 46070,
+                  "currency": "RUB",
+                  "cache_mode": "replay",
+                  "cache_hit": true,
+                  "recorded_at": "2026-10-28T13:31:05.428153Z",
+                  "duration_is_modelled": false,
+                  "group_price_is_modelled": true,
+                  "baggage_price_is_modelled": true
+                },
+                "demo_source": {
+                  "kind": "provider_replay",
+                  "reason": null,
+                  "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                }
+              },
+              "transfer": {
+                "id": "osm:node/9852338432:MLE:speedboat",
+                "mode": "boat",
+                "duration_minutes": 46,
+                "price_rub": 29400,
+                "available": true,
+                "depart_at": "2026-11-19T02:50:00+05:00"
+              },
+              "total_rub": 270746,
+              "known_total_rub": 270746,
+              "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+              "party_price_scope": "whole_party",
+              "travelers": {
+                "adults": 2,
+                "children_ages": [],
+                "pets": 0
+              },
+              "pet_transport_status": "not_requested",
+              "unpriced_components": [
+                "return_transfer",
+                "visa_and_other_required_extras"
+              ],
+              "validation_status": "checked",
+              "timeline": {
+                "events": [
+                  {
+                    "kind": "outbound_departure",
+                    "at": "2026-11-18T12:50:00+03:00",
+                    "place": "Москва, Шереметьево",
+                    "timezone": "Europe/Moscow",
+                    "title": "Вылет: Москва, Шереметьево",
+                    "ref": "provider-mixed-flight-4e80f564c8ba9402"
+                  },
+                  {
+                    "kind": "outbound_arrival",
+                    "at": "2026-11-19T02:05:00+05:00",
+                    "place": "Мале, Велана",
+                    "timezone": "Indian/Maldives",
+                    "title": "Прилёт: Мале, Велана",
+                    "ref": "provider-mixed-flight-4e80f564c8ba9402"
+                  },
+                  {
+                    "kind": "arrival_transfer_departure",
+                    "at": "2026-11-19T02:50:00+05:00",
+                    "place": "Мале, Велана",
+                    "timezone": "Indian/Maldives",
+                    "title": "Трансфер в отель: катер",
+                    "ref": "osm:node/9852338432:MLE:speedboat"
+                  },
+                  {
+                    "kind": "arrival_transfer_arrival",
+                    "at": "2026-11-19T03:36:00+05:00",
+                    "place": "Hilton Maldives Amingiri Resort & Spa",
+                    "timezone": "Indian/Maldives",
+                    "title": "Приезд в отель: Hilton Maldives Amingiri Resort & Spa",
+                    "ref": "osm:node/9852338432:MLE:speedboat"
+                  },
+                  {
+                    "kind": "check_in",
+                    "at": "2026-11-19T14:00:00+05:00",
+                    "place": "Hilton Maldives Amingiri Resort & Spa",
+                    "timezone": "Indian/Maldives",
+                    "title": "Заселение: Hilton Maldives Amingiri Resort & Spa",
+                    "ref": "osm:node/9852338432"
+                  },
+                  {
+                    "kind": "check_out",
+                    "at": "2026-11-26T09:10:00+05:00",
+                    "place": "Hilton Maldives Amingiri Resort & Spa",
+                    "timezone": "Indian/Maldives",
+                    "title": "Выезд: Hilton Maldives Amingiri Resort & Spa",
+                    "ref": "osm:node/9852338432"
+                  },
+                  {
+                    "kind": "return_departure",
+                    "at": "2026-11-26T11:10:00+05:00",
+                    "place": "Мале, Велана",
+                    "timezone": "Indian/Maldives",
+                    "title": "Обратный вылет: Мале, Велана",
+                    "ref": "provider-mixed-flight-8f14124841cafd0f"
+                  },
+                  {
+                    "kind": "return_arrival",
+                    "at": "2026-11-26T23:40:00+03:00",
+                    "place": "Москва, Шереметьево",
+                    "timezone": "Europe/Moscow",
+                    "title": "Прилёт домой: Москва, Шереметьево",
+                    "ref": "provider-mixed-flight-8f14124841cafd0f"
+                  }
+                ],
+                "waits": [
+                  {
+                    "kind": "hotel_before_check_in",
+                    "start": "2026-11-19T03:36:00+05:00",
+                    "end": "2026-11-19T14:00:00+05:00",
+                    "place": "Hilton Maldives Amingiri Resort & Spa",
+                    "minutes": 624
+                  }
+                ],
+                "notes": [
+                  "Нет трансфера в аэропорт: выезд считается впритык к сроку приезда в аэропорт"
+                ],
+                "booked_check_in": "2026-11-19T14:00:00+05:00",
+                "booked_check_out": "2026-11-26T12:00:00+05:00",
+                "hotel_arrival_at": "2026-11-19T03:36:00+05:00",
+                "hotel_departure_at": "2026-11-26T09:10:00+05:00"
+              },
+              "validation": {
+                "checked_rules": [
+                  "early_arrival_vs_checkin",
+                  "airport_overnight_wait",
+                  "hotel_rules",
+                  "transfer_compatibility"
+                ]
+              },
+              "can_confirm": true,
+              "issues": [
+                {
+                  "rule": "early_hotel_arrival",
+                  "severity": "warning",
+                  "message": "Приезд в отель в 03:36, заселение с 14:00: ждать 10 ч 24 мин",
+                  "fixes": [
+                    {
+                      "label": "Ранний заезд за 5 445 ₽",
+                      "price_delta_rub": 5445,
+                      "price_estimated": false,
+                      "patch": {
+                        "kind": "early_check_in"
+                      }
+                    },
+                    {
+                      "label": "Добавить ночь 18.11 и заселиться сразу",
+                      "price_delta_rub": 10900,
+                      "price_estimated": true,
+                      "patch": {
+                        "kind": "add_night_before",
+                        "check_in": "2026-11-18"
+                      }
+                    },
+                    {
+                      "label": "Другой отель с ранним заездом",
+                      "price_delta_rub": null,
+                      "price_estimated": false,
+                      "patch": {
+                        "kind": "replace_hotel",
+                        "require": [
+                          "early_check_in"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "why": [
+                "возвратный тариф отеля; сроки и удержания нужно уточнить",
+                "авиацены основаны на котировках из поискового кэша Aviasales",
+                "ресепшен круглосуточно",
+                "трансфер 46 мин за 29 400 ₽",
+                "модельная доплата за багаж включена: 8 000 ₽"
+              ],
+              "tradeoffs": [
+                "ночной перелёт туда"
+              ],
+              "risks": [
+                "Котировки Aviasales не подтверждают наличие мест; цена группы и багаж рассчитаны моделью",
+                "Обратный трансфер, виза и прочие обязательные доплаты не оценены",
+                "Приезд в отель в 03:36, заселение с 14:00: ждать 10 ч 24 мин"
+              ],
+              "is_synthetic": true
+            }
+          ],
+          "assumptions": [],
+          "notes": []
+        }
+      },
+      {
+        "type": "delta",
+        "data": {
+          "text": "Стоимость показанных компонентов: перелёты туда и обратно с багажом, отель и трансфер из аэропорта.\n1. Оптимальный · дешевле всех: JEN — 216 983 ₽ за показанные компоненты для всей группы.\n   Отель 7 ночей с 19.11, вылет 18.11 12:50, обратно 26.11 11:10.\n   Приезд в отель 19.11 03:16, заселение 19.11 14:00; местное время (Indian/Maldives).\n   Туда: котировка Aviasales 32 488 ₽ за одно место, запись 2026-10-28.\n   Обратно: котировка Aviasales 46 070 ₽ за одно место, запись 2026-10-28.\n   Почему: авиацены основаны на котировках из поискового кэша Aviasales; ресепшен круглосуточно; трансфер 26 мин за 1 320 ₽; модельная доплата за багаж включена: 8 000 ₽.\n   Чем жертвуем: отель без возврата денег при отмене; ночной перелёт туда.\n   Риски: Котировки Aviasales не подтверждают наличие мест; цена группы и багаж рассчитаны моделью; Обратный трансфер, виза и прочие обязательные доплаты не оценены; Приезд в отель в 03:16, заселение с 14:00: ждать 10 ч 44 мин.\n2. Комфорт: Hilton Maldives Amingiri Resort & Spa — 270 746 ₽ за показанные компоненты для всей группы.\n   Отель 7 ночей с 19.11, вылет 18.11 12:50, обратно 26.11 11:10.\n   Приезд в отель 19.11 03:36, заселение 19.11 14:00; местное время (Indian/Maldives).\n   Туда: котировка Aviasales 32 488 ₽ за одно место, запись 2026-10-28.\n   Обратно: котировка Aviasales 46 070 ₽ за одно место, запись 2026-10-28.\n   Почему: возвратный тариф отеля; сроки и удержания нужно уточнить; авиацены основаны на котировках из поискового кэша Aviasales; ресепшен круглосуточно; трансфер 46 мин за 29 400 ₽; модельная доплата за багаж включена: 8 000 ₽.\n   Чем жертвуем: ночной перелёт туда.\n   Риски: Котировки Aviasales не подтверждают наличие мест; цена группы и багаж рассчитаны моделью; Обратный трансфер, виза и прочие обязательные доплаты не оценены; Приезд в отель в 03:36, заселение с 14:00: ждать 10 ч 24 мин.\nКотировки Aviasales взяты из кэша поисков. Цена группы, багаж, отель и трансфер — расчётные. Наличие мест и окончательная стоимость покупки не проверены. Обратный трансфер, виза и прочие доплаты не оценены. Можно выбрать вариант или поменять условия."
+        }
+      },
+      {
+        "type": "done",
+        "data": {
+          "session_id": "<demo-session>",
+          "stage": "packages_shown",
+          "version": 1
+        }
+      }
+    ],
+    "state": {
+      "session_id": "<demo-session>",
+      "version": 1,
+      "stage": "packages_shown",
+      "brief": {
+        "transport": "flight",
+        "seat_class": "coupe",
+        "origin": "MOW",
+        "destination": "MLE",
+        "month": 11,
+        "year": 2026,
+        "start_date": "2026-11-18",
+        "nights": 7,
+        "adults": 2,
+        "children_ages": [],
+        "pets": 0,
+        "budget_rub": null,
+        "max_flight_minutes": null,
+        "direct_only": false,
+        "late_departure": false,
+        "refundable_only": false,
+        "min_stars": null,
+        "min_water_temperature_c": null,
+        "visa_free_only": false,
+        "needs": [],
+        "mood": null
+      },
+      "sources": {
+        "origin": "explicit",
+        "destination": "explicit",
+        "month": "inferred",
+        "year": "inferred",
+        "start_date": "explicit",
+        "nights": "explicit",
+        "adults": "inferred"
+      },
+      "stale": false,
+      "selected": null,
+      "booking": null
+    }
+  },
+  {
+    "stage": "d7_checked_profile_and_literal_quotes",
+    "message": "Почему вариант 1 подходит семье? Что говорят отзывы?",
+    "events": [
+      {
+        "type": "status",
+        "data": {
+          "stage": "analyze",
+          "text": "Разбираю запрос"
+        }
+      },
+      {
+        "type": "hotel_profile",
+        "data": {
+          "status": "available",
+          "option": 1,
+          "selection_source": "explicit",
+          "segment": "family",
+          "changes_state": false,
+          "hotel_id": "osm:node/11182077737",
+          "hotel_name": "JEN",
+          "is_synthetic": true,
+          "profile_review_count": 24,
+          "segment_review_count": 6,
+          "extraction": {
+            "method": "lexical-fixture-baseline-v1",
+            "model": null,
+            "live_model_run": false
+          },
+          "counts": [
+            {
+              "aspect": "children",
+              "positive_count": 1,
+              "negative_count": 0,
+              "review_count": 1,
+              "mention_count": 1
+            },
+            {
+              "aspect": "noise",
+              "positive_count": 0,
+              "negative_count": 1,
+              "review_count": 1,
+              "mention_count": 1
+            },
+            {
+              "aspect": "cleanliness",
+              "positive_count": 1,
+              "negative_count": 0,
+              "review_count": 1,
+              "mention_count": 1
+            },
+            {
+              "aspect": "food",
+              "positive_count": 1,
+              "negative_count": 0,
+              "review_count": 1,
+              "mention_count": 1
+            },
+            {
+              "aspect": "location",
+              "positive_count": 1,
+              "negative_count": 0,
+              "review_count": 1,
+              "mention_count": 1
+            },
+            {
+              "aspect": "wifi",
+              "positive_count": 0,
+              "negative_count": 1,
+              "review_count": 1,
+              "mention_count": 1
+            }
+          ],
+          "evidence": [
+            {
+              "aspect": "children",
+              "review_id": "synthetic-review/osm:node/11182077737/family/01",
+              "sentiment": "positive",
+              "quote": "В модельном сценарии детям было удобно играть."
+            },
+            {
+              "aspect": "noise",
+              "review_id": "synthetic-review/osm:node/11182077737/family/02",
+              "sentiment": "negative",
+              "quote": "В модельном сценарии ночной шум мешал спать."
+            }
+          ]
+        }
+      },
+      {
+        "type": "delta",
+        "data": {
+          "text": "Вариант 1, отель JEN. \nВ профиле 24 синтетических отзывов; группа «семьи»: 6.\nПоложительные и отрицательные числа ниже — упоминания, а не оценка отеля или число всех гостей.\nДети: положительных 1, отрицательных 0 (отзывов с этим аспектом: 1).\nТишина/шум: положительных 0, отрицательных 1 (отзывов с этим аспектом: 1).\nЧистота: положительных 1, отрицательных 0 (отзывов с этим аспектом: 1).\nПитание: положительных 1, отрицательных 0 (отзывов с этим аспектом: 1).\nРасположение: положительных 1, отрицательных 0 (отзывов с этим аспектом: 1).\nWi-Fi: положительных 0, отрицательных 1 (отзывов с этим аспектом: 1).\nПлюс: «В модельном сценарии детям было удобно играть.» [review_id: synthetic-review/osm:node/11182077737/family/01].\nРиск: «В модельном сценарии ночной шум мешал спать.» [review_id: synthetic-review/osm:node/11182077737/family/02].\nПравила отеля: дети допускаются по справочнику условий, но отзывы это правило не подтверждают.\nЭто синтетические тестовые отзывы, не отзывы реальных гостей. Это профиль синтетического тестового корпуса, не характеристика реального отеля по реальным отзывам.\nИзвлечение выполнено правилами (baseline); настоящий LLM-прогон не выполнялся."
+        }
+      },
+      {
+        "type": "done",
+        "data": {
+          "session_id": "<demo-session>",
+          "stage": "packages_shown",
+          "version": 1
+        }
+      }
+    ],
+    "state": {
+      "session_id": "<demo-session>",
+      "version": 1,
+      "stage": "packages_shown",
+      "brief": {
+        "transport": "flight",
+        "seat_class": "coupe",
+        "origin": "MOW",
+        "destination": "MLE",
+        "month": 11,
+        "year": 2026,
+        "start_date": "2026-11-18",
+        "nights": 7,
+        "adults": 2,
+        "children_ages": [],
+        "pets": 0,
+        "budget_rub": null,
+        "max_flight_minutes": null,
+        "direct_only": false,
+        "late_departure": false,
+        "refundable_only": false,
+        "min_stars": null,
+        "min_water_temperature_c": null,
+        "visa_free_only": false,
+        "needs": [],
+        "mood": null
+      },
+      "sources": {
+        "origin": "explicit",
+        "destination": "explicit",
+        "month": "inferred",
+        "year": "inferred",
+        "start_date": "explicit",
+        "nights": "explicit",
+        "adults": "inferred"
+      },
+      "stale": false,
+      "selected": null,
+      "booking": null
+    }
+  },
+  {
+    "stage": "d8_source_aware_comparison_preserves_state",
+    "message": "Для варианта 1: если сдвинуть даты на 1–3 дня, можно сэкономить?",
+    "events": [
+      {
+        "type": "status",
+        "data": {
+          "stage": "analyze",
+          "text": "Разбираю запрос"
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MOW",
+            "destination": "MLE",
+            "departure_date": "2026-11-15"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-30d2e993e1221b99",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 34976,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:00.187520Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_hotels",
+          "arguments": {
+            "destination": "MLE",
+            "check_in": "2026-11-16",
+            "check_out": "2026-11-23",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "min_stars": 0,
+            "refundable_only": false
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_hotels",
+          "ok": true,
+          "count": 19
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MLE",
+            "destination": "MOW",
+            "departure_date": "2026-11-23"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-8e8ee145bba83f29",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 44744,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:03.861476Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/11182077737",
+            "pickup_at": "2026-11-16T06:35:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MOW",
+            "destination": "MLE",
+            "departure_date": "2026-11-16"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-26d357a9d10bec57",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 32571,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:00.713866Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_hotels",
+          "arguments": {
+            "destination": "MLE",
+            "check_in": "2026-11-17",
+            "check_out": "2026-11-24",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "min_stars": 0,
+            "refundable_only": false
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_hotels",
+          "ok": true,
+          "count": 20
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MLE",
+            "destination": "MOW",
+            "departure_date": "2026-11-24"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-81152fce70216e4b",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 35071,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:04.383570Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/11182077737",
+            "pickup_at": "2026-11-17T12:30:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MOW",
+            "destination": "MLE",
+            "departure_date": "2026-11-17"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-44726d51926f8c86",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 32573,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:01.235010Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_hotels",
+          "arguments": {
+            "destination": "MLE",
+            "check_in": "2026-11-18",
+            "check_out": "2026-11-25",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "min_stars": 0,
+            "refundable_only": false
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_hotels",
+          "ok": true,
+          "count": 20
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MLE",
+            "destination": "MOW",
+            "departure_date": "2026-11-25"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-9618ec33785c0d24",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 45149,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:04.906034Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/11182077737",
+            "pickup_at": "2026-11-18T02:50:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MOW",
+            "destination": "MLE",
+            "departure_date": "2026-11-19"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-605d9f7231a5ec79",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 32966,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:01.916878Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_hotels",
+          "arguments": {
+            "destination": "MLE",
+            "check_in": "2026-11-20",
+            "check_out": "2026-11-27",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "min_stars": 0,
+            "refundable_only": false
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_hotels",
+          "ok": true,
+          "count": 18
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MLE",
+            "destination": "MOW",
+            "departure_date": "2026-11-27"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-64549faa568e6ab",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 32512,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:05.953669Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/11182077737",
+            "pickup_at": "2026-11-20T06:35:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MOW",
+            "destination": "MLE",
+            "departure_date": "2026-11-20"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-15ab5ca0c8bbb03",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 32229,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:02.366957Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_hotels",
+          "arguments": {
+            "destination": "MLE",
+            "check_in": "2026-11-21",
+            "check_out": "2026-11-28",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "min_stars": 0,
+            "refundable_only": false
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_hotels",
+          "ok": true,
+          "count": 18
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MLE",
+            "destination": "MOW",
+            "departure_date": "2026-11-28"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-7326db68bdaad4a5",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 46649,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:06.511740Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/11182077737",
+            "pickup_at": "2026-11-21T15:25:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MOW",
+            "destination": "MLE",
+            "departure_date": "2026-11-21"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-c55f08b90b596d5f",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 34931,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:02.807447Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_hotels",
+          "arguments": {
+            "destination": "MLE",
+            "check_in": "2026-11-22",
+            "check_out": "2026-11-29",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "min_stars": 0,
+            "refundable_only": false
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_hotels",
+          "ok": true,
+          "count": 20
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "search_flights",
+          "arguments": {
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "direct_only": false,
+            "origin": "MLE",
+            "destination": "MOW",
+            "departure_date": "2026-11-29"
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "search_flights",
+          "ok": true,
+          "count": 1,
+          "source": "offline_demo",
+          "cache_mode": "replay",
+          "contains_mock": false,
+          "flights": [
+            {
+              "id": "provider-mixed-flight-83edb90ab3cd49ba",
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              },
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 45776,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:06.999799Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tool_call",
+        "data": {
+          "name": "get_transfer",
+          "arguments": {
+            "airport": "MLE",
+            "hotel_id": "osm:node/11182077737",
+            "pickup_at": "2026-11-22T12:40:00+05:00",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            }
+          }
+        }
+      },
+      {
+        "type": "tool_result",
+        "data": {
+          "name": "get_transfer",
+          "ok": true,
+          "count": 1
+        }
+      },
+      {
+        "type": "date_savings",
+        "data": {
+          "comparison_status": "compared",
+          "baseline_option": 1,
+          "baseline_assumption": null,
+          "baseline": {
+            "departure_date": "2026-11-18",
+            "nights": 7,
+            "origin": "SVO",
+            "destination": "MLE",
+            "hotel_id": "osm:node/11182077737",
+            "travelers": {
+              "adults": 2,
+              "children_ages": [],
+              "pets": 0
+            },
+            "flight_total_rub": 165116,
+            "hotel_total_rub": 50547,
+            "other_total_rub": 1320,
+            "is_synthetic": true
+          },
+          "baseline_known_total_rub": 216983,
+          "hotel_id": "osm:node/11182077737",
+          "flight_source": "aviasales_data_api",
+          "demo_mode": true,
+          "baseline_flight_sources": {
+            "outbound": {
+              "kind": "provider_replay",
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 32488,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T07:33:19.542263Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              },
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              }
+            },
+            "inbound": {
+              "kind": "provider_replay",
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 46070,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T13:31:05.428153Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              },
+              "demo_source": {
+                "kind": "provider_replay",
+                "reason": null,
+                "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+              }
+            }
+          },
+          "contains_mock": false,
+          "savings_kind": "modelled_components_comparison",
+          "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+          "unpriced_components": [
+            "return_transfer",
+            "visa_and_other_required_extras"
+          ],
+          "minimum_saving_percent": 5,
+          "strict_threshold": true,
+          "checked_dates": [
+            {
+              "departure_date": "2026-11-15",
+              "shift_days": -3,
+              "status": "quoted",
+              "quote": {
+                "departure_date": "2026-11-15",
+                "nights": 7,
+                "origin": "SVO",
+                "destination": "MLE",
+                "hotel_id": "osm:node/11182077737",
+                "travelers": {
+                  "adults": 2,
+                  "children_ages": [],
+                  "pets": 0
+                },
+                "flight_total_rub": 167440,
+                "hotel_total_rub": 50547,
+                "other_total_rub": 1100,
+                "is_synthetic": true
+              },
+              "known_total_rub": 219087,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 34976,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:00.187520Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                },
+                "inbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 44744,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:03.861476Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                }
+              },
+              "contains_mock": false
+            },
+            {
+              "departure_date": "2026-11-16",
+              "shift_days": -2,
+              "status": "quoted",
+              "quote": {
+                "departure_date": "2026-11-16",
+                "nights": 7,
+                "origin": "SVO",
+                "destination": "MLE",
+                "hotel_id": "osm:node/11182077737",
+                "travelers": {
+                  "adults": 2,
+                  "children_ages": [],
+                  "pets": 0
+                },
+                "flight_total_rub": 143284,
+                "hotel_total_rub": 50547,
+                "other_total_rub": 1100,
+                "is_synthetic": true
+              },
+              "known_total_rub": 194931,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 32571,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:00.713866Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                },
+                "inbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 35071,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:04.383570Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                }
+              },
+              "contains_mock": false
+            },
+            {
+              "departure_date": "2026-11-17",
+              "shift_days": -1,
+              "status": "quoted",
+              "quote": {
+                "departure_date": "2026-11-17",
+                "nights": 7,
+                "origin": "SVO",
+                "destination": "MLE",
+                "hotel_id": "osm:node/11182077737",
+                "travelers": {
+                  "adults": 2,
+                  "children_ages": [],
+                  "pets": 0
+                },
+                "flight_total_rub": 163444,
+                "hotel_total_rub": 50547,
+                "other_total_rub": 1320,
+                "is_synthetic": true
+              },
+              "known_total_rub": 215311,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 32573,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:01.235010Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                },
+                "inbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 45149,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:04.906034Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                }
+              },
+              "contains_mock": false
+            },
+            {
+              "departure_date": "2026-11-19",
+              "shift_days": 1,
+              "status": "quoted",
+              "quote": {
+                "departure_date": "2026-11-19",
+                "nights": 7,
+                "origin": "SVO",
+                "destination": "MLE",
+                "hotel_id": "osm:node/11182077737",
+                "travelers": {
+                  "adults": 2,
+                  "children_ages": [],
+                  "pets": 0
+                },
+                "flight_total_rub": 138956,
+                "hotel_total_rub": 50547,
+                "other_total_rub": 1100,
+                "is_synthetic": true
+              },
+              "known_total_rub": 190603,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 32966,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:01.916878Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                },
+                "inbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 32512,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:05.953669Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                }
+              },
+              "contains_mock": false
+            },
+            {
+              "departure_date": "2026-11-20",
+              "shift_days": 2,
+              "status": "quoted",
+              "quote": {
+                "departure_date": "2026-11-20",
+                "nights": 7,
+                "origin": "SVO",
+                "destination": "MLE",
+                "hotel_id": "osm:node/11182077737",
+                "travelers": {
+                  "adults": 2,
+                  "children_ages": [],
+                  "pets": 0
+                },
+                "flight_total_rub": 165756,
+                "hotel_total_rub": 50547,
+                "other_total_rub": 1100,
+                "is_synthetic": true
+              },
+              "known_total_rub": 217403,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 32229,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:02.366957Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                },
+                "inbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 46649,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:06.511740Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                }
+              },
+              "contains_mock": false
+            },
+            {
+              "departure_date": "2026-11-21",
+              "shift_days": 3,
+              "status": "quoted",
+              "quote": {
+                "departure_date": "2026-11-21",
+                "nights": 7,
+                "origin": "SVO",
+                "destination": "MLE",
+                "hotel_id": "osm:node/11182077737",
+                "travelers": {
+                  "adults": 2,
+                  "children_ages": [],
+                  "pets": 0
+                },
+                "flight_total_rub": 169414,
+                "hotel_total_rub": 50547,
+                "other_total_rub": 1100,
+                "is_synthetic": true
+              },
+              "known_total_rub": 221061,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 34931,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:02.807447Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                },
+                "inbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 45776,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:06.999799Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                }
+              },
+              "contains_mock": false
+            }
+          ],
+          "suggestions": [
+            {
+              "original_departure": "2026-11-18",
+              "suggested_departure": "2026-11-19",
+              "shift_days": 1,
+              "original_total_rub": 216983,
+              "suggested_total_rub": 190603,
+              "saving_rub": 26380,
+              "saving_percent": "12.16",
+              "flight_delta_rub": -26160,
+              "hotel_delta_rub": 0,
+              "other_delta_rub": -220,
+              "hotel_id": "osm:node/11182077737",
+              "is_synthetic": true,
+              "fact_type": "date_shift_saving",
+              "flight_sources": {
+                "outbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 32966,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:01.916878Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                },
+                "inbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 32512,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:05.953669Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                }
+              },
+              "contains_mock": false,
+              "savings_kind": "provider_observations_modelled_components"
+            },
+            {
+              "original_departure": "2026-11-18",
+              "suggested_departure": "2026-11-16",
+              "shift_days": -2,
+              "original_total_rub": 216983,
+              "suggested_total_rub": 194931,
+              "saving_rub": 22052,
+              "saving_percent": "10.16",
+              "flight_delta_rub": -21832,
+              "hotel_delta_rub": 0,
+              "other_delta_rub": -220,
+              "hotel_id": "osm:node/11182077737",
+              "is_synthetic": true,
+              "fact_type": "date_shift_saving",
+              "flight_sources": {
+                "outbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 32571,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:00.713866Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                },
+                "inbound": {
+                  "kind": "provider_replay",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 35071,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T13:31:04.383570Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  },
+                  "demo_source": {
+                    "kind": "provider_replay",
+                    "reason": null,
+                    "notice": "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+                  }
+                }
+              },
+              "contains_mock": false,
+              "savings_kind": "provider_observations_modelled_components"
+            }
+          ],
+          "state_changed": false
+        }
+      },
+      {
+        "type": "delta",
+        "data": {
+          "text": "Сравнение для 2 путешественников: оба перелёта с багажом и все ночи в том же отеле, трансфер аэропорт → отель; 7 ночей. Исходные известные расходы: 216 983 ₽.\nИсточники исходного варианта: туда — котировка Aviasales из replay; обратно — котировка Aviasales из replay.\nВарианты с экономией строго больше 5% по этим компонентам:\n• Вылет 19.11.2026, на 1 дн. позже: 190 603 ₽, разница 26 380 ₽ (12.16%; до округления больше 5%).\n  Источники альтернативы: туда — котировка Aviasales из replay; обратно — котировка Aviasales из replay.\n• Вылет 16.11.2026, на 2 дн. раньше: 194 931 ₽, разница 22 052 ₽ (10.16%; до округления больше 5%).\n  Источники альтернативы: туда — котировка Aviasales из replay; обратно — котировка Aviasales из replay.\nНе оценены обратный трансфер, виза и прочие обязательные доплаты; полная стоимость поездки и экономия по ней не подтверждены.\nАвиабаза — котировки из поискового кэша Aviasales; наличие мест не подтверждено. Цена группы, багаж, отель и трансфер рассчитаны моделью.\nЭто сравнение: даты, выбранный вариант и бронирование не изменены."
+        }
+      },
+      {
+        "type": "done",
+        "data": {
+          "session_id": "<demo-session>",
+          "stage": "packages_shown",
+          "version": 1
+        }
+      }
+    ],
+    "state": {
+      "session_id": "<demo-session>",
+      "version": 1,
+      "stage": "packages_shown",
+      "brief": {
+        "transport": "flight",
+        "seat_class": "coupe",
+        "origin": "MOW",
+        "destination": "MLE",
+        "month": 11,
+        "year": 2026,
+        "start_date": "2026-11-18",
+        "nights": 7,
+        "adults": 2,
+        "children_ages": [],
+        "pets": 0,
+        "budget_rub": null,
+        "max_flight_minutes": null,
+        "direct_only": false,
+        "late_departure": false,
+        "refundable_only": false,
+        "min_stars": null,
+        "min_water_temperature_c": null,
+        "visa_free_only": false,
+        "needs": [],
+        "mood": null
+      },
+      "sources": {
+        "origin": "explicit",
+        "destination": "explicit",
+        "month": "inferred",
+        "year": "inferred",
+        "start_date": "explicit",
+        "nights": "explicit",
+        "adults": "inferred"
+      },
+      "stale": false,
+      "selected": null,
+      "booking": null
+    }
+  },
+  {
+    "stage": "select_and_confirm_unpaid_cart",
+    "message": "Беру вариант 1",
+    "events": [
+      {
+        "type": "status",
+        "data": {
+          "stage": "analyze",
+          "text": "Разбираю запрос"
+        }
+      },
+      {
+        "type": "status",
+        "data": {
+          "stage": "confirm",
+          "text": "Жду подтверждения"
+        }
+      },
+      {
+        "type": "delta",
+        "data": {
+          "text": "Проверьте перед оформлением — вариант 1 «Оптимальный · дешевле всех»:\n• Туда: SVO → MLE, 18.11 12:50 — 64 976 ₽\n• Отель: JEN, 19.11 — 26.11 — 50 547 ₽, без возврата\n• Трансфер: 26 мин — 1 320 ₽\n• Обратно: MLE → SVO, 26.11 11:10 — 92 140 ₽\nСтоимость показанных компонентов (2 взрослых): 216 983 ₽ за показанные компоненты для всей группы.\nМодельная доплата за багаж включена: 8 000 ₽.\nТуда: котировка Aviasales 32 488 ₽ за одно место, запись 2026-10-28.\nОбратно: котировка Aviasales 46 070 ₽ за одно место, запись 2026-10-28.\nОбратный трансфер, виза и прочие обязательные доплаты не оценены.\nОформляем? Это имитация: деньги не списываются."
+        }
+      },
+      {
+        "type": "done",
+        "data": {
+          "session_id": "<demo-session>",
+          "stage": "awaiting_confirmation",
+          "version": 1
+        }
+      }
+    ],
+    "state": {
+      "session_id": "<demo-session>",
+      "version": 1,
+      "stage": "awaiting_confirmation",
+      "brief": {
+        "transport": "flight",
+        "seat_class": "coupe",
+        "origin": "MOW",
+        "destination": "MLE",
+        "month": 11,
+        "year": 2026,
+        "start_date": "2026-11-18",
+        "nights": 7,
+        "adults": 2,
+        "children_ages": [],
+        "pets": 0,
+        "budget_rub": null,
+        "max_flight_minutes": null,
+        "direct_only": false,
+        "late_departure": false,
+        "refundable_only": false,
+        "min_stars": null,
+        "min_water_temperature_c": null,
+        "visa_free_only": false,
+        "needs": [],
+        "mood": null
+      },
+      "sources": {
+        "origin": "explicit",
+        "destination": "explicit",
+        "month": "inferred",
+        "year": "inferred",
+        "start_date": "explicit",
+        "nights": "explicit",
+        "adults": "inferred"
+      },
+      "stale": false,
+      "selected": 1,
+      "booking": null
+    }
+  },
+  {
+    "stage": "select_and_confirm_unpaid_cart",
+    "message": "Подтверждаю",
+    "events": [
+      {
+        "type": "status",
+        "data": {
+          "stage": "analyze",
+          "text": "Разбираю запрос"
+        }
+      },
+      {
+        "type": "booking",
+        "data": {
+          "id": "<demo-cart>",
+          "cart_id": "<demo-cart>",
+          "status": "awaiting_travelers",
+          "option": 1,
+          "hotel": "JEN",
+          "total_rub": 216983,
+          "is_simulated": true,
+          "paid": false,
+          "checkout_url": "/api/checkout/carts/<demo-cart>"
+        }
+      },
+      {
+        "type": "delta",
+        "data": {
+          "text": "Создана демонстрационная корзина. Оплата ещё не выполнена: нужны тестовые данные путешественников и явное подтверждение имитации оплаты. После неё будут доступны ваучер и .ics. Деньги не списываются, билеты не выпускаются; неоценённые доплаты остаются вне суммы."
+        }
+      },
+      {
+        "type": "done",
+        "data": {
+          "session_id": "<demo-session>",
+          "stage": "checkout_pending",
+          "version": 1
+        }
+      }
+    ],
+    "state": {
+      "session_id": "<demo-session>",
+      "version": 1,
+      "stage": "checkout_pending",
+      "brief": {
+        "transport": "flight",
+        "seat_class": "coupe",
+        "origin": "MOW",
+        "destination": "MLE",
+        "month": 11,
+        "year": 2026,
+        "start_date": "2026-11-18",
+        "nights": 7,
+        "adults": 2,
+        "children_ages": [],
+        "pets": 0,
+        "budget_rub": null,
+        "max_flight_minutes": null,
+        "direct_only": false,
+        "late_departure": false,
+        "refundable_only": false,
+        "min_stars": null,
+        "min_water_temperature_c": null,
+        "visa_free_only": false,
+        "needs": [],
+        "mood": null
+      },
+      "sources": {
+        "origin": "explicit",
+        "destination": "explicit",
+        "month": "inferred",
+        "year": "inferred",
+        "start_date": "explicit",
+        "nights": "explicit",
+        "adults": "inferred"
+      },
+      "stale": false,
+      "selected": 1,
+      "booking": {
+        "id": "<demo-cart>",
+        "cart_id": "<demo-cart>",
+        "status": "awaiting_travelers",
+        "option": 1,
+        "hotel": "JEN",
+        "total_rub": 216983,
+        "is_simulated": true,
+        "paid": false,
+        "checkout_url": "/api/checkout/carts/<demo-cart>"
+      }
+    }
+  },
+  {
+    "stage": "synthetic_travelers_and_declined_payment",
+    "result": {
+      "cart_id": "<demo-cart>",
+      "status": "payment_declined",
+      "is_simulated": true,
+      "notice": "Тестовый отказ. Деньги не списаны, заказ не создан."
+    }
+  },
+  {
+    "stage": "simulated_approval_and_idempotent_retry",
+    "status": "paid_demo",
+    "is_simulated": true,
+    "order_snapshot_sha256": "52669b9d8bb61815bb575e2000d9938fd9522dbc75d572058cb97a739e9aa076",
+    "travelers": "two fictitious demo adults"
+  }
+]

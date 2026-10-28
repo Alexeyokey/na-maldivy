@@ -5,30 +5,32 @@ export class ChatApiError extends Error {
     this.code=code;this.partialText=partialText;this.status=status;
   }
 }
-export async function streamChat({message,sessionId,endpoint='/api/chat',signal,onDelta=()=>{},onEvent=()=>{},fetchImpl=globalThis.fetch}) {
+export async function streamChat({message,sessionId,requestId,retry=false,endpoint='/api/chat',signal,onDelta=()=>{},onEvent=()=>{},fetchImpl=globalThis.fetch}) {
   if(typeof message!=='string'||!message.trim()||message.length>4000)throw new ChatApiError('Напишите сообщение длиной от 1 до 4000 символов.',{code:'validation'});
-  if(sessionId!==undefined&&sessionId!==null&&(typeof sessionId!=='string'||!sessionId||sessionId.length>64))throw new ChatApiError('Не удалось восстановить сессию поездки.',{code:'validation'});
-  let text='',reader,finished=false;
+  if(sessionId!==undefined&&sessionId!==null&&!isSessionId(sessionId))throw new ChatApiError('Не удалось продолжить диалог. Начните новый поиск.',{code:'validation'});
+  if(requestId!==undefined&&!isSessionId(requestId))throw new ChatApiError('Не удалось повторить сообщение. Отправьте его заново.',{code:'validation'});
+  if(typeof retry!=='boolean'||retry&&requestId===undefined)throw new ChatApiError('Не удалось восстановить сообщение. Начните новый поиск.',{code:'validation'});
+  let text='',reader,finished=false,done=null;
+  const events=[];let resultSessionId=sessionId||null;
   try {
-    const response=await fetchImpl(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'text/event-stream'},body:JSON.stringify({message,...(sessionId?{session_id:sessionId}:{})}),signal});
-    if(!response.ok)throw new ChatApiError(response.status===422?'Сервер не принял сообщение. Проверьте его длину.':'Агент сейчас недоступен. Попробуйте ещё раз.',{code:'http',status:response.status});
+    const response=await fetchImpl(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'text/event-stream'},body:JSON.stringify({message,...(sessionId?{session_id:sessionId}:{}),...(requestId!==undefined?{request_id:requestId}:{}),...(retry?{retry:true}:{})}),signal,credentials:'same-origin',cache:'no-store',redirect:'error'});
+    if(!response.ok)throw chatHttpError(response.status);
     if(!response.headers.get('content-type')?.includes('text/event-stream')||!response.body)throw new ChatApiError('Сервер вернул ответ в неподдерживаемом формате.',{code:'protocol'});
     reader=response.body.getReader();const decoder=new TextDecoder();let pending='',event='message',data=[];
     const dispatch=()=>{
       const type=event,payload=data.join('\n');event='message';data=[];
       if(!payload)return;
       let value;try{value=JSON.parse(payload);}catch{throw new ChatApiError('Не удалось прочитать ответ агента.',{code:'protocol'});}
+      if(value===null||typeof value!=='object'||Array.isArray(value))throw new ChatApiError('Агент вернул некорректное событие.',{code:'protocol'});
+      events.push({type,data:value});onEvent(type,value);
       if(type==='delta'){
         if(typeof value.text!=='string')throw new ChatApiError('Агент вернул некорректный фрагмент ответа.',{code:'protocol'});
         text+=value.text;onDelta(value.text,text);
       }else if(type==='done'){
-        try{onEvent(type,value);}catch(error){throw new ChatApiError(error.message||'Некорректная версия холста поездки.',{code:'protocol'});}
-        finished=true;
+        if(value.session_id!==undefined&&!isSessionId(value.session_id))throw new ChatApiError('Не удалось сохранить диалог.',{code:'protocol'});
+        done=value;resultSessionId=value.session_id||resultSessionId;finished=true;
       }
       else if(type==='error')throw new ChatApiError(typeof value.message==='string'?value.message:'Агент не смог закончить ответ.',{code:'agent'});
-      else if(type==='brief'){
-        try{onEvent(type,value);}catch(error){throw new ChatApiError(error.message||'Агент вернул некорректный холст поездки.',{code:'protocol'});}
-      }
     };
     const line=value=>{
       if(!value){dispatch();return;}
@@ -47,24 +49,101 @@ export async function streamChat({message,sessionId,endpoint='/api/chat',signal,
       if(chunk.done){if(pending)line(pending);dispatch();break;}
     }
     if(!finished)throw new ChatApiError('Связь прервалась до завершения ответа. Полученный текст сохранён.',{code:'incomplete'});
-    return {text};
+    return {text,sessionId:resultSessionId,done,events};
   }catch(error){
     if(error instanceof ChatApiError){error.partialText=text;throw error;}
-    throw new ChatApiError(signal?.aborted||error?.name==='AbortError'?'Ответ остановлен.':'Не удалось связаться с агентом. Проверьте, запущен ли сервер.',{code:signal?.aborted||error?.name==='AbortError'?'aborted':'network',partialText:text});
-  }finally{if(reader){try{await reader.cancel();}catch{}reader.releaseLock();}}
+    throw new ChatApiError(signal?.aborted||error?.name==='AbortError'?'Ответ остановлен.':reader?'Связь прервалась во время ответа. Полученный текст сохранён. Можно повторить сообщение.':'Не удалось связаться с агентом. Проверьте соединение и повторите сообщение.',{code:signal?.aborted||error?.name==='AbortError'?'aborted':'network',partialText:text});
+  }finally{if(reader){try{await reader.cancel();}catch{}try{reader.releaseLock();}catch{}}}
 }
 export async function checkAgentHealth({endpoint='/health',signal,fetchImpl=globalThis.fetch}={}){
   try{
-    const response=await fetchImpl(endpoint,{signal,headers:{Accept:'application/json'}});
-    if(!response.ok)throw new Error('Unavailable');
+    const response=await fetchImpl(endpoint,{method:'GET',signal,headers:{Accept:'application/json'},credentials:'same-origin',cache:'no-store',redirect:'error'});
+    if(!response.ok)throw chatHttpError(response.status);
     const value=await response.json();
-    if(value.status!=='ok'||!['fake','openai'].includes(value.llm_provider))throw new Error('Invalid health');
+    if(value.status!=='ok'||!['fake','openai','codex_local','codex_private'].includes(value.llm_provider))throw new Error('Invalid health');
     return value;
-  }catch(error){throw new ChatApiError(signal?.aborted?'Проверка остановлена.':'Сервер агента недоступен.',{code:signal?.aborted?'aborted':'network'});}
+  }catch(error){
+    if(signal?.aborted||error?.name==='AbortError')throw new ChatApiError('Проверка остановлена.',{code:'aborted'});
+    if(error instanceof ChatApiError)throw error;
+    throw new ChatApiError('Сервер агента недоступен. Проверьте соединение и повторите попытку.',{code:'network'});
+  }
 }
+
+const isSessionId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(value);
+function chatHttpError(status){
+  const messages={
+    401:'Для доступа к чату войдите на сайт и повторите сообщение.',
+    403:'Нет доступа к чату. Проверьте, что вы вошли на сайт.',
+    409:'Не удалось повторить сообщение с этими данными. Дождитесь текущего ответа или отправьте новое сообщение.',
+    410:'Срок восстановления ответа истёк. Переписка сохранена; начните новый поиск.',
+    422:'Сервер не принял сообщение. Проверьте его длину.',
+    429:'Слишком много запросов. Подождите немного и повторите сообщение.',
+    502:'Связь с агентом временно недоступна. Можно повторить сообщение.',
+    503:'Агент временно недоступен. Подождите немного и повторите сообщение.',
+    504:'Время ожидания ответа истекло. Можно повторить сообщение.',
+  };
+  return new ChatApiError(messages[status]||'Агент сейчас недоступен. Попробуйте ещё раз.',{code:'http',status});
+}
+const checkoutRoutes=[
+  [/^\/api\/checkout\/carts$/,['POST']],
+  [/^\/api\/checkout\/carts\/[A-Za-z0-9_-]{1,128}$/,['GET']],
+  [/^\/api\/checkout\/carts\/[A-Za-z0-9_-]{1,128}\/travelers$/,['PUT']],
+  [/^\/api\/checkout\/carts\/[A-Za-z0-9_-]{1,128}\/pay$/,['POST']],
+  [/^\/api\/checkout\/orders\/[A-Za-z0-9_-]{1,128}$/,['GET']],
+  [/^\/api\/checkout\/orders\/[A-Za-z0-9_-]{1,128}\/(?:voucher|calendar\.ics)$/,['GET']],
+];
+function checkoutRequest({path,method='GET',body,sessionId,signal}){
+  const route=typeof path==='string'&&checkoutRoutes.find(([pattern])=>pattern.test(path));
+  if(!route||!route[1].includes(method)||!isSessionId(sessionId))throw new ChatApiError('Не удалось выполнить оформление. Повторите поиск.',{code:'validation'});
+  const headers={Accept:'application/json'};
+  const init={method,headers,signal,credentials:'same-origin',cache:'no-store'};
+  if(method==='GET'){
+    if(body!==undefined)throw new ChatApiError('Некорректный запрос оформления.',{code:'validation'});
+    headers['X-Session-ID']=sessionId;
+  }else{
+    if(body!==undefined&&(body===null||typeof body!=='object'||Array.isArray(body)))throw new ChatApiError('Некорректный запрос оформления.',{code:'validation'});
+    headers['Content-Type']='application/json';init.body=JSON.stringify({...body,session_id:sessionId});
+  }
+  return init;
+}
+function checkoutError(error,signal){
+  if(error instanceof ChatApiError)return error;
+  return new ChatApiError(signal?.aborted||error?.name==='AbortError'?'Оформление остановлено.':'Не удалось связаться с сервисом оформления. Повторите попытку.',{code:signal?.aborted||error?.name==='AbortError'?'aborted':'network'});
+}
+async function checkoutFetch(path,init,fetchImpl){
+  // Avoid redirects sending the private session header to a different origin.
+  const response=await fetchImpl(path,{...init,redirect:'error'});
+  if(!response.ok)throw new ChatApiError(response.status===409?'Условия поездки изменились. Повторите поиск и выберите вариант заново.':'Не удалось выполнить оформление. Проверьте данные и повторите попытку.',{code:'http',status:response.status});
+  return response;
+}
+/** Session identifiers stay in the private header or JSON body, never in a query string. */
+export async function requestCheckout({path,method='GET',body,sessionId,fetchImpl=globalThis.fetch,signal}){
+  try{
+    const init=checkoutRequest({path,method,body,sessionId,signal});
+    const response=await checkoutFetch(path,init,fetchImpl);
+    if(!response.headers.get('content-type')?.includes('application/json'))throw new ChatApiError('Сервис оформления вернул неподдерживаемый ответ.',{code:'protocol'});
+    let value;try{value=await response.json();}catch{throw new ChatApiError('Не удалось прочитать результат оформления.',{code:'protocol'});}
+    if(value===null||typeof value!=='object'||Array.isArray(value))throw new ChatApiError('Не удалось прочитать результат оформления.',{code:'protocol'});
+    return value;
+  }catch(error){throw checkoutError(error,signal);}
+}
+/** The displayed filename is fixed by document type, not by an order/session identifier. */
+export async function downloadCheckout({path,sessionId,fetchImpl=globalThis.fetch,signal}){
+  try{
+    const init=checkoutRequest({path,sessionId,signal});
+    const calendar=path.endsWith('/calendar.ics'),voucher=path.endsWith('/voucher');
+    if(!calendar&&!voucher)throw new ChatApiError('Выберите документ для скачивания.',{code:'validation'});
+    const contentType=calendar?'text/calendar':'text/html';init.headers.Accept=contentType;
+    const response=await checkoutFetch(path,init,fetchImpl);
+    if(!response.headers.get('content-type')?.toLowerCase().startsWith(contentType))throw new ChatApiError('Документ вернулся в неподдерживаемом формате.',{code:'protocol'});
+    return {blob:await response.blob(),filename:calendar?'demo-trip.ics':'demo-voucher.html',contentType};
+  }catch(error){throw checkoutError(error,signal);}
+}
+
+/** Compatibility reader for the participant's validated trip canvas projection. */
 export async function fetchSessionCanvas({sessionId,endpoint='/api/session',signal,fetchImpl=globalThis.fetch}){
- if(typeof sessionId!=='string'||!sessionId||sessionId.length>64)throw new ChatApiError('Некорректная сессия поездки.',{code:'validation'});
- const response=await fetchImpl(endpoint+'/'+encodeURIComponent(sessionId),{signal,headers:{Accept:'application/json'}});
+ if(!isSessionId(sessionId))throw new ChatApiError('Некорректная сессия поездки.',{code:'validation'});
+ const response=await fetchImpl(endpoint+'/'+encodeURIComponent(sessionId),{signal,headers:{Accept:'application/json'},credentials:'same-origin',cache:'no-store',redirect:'error'});
  if(!response.ok)throw new ChatApiError(response.status===404?'Сессия поездки больше не существует.':'Не удалось обновить холст поездки.',{code:response.status===404?'session_missing':'http',status:response.status});
  const value=await response.json();
  if(value?.session_id!==sessionId||!value.brief||typeof value.brief!=='object'||Array.isArray(value.brief))throw new ChatApiError('Сервер вернул другой холст поездки.',{code:'protocol'});

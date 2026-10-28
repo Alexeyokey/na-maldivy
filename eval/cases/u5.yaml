@@ -1,0 +1,264 @@
+# Our proposed acceptance cases; not supplied or approved by other participants.
+# Synthetic deterministic backend checks, not external-LLM metrics or UI D9 evidence.
+- id: u5-01
+  text: Беру первый вариант
+  checks:
+    api.cart.status: 201
+    api.cart.body.status: awaiting_travelers
+    state.stage: awaiting_confirmation
+    api.cart.cache_control: no-store
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - &id001
+    method: POST
+    path: /api/checkout/carts
+    json:
+      session_id: $session_id
+      option: $option
+      version: $version
+    as: cart
+- id: u5-02
+  text: Выбираю вариант 1
+  checks:
+    api.cart.status: 201
+    api.pay.status: 409
+    state.booking: null
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - *id001
+  - method: POST
+    path: /api/checkout/carts/{cart_id}/pay
+    json:
+      session_id: $session_id
+      outcome: approved
+      idempotency_key: proposed-payment-001
+      acknowledge_demo: true
+      acknowledge_unpriced: true
+    as: pay
+- id: u5-03
+  text: Хочу первый вариант
+  checks:
+    api.travelers.status: 422
+    state.booking: null
+    api.cart.body.expected_travelers.adults: 2
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - *id001
+  - method: PUT
+    path: /api/checkout/carts/{cart_id}/travelers
+    json:
+      session_id: $session_id
+      travelers:
+      - full_name: Demo Fictional Adult Alone
+        birth_date: '1990-01-01'
+    as: travelers
+- id: u5-04
+  text: Давай первый вариант
+  checks:
+    api.travelers.status: 200
+    api.pay.status: 422
+    state.booking: null
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - *id001
+  - &id002
+    method: PUT
+    path: /api/checkout/carts/{cart_id}/travelers
+    json:
+      session_id: $session_id
+      travelers: $demo_travelers
+    as: travelers
+  - method: POST
+    path: /api/checkout/carts/{cart_id}/pay
+    json:
+      session_id: $session_id
+      outcome: approved
+      idempotency_key: proposed-payment-001
+      acknowledge_demo: false
+      acknowledge_unpriced: true
+    as: pay
+- id: u5-05
+  text: Выбираю первый вариант поездки
+  checks:
+    api.cart.status: 422
+    state.booking: null
+    api.cart.body.detail.present: true
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - method: POST
+    path: /api/checkout/carts
+    json:
+      session_id: $session_id
+      option: $option
+      version: $version
+      total_rub: 1
+    as: cart
+- id: u5-06
+  text: Беру вариант 1
+  checks:
+    api.pay.status: 200
+    api.pay.body.status: payment_declined
+    state.booking: null
+    api.pay.body.order_id.present: false
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - *id001
+  - *id002
+  - method: POST
+    path: /api/checkout/carts/{cart_id}/pay
+    json:
+      session_id: $session_id
+      outcome: declined
+      idempotency_key: proposed-payment-001
+      acknowledge_demo: true
+      acknowledge_unpriced: true
+    as: pay
+- id: u5-07
+  text: Давай вариант 1
+  checks:
+    api.pay.status: 200
+    api.pay.body.status: paid_demo
+    api.pay.body.is_simulated: true
+    state.stage: booked
+    state.booking.is_simulated: true
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - *id001
+  - *id002
+  - method: POST
+    path: /api/checkout/carts/{cart_id}/pay
+    json:
+      session_id: $session_id
+      outcome: approved
+      idempotency_key: proposed-payment-001
+      acknowledge_demo: true
+      acknowledge_unpriced: true
+    as: pay
+- id: u5-08
+  text: Хочу вариант 1
+  checks:
+    api.pay.status: 200
+    api.pay_repeat.status: 200
+    invariants.paid_retry_same_order: true
+    state.stage: booked
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - *id001
+  - *id002
+  - method: POST
+    path: /api/checkout/carts/{cart_id}/pay
+    json:
+      session_id: $session_id
+      outcome: approved
+      idempotency_key: proposed-payment-001
+      acknowledge_demo: true
+      acknowledge_unpriced: true
+    as: pay
+  - method: POST
+    path: /api/checkout/carts/{cart_id}/pay
+    json:
+      session_id: $session_id
+      outcome: approved
+      idempotency_key: proposed-payment-001
+      acknowledge_demo: true
+      acknowledge_unpriced: true
+    as: pay_repeat
+- id: u5-09
+  text: Первый вариант, выбираю
+  checks:
+    api.voucher.status: 200
+    api.voucher.text.contains:
+    - ДЕМО
+    - не забронированы
+    api.voucher.cache_control: no-store
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - *id001
+  - *id002
+  - method: POST
+    path: /api/checkout/carts/{cart_id}/pay
+    json:
+      session_id: $session_id
+      outcome: approved
+      idempotency_key: proposed-payment-001
+      acknowledge_demo: true
+      acknowledge_unpriced: true
+    as: pay
+  - method: GET
+    path: /api/checkout/orders/{order_id}/voucher
+    headers:
+      X-Session-ID: $session_id
+    as: voucher
+- id: u5-10
+  text: Выбираю 1 вариант
+  checks:
+    api.wrong_session.status: 404
+    api.calendar.status: 200
+    api.calendar.text.contains:
+    - BEGIN:VCALENDAR
+    - BEGIN:VEVENT
+    - DTSTART
+    api.calendar.cache_control: no-store
+  tags:
+  - checkout
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+  actions:
+  - *id001
+  - *id002
+  - method: POST
+    path: /api/checkout/carts/{cart_id}/pay
+    json:
+      session_id: $session_id
+      outcome: approved
+      idempotency_key: proposed-payment-001
+      acknowledge_demo: true
+      acknowledge_unpriced: true
+    as: pay
+  - method: GET
+    path: /api/checkout/orders/{order_id}
+    headers:
+      X-Session-ID: fabricated-wrong-session
+    as: wrong_session
+  - method: GET
+    path: /api/checkout/orders/{order_id}/calendar.ics
+    headers:
+      X-Session-ID: $session_id
+    as: calendar

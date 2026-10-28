@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from pydantic import AliasChoices, AwareDatetime, BaseModel, Field, StringConstraints, field_validator, model_validator
 
+from app.contracts.hotel_profiles import HotelReviewProfile
 from app.contracts.identifiers import canonical_hotel_id
 
 IATACode = Annotated[str, StringConstraints(pattern=r"^[A-Z]{3}$")]
@@ -102,11 +103,54 @@ class Journey(Contract):
         return self
 
 
+class FlightPriceSource(Contract):
+    """Public quote evidence only; credentials and HTTP request headers are never part of this model."""
+
+    provider: Literal["aviasales_data_api"] = "aviasales_data_api"
+    seat_price_rub: Rubles
+    currency: Literal["RUB"] = "RUB"
+    cache_mode: Literal["record", "replay", "live"]
+    cache_hit: bool
+    recorded_at: AwareDatetime | None = None
+    duration_is_modelled: bool
+    group_price_is_modelled: Literal[True] = True
+    baggage_price_is_modelled: Literal[True] = True
+
+
+class FlightDemoSource(Contract):
+    """Explicit offline-demo provenance; never attributes generated prices to a provider."""
+
+    kind: Literal["provider_replay", "deterministic_mock"]
+    reason: Literal["cache_miss", "no_matching_quotes"] | None = None
+    notice: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def fallback_reason_matches_kind(self) -> "FlightDemoSource":
+        if (self.kind == "deterministic_mock") != (self.reason is not None):
+            raise ValueError("Only a deterministic mock requires a demo fallback reason")
+        return self
+
+
 class Flight(Journey):
     carrier: str
     stops: int = Field(default=0, ge=0)
     baggage_price_rub: Rubles = 0
     is_overnight: bool = False
+    price_source: FlightPriceSource | None = None
+    demo_source: FlightDemoSource | None = None
+
+    @model_validator(mode="after")
+    def truthful_demo_source(self) -> "Flight":
+        if self.demo_source is None:
+            return self
+        if not self.is_synthetic:
+            raise ValueError("Demo flight group prices and extras remain modelled")
+        if self.demo_source.kind == "provider_replay":
+            if self.price_source is None or self.price_source.cache_mode != "replay" or not self.price_source.cache_hit:
+                raise ValueError("Provider replay requires an evidenced Aviasales cache hit")
+        elif self.price_source is not None:
+            raise ValueError("A deterministic mock cannot carry an Aviasales price source")
+        return self
 
 
 class HotelSearch(Contract):
@@ -128,6 +172,7 @@ class HotelSearch(Contract):
 class HotelOffer(Contract):
     hotel_id: str
     offer_id: str = Field(min_length=1, validation_alias=AliasChoices("offer_id", "id"))
+    review_profile: HotelReviewProfile | None = None
     name: str
     place: Place
     check_in: date
@@ -165,6 +210,8 @@ class HotelOffer(Contract):
 
     @model_validator(mode="after")
     def positive_stay(self) -> "HotelOffer":
+        if self.review_profile is not None and self.review_profile.hotel_id != self.hotel_id:
+            raise ValueError("Review profile must belong to the offered hotel")
         if self.check_out <= self.check_in:
             raise ValueError("Дата выезда должна быть позже даты заезда")
         if self.place.kind != "hotel" or self.place.id != self.hotel_id:
@@ -303,19 +350,41 @@ class DestinationQuery(Contract):
     budget_rub: Rubles | None = None
     min_water_temperature_c: float | None = None
     visa_free_only: bool = False
+    departure_date: date | None = None
+
+
+class VisaEvidence(Contract):
+    regime: Literal["domestic", "exempt", "on_arrival", "evisa", "required", "unknown"]
+    verification_status: Literal["official_verified", "partial", "unknown", "domestic"]
+    conditions: str
+    checked_on: date | None = None
+    effective_from: date | None = None
+    effective_until: date | None = None
+    max_stay_days: int | None = Field(default=None, gt=0)
+    source_url: str | None = None
+
+
+class ReferenceSource(Contract):
+    title: str
+    url: str
+    as_of: date
+    period: str | None = None
 
 
 class Destination(Contract):
     place: Place
     country: str
     month: int = Field(ge=1, le=12)
-    air_temperature_c: float
-    water_temperature_c: float
-    flight_duration_minutes: int = Field(gt=0)
-    visa_required: bool
-    estimated_total_price_rub: Rubles
+    air_temperature_c: float | None
+    water_temperature_c: float | None
+    flight_duration_minutes: int | None = Field(gt=0)
+    visa_required: KnownBoolean | None
+    estimated_total_price_rub: Rubles | None
     tags: list[str] = Field(default_factory=list)
     risks: list[str] = Field(default_factory=list)
+    visa: VisaEvidence | None = None
+    sources: list[ReferenceSource] = Field(default_factory=list)
+    as_of: date | None = None
     is_synthetic: bool
 
 

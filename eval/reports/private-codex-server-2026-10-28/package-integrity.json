@@ -1,0 +1,9 @@
+{
+  "metadata_url": "https://registry.npmjs.org/@openai/codex/0.163.0-alpha.11-linux-x64",
+  "tarball": "https://registry.npmjs.org/@openai/codex/-/codex-0.163.0-alpha.11-linux-x64.tgz",
+  "integrity_verified": true,
+  "integrity": "sha512-NfirUDxl/zpyFRgyYwqzWMV3fdWNf6Rz18pm0squPagOGgHPnUExXMgan/1AcTTR8XQh/fEqRFeRS8sRpr5Big==",
+  "sha256": "97afd09b4831a411f7b01c9e43c064b45a48494e3b76f8eae4932e330bb633d7",
+  "archive_bytes": 162457683,
+  "binary_sha256": "ff3a6a3ed13735b8a8938c40141eb38b688efd6b02ee0fd5358187111fe9966a"
+}

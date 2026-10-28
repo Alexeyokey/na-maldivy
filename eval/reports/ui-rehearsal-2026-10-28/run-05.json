@@ -1,0 +1,35 @@
+{
+  "run": 5,
+  "status": "passed",
+  "method": "computer_use_ui_automation",
+  "app_version": "a728e37",
+  "scope": "integrated_product_through_demo_payment_and_voucher",
+  "integrated_ui_status": "performed",
+  "chat_mode": "api",
+  "local_demo_fallback_used": false,
+  "started_at": "2026-10-28T17:21:25.902Z",
+  "observed_steps": [
+    "search",
+    "D7",
+    "D8",
+    "select",
+    "server_cart",
+    "fictitious_travelers",
+    "two_acknowledgments",
+    "payment_declined",
+    "payment_approved",
+    "voucher_download",
+    "calendar_download"
+  ],
+  "finished_at": "2026-10-28T17:21:32.629Z",
+  "duration_seconds": 6.727,
+  "observations": [
+    "AYT Nov18:2 adults,7 nights,known83234RUB,both legs cached Aviasales,unknown extras visible.",
+    "D7:profile24/family6 synthetic,literal child-play/noise quotes,no LLM claim.",
+    "D8:six dates,Nov16=71086,saving12148,Nov18 retained.",
+    "Fictitious travelers1990;two unchecked acknowledgments checked;declined then successful server demo payment.",
+    "Both document buttons triggered successful download notices after backend GET. Filesystem wait excluded; content checked independently through same proxy."
+  ],
+  "backend_report": "eval/reports/three-destination-ui-proxy-2026-10-28.json",
+  "trace": "eval/reports/ui-rehearsal-2026-10-28/run-05.json"
+}

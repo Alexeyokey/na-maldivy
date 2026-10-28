@@ -1,0 +1,113 @@
+# Our proposed acceptance cases; not supplied or approved by other participants.
+# Synthetic deterministic backend checks, not external-LLM metrics or UI D9 evidence.
+- id: u4-01
+  text: Из Москвы в Анталью 21 ноября 2026 на неделю вдвоём
+  checks:
+    invariants.tool_calls_have_results: true
+    invariants.package_component_sum: true
+    invariants.same_session: true
+    cards.packages.count.gte: 1
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+- id: u4-02
+  text: Из Москвы поздно вечером 15 ноября 2026 в Дубай на 7 ночей
+  checks:
+    state.brief.late_departure: true
+    cards.packages.all.hotel.check_in: '2026-11-16'
+    invariants.flight_timestamps_aware: true
+    invariants.hotel_nights_match_dates: true
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+- id: u4-03
+  text: Из Москвы в Анталью 22 ноября 2026 на неделю вдвоём
+  checks:
+    cards.packages.all.total_rub: null
+    cards.packages.all.can_confirm: false
+    cards.packages.all.transfer: null
+    last_text.contains: известная часть
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+  fixture: missing_transfer
+- id: u4-04
+  text: Из Москвы в Анталью 23 ноября 2026 на неделю, двое взрослых
+  checks:
+    cards.packages.all.hotel.refundable: null
+    cards.packages.count.gte: 1
+    last_text.contains: Условия возврата неизвестны
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+  fixture: unknown_hotel_rules
+- id: u4-05
+  text: Из Москвы в Дубай 21 ноября 2026 на неделю с собакой
+  checks:
+    cards.packages.all.hotel.pets_allowed: null
+    cards.packages.all.can_confirm: false
+    last_text.contains: нужно уточнить до оплаты
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+  fixture: unknown_hotel_rules
+- id: u4-06
+  text: Из Москвы в Анталью 24 ноября 2026 на неделю, двое и дочка 5 лет
+  checks:
+    cards.packages.all.hotel.adults_only: null
+    cards.packages.all.can_confirm: false
+    last_text.contains: неизвестно, принимает ли отель детей
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+  fixture: unknown_hotel_rules
+- id: u4-07
+  text: Из Москвы куда-нибудь в ноябре, без ограничений
+  checks:
+    cards.destinations.count.gte: 1
+    cards.destinations.all.water_temperature_c: null
+    cards.destinations.all.estimated_total_rub: null
+    last_text.contains: цена неизвестна
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+  fixture: unknown_destination_facts
+- id: u4-08
+  text: Из Москвы в Анталью 25 ноября 2026 на неделю вдвоём
+  checks:
+    cards.packages.count: 0
+    events.tool_result.all.ok: false
+    last_text.contains: Источник рейсов недоступен
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+  fixture: flight_source_error
+- id: u4-09
+  text: Из Москвы в Анталью 26 ноября 2026 на неделю вдвоём
+  checks:
+    api.delete.status: 204
+    api.deleted.status: 404
+    api.deleted.body.detail: Сессия не найдена
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+  actions:
+  - method: DELETE
+    path: /api/session/{session_id}
+    as: delete
+  - method: GET
+    path: /api/session/{session_id}
+    as: deleted
+- id: u4-10
+  text: Из Москвы в Анталью 27 ноября 2026 на неделю вдвоём
+  checks:
+    invariants.new_session_isolated: true
+    previous_session.brief.destination: AYT
+    state.brief.origin: LED
+    state.brief.destination: MOW
+  tags:
+  - protocol
+  proposal_status: proposed/not_team_approved
+  followups:
+  - message: Питер Москва поездом 28 ноября 2026 купе
+    new_session: true

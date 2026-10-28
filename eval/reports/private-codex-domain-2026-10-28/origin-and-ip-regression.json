@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "system_recursive_dns_a": [
+    "201.8.90.64"
+  ],
+  "checks": [
+    {
+      "url": "https://201.8.90.64/health",
+      "origin": null,
+      "status": 401
+    },
+    {
+      "url": "https://201.8.90.64/health",
+      "origin": "https://201.8.90.64",
+      "status": 200
+    },
+    {
+      "url": "https://201.8.90.64/health",
+      "origin": "https://na-maldivy.eu.cc",
+      "status": 403
+    },
+    {
+      "url": "https://na-maldivy.eu.cc/health",
+      "origin": "https://201.8.90.64",
+      "status": 403
+    }
+  ]
+}

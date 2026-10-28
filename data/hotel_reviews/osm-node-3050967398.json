@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "hotel_id": "osm:node/3050967398",
+  "is_synthetic": true,
+  "generator": "codex-authored-synthetic-templates-v1",
+  "real_guest_reviews_used": false,
+  "reviews": [
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/family/01",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "family",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ family-1] Это тестовый текст, не отзыв реального гостя. В модельном сценарии детям было удобно играть.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "children",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии детям было удобно играть."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/family/02",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "family",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ family-2] Это тестовый текст, не отзыв реального гостя. В модельном сценарии ночной шум мешал спать.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "noise",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии ночной шум мешал спать."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/family/03",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "family",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ family-3] Это тестовый текст, не отзыв реального гостя. В модельном сценарии номер был чистым.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "cleanliness",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии номер был чистым."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/family/04",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "family",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ family-4] Это тестовый текст, не отзыв реального гостя. В модельном сценарии завтрак был разнообразным.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "food",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии завтрак был разнообразным."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/family/05",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "family",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ family-5] Это тестовый текст, не отзыв реального гостя. В модельном сценарии до пляжа было удобно идти.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "location",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/family/06",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "family",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ family-6] Это тестовый текст, не отзыв реального гостя. В модельном сценарии Wi-Fi часто прерывался.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "wifi",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии Wi-Fi часто прерывался."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/couple/01",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "couple",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ couple-1] Это тестовый текст, не отзыв реального гостя. В модельном сценарии сотрудники помогали вежливо и быстро.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "staff",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии сотрудники помогали вежливо и быстро."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/couple/02",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "couple",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ couple-2] Это тестовый текст, не отзыв реального гостя. В модельном сценарии номер был чистым.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "cleanliness",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии номер был чистым."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/couple/03",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "couple",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ couple-3] Это тестовый текст, не отзыв реального гостя. В модельном сценарии до пляжа было удобно идти.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "location",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/couple/04",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "couple",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ couple-4] Это тестовый текст, не отзыв реального гостя. В модельном сценарии завтрак был разнообразным.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "food",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии завтрак был разнообразным."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/couple/05",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "couple",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ couple-5] Это тестовый текст, не отзыв реального гостя. В модельном сценарии сотрудники долго не отвечали на просьбы.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "staff",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии сотрудники долго не отвечали на просьбы."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/couple/06",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "couple",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ couple-6] Это тестовый текст, не отзыв реального гостя. В модельном сценарии в номере было тихо.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "noise",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии в номере было тихо."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/business/01",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "business",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ business-1] Это тестовый текст, не отзыв реального гостя. В модельном сценарии Wi-Fi работал стабильно.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "wifi",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии Wi-Fi работал стабильно."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/business/02",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "business",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ business-2] Это тестовый текст, не отзыв реального гостя. В модельном сценарии Wi-Fi работал стабильно.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "wifi",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии Wi-Fi работал стабильно."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/business/03",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "business",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ business-3] Это тестовый текст, не отзыв реального гостя. В модельном сценарии ночной шум мешал спать.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "noise",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии ночной шум мешал спать."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/business/04",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "business",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ business-4] Это тестовый текст, не отзыв реального гостя. В модельном сценарии завтрак был разнообразным.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "food",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии завтрак был разнообразным."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/business/05",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "business",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ business-5] Это тестовый текст, не отзыв реального гостя. В модельном сценарии номер был чистым.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "cleanliness",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии номер был чистым."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/business/06",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "business",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ business-6] Это тестовый текст, не отзыв реального гостя. В модельном сценарии до пляжа было удобно идти.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "location",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/pets/01",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "pets",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ pets-1] Это тестовый текст, не отзыв реального гостя. В модельном сценарии с собакой разместили без затруднений.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "pets",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии с собакой разместили без затруднений."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/pets/02",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "pets",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ pets-2] Это тестовый текст, не отзыв реального гостя. В модельном сценарии с собакой разместили без затруднений.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "pets",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии с собакой разместили без затруднений."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/pets/03",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "pets",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ pets-3] Это тестовый текст, не отзыв реального гостя. В модельном сценарии ночной шум мешал спать.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "noise",
+          "sentiment": "negative",
+          "quote": "В модельном сценарии ночной шум мешал спать."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/pets/04",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "pets",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ pets-4] Это тестовый текст, не отзыв реального гостя. В модельном сценарии номер был чистым.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "cleanliness",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии номер был чистым."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/pets/05",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "pets",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ pets-5] Это тестовый текст, не отзыв реального гостя. В модельном сценарии завтрак был разнообразным.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "food",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии завтрак был разнообразным."
+        }
+      ]
+    },
+    {
+      "review_id": "synthetic-review/osm:node/3050967398/pets/06",
+      "hotel_id": "osm:node/3050967398",
+      "segment": "pets",
+      "text": "[СИНТЕТИЧЕСКИЙ ОТЗЫВ pets-6] Это тестовый текст, не отзыв реального гостя. В модельном сценарии до пляжа было удобно идти.",
+      "is_synthetic": true,
+      "generator": "codex-authored-synthetic-templates-v1",
+      "annotations": [
+        {
+          "aspect": "location",
+          "sentiment": "positive",
+          "quote": "В модельном сценарии до пляжа было удобно идти."
+        }
+      ]
+    }
+  ]
+}

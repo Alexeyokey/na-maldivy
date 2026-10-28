@@ -1,5 +1,8 @@
 .PHONY: up down logs dev check check-fast test lint fmt schemas tool-examples
 
+# Независимые инструменты добавляют команды без конфликтов в корневом Makefile.
+-include make/*.mk
+
 up:
 	docker compose up --build -d --wait
 

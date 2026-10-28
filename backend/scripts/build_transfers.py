@@ -482,11 +482,26 @@ def build() -> None:
     hotels = read(HOTELS_PATH)["hotels"]
     airports = {a["iata"]: a for a in read(AIRPORTS_PATH)["airports"]}
     routes = read(ROUTES_PATH)["routes"]
+    hotel_ids = [hotel["hotel_id"] for hotel in hotels]
+    if len(set(hotel_ids)) != len(hotel_ids):
+        raise ValueError("Каталог содержит повторяющиеся hotel_id")
+    if unknown_routes := routes.keys() - set(hotel_ids):
+        raise ValueError(f"Маршруты ссылаются на отели вне каталога: {sorted(unknown_routes)}")
     records = []
     for h in hotels:
-        airport = airports[h["destination"]]
-        if h["hotel_id"] in routes:
-            options = road_options(h, routes[h["hotel_id"]])
+        code, hotel_id = h["destination"], h["hotel_id"]
+        if code not in DESTINATIONS or code not in airports:
+            raise ValueError(f"Нет поддерживаемого аэропорта {code} для {hotel_id}")
+        airport = airports[code]
+        if code in {"AYT", "DXB"}:
+            route = routes.get(hotel_id)
+            if route is None:
+                raise ValueError(f"Нет дорожного маршрута OSRM {code} → {hotel_id}; островная модель неприменима")
+            if route.get("airport") != code:
+                raise ValueError(f"Маршрут {hotel_id} относится к аэропорту {route.get('airport')}, нужен {code}")
+            options = road_options(h, route)
+        elif hotel_id in routes:
+            raise ValueError(f"Для MLE используется островная модель, дорожный маршрут {hotel_id} неприменим")
         else:
             options = island_options(h, airport)
         records.append(

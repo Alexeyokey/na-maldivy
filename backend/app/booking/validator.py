@@ -132,7 +132,7 @@ def validate_trip(
     if arrival_transfer:
         issues += _transfer_rules(ctx, arrival_transfer, "arrival")
     if departure_transfer:
-        issues += _transfer_rules(ctx, departure_transfer, "departure", check_duration=arrival_transfer is None)
+        issues += _transfer_rules(ctx, departure_transfer, "departure")
     return sorted(issues, key=lambda i: (SEVERITY_ORDER[i.severity], i.at is None, i.at.timestamp() if i.at else 0))
 
 
@@ -150,7 +150,7 @@ class _Context:
         self.airport, self.base = airport, base
         nights = (stay.check_out - stay.check_in).days
         price = getattr(stay, "price_rub", None)
-        self.nightly: int | None = round(price / nights / 100) * 100 if price and nights > 0 else None
+        self.nightly: int | None = round(price / nights / 100) * 100 if price is not None and nights > 0 else None
 
     def hotel(self, name: str) -> Any:
         return getattr(self.stay, name, None)
@@ -504,13 +504,13 @@ def _visa_required(ctx: _Context, *_: TransferLeg | None) -> list[Issue]:
     return [Issue(rule="visa_required", severity="warning", message="Для поездки нужна виза: оформить заранее")]
 
 
-def _transfer_rules(ctx: _Context, leg: TransferLeg, which: str, check_duration: bool = True) -> list[Issue]:
+def _transfer_rules(ctx: _Context, leg: TransferLeg, which: str) -> list[Issue]:
     issues: list[Issue] = []
     mode = MODE_TITLES.get(leg.mode, leg.mode).capitalize()
     where = "из аэропорта" if which == "arrival" else "в аэропорт"
     minutes = round((leg.arrive_at - leg.depart_at).total_seconds() / 60)
     limit = ctx.req.max_transfer_minutes or LONG_TRANSFER_MIN
-    if check_duration and minutes > limit:
+    if minutes > limit:
         strict = ctx.req.max_transfer_minutes is not None
         message = f"Трансфер {where} занимает {_duration(minutes)}"
         if strict:
@@ -591,7 +591,12 @@ def _transfer_alternatives(
     options = {o.id: o for o in ctx.base.get(ctx.stay.hotel_id, ctx.airport).options}
     fixes = []
     for quote in quotes:
-        if quote.option_id == leg.option_id or not quote.available or not suits(options[quote.option_id], quote):
+        if (
+            quote.option_id == leg.option_id
+            or not quote.available
+            or not suits(options[quote.option_id], quote)
+            or not _viable_transfer_alternative(ctx, quote, which)
+        ):
             continue
         delta = quote.price_rub - leg.price_rub
         fixes.append(
@@ -602,6 +607,22 @@ def _transfer_alternatives(
             )
         )
     return fixes or [generic]
+
+
+def _viable_transfer_alternative(ctx: _Context, quote: TransferQuote, which: str) -> bool:
+    """A fix for one constraint must not introduce another known critical problem."""
+    if "pets_forbidden" in quote.issues:
+        return False
+    if "child_seat_missing" in quote.issues and any(
+        age < CHILD_SEAT_CRITICAL_AGE for age in ctx.travelers.children_ages
+    ):
+        return False
+    if ctx.req.max_transfer_minutes is not None and quote.duration_min > ctx.req.max_transfer_minutes:
+        return False
+    flight = ctx.timeline.event("return_departure") if which == "departure" else None
+    if flight is not None and quote.arrive_at > flight.at - timedelta(minutes=AIRPORT_BEFORE_DEPARTURE_MIN):
+        return False
+    return True
 
 
 def _allows_pets(option: TransferOption, quote: TransferQuote) -> bool:

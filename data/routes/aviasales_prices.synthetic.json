@@ -1,0 +1,20 @@
+{
+  "fixture_metadata": {
+    "kind": "synthetic",
+    "is_captured_provider_response": false,
+    "source_schema": "https://support.travelpayouts.com/hc/en-us/articles/203956163-Aviasales-Data-API",
+    "note": "Handwritten contract fixture, never a claim of a real offer or a recorded API cassette."
+  },
+  "response": {
+    "success": true,
+    "currency": "rub",
+    "data": [{
+      "origin": "MOW", "destination": "DXB", "origin_airport": "SVO", "destination_airport": "DXB",
+      "price": 20000, "airline": "XX", "flight_number": "DEMO520",
+      "departure_at": "2030-11-18T20:30:00Z", "return_at": null,
+      "transfers": 0, "duration_to": 390,
+      "link": "/search/SVO1811DXB1?synthetic_fixture=true"
+    }],
+    "error": null
+  }
+}
