@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:5173,http://localhost:3000"
     tools_mode: Literal["stub", "real"] = "stub"
     data_dir: Path = Field(default_factory=resolve_data_dir)
-    flights_mode: Literal["synthetic", "aviasales"] = "synthetic"
+    flights_mode: Literal["synthetic", "aviasales", "demo"] = "synthetic"
     aviasales_api_token: SecretStr | None = Field(default=None, repr=False)
     aviasales_cache_dir: Path | None = None
     trains_mode: Literal["synthetic", "yandex"] = "synthetic"
@@ -39,6 +39,11 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _check_llm(self) -> "Settings":
+        if self.flights_mode == "demo":
+            if self.tools_mode != "real":
+                raise ValueError("FLIGHTS_MODE=demo requires TOOLS_MODE=real")
+            if self.cache_mode != "replay":
+                raise ValueError("FLIGHTS_MODE=demo is offline-only and requires CACHE_MODE=replay")
         if self.flights_mode == "aviasales":
             if self.tools_mode != "real":
                 raise ValueError("FLIGHTS_MODE=aviasales requires TOOLS_MODE=real")

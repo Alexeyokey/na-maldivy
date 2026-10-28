@@ -3,7 +3,7 @@
 set -eu
 
 PACKAGE_ROOT=$(CDPATH= cd -P "$(dirname "$0")/.." && pwd)
-PACKAGE_BUNDLE=${1:-"$PACKAGE_ROOT/artifacts/na-maldivy-offline-20261028"}
+PACKAGE_BUNDLE=${1:-"$PACKAGE_ROOT/artifacts/na-maldivy-offline-20261028-three-destinations"}
 case "$PACKAGE_BUNDLE" in
     /*) ;;
     *) PACKAGE_BUNDLE="$(pwd)/$PACKAGE_BUNDLE" ;;
@@ -46,25 +46,32 @@ docker image inspect --format '{{.Os}}/{{.Architecture}}' \
 cp "$PACKAGE_ROOT/docker-compose.release.yml" "$PACKAGE_BUNDLE/compose.yml"
 cp "$PACKAGE_ROOT/scripts/start_offline_demo.sh" "$PACKAGE_BUNDLE/start.sh"
 cp "$PACKAGE_ROOT/scripts/check_running_demo.py" "$PACKAGE_BUNDLE/check_running_demo.py"
+cp "$PACKAGE_ROOT/scripts/check_running_three_destinations.py" "$PACKAGE_BUNDLE/check_running_three_destinations.py"
 cp "$PACKAGE_ROOT/docs/offline-package.md" "$PACKAGE_BUNDLE/README.md"
+if [ -f "$PACKAGE_ROOT/docs/defense-slides.pptx" ]; then
+    cp "$PACKAGE_ROOT/docs/defense-slides.pptx" "$PACKAGE_BUNDLE/defense.pptx"
+    cp "$PACKAGE_ROOT/docs/defense-slides.pptx" "$PACKAGE_BUNDLE/docs/defense-slides.pptx"
+fi
 chmod 755 "$PACKAGE_BUNDLE/start.sh"
 
 # Explicit allowlist: no repository copy, environment, state, volumes or source tree.
 for PACKAGE_DOC in \
     submission-readiness.md demo-checkout.md demo.md chat-aviasales.md \
     hotels.md hotel-profiles.md price-calendar.md trains.md data-cache.md \
-    frontend-handoff.md defense-brief.md
+    frontend-handoff.md defense-brief.md three-destination-demo.md video-recording.md
 do
     cp "$PACKAGE_ROOT/docs/$PACKAGE_DOC" "$PACKAGE_BUNDLE/docs/$PACKAGE_DOC"
 done
 # Curated public evidence and manifest keep exported documentation links usable.
 mkdir -p "$PACKAGE_BUNDLE/eval/reports" "$PACKAGE_BUNDLE/data/demo/aviasales"
 for PACKAGE_REPORT in u2-chat-offline-2026-10-28.json u2-budget-feasibility.md \
-    docker-offline-2026-10-28.json
+    docker-offline-2026-10-28.json submission-proposed-2026-10-28.json \
+    three-destination-live-coverage-2026-10-28.json three-destination-docker-2026-10-28.json
 do
     cp "$PACKAGE_ROOT/eval/reports/$PACKAGE_REPORT" "$PACKAGE_BUNDLE/eval/reports/$PACKAGE_REPORT"
 done
 cp -R "$PACKAGE_ROOT/eval/reports/backend-http-2026-10-28" "$PACKAGE_BUNDLE/eval/reports/"
+cp -R "$PACKAGE_ROOT/eval/reports/three-destination-backend-2026-10-28" "$PACKAGE_BUNDLE/eval/reports/"
 cp "$PACKAGE_ROOT/data/demo/aviasales/manifest.json" "$PACKAGE_BUNDLE/data/demo/aviasales/manifest.json"
 cp "$PACKAGE_ROOT/data/demo/aviasales/README.md" "$PACKAGE_BUNDLE/data/demo/aviasales/README.md"
 cp "$PACKAGE_ROOT/data/ATTRIBUTION.md" "$PACKAGE_BUNDLE/attributions/ATTRIBUTION.md"

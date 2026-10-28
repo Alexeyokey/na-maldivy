@@ -1,8 +1,10 @@
 """D8 date comparisons for the deterministic chat, without changing its brief.
 
 Only like-for-like known components are compared. The return flight, required
-baggage and every hotel night are mandatory; missing provider data never becomes
-a synthetic offer or a zero price. The unpriced remainder is shown explicitly.
+baggage and every hotel night are mandatory. Strict provider searches keep
+missing data missing. Only explicitly labelled offline-demo legs can mix cached
+quotes and deterministic mocks, with a modelled comparison notice throughout.
+The unpriced remainder is shown explicitly.
 """
 
 import re
@@ -14,7 +16,7 @@ from app.agent.brief import TripBrief
 from app.agent.planner import ToolCaller, _flight_fits, _hotel_fits, _validate, rub
 from app.agent.session import Session
 from app.booking.timeline import AIRPORT_EXIT_MIN
-from app.contracts.tools import Flight, HotelOffer, Transfer
+from app.contracts.tools import Flight, FlightDemoSource, HotelOffer, Transfer
 from app.tools.price_calendar import TripQuote, suggest_date_shifts
 
 _COMMAND = re.compile(r"\b(?:перенеси|перенес[её]м|сдвинь|сдвигаем|измени|поменяй|хочу\s+(?:вылет|на))\b")
@@ -72,6 +74,56 @@ def _flight_source(value: Flight) -> str:
     return "aviasales_data_api" if value.price_source is not None else "synthetic"
 
 
+def _leg_evidence(value: dict[str, Any]) -> dict[str, Any]:
+    price_source = value.get("price_source")
+    demo_source = value.get("demo_source")
+    if demo_source is None:
+        return {"kind": _source(price_source), "price_source": price_source}
+    demo = FlightDemoSource.model_validate(demo_source)
+    if demo.kind == "provider_replay":
+        if (
+            _source(price_source) != "aviasales_data_api"
+            or price_source.get("cache_mode") != "replay"
+            or price_source.get("cache_hit") is not True
+        ):
+            raise ValueError("Demo provider leg requires recorded quote evidence")
+    elif price_source is not None:
+        raise ValueError("Mock leg cannot claim provider evidence")
+    return {"kind": demo.kind, "price_source": price_source, "demo_source": demo.model_dump(mode="json")}
+
+
+def _flight_evidence(flight: Flight) -> dict[str, Any]:
+    return _leg_evidence(
+        {
+            "price_source": flight.price_source.model_dump(mode="json") if flight.price_source else None,
+            "demo_source": flight.demo_source.model_dump(mode="json") if flight.demo_source else None,
+        }
+    )
+
+
+def _contains_mock(sources: dict[str, Any]) -> bool:
+    return any(leg["kind"] == "deterministic_mock" for leg in sources.values())
+
+
+def _source_summary(sources: dict[str, Any]) -> str:
+    kinds = {leg["kind"] for leg in sources.values()}
+    if kinds <= {"aviasales_data_api", "provider_replay"}:
+        return "aviasales_data_api"
+    return kinds.pop() if len(kinds) == 1 else "mixed_demo"
+
+
+def _sources_text(sources: dict[str, Any]) -> str:
+    names = {
+        "aviasales_data_api": "котировка Aviasales",
+        "provider_replay": "котировка Aviasales из replay",
+        "deterministic_mock": "МОК, сгенерированная цена и расписание",
+        "synthetic": "синтетические данные",
+    }
+    return "; ".join(
+        f"{label} — {names[sources[key]['kind']]}" for label, key in (("туда", "outbound"), ("обратно", "inbound"))
+    )
+
+
 def _code(value: str) -> str:
     return "SVO" if value == "MOW" else value
 
@@ -96,6 +148,8 @@ class _Baseline:
     assumption: str | None
     include_transfer: bool
     source: str
+    demo_mode: bool
+    flight_sources: dict[str, Any]
 
 
 def _baseline(session: Session, text: str) -> _Baseline | DateSavingsComparison:
@@ -149,8 +203,12 @@ def _baseline(session: Session, text: str) -> _Baseline | DateSavingsComparison:
             or package.get("validation_status") == "failed"
         ):
             raise ValueError("Incomparable baseline")
+        flight_sources = {"outbound": _leg_evidence(outbound), "inbound": _leg_evidence(inbound)}
+        demo_mode = any(leg.get("demo_source") is not None for leg in (outbound, inbound))
+        if demo_mode and not all(leg.get("demo_source") is not None for leg in (outbound, inbound)):
+            raise ValueError("Incomplete demo source evidence")
         sources = {_source(leg.get("price_source")) for leg in (outbound, inbound)}
-        if len(sources) != 1:
+        if len(sources) != 1 and not demo_mode:
             raise ValueError("Mixed flight sources")
         transfer = package.get("transfer")
         quote = TripQuote(
@@ -172,10 +230,21 @@ def _baseline(session: Session, text: str) -> _Baseline | DateSavingsComparison:
             "incomplete_baseline",
             "Не могу сопоставить все цены и условия выбранного варианта. Обновите поиск перед сравнением дат.",
         )
-    return _Baseline(quote, package, option, assumption, transfer is not None, sources.pop())
+    return _Baseline(
+        quote,
+        package,
+        option,
+        assumption,
+        transfer is not None,
+        _source_summary(flight_sources),
+        demo_mode,
+        flight_sources,
+    )
 
 
-def _matching_flights(rows: Any, brief: TripBrief, day: date, *, inbound: bool, source: str) -> list[Flight]:
+def _matching_flights(
+    rows: Any, brief: TripBrief, day: date, *, inbound: bool, source: str, demo_mode: bool
+) -> list[Flight]:
     origin, destination = (_code(brief.origin), _code(brief.destination))
     if inbound:
         origin, destination = destination, origin
@@ -186,7 +255,7 @@ def _matching_flights(rows: Any, brief: TripBrief, day: date, *, inbound: bool, 
         and flight.origin.iata == origin
         and flight.destination.iata == destination
         and flight.departure_at.date() == day
-        and _flight_source(flight) == source
+        and (flight.demo_source is not None if demo_mode else _flight_source(flight) == source)
         and _flight_fits(flight, brief)
         and (inbound or not brief.late_departure or flight.departure_at.hour >= 18 or flight.departure_at.hour < 6)
     ]
@@ -194,7 +263,7 @@ def _matching_flights(rows: Any, brief: TripBrief, day: date, *, inbound: bool, 
 
 async def _quote_day(
     day: date, baseline: _Baseline, brief: TripBrief, call: ToolCaller
-) -> tuple[TripQuote | None, str]:
+) -> tuple[TripQuote | None, str, dict[str, Any]]:
     travelers = brief.travelers.model_dump()
     common = {"travelers": travelers, "direct_only": brief.direct_only}
     rows = await call(
@@ -202,9 +271,9 @@ async def _quote_day(
         {**common, "origin": brief.origin, "destination": brief.destination, "departure_date": day.isoformat()},
     )
     if rows is None:
-        return None, "source_unavailable"
-    outbound = _matching_flights(rows, brief, day, inbound=False, source=baseline.source)
-    candidates: list[TripQuote] = []
+        return None, "source_unavailable", {}
+    outbound = _matching_flights(rows, brief, day, inbound=False, source=baseline.source, demo_mode=baseline.demo_mode)
+    candidates: list[tuple[TripQuote, dict[str, Any]]] = []
     source_failed = False
     for check_in in sorted({flight.arrival_at.date() for flight in outbound}):
         try:
@@ -245,7 +314,9 @@ async def _quote_day(
             and hotel.refundable is baseline.package["hotel"].get("refundable")
             and _hotel_fits(hotel, brief)
         ]
-        inbound = _matching_flights(return_rows, brief, check_out, inbound=True, source=baseline.source)
+        inbound = _matching_flights(
+            return_rows, brief, check_out, inbound=True, source=baseline.source, demo_mode=baseline.demo_mode
+        )
         for flight in (item for item in outbound if item.arrival_at.date() == check_in):
             for hotel in hotels:
                 transfers: list[Transfer | None] = [None]
@@ -279,22 +350,23 @@ async def _quote_day(
                         issues = _validate(flight, hotel, back, transfer, brief)
                         if issues is None or any(issue.severity == "critical" for issue in issues):
                             continue
-                        candidates.append(
-                            baseline.quote.model_copy(
-                                update={
-                                    "departure_date": day,
-                                    "flight_total_rub": flight.price_rub
-                                    + flight.baggage_price_rub
-                                    + back.price_rub
-                                    + back.baggage_price_rub,
-                                    "hotel_total_rub": hotel.price_rub,
-                                    "other_total_rub": transfer.price_rub if transfer else 0,
-                                }
-                            )
+                        quote = baseline.quote.model_copy(
+                            update={
+                                "departure_date": day,
+                                "flight_total_rub": flight.price_rub
+                                + flight.baggage_price_rub
+                                + back.price_rub
+                                + back.baggage_price_rub,
+                                "hotel_total_rub": hotel.price_rub,
+                                "other_total_rub": transfer.price_rub if transfer else 0,
+                            }
                         )
-    return min(candidates, key=lambda quote: quote.total_rub, default=None), (
-        "source_unavailable" if source_failed and not candidates else "missing_or_incompatible_quotes"
-    )
+                        candidates.append(
+                            (quote, {"outbound": _flight_evidence(flight), "inbound": _flight_evidence(back)})
+                        )
+    best = min(candidates, key=lambda candidate: candidate[0].total_rub, default=None)
+    reason = "source_unavailable" if source_failed and not candidates else "missing_or_incompatible_quotes"
+    return (best[0], reason, best[1]) if best else (None, reason, {})
 
 
 async def compare_date_savings(
@@ -322,7 +394,7 @@ async def compare_date_savings(
             checked.append({"departure_date": day.isoformat(), "shift_days": offset, "status": "past_date"})
             return None
         try:
-            quote, reason = await _quote_day(day, baseline, brief, call)
+            quote, reason, flight_sources = await _quote_day(day, baseline, brief, call)
         except Exception as exc:
             # Provider exceptions can contain request headers; never expose their text.
             checked.append(
@@ -339,7 +411,16 @@ async def compare_date_savings(
                 "departure_date": day.isoformat(),
                 "shift_days": offset,
                 "status": "quoted" if quote else reason,
-                **({"quote": quote.model_dump(mode="json"), "known_total_rub": quote.total_rub} if quote else {}),
+                **(
+                    {
+                        "quote": quote.model_dump(mode="json"),
+                        "known_total_rub": quote.total_rub,
+                        "flight_sources": flight_sources,
+                        "contains_mock": _contains_mock(flight_sources),
+                    }
+                    if quote
+                    else {}
+                ),
             }
         )
         return quote
@@ -349,6 +430,23 @@ async def compare_date_savings(
     scope = "round_trip_flights_baggage_hotel" + ("_arrival_transfer" if include_transfer else "")
     unpriced = [*(_UNPRICED), *([] if include_transfer else ["arrival_transfer"])]
     confirmed = sum(item["status"] == "quoted" for item in checked)
+    contains_mock = _contains_mock(baseline.flight_sources) or any(item.get("contains_mock", False) for item in checked)
+    suggestion_facts = []
+    for saving in savings:
+        fact = saving.model_dump(mode="json")
+        if baseline.demo_mode:
+            candidate = next(
+                item for item in checked if item["departure_date"] == saving.suggested_departure.isoformat()
+            )
+            suggestion_mock = _contains_mock(baseline.flight_sources) or candidate["contains_mock"]
+            fact.update(
+                flight_sources=candidate["flight_sources"],
+                contains_mock=suggestion_mock,
+                savings_kind=(
+                    "demonstration_estimate" if suggestion_mock else "provider_observations_modelled_components"
+                ),
+            )
+        suggestion_facts.append(fact)
     facts = {
         "comparison_status": "compared" if confirmed else "unavailable",
         "baseline_option": baseline.option,
@@ -357,12 +455,16 @@ async def compare_date_savings(
         "baseline_known_total_rub": baseline.quote.total_rub,
         "hotel_id": baseline.quote.hotel_id,
         "flight_source": baseline.source,
+        "demo_mode": baseline.demo_mode,
+        "baseline_flight_sources": baseline.flight_sources,
+        "contains_mock": contains_mock,
+        "savings_kind": "demonstration_estimate" if contains_mock else "modelled_components_comparison",
         "price_scope": scope,
         "unpriced_components": unpriced,
         "minimum_saving_percent": 5,
         "strict_threshold": True,
         "checked_dates": checked,
-        "suggestions": [item.model_dump(mode="json") for item in savings],
+        "suggestions": suggestion_facts,
         "state_changed": False,
     }
     parts = [baseline.assumption] if baseline.assumption else []
@@ -373,6 +475,13 @@ async def compare_date_savings(
         f"Сравнение для {baseline.quote.travelers.count} путешественников: {components}; "
         f"{baseline.quote.nights} ночей. Исходные известные расходы: {rub(baseline.quote.total_rub)}."
     )
+    if baseline.demo_mode:
+        parts.append("Источники исходного варианта: " + _sources_text(baseline.flight_sources) + ".")
+    if contains_mock:
+        parts.append(
+            "ДЕМО-МОК: сравнение включает сгенерированные рейсы. Разница — расчётная оценка явного демо, "
+            "а не подтверждённая экономия по настоящим предложениям Aviasales."
+        )
     if savings:
         parts.append("Варианты с экономией строго больше 5% по этим компонентам:")
         for item in savings[:3]:
@@ -382,6 +491,11 @@ async def compare_date_savings(
                 f"{rub(item.suggested_total_rub)}, разница {rub(item.saving_rub)} "
                 f"({item.saving_percent}%; до округления больше 5%)."
             )
+            if baseline.demo_mode:
+                candidate = next(
+                    row for row in checked if row["departure_date"] == item.suggested_departure.isoformat()
+                )
+                parts.append("  Источники альтернативы: " + _sources_text(candidate["flight_sources"]) + ".")
     elif confirmed:
         parts.append("Среди проверенных дат нет варианта с экономией строго больше 5% по известным расходам.")
     else:
@@ -393,7 +507,7 @@ async def compare_date_savings(
     if not include_transfer:
         extras = "оба трансфера, виза и прочие обязательные доплаты"
     parts.append(f"Не оценены {extras}; полная стоимость поездки и экономия по ней не подтверждены.")
-    if baseline.source == "aviasales_data_api":
+    if baseline.source == "aviasales_data_api" and not contains_mock:
         parts.append(
             "Авиабаза — котировки из поискового кэша Aviasales; наличие мест не подтверждено. "
             "Цена группы, багаж, отель и трансфер рассчитаны моделью."

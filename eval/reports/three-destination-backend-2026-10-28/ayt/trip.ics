@@ -1,0 +1,39 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//na-maldivy//DEMO checkout//RU
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:DEMO-THREEDEST-ORDER-outbound@na-maldivy.demo
+DTSTAMP:20261028T134438Z
+DTSTART:20261117T215000Z
+DTEND:20261118T024500Z
+SUMMARY:ДЕМО перелёт SVO → AYT
+DESCRIPTION:ДЕМО: деньги не списаны\; билеты не 
+ выписаны\; отель и трансферы не забронир
+ ованы.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:DEMO-THREEDEST-ORDER-inbound@na-maldivy.demo
+DTSTAMP:20261028T134438Z
+DTSTART:20261125T023500Z
+DTEND:20261125T074500Z
+SUMMARY:ДЕМО перелёт AYT → SVO
+DESCRIPTION:ДЕМО: деньги не списаны\; билеты не 
+ выписаны\; отель и трансферы не забронир
+ ованы.
+STATUS:TENTATIVE
+END:VEVENT
+BEGIN:VEVENT
+UID:DEMO-THREEDEST-ORDER-hotel@na-maldivy.demo
+DTSTAMP:20261028T134438Z
+DTSTART;VALUE=DATE:20261118
+DTEND;VALUE=DATE:20261125
+SUMMARY:ДЕМО проживание: Sky Business Hotel
+DESCRIPTION:ДЕМО: деньги не списаны\; билеты не 
+ выписаны\; отель и трансферы не забронир
+ ованы. Время заезда и выезда уточняется 
+ отдельно.
+STATUS:TENTATIVE
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,118 @@
+# Our proposed acceptance cases; not supplied or approved by other participants.
+# Synthetic deterministic backend checks, not external-LLM metrics or UI D9 evidence.
+- id: u3-01
+  text: Нужен только возвратный тариф отеля
+  checks:
+    state.brief.refundable_only: true
+    cards.packages.all.hotel.refundable: true
+    events.diff.count.gte: 1
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+- id: u3-02
+  text: Давай проживание на 10 ночей
+  checks:
+    state.brief.nights: 10
+    cards.packages.all.hotel.nights: 10
+    state.brief.adults: 2
+    events.diff.count.gte: 1
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+- id: u3-03
+  text: Перенеси вылет на два дня позже
+  checks:
+    state.brief.start_date: '2026-11-20'
+    state.brief.destination: AYT
+    state.brief.adults: 2
+    invariants.version_increased: true
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+- id: u3-04
+  text: Установи бюджет 300к
+  checks:
+    state.brief.budget_rub: 300000
+    cards.packages.all.total_rub.lte: 300000
+    cards.packages.all.party_price_scope: whole_party
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+- id: u3-05
+  text: Хочу только отели 5 звезд
+  checks:
+    state.brief.min_stars: 5
+    cards.packages.all.hotel.stars.gte: 5
+    state.brief.destination: AYT
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+- id: u3-06
+  text: Только прямые рейсы, пожалуйста
+  checks:
+    state.brief.direct_only: true
+    cards.packages.all.outbound.stops: 0
+    cards.packages.all.inbound.stops: 0
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+- id: u3-07
+  text: С нами теперь едет собака
+  checks:
+    state.brief.pets: 1
+    cards.packages.all.hotel.pets_allowed: true
+    state.brief.adults: 2
+    invariants.final_search_party_matches_brief: true
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Дубай 18 ноября 2026 на неделю вдвоём
+- id: u3-08
+  text: С нами едет ребёнок 5 лет
+  checks:
+    state.brief.children_ages:
+    - 5
+    cards.packages.all.hotel.adults_only: false
+    state.brief.adults: 2
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём
+- id: u3-09
+  text: А теперь плацкарт?
+  checks:
+    state.brief.seat_class: platzkart
+    cards.trains.all.seat_class: platzkart
+    state.brief.origin: LED
+    state.brief.destination: MOW
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Питер Москва поездом 18 ноября 2026 купе на двоих
+- id: u3-10
+  text: Бюджет теперь 1000 рублей
+  checks:
+    state.brief.budget_rub: 1000
+    cards.packages.count: 0
+    last_text.contains: превышают бюджет
+    state.brief.destination: AYT
+  tags:
+  - rebuild
+  proposal_status: proposed/not_team_approved
+  context:
+  - Из Москвы в Анталью 18 ноября 2026 на неделю вдвоём

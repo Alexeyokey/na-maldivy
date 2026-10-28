@@ -1,4 +1,4 @@
-.PHONY: demo-data-check demo-data-rehearse demo-cache-check demo-rehearse u2-eval demo-up demo-down demo-dev offline-package
+.PHONY: demo-data-check demo-data-rehearse demo-cache-check demo-rehearse u2-eval demo-up demo-down demo-dev offline-package submission-eval three-destination-rehearse
 
 demo-up:
 	docker compose -f docker-compose.yml -f docker-compose.demo.yml up --build -d --wait
@@ -7,7 +7,7 @@ demo-down:
 	docker compose -f docker-compose.yml -f docker-compose.demo.yml down
 
 demo-dev:
-	cd backend && TOOLS_MODE=real FLIGHTS_MODE=aviasales TRAINS_MODE=synthetic CACHE_MODE=replay LLM_PROVIDER=fake \
+	cd backend && TOOLS_MODE=real FLIGHTS_MODE=demo TRAINS_MODE=synthetic CACHE_MODE=replay LLM_PROVIDER=fake \
 		AVIASALES_CACHE_DIR=../data/demo/aviasales uv run --locked --offline uvicorn app.main:create_app --factory --reload
 
 demo-cache-check:
@@ -31,3 +31,9 @@ demo-data-rehearse:
 
 offline-package:
 	sh scripts/package_offline_demo.sh
+
+submission-eval:
+	uv run --project backend --locked --offline python scripts/run_submission_eval.py --today 2026-10-28 --output /tmp/na-maldivy-submission-eval.json
+
+three-destination-rehearse:
+	uv run --project backend --locked --offline python scripts/rehearse_three_destinations.py --output-dir /tmp/na-maldivy-three-destinations

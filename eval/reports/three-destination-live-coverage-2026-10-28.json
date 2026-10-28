@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T13:31:07.921120+00:00",
+  "source": "credentialed_aviasales_data_api_through_d4",
+  "availability_confirmed": false,
+  "public_cache_entries": 47,
+  "requests_or_existing_snapshots": [
+    {
+      "origin": "SVO",
+      "destination": "DXB",
+      "departure_date": "2026-11-15",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "DXB",
+      "departure_date": "2026-11-16",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "DXB",
+      "departure_date": "2026-11-17",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "DXB",
+      "departure_date": "2026-11-18",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "existing_snapshot"
+    },
+    {
+      "origin": "SVO",
+      "destination": "DXB",
+      "departure_date": "2026-11-19",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "DXB",
+      "departure_date": "2026-11-20",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "DXB",
+      "departure_date": "2026-11-21",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "DXB",
+      "destination": "SVO",
+      "departure_date": "2026-11-22",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "DXB",
+      "destination": "SVO",
+      "departure_date": "2026-11-23",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "DXB",
+      "destination": "SVO",
+      "departure_date": "2026-11-24",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "DXB",
+      "destination": "SVO",
+      "departure_date": "2026-11-25",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "DXB",
+      "destination": "SVO",
+      "departure_date": "2026-11-26",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "DXB",
+      "destination": "SVO",
+      "departure_date": "2026-11-27",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "DXB",
+      "destination": "SVO",
+      "departure_date": "2026-11-28",
+      "matching_one_way_quotes": 0,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "DXB",
+      "destination": "SVO",
+      "departure_date": "2026-11-29",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "DXB",
+      "destination": "SVO",
+      "departure_date": "2026-11-30",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "MLE",
+      "departure_date": "2026-11-15",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "MLE",
+      "departure_date": "2026-11-16",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "MLE",
+      "departure_date": "2026-11-17",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "MLE",
+      "departure_date": "2026-11-18",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "existing_snapshot"
+    },
+    {
+      "origin": "SVO",
+      "destination": "MLE",
+      "departure_date": "2026-11-19",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "MLE",
+      "departure_date": "2026-11-20",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "SVO",
+      "destination": "MLE",
+      "departure_date": "2026-11-21",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "MLE",
+      "destination": "SVO",
+      "departure_date": "2026-11-22",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "MLE",
+      "destination": "SVO",
+      "departure_date": "2026-11-23",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "MLE",
+      "destination": "SVO",
+      "departure_date": "2026-11-24",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "MLE",
+      "destination": "SVO",
+      "departure_date": "2026-11-25",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "MLE",
+      "destination": "SVO",
+      "departure_date": "2026-11-26",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "MLE",
+      "destination": "SVO",
+      "departure_date": "2026-11-27",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "MLE",
+      "destination": "SVO",
+      "departure_date": "2026-11-28",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "MLE",
+      "destination": "SVO",
+      "departure_date": "2026-11-29",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    },
+    {
+      "origin": "MLE",
+      "destination": "SVO",
+      "departure_date": "2026-11-30",
+      "matching_one_way_quotes": 1,
+      "raw_quotes": 1,
+      "pages": 1,
+      "status": "recorded"
+    }
+  ],
+  "notice": "Only sanitised real HTTP responses are published here; mock data is generated separately and never written as provider responses."
+}

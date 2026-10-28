@@ -362,6 +362,17 @@
           "title": "Carrier",
           "type": "string"
         },
+        "demo_source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FlightDemoSource"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "departure_at": {
           "format": "date-time",
           "title": "Departure At",
@@ -422,6 +433,47 @@
         "carrier"
       ],
       "title": "Flight",
+      "type": "object"
+    },
+    "FlightDemoSource": {
+      "additionalProperties": false,
+      "description": "Explicit offline-demo provenance; never attributes generated prices to a provider.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "provider_replay",
+            "deterministic_mock"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "notice": {
+          "minLength": 1,
+          "title": "Notice",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "cache_miss",
+                "no_matching_quotes"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "kind",
+        "notice"
+      ],
+      "title": "FlightDemoSource",
       "type": "object"
     },
     "FlightPriceSource": {

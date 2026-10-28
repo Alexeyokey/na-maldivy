@@ -117,6 +117,29 @@ def _money(amount: str, unit: str | None) -> int:
     return int(value)
 
 
+def _budget(text: str) -> int | None:
+    """Small amounts require explicit money context; time/year numbers are not money."""
+    amount = r"(-?\d[\d\s]*[.,]?\d*)"
+    scale = r"\s*(тыс\w*|т\.?р\b|k\b|к\b|млн\b|миллион\w*)?"
+    explicit = re.search(
+        r"\b(?:бюджет\w*|потрачу|потратим|потратить)\s*"
+        r"(?:(?:теперь|сейчас|максимум)\s*)?[:=]?\s*" + amount + scale,
+        text,
+    )
+    general = re.search(r"(?:\bдо|\bза|не дороже|в пределах)\s*" + amount + scale, text)
+    for match, money_context in ((explicit, True), (general, False)):
+        if match is None:
+            continue
+        tail = text[match.end() :]
+        if re.match(r"\s*(?:час|минут|дн\w*|день|дня|сут|ноч|лет\b|год|г\b|рейс|мест)", tail):
+            continue
+        rubles = bool(re.match(r"\s*(?:руб\w*|р\.?(?=\s|$)|₽)", tail))
+        value = _money(match.group(1).strip(), match.group(2))
+        if money_context or rubles or match.group(2) or value >= 5_000:
+            return value
+    return None
+
+
 def hidden_only(patch: BriefPatch) -> BriefPatch:
     """Часть разбора правилами, которая добавляется к ответу модели: скрытые требования и выведенное из них.
 
@@ -259,15 +282,9 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
     elif re.search(r"на выходные|уикенд", t):
         infer("nights", 2)
 
-    # Бюджет: «до 150 000 ₽», «бюджет 200к», «тысяч за 100».
-    money = re.search(
-        r"(?:бюджет\w*|до|за|не дороже|в пределах)\s*(\d[\d\s]*[.,]?\d*)\s*(тыс\w*|т\.?р|k|к|млн|миллион\w*)?",
-        t,
-    )
-    if money and money.group(1).strip() and "budget_rub" not in data:
-        amount = _money(money.group(1).strip(), money.group(2))
-        if amount >= 5_000:  # «до 5 часов» — не бюджет
-            data["budget_rub"] = amount
+    # Relative changes retain precedence; an explicit budget can be below 5000 ₽.
+    if "budget_rub" not in data and (budget := _budget(t)) is not None:
+        data["budget_rub"] = budget
 
     # Перелёт: «не больше 5 часов», «до 4 часов в пути».
     if m := re.search(r"(?:не больше|не дольше|до|максимум)\s*(\d+)\s*час", t):

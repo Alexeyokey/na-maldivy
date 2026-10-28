@@ -115,6 +115,20 @@ def package_price(option: dict[str, Any]) -> str:
     return f"{rub(option['total_rub'])} за показанные компоненты для всей группы"
 
 
+def flight_source_line(label: str, leg: dict[str, Any]) -> str | None:
+    demo = leg.get("demo_source") or {}
+    if demo.get("kind") == "deterministic_mock":
+        return (
+            f"{label}: ДЕМО-МОК — расписание и цена сгенерированы; "
+            "это не котировка Aviasales и не подтверждение наличия мест."
+        )
+    source = leg.get("price_source")
+    if source:
+        snapshot = f", запись {source['recorded_at'][:10]}" if source.get("recorded_at") else ""
+        return f"{label}: котировка Aviasales {rub(source['seat_price_rub'])} за одно место{snapshot}."
+    return None
+
+
 def packages(plan: PlanResult, diff: str = "") -> str:
     if not plan.options:
         return " ".join(plan.notes) + " Попробуйте другие даты или направление."
@@ -133,17 +147,19 @@ def packages(plan: PlanResult, diff: str = "") -> str:
             check_in = when(timeline["booked_check_in"]) if timeline.get("booked_check_in") else "время неизвестно"
             lines.append(f"   Приезд в отель {arrival}, заселение {check_in}; местное время ({zone}).")
         for label, leg in (("Туда", "outbound"), ("Обратно", "inbound")):
-            source = o[leg].get("price_source")
-            if source:
-                snapshot = f", запись {source['recorded_at'][:10]}" if source.get("recorded_at") else ""
-                lines.append(
-                    f"   {label}: котировка Aviasales {rub(source['seat_price_rub'])} за одно место{snapshot}."
-                )
+            source_line = flight_source_line(label, o[leg])
+            if source_line:
+                lines.append("   " + source_line)
         for title, key in (("Почему", "why"), ("Чем жертвуем", "tradeoffs"), ("Риски", "risks")):
             if o[key]:
                 lines.append(f"   {title}: " + "; ".join(o[key]) + ".")
     lines += [*plan.notes, assumptions_line(plan.assumptions)]
     provider = any(o[leg].get("price_source") for o in plan.options for leg in ("outbound", "inbound"))
+    mock = any(
+        (o[leg].get("demo_source") or {}).get("kind") == "deterministic_mock"
+        for o in plan.options
+        for leg in ("outbound", "inbound")
+    )
     notice = (
         "Котировки Aviasales взяты из кэша поисков. Цена группы, багаж, отель и трансфер — расчётные. "
         "Наличие мест и окончательная стоимость покупки не проверены. "
@@ -151,7 +167,9 @@ def packages(plan: PlanResult, diff: str = "") -> str:
         else "Цены и наличие демонстрационные. "
     )
     lines.append(
-        notice + "Обратный трансфер, виза и прочие доплаты не оценены. Можно выбрать вариант или поменять условия."
+        ("Явное офлайн-демо: помеченные рейсы МОК сгенерированы и не получены от Aviasales. " if mock else "")
+        + notice
+        + "Обратный трансфер, виза и прочие доплаты не оценены. Можно выбрать вариант или поменять условия."
     )
     return "\n".join(line for line in lines if line)
 
@@ -198,6 +216,10 @@ def confirmation(o: dict[str, Any], brief: TripBrief) -> str:
     ]
     baggage = o["outbound"].get("baggage_price_rub", 0) + o["inbound"].get("baggage_price_rub", 0)
     lines.append(f"Модельная доплата за багаж включена: {rub(baggage)}.")
+    for label, leg in (("Туда", "outbound"), ("Обратно", "inbound")):
+        source_line = flight_source_line(label, o[leg])
+        if source_line:
+            lines.append(source_line)
     lines.append("Обратный трансфер, виза и прочие обязательные доплаты не оценены.")
     critical = [i["message"] for i in o["issues"] if i["severity"] == "critical"]
     if critical:

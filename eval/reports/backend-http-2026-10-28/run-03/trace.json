@@ -1354,7 +1354,8 @@
                   "duration_is_modelled": false,
                   "group_price_is_modelled": true,
                   "baggage_price_is_modelled": true
-                }
+                },
+                "demo_source": null
               },
               "inbound": {
                 "id": "provider-mixed-flight-203216536c6d7db4",
@@ -1379,7 +1380,8 @@
                   "duration_is_modelled": false,
                   "group_price_is_modelled": true,
                   "baggage_price_is_modelled": true
-                }
+                },
+                "demo_source": null
               },
               "transfer": {
                 "id": "osm:node/5369319975:AYT:shuttle",
@@ -2224,7 +2226,8 @@
                   "duration_is_modelled": false,
                   "group_price_is_modelled": true,
                   "baggage_price_is_modelled": true
-                }
+                },
+                "demo_source": null
               },
               "inbound": {
                 "id": "provider-mixed-flight-203216536c6d7db4",
@@ -2249,7 +2252,8 @@
                   "duration_is_modelled": false,
                   "group_price_is_modelled": true,
                   "baggage_price_is_modelled": true
-                }
+                },
+                "demo_source": null
               },
               "transfer": {
                 "id": "osm:node/2466747618:AYT:shuttle",
@@ -3450,6 +3454,39 @@
           "baseline_known_total_rub": 83234,
           "hotel_id": "osm:node/5369319975",
           "flight_source": "aviasales_data_api",
+          "demo_mode": false,
+          "baseline_flight_sources": {
+            "outbound": {
+              "kind": "aviasales_data_api",
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 11251,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T07:54:11.091831Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            },
+            "inbound": {
+              "kind": "aviasales_data_api",
+              "price_source": {
+                "provider": "aviasales_data_api",
+                "seat_price_rub": 14147,
+                "currency": "RUB",
+                "cache_mode": "replay",
+                "cache_hit": true,
+                "recorded_at": "2026-10-28T07:54:11.485448Z",
+                "duration_is_modelled": false,
+                "group_price_is_modelled": true,
+                "baggage_price_is_modelled": true
+              }
+            }
+          },
+          "contains_mock": false,
+          "savings_kind": "modelled_components_comparison",
           "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
           "unpriced_components": [
             "return_transfer",
@@ -3478,7 +3515,38 @@
                 "other_total_rub": 1100,
                 "is_synthetic": true
               },
-              "known_total_rub": 83114
+              "known_total_rub": 83114,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 7521,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:10.731441Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                },
+                "inbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 17817,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:10.891059Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                }
+              },
+              "contains_mock": false
             },
             {
               "departure_date": "2026-11-16",
@@ -3500,7 +3568,38 @@
                 "other_total_rub": 1100,
                 "is_synthetic": true
               },
-              "known_total_rub": 71086
+              "known_total_rub": 71086,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 5088,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:11.245731Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                },
+                "inbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 14236,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:11.420049Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                }
+              },
+              "contains_mock": false
             },
             {
               "departure_date": "2026-11-17",
@@ -3522,7 +3621,38 @@
                 "other_total_rub": 1100,
                 "is_synthetic": true
               },
-              "known_total_rub": 81554
+              "known_total_rub": 81554,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 11344,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:11.762939Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                },
+                "inbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 13214,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:11.934071Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                }
+              },
+              "contains_mock": false
             },
             {
               "departure_date": "2026-11-19",
@@ -3544,7 +3674,38 @@
                 "other_total_rub": 1100,
                 "is_synthetic": true
               },
-              "known_total_rub": 81012
+              "known_total_rub": 81012,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 11219,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:12.097866Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                },
+                "inbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 13068,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:12.441679Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                }
+              },
+              "contains_mock": false
             },
             {
               "departure_date": "2026-11-20",
@@ -3566,7 +3727,38 @@
                 "other_total_rub": 1100,
                 "is_synthetic": true
               },
-              "known_total_rub": 83700
+              "known_total_rub": 83700,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 11311,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:12.599608Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                },
+                "inbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 14320,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:12.942516Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                }
+              },
+              "contains_mock": false
             },
             {
               "departure_date": "2026-11-21",
@@ -3588,7 +3780,38 @@
                 "other_total_rub": 2470,
                 "is_synthetic": true
               },
-              "known_total_rub": 89226
+              "known_total_rub": 89226,
+              "flight_sources": {
+                "outbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 10937,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T08:55:13.101035Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                },
+                "inbound": {
+                  "kind": "aviasales_data_api",
+                  "price_source": {
+                    "provider": "aviasales_data_api",
+                    "seat_price_rub": 16772,
+                    "currency": "RUB",
+                    "cache_mode": "replay",
+                    "cache_hit": true,
+                    "recorded_at": "2026-10-28T09:50:54.727505Z",
+                    "duration_is_modelled": false,
+                    "group_price_is_modelled": true,
+                    "baggage_price_is_modelled": true
+                  }
+                }
+              },
+              "contains_mock": false
             }
           ],
           "suggestions": [
@@ -3688,7 +3911,7 @@
       {
         "type": "delta",
         "data": {
-          "text": "Проверьте перед оформлением — вариант 1 «Оптимальный · дешевле всех»:\n• Туда: SVO → AYT, 18.11 00:50 — 22 502 ₽\n• Отель: Sky Business Hotel, 18.11 — 25.11 — 23 338 ₽, без возврата\n• Трансфер: 56 мин — 1 100 ₽\n• Обратно: AYT → SVO, 25.11 05:35 — 28 294 ₽\nСтоимость показанных компонентов (2 взрослых): 83 234 ₽ за показанные компоненты для всей группы.\nМодельная доплата за багаж включена: 8 000 ₽.\nОбратный трансфер, виза и прочие обязательные доплаты не оценены.\nОформляем? Это имитация: деньги не списываются."
+          "text": "Проверьте перед оформлением — вариант 1 «Оптимальный · дешевле всех»:\n• Туда: SVO → AYT, 18.11 00:50 — 22 502 ₽\n• Отель: Sky Business Hotel, 18.11 — 25.11 — 23 338 ₽, без возврата\n• Трансфер: 56 мин — 1 100 ₽\n• Обратно: AYT → SVO, 25.11 05:35 — 28 294 ₽\nСтоимость показанных компонентов (2 взрослых): 83 234 ₽ за показанные компоненты для всей группы.\nМодельная доплата за багаж включена: 8 000 ₽.\nТуда: котировка Aviasales 11 251 ₽ за одно место, запись 2026-10-28.\nОбратно: котировка Aviasales 14 147 ₽ за одно место, запись 2026-10-28.\nОбратный трансфер, виза и прочие обязательные доплаты не оценены.\nОформляем? Это имитация: деньги не списываются."
         }
       },
       {
@@ -4485,6 +4708,7 @@
           "arrival_at": "2026-11-25T10:45:00+03:00",
           "baggage_price_rub": 4000,
           "carrier": "PC (cached quote; synthetic group/extras)",
+          "demo_source": null,
           "departure_at": "2026-11-25T05:35:00+03:00",
           "destination_timezone": "Europe/Moscow",
           "from": "AYT",
@@ -4570,6 +4794,7 @@
           "arrival_at": "2026-11-18T05:45:00+03:00",
           "baggage_price_rub": 4000,
           "carrier": "2S (cached quote; synthetic group/extras)",
+          "demo_source": null,
           "departure_at": "2026-11-18T00:50:00+03:00",
           "destination_timezone": "Europe/Istanbul",
           "from": "SVO",
@@ -4730,7 +4955,7 @@
           "full_name": "SYNTHETIC DEMO Traveler Two"
         }
       ],
-      "created_at": "2026-10-28T10:09:41.750899+00:00",
+      "created_at": "2026-10-28T13:42:49.430551+00:00",
       "voucher_path": "/api/checkout/orders/DEMO-REHEARSAL-ORDER/voucher",
       "calendar_path": "/api/checkout/orders/DEMO-REHEARSAL-ORDER/calendar.ics"
     }

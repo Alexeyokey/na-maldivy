@@ -7,7 +7,7 @@ services:
     environment:
       DATA_DIR: /data
       TOOLS_MODE: real
-      FLIGHTS_MODE: aviasales
+      FLIGHTS_MODE: demo
       TRAINS_MODE: synthetic
       CACHE_MODE: replay
       AVIASALES_API_TOKEN: ""

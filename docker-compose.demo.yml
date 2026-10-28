@@ -7,7 +7,7 @@ services:
       dockerfile: backend/Dockerfile.demo
     environment:
       TOOLS_MODE: real
-      FLIGHTS_MODE: aviasales
+      FLIGHTS_MODE: demo
       TRAINS_MODE: synthetic
       YANDEX_RASP_API_KEY: ""
       YANDEX_CACHE_DIR: /state/yandex

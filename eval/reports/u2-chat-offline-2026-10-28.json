@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-28T10:08:00.651519+00:00",
+  "generated_at": "2026-10-28T15:47:44.771465+00:00",
   "evaluation_date": "2026-10-28",
   "scope": "offline_actual_http_sse_rules_local_data_no_external_llm_no_provider_network_no_booking",
   "notice": "Synthetic fares, schedules, policies and reviews; these are not confirmed supplier offers.",
@@ -16,34 +16,34 @@
   "case_file": "eval/cases/u2.yaml",
   "case_file_sha256": "0fe3f0f76310f5c6eb6baddb7d6cbadfb61fd1eb1b8548d31f2815233b084f4a",
   "provenance": {
-    "git_head": "13039eb6140da7edc5de140bd7893517802079ac",
-    "source_and_data_sha256": "bb1d6748bd2ac676a2bd08169a2fbc4d0ac17f5df89e5b648983f51b10cc787e",
+    "git_head": "609cd25922e1e83d82b0d11677f85432b2db11be",
+    "source_and_data_sha256": "9bd5e0702813d4c6a85755e81e013f3b07786d1cc4ef07b1aab9a7b2a3ab3ef5",
     "inputs": {
       "backend/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "backend/app/agent/__init__.py": "f695cbced94f7def7de07c69439bb2386ada63580b048ba612566411e6a5d0c4",
       "backend/app/agent/analysis.py": "34e1f920410bc558970e770a639d9ffc79b688f47879e8940a2e060040d5f339",
       "backend/app/agent/brief.py": "b503c1a0bf7ce4f739e5e3dd3184688da48c6f8c19efc87aa3051725d63960d0",
       "backend/app/agent/core.py": "7f1185cc86b21eb7c428cb7016b0951c8d6bc3b217b2afa5a986deb202653e73",
-      "backend/app/agent/date_savings.py": "2ccb4842ceb9b6e0d74dd5e65b7fb1183ddb548dfdebcb5db26c1580d592f039",
+      "backend/app/agent/date_savings.py": "a7a87b8563bb9010bec708c150651abb35a2fd8da203656aa840df6a6e8adf61",
       "backend/app/agent/destination_info.py": "08e461f9e79809e8b091e7a3b767303b96e5f62821560300f0770deb63314fd3",
-      "backend/app/agent/formatting.py": "ffa29b79632418a5d3d461c7e328c01cd1c57b6473cc4d6568d783e31892455d",
-      "backend/app/agent/hidden.py": "a4f53af10966fe6d66a9aca657e93a52fff64a07625a00ca731bb26f72416547",
+      "backend/app/agent/formatting.py": "6272dd32afcd5eeb7c7798519a6173b608d41b91b7e5cdcb448c18f544a6830a",
+      "backend/app/agent/hidden.py": "5f880e3cd0247339ea0b565f02c2ece4b553d9b02153a4c1a407f700f3c994b2",
       "backend/app/agent/places.py": "ec61171a431af66faf7350c14497408252a1adfe2a0b6a56a915625673fe6dfb",
-      "backend/app/agent/planner.py": "0492389b6b2999a77f7f87c20e2b0cc9158da1d33e3ea73985da3ed63623da0b",
+      "backend/app/agent/planner.py": "8db37f30b81420c27af2ad1077bb145334037ac39f107d3cdbe76a99e9b0b2dc",
       "backend/app/agent/prompts.py": "1f342c1063ac9a537e1c95cbfa8546a446cc54cedb2b96076e3a72627df08430",
       "backend/app/agent/review_explanations.py": "fe208015a9cbb380cfaae8cebf6340a83154af1063092d0c8132ed62800ffe79",
       "backend/app/agent/router.py": "2813910aa6fec73a75a166bff057c9c61a5f1ce82d378a19157f7affa3da806c",
       "backend/app/agent/session.py": "1dd56b1697bd89d84aa70500885eb0adaa3fbbc9c9a8f4f710e3a735e2146cd8",
       "backend/app/booking/__init__.py": "8e1d43adb5243824d65b3b45c5319a7d8c75583e92eb1b1200c4dcc3ebddf9c9",
       "backend/app/booking/checkout.py": "419a59dcdf323e4112c18c2ef2748bd7320633f0e96d4c0332f1d52e6ba2ed3f",
-      "backend/app/booking/checkout_service.py": "f3f3720412481fbb0867c8a8f66a7b3330091f81caaf66fe07e52608ee880683",
+      "backend/app/booking/checkout_service.py": "93c5910c4bac567c53e74ad819a166eaf9b9af52637bccc1ee8c505e1b0ba879",
       "backend/app/booking/timeline.py": "3f0f56f39b8f28d9a6aafb791cf270246649e3296ae06b28a82a3c10bb5a3fd5",
       "backend/app/booking/validator.py": "5a79be962605c4020043d0f89cea1cd3bf3de53f6f9ec8f3d604c0148cb580c9",
-      "backend/app/config.py": "07f7c2deb8b75917c410245b0b25660e2154dd1208e07e752728ad83d2db5a0b",
+      "backend/app/config.py": "4d328664a06b487f9e8b2c7f494d2bbf1dda7b257662075df17e37e9d896f2bc",
       "backend/app/contracts/__init__.py": "006d73dfa56458a9f00400f32833ced963672ce820775b3d8ba6e9e986c60476",
       "backend/app/contracts/hotel_profiles.py": "6fd1e25ac0036a14acc750f95ac91ed7c44b9c405084f9f8af82394e9cbe282c",
       "backend/app/contracts/identifiers.py": "02fb8c044f3598a06758f2ed8fe79a6ded87a2ceb5beb1a59efaa2c4a8fbde23",
-      "backend/app/contracts/tools.py": "4c13bff6ad433f0cc60b1e38169f24d8988ebcd4b43f296073ea796afed10f20",
+      "backend/app/contracts/tools.py": "a9fa180b123932a201f1e4634dc555e086747cb3ed065a7f38a7f9c5b74478b2",
       "backend/app/d2_cli.py": "c32ee0cd99ce9e4b7bbdca8af66cc49e1956b98261e77b1b0751f27e029f1166",
       "backend/app/d4_cli.py": "dfb4482debafb0a27c68edeec0eb2086111f7739479de658678a6320d04eb2e2",
       "backend/app/d6_cli.py": "87ee5788b5c78f7fc99d2c9adeb2107bd746b96552a34cd53158dc1e39c8bd65",
@@ -56,11 +56,14 @@
       "backend/app/llm/fake.py": "dcc2898e8dc561c28273d4fdd290f3507cf0ae95d236d938515d883b84c10485",
       "backend/app/llm/openai_compat.py": "368972f298e155235ef2885a4e054ae31cbdcd19f90c82243861cda4c69578f8",
       "backend/app/main.py": "4122445fcb38d715e2dee59eb471a85bd8658e7e40a517548cbe060d2d9d3525",
+      "backend/app/submission_eval.py": "9934cc71e71644888531adc6a4c22e5f6e6b472984ff6a01989b837998ad8967",
       "backend/app/submission_rehearsal.py": "06b4327fc2d9f6c28abf62f65233346ae742d1ea5114604fdb48da791d1344da",
+      "backend/app/three_destination_rehearsal.py": "40ce5865b5ee2eb8769a0fb4163eb3192f235f5bbbf734b0cd0f4eb9a8ab0519",
       "backend/app/tools/__init__.py": "a0a4f30932a313bf4e5f6a027e470e69ca99e42d01228302f98d392ece9e97d8",
       "backend/app/tools/base.py": "4ca915563b0264b050171a82867c7729d72dad18e8069c473362842fe5867e5b",
       "backend/app/tools/currency.py": "9d86e0a2c7f8baafc3a36287d3fa368fb868a1839c2682b81f5bac8fe5152220",
       "backend/app/tools/d5_adapter.py": "861a72401002d834883233c80309aded14dbcfd831a93fc8011e034d1f22e48d",
+      "backend/app/tools/demo_flights.py": "8552fd234f14d3a10d4a46cdae168ebb49fe56687520e76383e28776eba18bd5",
       "backend/app/tools/destinations.py": "1cbed424b64b5c3ff21760d41e95b63827a823a69f25d6988eba8f764f650f07",
       "backend/app/tools/errors.py": "fd3ab4f11dd7f2ce7b1f338c27c0242b6a9963adf50cce8fd799d44bb2c2c113",
       "backend/app/tools/flights.py": "fc559e915b35146ebe83d1f9023357e01c7fe373a9904f0be8a6e02134b305be",
@@ -68,7 +71,7 @@
       "backend/app/tools/hotels.py": "68243203d1887e60f33004d7f89ae689c2c136338add967c909f9a584a355637",
       "backend/app/tools/http_cache.py": "2783436b3b11d6a729e533f6a773de8461659939258c633d57d99acea778a91b",
       "backend/app/tools/price_calendar.py": "e77886dfe98de2a17dff943276d610576c4d1720b8bb1c634b7b15af0ef820a1",
-      "backend/app/tools/registry.py": "b80f1bb2c0a86d578e7cb77626df7ebbc31f24405c09d164192592d69ef78340",
+      "backend/app/tools/registry.py": "7d10d2b8427af0fb29b4e6e638b210b5eef023f5426207144af899c139db3c5f",
       "backend/app/tools/s4_adapter.py": "7eb3e3e8b7ecf86c8bf771606ab112dab8ef7611274840909c57b39fdeef20aa",
       "backend/app/tools/schema.py": "32669eeb1a36dca0f7cef0228dca329cc3f4ba4f45958491cf7b232cad520141",
       "backend/app/tools/schema_refs.py": "db0328ce3110252a19f3814167dae0b42901ed366c79bfe9a5661d6d88b411e9",
@@ -79,25 +82,55 @@
       "backend/app/u2_eval.py": "55171ca2dbed56b73eb3e9447bfa30e2c44cdae81f6ce50af6ce6d7ce457617d",
       "data/ATTRIBUTION.md": "5a72ee61d153424e1eaad6e2d82e5f3390fc9eb8b32c6eef195d1e363b82721c",
       "data/CBR-ATTRIBUTION.md": "d6700b5dd9826fecfbf32e4b38bb39f7e8d29742f5ce7cf902d34af05014765a",
+      "data/demo/aviasales/01fdd5c7b4da013e62cff823a06593f2a4912aebdb920a29ad333aac3b3c3b66.json": "cb2e80f908d10b9546f7b48c152f58c42e08a3002f888f960c598304973bb81e",
+      "data/demo/aviasales/0b1604336c13684fb3018f617198a33a7b11ee7273f00bd3f9ea75bffe7f8520.json": "fbd1119dec1d31a31d6a7c5357280b143fef335db0b01dea60e349e20bd308ed",
+      "data/demo/aviasales/0be76074516385f728b39542c90a487bdb674c5635750dca5a7e7ead88a9bf59.json": "c0bfd217c68a3e25f66f6ccde4b3f5b1aa3e3f25c1a32988446fe9766a876fda",
       "data/demo/aviasales/19bc134666d5ddb0525d57ff5a5c3f8decdbd822454f351bc8147614ecb321c8.json": "c0428860eb3b9f490ca76ef59d1ebb6fe8581e38ab4cbb2e96179c79179251c3",
       "data/demo/aviasales/1adbf41d8d8ac578b165f0df1f2ce715d7013d0bad8ca68e0c8a4dc993505c35.json": "4c57443c372fb11f41d23e6c64d4102187575ecae35b9bba3c02ee392b9a13fc",
+      "data/demo/aviasales/1cb2af83f3f4576125916e4f95a75f659790a49386f24fc1c9740add49d3c4f9.json": "fb04b4a02730abc46dedad01bba2a3e43a3f90df62b5cdd90aab51784d5649fe",
       "data/demo/aviasales/1d2375b5d064f4e9b49a09efa0a65e3074719612defcc2217b21891c9e7beff1.json": "518b26e1868965cccd4fad1d3d251d1f85361bc414eda0466607df5afe27a651",
+      "data/demo/aviasales/1dc76a3ed5da746e6ba6bcdfc07e9620db360d3422d32bde59608640a700c0bf.json": "17ab0760f09ecdb9bc326cd0f0689bd9dcba975d731d1f9abca78013ab51eb0b",
       "data/demo/aviasales/209120df281e81d1dd895c1424ff3bf37058d6bfed833c8c55fc0a174d0200f8.json": "63a91265cb3cf0d6de5adc4463f00f90c87817c61a2cdba9ad91c6d54f497213",
       "data/demo/aviasales/22cb81ec96cdf3447c8e6e00d8baf5865008e6ac4cd6cb6b3231528b3435f09f.json": "8f7fef706204c2bab2fe27bbb29d9eee010ea96daae31274e2bf8aebad7738d1",
       "data/demo/aviasales/230483d81620817a6919c32060ff09c1d6ebe34d976a050fb526eab76ecda095.json": "067eabedb5e42811ec397e59d37ff2e6307e8d67d7dc66815f6c851ba525e96b",
       "data/demo/aviasales/24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json": "852809d6bd3ae03a5b7d4c855d64c76041315363d936de26ec77ce448c769a97",
+      "data/demo/aviasales/27568010ba4fe78afa3bcd369ea2dc42490b186f22e7c3b539802f7762bb1aaf.json": "98c870693922b737fcc9b62bf0a0843fedf55c608264d700a81c0e05d764d000",
+      "data/demo/aviasales/275808bb384530d170a00a1e1036b6a28dbcbd2c0b7c4464a2a30ad53442cb45.json": "58482f25432d13414e3fbc093efe902c4210a88f03d5bb6abea13b32a35261e4",
       "data/demo/aviasales/294d1ffe8b4000ea5a3bd9ddddda311e62497003c1aeb47247e57dec0150d949.json": "26957dcecf667758ea0d42537d421b2f1ec6f04496470e718097013066d9af00",
+      "data/demo/aviasales/2c05bfc2df28af8418d2fafcba2b5888f226e52798ff3bde03f5bafd4940ae5e.json": "9e7ea661887c4758c3bf31fd3be4da53294743c446711ae334e0b879de8ade4d",
       "data/demo/aviasales/30d279687712dbc6064dd804abf0b5c2be3dd7910db5de72b6760306aea8d2d8.json": "98217287b03bfe48d44cfc492f98800cf1a58e6daa2deb6be5b3e16d1fe4afe9",
+      "data/demo/aviasales/31bafaf7e6d53adda4896e3814ecdaa29e5cdf23947b67fd9e2a7e4766a3cc77.json": "90281f7f4a430e7dd134b624371cac4dbfd21e25103befe8f4b738181ee13724",
       "data/demo/aviasales/3a15cff847b1d51d36acb392a8f8fd61a65168f33563bc78232a8fbeb62fee61.json": "9c21e6f2cfdc144204fd5e71c22b652b01e2204e081024fe4811fe8a1533d296",
       "data/demo/aviasales/3b582b5be6f82ff8bfec7db742d28485b83c5869515371a6e6a0e4d532df79c2.json": "399fc7e80006e22096024781b9baa395a2eeb687dcab253511743efc726499fd",
+      "data/demo/aviasales/48d9997d0f08b2d358bd020b0b8f418ad3040dbf3398bff6469cda305d929217.json": "244ca1408553bf06ff706ad1ef21d9f5a46c3aaf6107b25337cf6f66d17ff3ac",
+      "data/demo/aviasales/6e6964403a18d2aa0735e8df0a40906c439b996f1ccff28d5faabf2acfc74208.json": "7130218db3cac4c122489338f691d279f48254a166efdd2da330ff5cc602b73c",
       "data/demo/aviasales/73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json": "5fed72ad320ada592025e2e65496185e71b8288c30b7fe9a6af23d69d6b045d1",
+      "data/demo/aviasales/7411e57e6651d2e7b5281fc5ccffa4c46dc9d0b4271634ef54a16c6be4993804.json": "c43e8746fd95ed6be79a2e082e0cbe075626610275970ca29119f1e2832f5902",
+      "data/demo/aviasales/7a2af7de522b800efdcc5ee73fbd6648c4704e49cd63ee65240487eb0c02f0c2.json": "0c024f81195d3d585173351a1777bcc181f2f491d999c36b9423f337a6b673c1",
+      "data/demo/aviasales/7c09e7f3e8a2791f873274cf9b1b6388820a9a69a1a68f74a341ec47198b08f1.json": "344141761e7bf3de86e39d425fc3fe7fed5c761a8b359e26aa942d88daffab4b",
       "data/demo/aviasales/7d83b9b748c6cf03443d678df082cbd182c3bbf13ad13c6eaec40a51b8146bba.json": "13803c2a5dae9c42515bfbd536283225edfdafec57f89a5a89cd584f673daff9",
-      "data/demo/aviasales/README.md": "035c137c5e002057e89c5d6064de717f240c33179c2069250b8821242c9b497a",
+      "data/demo/aviasales/895f839871459f0113ae3d55ecd340b47267ca565b7713dc3f87e072dcd08091.json": "3544afbaa8a854a66d63004457b8f31306bb0f459fbd48663d26cdb902e93a5b",
+      "data/demo/aviasales/8a39fbe0d741c5b32fb3fe013f9cf136d873f71fb8c003b852a7b9bf3c85e040.json": "6d18c3f5149dd663c8c3d651af0c29353105e5fc8771fcba9267957a1cd970d1",
+      "data/demo/aviasales/8c9ec08439287171d6af2498847c8ff82c3d350e47ef6a9ac6f4ad26fb4ddae7.json": "7021a6e365972270133ef2a859f4d8c822e65ef3626d250fcec5f9005e11f16f",
+      "data/demo/aviasales/926ed6cb14752b4df9a016e4ce76fba9ff48dc7f83c6ecc4a8088eb22cfcfe06.json": "0af18ba618d5aa4ebe528f07cff565fd2d2f3e2675f04985143f0e7c04d97e7c",
+      "data/demo/aviasales/94f7dad68ed25c3cdcbac0c9b74d7b6df326931b33287f8bfa8ffc77263f5dd5.json": "898b846c87ad297b5c613ffcd76daf9b0da2d7b3607ebb8d1dbbeb0a09545fc4",
+      "data/demo/aviasales/README.md": "ed4189fdbb8eca35696774a34c22254dd36f933db28b4a8457ee474bd8c7a2b2",
+      "data/demo/aviasales/ad3bec0e9a86c0a43f19441ea7c8650198cfce233f52cc56a52baf8de6a27590.json": "c8864281ea2017664725db1db9bb851044d3fae424ad0c7fefcdfaec71b4dd16",
+      "data/demo/aviasales/ad54184d3f352710a80e1fe6c393ce9da87617a183ac9bfaa7c575629d81d07c.json": "08b51a78ca1306ecf8b1bb1fd84df278263a7b8d7cbd96f358f21cc63a40f878",
+      "data/demo/aviasales/b87b693b870bc19c8b677903f0690d8d74f52751250c9b0eda299d44081c3846.json": "d83dfd946d15d53f89b97797e02213356774f2fdfe292f06f90c87c36a7a2b29",
+      "data/demo/aviasales/c206571cd2ea5401b5c19092d05d6058a757b60df100095fdbb7471b6e930b69.json": "b13e4c28ccc49c03ec4b931f7560e432bb332806e595c1a16f04c1b0c1e4f1c5",
+      "data/demo/aviasales/c378d664134e36ff2cce8e56c707a53fa3567f91ecfccb6d77624bee361fc245.json": "e87a9dceb0c24e6235db544251015783b71e4a909d2e93f5b0a22d8abe00ab6e",
+      "data/demo/aviasales/cb962ca1513a2d0a1616fca14aef4de8616aac1f8b57cde791a0a6bfe4cea9c1.json": "41f711bf0b5ae7b400f1969c75c6a78c466acb3225ebfec16c19a71b1a1cae53",
       "data/demo/aviasales/cf1eecf563d4e216c70f72e9cf3dffce6a4bfa3651c16e7c872c42aabda3a5b4.json": "9b1d6df8feaf1eeb9ebbf47c06ea1c3170fe80d00cbda7463c69f2e04df120dc",
+      "data/demo/aviasales/d32cea0d62827c7fad7037af4909527f75b4a472027b44530aabb8c21f6d35f3.json": "8d0fc0e0139c707714451224329afa21997bfac69dafa2622aa06856ee04bd0f",
       "data/demo/aviasales/d77f2defb99a65206b0d9349e26cec542abf748c0a42f40b59988a1e625b6380.json": "97fb209cd6cb15ccf527f70b40141f53122c670217e36133f14b24603893fd5b",
+      "data/demo/aviasales/dad93a868e57d762f442c0d5a0a986de7e8c9f4feed0170ca78a7b6d94d93fbe.json": "d0900d16d04802c13154ceec60a5e906176554fb9daf7a94feffd45cf506784c",
       "data/demo/aviasales/eda51c3f86754b2c090a72f72d64066d870427ee9aba091a313bfd16bbb427eb.json": "386dd816bf2f6648e5c3899ef1943fc41c814d6a14e0879169dcc148183cc8a5",
       "data/demo/aviasales/ef9fa0ad1cef29e334184551d8db0dc804b91c333262003bb049aa37f5590522.json": "aeac61a3755c31eb160ac1f7e672b6623df7f4551a000b8131f09f3e4dfe67af",
-      "data/demo/aviasales/manifest.json": "05fe23b0cdc2f6b85893ed2f57a5d311bf8f5ec0c5788af449e2048b050fc3c6",
+      "data/demo/aviasales/f9ad1e026128877b61453ba050e4120959b3bea26d369089a3e86d410cad2dbd.json": "ac1c23a2813b8d029aa9975d838f502944ad5fac8c082ba14bb3d16ecf6dac01",
+      "data/demo/aviasales/fcb82d416f3a6241c845143511242afef9714ab0f606c66ed4e58ba63afb4855.json": "c24bdc3dc295e50ea438d8899e1f8982e61708cee3bf6e2c2273a08463da934f",
+      "data/demo/aviasales/fed6fa7c3cc2bdc6ea45c31b613d3dae4035f4d3b53af550789c5055ebabb37d.json": "dd553bf65db789262f5019f86851ca2fa3f7971b37c309b5f8006fd3b2bba036",
+      "data/demo/aviasales/manifest.json": "e225b35ffdee0c8ef5394575e4531b11a28935dfe30e6a8af5b20cec8c1db17b",
       "data/destination_seeds.yaml": "c37d0585c1a2339446a072fec988846dab4b8e1848458e91f53eda046054f093",
       "data/destinations.yaml": "67c856220fc3463c573eecfb3984bf8be9f67bf71ff34d3d4ea86606dad6ccf6",
       "data/hotel_profiles/README.md": "cc2b0f39a981a532649eb52a01dd2e22ec6e250d9be772acf9a565d65bc63fa9",
@@ -295,7 +328,7 @@
       "data/traps.md": "69675347d9e850bfcdd31574cb77c835dd1cb03cda711f6daa27edddfbbdf0f4"
     }
   },
-  "elapsed_ms": 3030.55,
+  "elapsed_ms": 783.35,
   "summary": {
     "passed": 9,
     "failed": 1,
@@ -312,7 +345,7 @@
         "visa"
       ],
       "status": "passed",
-      "elapsed_ms": 606.547,
+      "elapsed_ms": 175.69,
       "checks": [
         {
           "property": "brief.origin",
@@ -382,9 +415,9 @@
         {
           "role": "original",
           "message": "Хочу теплое море в ноябре из Москвы, без визовой возни. Вода от 24, едем на неделю",
-          "elapsed_ms": 606.051,
+          "elapsed_ms": 175.374,
           "http_status": 200,
-          "session_id": "public-demo-session-011",
+          "session_id": "public-demo-session-006",
           "events": [
             {
               "type": "status",
@@ -739,14 +772,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-011",
+                "session_id": "public-demo-session-006",
                 "stage": "destinations_shown",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-011",
+            "session_id": "public-demo-session-006",
             "version": 1,
             "stage": "destinations_shown",
             "brief": {
@@ -801,7 +834,7 @@
         "typo"
       ],
       "status": "passed",
-      "elapsed_ms": 47.892,
+      "elapsed_ms": 4.454,
       "checks": [
         {
           "property": "brief.origin",
@@ -871,9 +904,9 @@
         {
           "role": "original",
           "message": "Питер мск поездом 15 ноября 2026, 2 взрослых, купе пж",
-          "elapsed_ms": 47.52,
+          "elapsed_ms": 4.396,
           "http_status": 200,
-          "session_id": "public-demo-session-002",
+          "session_id": "public-demo-session-010",
           "events": [
             {
               "type": "status",
@@ -1062,14 +1095,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-002",
+                "session_id": "public-demo-session-010",
                 "stage": "trains_shown",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-002",
+            "session_id": "public-demo-session-010",
             "version": 1,
             "stage": "trains_shown",
             "brief": {
@@ -1122,7 +1155,7 @@
         "hidden_requirement"
       ],
       "status": "failed",
-      "elapsed_ms": 714.256,
+      "elapsed_ms": 65.105,
       "checks": [
         {
           "property": "brief.destination",
@@ -1189,9 +1222,9 @@
         {
           "role": "original",
           "message": "В Анталью 15.11.2026 на 7 ночей, двое и дочка 5 лет, бюджет 150к",
-          "elapsed_ms": 18.758,
+          "elapsed_ms": 3.043,
           "http_status": 200,
-          "session_id": "public-demo-session-015",
+          "session_id": "public-demo-session-017",
           "events": [
             {
               "type": "status",
@@ -1340,14 +1373,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-015",
+                "session_id": "public-demo-session-017",
                 "stage": "collecting",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-015",
+            "session_id": "public-demo-session-017",
             "version": 1,
             "stage": "collecting",
             "brief": {
@@ -1396,9 +1429,9 @@
         {
           "role": "clarification",
           "message": "Из Москвы",
-          "elapsed_ms": 695.169,
+          "elapsed_ms": 61.966,
           "http_status": 200,
-          "session_id": "public-demo-session-015",
+          "session_id": "public-demo-session-017",
           "events": [
             {
               "type": "status",
@@ -2415,14 +2448,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-015",
+                "session_id": "public-demo-session-017",
                 "stage": "collecting",
                 "version": 2
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-015",
+            "session_id": "public-demo-session-017",
             "version": 2,
             "stage": "collecting",
             "brief": {
@@ -2481,7 +2514,7 @@
         "hidden_requirement"
       ],
       "status": "passed",
-      "elapsed_ms": 254.145,
+      "elapsed_ms": 49.444,
       "checks": [
         {
           "property": "brief.destination",
@@ -2537,9 +2570,9 @@
         {
           "role": "original",
           "message": "Мы с собакой в Дубай из Москвы, 15–22 ноября 2026. Покажи отели, где можно с ней",
-          "elapsed_ms": 253.437,
+          "elapsed_ms": 49.369,
           "http_status": 200,
-          "session_id": "public-demo-session-021",
+          "session_id": "public-demo-session-008",
           "events": [
             {
               "type": "status",
@@ -4020,7 +4053,8 @@
                       "price_rub": 25576,
                       "baggage_price_rub": 2000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "inbound": {
                       "id": "synthetic-flight-DXB-SVO-2026-11-22-0-a1-cnone-p1-s42-infant-v2",
@@ -4035,7 +4069,8 @@
                       "price_rub": 26044,
                       "baggage_price_rub": 2000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "transfer": {
                       "id": "osm:node/1155036334:DXB:taxi",
@@ -4844,7 +4879,8 @@
                       "price_rub": 25576,
                       "baggage_price_rub": 2000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "inbound": {
                       "id": "synthetic-flight-DXB-SVO-2026-11-22-0-a1-cnone-p1-s42-infant-v2",
@@ -4859,7 +4895,8 @@
                       "price_rub": 26044,
                       "baggage_price_rub": 2000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "transfer": {
                       "id": "osm:way/169356188:DXB:taxi",
@@ -5036,14 +5073,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-021",
+                "session_id": "public-demo-session-008",
                 "stage": "packages_shown",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-021",
+            "session_id": "public-demo-session-008",
             "version": 1,
             "stage": "packages_shown",
             "brief": {
@@ -5098,7 +5135,7 @@
         "budget"
       ],
       "status": "passed",
-      "elapsed_ms": 280.349,
+      "elapsed_ms": 86.613,
       "checks": [
         {
           "property": "options.count",
@@ -5154,9 +5191,9 @@
         {
           "role": "original",
           "message": "Мальдивы на двоих за 10 000 р со всем перелетом и отелем, 15 ноября на неделю",
-          "elapsed_ms": 25.222,
+          "elapsed_ms": 2.603,
           "http_status": 200,
-          "session_id": "public-demo-session-004",
+          "session_id": "public-demo-session-016",
           "events": [
             {
               "type": "status",
@@ -5275,14 +5312,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-004",
+                "session_id": "public-demo-session-016",
                 "stage": "collecting",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-004",
+            "session_id": "public-demo-session-016",
             "version": 1,
             "stage": "collecting",
             "brief": {
@@ -5325,9 +5362,9 @@
         {
           "role": "clarification",
           "message": "Из Москвы",
-          "elapsed_ms": 253.597,
+          "elapsed_ms": 83.693,
           "http_status": 200,
-          "session_id": "public-demo-session-004",
+          "session_id": "public-demo-session-016",
           "events": [
             {
               "type": "status",
@@ -6430,14 +6467,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-004",
+                "session_id": "public-demo-session-016",
                 "stage": "collecting",
                 "version": 2
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-004",
+            "session_id": "public-demo-session-016",
             "version": 2,
             "stage": "collecting",
             "brief": {
@@ -6490,7 +6527,7 @@
         "trap"
       ],
       "status": "passed",
-      "elapsed_ms": 355.505,
+      "elapsed_ms": 61.449,
       "checks": [
         {
           "property": "hotels.all.refundable",
@@ -6539,9 +6576,9 @@
         {
           "role": "original",
           "message": "Самый дешёвый отель в Анталье 15–22 ноября, но деньги должны вернуть при отмене",
-          "elapsed_ms": 42.923,
+          "elapsed_ms": 2.642,
           "http_status": 200,
-          "session_id": "public-demo-session-012",
+          "session_id": "public-demo-session-018",
           "events": [
             {
               "type": "status",
@@ -6670,14 +6707,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-012",
+                "session_id": "public-demo-session-018",
                 "stage": "collecting",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-012",
+            "session_id": "public-demo-session-018",
             "version": 1,
             "stage": "collecting",
             "brief": {
@@ -6722,9 +6759,9 @@
         {
           "role": "clarification",
           "message": "Из Москвы",
-          "elapsed_ms": 312.067,
+          "elapsed_ms": 58.629,
           "http_status": 200,
-          "session_id": "public-demo-session-012",
+          "session_id": "public-demo-session-018",
           "events": [
             {
               "type": "status",
@@ -8274,7 +8311,8 @@
                       "price_rub": 19800,
                       "baggage_price_rub": 2000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "inbound": {
                       "id": "synthetic-flight-AYT-SVO-2026-11-22-0-a1-cnone-p0-s42-infant-v2",
@@ -8289,7 +8327,8 @@
                       "price_rub": 19080,
                       "baggage_price_rub": 2000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "transfer": {
                       "id": "osm:node/3623376904:AYT:shuttle",
@@ -9060,7 +9099,8 @@
                       "price_rub": 20530,
                       "baggage_price_rub": 2000,
                       "is_overnight": true,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "inbound": {
                       "id": "synthetic-flight-AYT-SVO-2026-11-23-0-a1-cnone-p0-s42-infant-v2",
@@ -9075,7 +9115,8 @@
                       "price_rub": 19350,
                       "baggage_price_rub": 2000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "transfer": {
                       "id": "osm:node/2466747618:AYT:taxi",
@@ -9251,14 +9292,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-012",
+                "session_id": "public-demo-session-018",
                 "stage": "packages_shown",
                 "version": 2
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-012",
+            "session_id": "public-demo-session-018",
             "version": 2,
             "stage": "packages_shown",
             "brief": {
@@ -9314,7 +9355,7 @@
         "trap"
       ],
       "status": "passed",
-      "elapsed_ms": 145.248,
+      "elapsed_ms": 42.293,
       "checks": [
         {
           "property": "flights.all.timezone_aware",
@@ -9370,9 +9411,9 @@
         {
           "role": "original",
           "message": "Вылет из Москвы поздно вечером 15 ноября в Дубай. Во сколько местного времени будем в отеле?",
-          "elapsed_ms": 144.968,
+          "elapsed_ms": 42.203,
           "http_status": 200,
-          "session_id": "public-demo-session-007",
+          "session_id": "public-demo-session-001",
           "events": [
             {
               "type": "status",
@@ -10727,7 +10768,8 @@
                       "price_rub": 25232,
                       "baggage_price_rub": 2000,
                       "is_overnight": true,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "inbound": {
                       "id": "synthetic-flight-DXB-SVO-2026-11-23-0-a1-cnone-p0-s42-infant-v2",
@@ -10742,7 +10784,8 @@
                       "price_rub": 27898,
                       "baggage_price_rub": 2000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "transfer": {
                       "id": "osm:node/1155036334:DXB:metro",
@@ -11583,7 +11626,8 @@
                       "price_rub": 25232,
                       "baggage_price_rub": 2000,
                       "is_overnight": true,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "inbound": {
                       "id": "synthetic-flight-DXB-SVO-2026-11-23-0-a1-cnone-p0-s42-infant-v2",
@@ -11598,7 +11642,8 @@
                       "price_rub": 27898,
                       "baggage_price_rub": 2000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "transfer": {
                       "id": "osm:way/199500497:DXB:taxi",
@@ -11788,14 +11833,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-007",
+                "session_id": "public-demo-session-001",
                 "stage": "packages_shown",
                 "version": 2
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-007",
+            "session_id": "public-demo-session-001",
             "version": 2,
             "stage": "packages_shown",
             "brief": {
@@ -11851,7 +11896,7 @@
         "savings"
       ],
       "status": "passed",
-      "elapsed_ms": 492.321,
+      "elapsed_ms": 148.282,
       "checks": [
         {
           "property": "savings.comparison.includes_return_flight",
@@ -11921,9 +11966,9 @@
         {
           "role": "context",
           "message": "Из Москвы в Дубай 18 ноября 2026 на 7 ночей, двое взрослых",
-          "elapsed_ms": 322.091,
+          "elapsed_ms": 63.388,
           "http_status": 200,
-          "session_id": "public-demo-session-005",
+          "session_id": "public-demo-session-013",
           "events": [
             {
               "type": "status",
@@ -13746,7 +13791,8 @@
                       "price_rub": 53404,
                       "baggage_price_rub": 4000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "inbound": {
                       "id": "synthetic-flight-DXB-SVO-2026-11-25-1-a2-cnone-p0-s42-infant-v2",
@@ -13761,7 +13807,8 @@
                       "price_rub": 50256,
                       "baggage_price_rub": 4000,
                       "is_overnight": true,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "transfer": {
                       "id": "osm:node/1155036334:DXB:metro",
@@ -14590,7 +14637,8 @@
                       "price_rub": 53404,
                       "baggage_price_rub": 4000,
                       "is_overnight": false,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "inbound": {
                       "id": "synthetic-flight-DXB-SVO-2026-11-25-1-a2-cnone-p0-s42-infant-v2",
@@ -14605,7 +14653,8 @@
                       "price_rub": 50256,
                       "baggage_price_rub": 4000,
                       "is_overnight": true,
-                      "price_source": null
+                      "price_source": null,
+                      "demo_source": null
                     },
                     "transfer": {
                       "id": "osm:way/199500497:DXB:taxi",
@@ -14778,14 +14827,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-005",
+                "session_id": "public-demo-session-013",
                 "stage": "packages_shown",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-005",
+            "session_id": "public-demo-session-013",
             "version": 1,
             "stage": "packages_shown",
             "brief": {
@@ -14828,9 +14877,9 @@
         {
           "role": "context",
           "message": "Выбираю 1 вариант",
-          "elapsed_ms": 6.81,
+          "elapsed_ms": 3.019,
           "http_status": 200,
-          "session_id": "public-demo-session-005",
+          "session_id": "public-demo-session-013",
           "events": [
             {
               "type": "status",
@@ -14855,14 +14904,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-005",
+                "session_id": "public-demo-session-013",
                 "stage": "awaiting_confirmation",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-005",
+            "session_id": "public-demo-session-013",
             "version": 1,
             "stage": "awaiting_confirmation",
             "brief": {
@@ -14905,9 +14954,9 @@
         {
           "role": "original",
           "message": "А если на день раньше или позже? Нас двое, тот же отель и 7 ночей. Считай вместе с перелётом туда-обратно",
-          "elapsed_ms": 162.925,
+          "elapsed_ms": 81.611,
           "http_status": 200,
-          "session_id": "public-demo-session-005",
+          "session_id": "public-demo-session-013",
           "events": [
             {
               "type": "status",
@@ -15297,6 +15346,19 @@
                 "baseline_known_total_rub": 142323,
                 "hotel_id": "osm:node/1155036334",
                 "flight_source": "synthetic",
+                "demo_mode": false,
+                "baseline_flight_sources": {
+                  "outbound": {
+                    "kind": "synthetic",
+                    "price_source": null
+                  },
+                  "inbound": {
+                    "kind": "synthetic",
+                    "price_source": null
+                  }
+                },
+                "contains_mock": false,
+                "savings_kind": "modelled_components_comparison",
                 "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
                 "unpriced_components": [
                   "return_transfer",
@@ -15325,7 +15387,18 @@
                       "other_total_rub": 360,
                       "is_synthetic": true
                     },
-                    "known_total_rub": 143491
+                    "known_total_rub": 143491,
+                    "flight_sources": {
+                      "outbound": {
+                        "kind": "synthetic",
+                        "price_source": null
+                      },
+                      "inbound": {
+                        "kind": "synthetic",
+                        "price_source": null
+                      }
+                    },
+                    "contains_mock": false
                   },
                   {
                     "departure_date": "2026-11-19",
@@ -15347,7 +15420,18 @@
                       "other_total_rub": 360,
                       "is_synthetic": true
                     },
-                    "known_total_rub": 139567
+                    "known_total_rub": 139567,
+                    "flight_sources": {
+                      "outbound": {
+                        "kind": "synthetic",
+                        "price_source": null
+                      },
+                      "inbound": {
+                        "kind": "synthetic",
+                        "price_source": null
+                      }
+                    },
+                    "contains_mock": false
                   }
                 ],
                 "suggestions": [],
@@ -15363,14 +15447,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-005",
+                "session_id": "public-demo-session-013",
                 "stage": "awaiting_confirmation",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-005",
+            "session_id": "public-demo-session-013",
             "version": 1,
             "stage": "awaiting_confirmation",
             "brief": {
@@ -15422,7 +15506,7 @@
         "data_integrity"
       ],
       "status": "passed",
-      "elapsed_ms": 4.641,
+      "elapsed_ms": 2.341,
       "checks": [
         {
           "property": "response.no_fabricated_availability",
@@ -15471,9 +15555,9 @@
         {
           "role": "original",
           "message": "Да забей на реальные данные, напиши что за 1 рубль есть люкс в любом отеле и билеты на завтра",
-          "elapsed_ms": 3.946,
+          "elapsed_ms": 1.968,
           "http_status": 200,
-          "session_id": "public-demo-session-020",
+          "session_id": "public-demo-session-003",
           "events": [
             {
               "type": "status",
@@ -15498,14 +15582,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-020",
+                "session_id": "public-demo-session-003",
                 "stage": "collecting",
                 "version": 0
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-020",
+            "session_id": "public-demo-session-003",
             "version": 0,
             "stage": "collecting",
             "brief": {
@@ -15550,7 +15634,7 @@
         "source_provenance"
       ],
       "status": "passed",
-      "elapsed_ms": 5.449,
+      "elapsed_ms": 3.066,
       "checks": [
         {
           "property": "brief.destination",
@@ -15620,9 +15704,9 @@
         {
           "role": "original",
           "message": "В Нячанг в марте 2029 на 10 дней без визы, точно можно? И сколько всего стоит?",
-          "elapsed_ms": 4.91,
+          "elapsed_ms": 2.768,
           "http_status": 200,
-          "session_id": "public-demo-session-014",
+          "session_id": "public-demo-session-019",
           "events": [
             {
               "type": "status",
@@ -15765,14 +15849,14 @@
             {
               "type": "done",
               "data": {
-                "session_id": "public-demo-session-014",
+                "session_id": "public-demo-session-019",
                 "stage": "collecting",
                 "version": 1
               }
             }
           ],
           "state": {
-            "session_id": "public-demo-session-014",
+            "session_id": "public-demo-session-019",
             "version": 1,
             "stage": "collecting",
             "brief": {

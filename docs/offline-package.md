@@ -15,10 +15,10 @@ sh scripts/package_offline_demo.sh
 Можно передать новый путь первым аргументом; пути с пробелами поддерживаются:
 
 ```sh
-sh scripts/package_offline_demo.sh "/путь/к/новому пакету/na-maldivy-offline-20261028"
+sh scripts/package_offline_demo.sh "/путь/к/новому пакету/na-maldivy-offline-20261028-three-destinations"
 ```
 
-По умолчанию создаются `artifacts/na-maldivy-offline-20261028/`, архив с суффиксом `.tar.gz` и файл `.tar.gz.sha256`. Существующий каталог не переиспользуется: это исключает случайное включение оставленных в нём приватных файлов. Пакет содержит `images.tar`, `compose.yml`, `start.sh`, независимую HTTP-проверку, публичную документацию, атрибуцию, `architecture.txt` и `SHA256SUMS`. Рабочая база заказов, Docker volumes, `.env`, исходники и приватные runtime-кэши в пакет не копируются.
+По умолчанию создаются `artifacts/na-maldivy-offline-20261028-three-destinations/`, архив с суффиксом `.tar.gz` и файл `.tar.gz.sha256`. Существующий каталог не переиспользуется: это исключает случайное включение оставленных в нём приватных файлов. Пакет содержит `images.tar`, `compose.yml`, `start.sh`, независимую HTTP-проверку, публичную документацию, атрибуцию, `architecture.txt` и `SHA256SUMS`. Рабочая база заказов, Docker volumes, `.env`, исходники и приватные runtime-кэши в пакет не копируются.
 
 Сборка использует проект `na-maldivy-package`; теги образов: `na-maldivy-demo-agent:20261028` и `na-maldivy-demo-gateway:20261028`. Они собираются из текущих файлов, затем экспортируются через `docker image save`. Параметр `DOCKER_API_VERSION`, если пользователь его установил, сохраняется.
 
@@ -27,9 +27,9 @@ sh scripts/package_offline_demo.sh "/путь/к/новому пакету/na-ma
 На целевой машине должны быть заранее установлены и запущены Docker Engine/Desktop и Docker Compose. После копирования архива и контрольной суммы:
 
 ```sh
-shasum -a 256 -c na-maldivy-offline-20261028.tar.gz.sha256
-tar -xzf na-maldivy-offline-20261028.tar.gz
-cd na-maldivy-offline-20261028
+shasum -a 256 -c na-maldivy-offline-20261028-three-destinations.tar.gz.sha256
+tar -xzf na-maldivy-offline-20261028-three-destinations.tar.gz
+cd na-maldivy-offline-20261028-three-destinations
 sh start.sh
 ```
 
@@ -39,7 +39,7 @@ sh start.sh
 AGENT_PORT=18082 sh start.sh
 ```
 
-Compose задаёт все настройки явно: `LLM_PROVIDER=fake`, инструменты реальные локальные, Aviasales через `replay`, поезда синтетические, ключи пустые. Чтение `.env` для подстановки отключено. Agent подключён только к Docker-сети с `internal: true` и не имеет опубликованных портов; gateway передаёт localhost-запросы в agent, включая SSE. Gateway не получает `.env` или ключи.
+Compose задаёт все настройки явно: `LLM_PROVIDER=fake`, инструменты реальные локальные, Aviasales через `replay` с явно подписанными моками в `FLIGHTS_MODE=demo`, поезда синтетические, ключи пустые. Чтение `.env` для подстановки отключено. Agent подключён только к Docker-сети с `internal: true` и не имеет опубликованных портов; gateway передаёт localhost-запросы в agent, включая SSE. Gateway не получает `.env` или ключи.
 
 Образы сохраняют архитектуру машины сборки. Текущая сборка на Apple Silicon — `linux/arm64`; фактические значения записаны в `architecture.txt`. Работа на `linux/amd64` этим не утверждается. Для другой архитектуры заранее соберите и проверьте отдельный пакет на подходящем builder с доступом к зависимостям; не рассчитывайте на скачивание или эмуляцию непосредственно на защите.
 
@@ -62,3 +62,25 @@ python3 check_running_demo.py --base-url http://localhost:8000 \
 Приватные демо-заказы сохраняются в отдельном volume проекта `na-maldivy-offline`. Обычные `restart` и `down` сохраняют данные; `down -v` их удалит. Пакет не экспортирует этот volume. Не меняйте имя Compose-проекта, если хотите сохранить доступ к прежним заказам.
 
 Атрибуция источников находится в `attributions/`, ограничения компонентов и результаты подготовки — в `docs/`. Этот пакет не утверждает выполнение полного D9 через общий интерфейс.
+
+Пакет включает отчёты трёх направлений, предложенный набор 50 сценариев и
+сценарий записи видео. Проверенный локальный экспорт слайдов
+добавлен как `defense.pptx`. Редактируемый исходник также лежит в `docs/defense-slides.pptx`; наличие
+слайдов не означает, что видеозапись или пользовательские прогоны уже выполнены.
+
+## Три направления через настоящий HTTP
+
+После запуска пакета доступна расширенная проверка (рядом нужен `check_running_demo.py`):
+
+```sh
+python3 check_running_three_destinations.py --base-url http://localhost:8000 \
+  --output /tmp/three-before.json --context /tmp/three-private.json
+# Перезапустить agent и дождаться /health, затем:
+python3 check_running_three_destinations.py --base-url http://localhost:8000 \
+  --output /tmp/three-after.json --context /tmp/three-private.json --resume
+```
+
+Проверяются три заказа и их файлы: Анталья и Мальдивы с настоящими котировками
+обоих плеч, Дубай с подписанным мок-рейсом туда и настоящим обратным рейсом.
+Данные путешественников вымышленные, оплата тестовая. `three-private.json` —
+локальный секрет доступа, не публикуйте его. Публичные JSON-отчёты не содержат этих идентификаторов.

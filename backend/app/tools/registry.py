@@ -43,18 +43,29 @@ def create_tools(settings: Settings, *, flight_http=None, train_http=None) -> To
             raise
         raise RuntimeError("TOOLS_MODE=real requires the D2, D3, D5, D6 and D8 implementation PRs") from None
     owned_clients = []
-    if settings.flights_mode == "aviasales":
-        token = settings.aviasales_api_token.get_secret_value() if settings.aviasales_api_token else None
+    if settings.flights_mode in {"aviasales", "demo"}:
+        # The explicit demo never forwards a configured credential, including in replay.
+        token = (
+            settings.aviasales_api_token.get_secret_value()
+            if settings.flights_mode == "aviasales" and settings.aviasales_api_token
+            else None
+        )
         if flight_http is None:
             from app.tools.http_cache import CachedHttpClient
 
+            default_cache = "demo/aviasales" if settings.flights_mode == "demo" else "cache/aviasales/runtime"
             flight_http = CachedHttpClient(
                 mode=settings.cache_mode,
-                cache_dir=settings.aviasales_cache_dir or settings.data_dir / "cache/aviasales/runtime",
+                cache_dir=settings.aviasales_cache_dir or settings.data_dir / default_cache,
                 secret_values=(token,) if token else (),
             )
             owned_clients.append(flight_http)
-        flights = FlightTool(mode="provider", http=flight_http, token=token, data_dir=settings.data_dir)
+        if settings.flights_mode == "demo":
+            from app.tools.demo_flights import DemoFlightTool
+
+            flights = DemoFlightTool(http=flight_http, data_dir=settings.data_dir)
+        else:
+            flights = FlightTool(mode="provider", http=flight_http, token=token, data_dir=settings.data_dir)
     else:
         flights = FlightTool(data_dir=settings.data_dir)
     if settings.trains_mode == "yandex":

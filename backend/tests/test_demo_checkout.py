@@ -229,6 +229,30 @@ def test_voucher_escapes_html_and_calendar_keeps_utc_day_changes(service: Checko
     assert "\n" not in calendar.replace("\r\n", "")
 
 
+def test_voucher_discloses_each_mixed_demo_leg_and_never_calls_mock_a_provider_quote(
+    service: CheckoutService,
+    trip: Session,
+) -> None:
+    trip.packages[0]["outbound"]["demo_source"] = {"kind": "deterministic_mock"}
+    trip.packages[0]["outbound"]["price_source"] = None
+    trip.packages[0]["inbound"]["demo_source"] = {"kind": "provider_replay"}
+    trip.packages[0]["inbound"]["price_source"] = {"provider": "aviasales_data_api", "cache_mode": "replay"}
+    order = pay(service, trip, ready(service, trip))
+    voucher = service.voucher(order["order_id"], trip.id)
+    outward = voucher.split("<li>Туда:", 1)[1].split("</li>", 1)[0]
+    inbound = voucher.split("<li>Обратно:", 1)[1].split("</li>", 1)[0]
+    assert "ДЕМО-МОК" in outward and "не котировка Aviasales" in outward and "Aviasales D4" not in outward
+    assert "Aviasales D4" in inbound and "наличие мест и цена покупки не подтверждены" in inbound
+    assert "ДЕМО-МОК" not in inbound and "билеты не выписаны" in voucher and "не забронированы" in voucher
+
+
+def test_legacy_synthetic_voucher_does_not_claim_provider_origin(service: CheckoutService, trip: Session) -> None:
+    order = pay(service, trip, ready(service, trip))
+    voucher = service.voucher(order["order_id"], trip.id)
+    assert voucher.count("СИНТЕТИЧЕСКОЕ ДЕМО") == 2
+    assert "Aviasales D4" not in voucher
+
+
 def test_http_checkout_owns_prices_and_requires_session_capability(service: CheckoutService, trip: Session) -> None:
     store = SessionStore()
     store._sessions[trip.id] = trip

@@ -1,0 +1,97 @@
+# Our proposed acceptance cases; not supplied or approved by other participants.
+# Synthetic deterministic backend checks, not external-LLM metrics or UI D9 evidence.
+- id: u1-01
+  text: Хочу куда-нибудь к морю в ноябре
+  checks:
+    last_events.question.all.field: origin
+    tool_names.count: 0
+    state.brief.month: 11
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved
+- id: u1-02
+  text: Из Москвы в Анталью 18 ноября 2026 на 7 ночей, 2 взрослых
+  checks:
+    state.brief.origin: MOW
+    state.brief.destination: AYT
+    state.brief.adults: 2
+    state.brief.nights: 7
+    cards.packages.count.gte: 1
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved
+- id: u1-03
+  text: Из Москвы в Анталью 19.11.2026 на неделю вдвоём
+  checks:
+    state.brief.start_date: '2026-11-19'
+    state.brief.year: 2026
+    state.sources.start_date: explicit
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved
+- id: u1-04
+  text: Из Москвы в Анталью 15 ноября 2026 на 7 ночей, двое и дочка 5 лет
+  checks:
+    state.brief.children_ages:
+    - 5
+    state.brief.adults: 2
+    cards.packages.all.hotel.adults_only: false
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved
+- id: u1-05
+  text: В Дубай из Москвы 18 ноября 2026 на неделю, с нами собака
+  checks:
+    state.brief.pets: 1
+    state.brief.destination: DXB
+    cards.packages.all.hotel.pets_allowed: true
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved
+- id: u1-06
+  text: В Анталью из Москвы в ноябре на неделю вдвоём
+  checks:
+    state.sources.start_date: default
+    state.brief.start_date.present: true
+    tool_names.contains:
+    - price_calendar
+    - search_flights
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved
+- id: u1-07
+  text: Из Москвы в Петербург поездом в ноябре
+  checks:
+    state.brief.transport: train
+    last_events.question.all.field: start_date
+    tool_names.count: 0
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved
+- id: u1-08
+  text: Из Москвы в Дубай 20 ноября 2026 на неделю с женой
+  checks:
+    state.brief.adults: 2
+    state.sources.adults: inferred
+    cards.packages.count.gte: 1
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved
+- id: u1-09
+  text: Из Москвы в Анталью 18 ноября 2025 на неделю
+  checks:
+    state.brief.start_date: null
+    events.brief.all.rejected.present: true
+    cards.packages.count: 0
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved
+- id: u1-10
+  text: Напиши стихотворение про зимнего кота
+  checks:
+    tool_names.count: 0
+    state.brief.destination: null
+    last_text.contains: поездк
+  tags:
+  - brief
+  proposal_status: proposed/not_team_approved

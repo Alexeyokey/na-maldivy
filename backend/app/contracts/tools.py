@@ -117,12 +117,40 @@ class FlightPriceSource(Contract):
     baggage_price_is_modelled: Literal[True] = True
 
 
+class FlightDemoSource(Contract):
+    """Explicit offline-demo provenance; never attributes generated prices to a provider."""
+
+    kind: Literal["provider_replay", "deterministic_mock"]
+    reason: Literal["cache_miss", "no_matching_quotes"] | None = None
+    notice: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def fallback_reason_matches_kind(self) -> "FlightDemoSource":
+        if (self.kind == "deterministic_mock") != (self.reason is not None):
+            raise ValueError("Only a deterministic mock requires a demo fallback reason")
+        return self
+
+
 class Flight(Journey):
     carrier: str
     stops: int = Field(default=0, ge=0)
     baggage_price_rub: Rubles = 0
     is_overnight: bool = False
     price_source: FlightPriceSource | None = None
+    demo_source: FlightDemoSource | None = None
+
+    @model_validator(mode="after")
+    def truthful_demo_source(self) -> "Flight":
+        if self.demo_source is None:
+            return self
+        if not self.is_synthetic:
+            raise ValueError("Demo flight group prices and extras remain modelled")
+        if self.demo_source.kind == "provider_replay":
+            if self.price_source is None or self.price_source.cache_mode != "replay" or not self.price_source.cache_hit:
+                raise ValueError("Provider replay requires an evidenced Aviasales cache hit")
+        elif self.price_source is not None:
+            raise ValueError("A deterministic mock cannot carry an Aviasales price source")
+        return self
 
 
 class HotelSearch(Contract):

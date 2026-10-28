@@ -273,6 +273,7 @@ def _flight_dump(f: Flight) -> dict[str, Any]:
         "baggage_price_rub": f.baggage_price_rub,
         "is_overnight": f.is_overnight,
         "price_source": f.price_source.model_dump(mode="json") if f.price_source else None,
+        "demo_source": f.demo_source.model_dump(mode="json") if f.demo_source else None,
     }
 
 
@@ -333,8 +334,20 @@ def _explain(c: _Combo, brief: TripBrief) -> tuple[list[str], list[str], list[st
         tradeoffs.append("отель без возврата денег при отмене")
     if c.outbound.stops == 0 and c.inbound.stops == 0:
         why.append("прямые рейсы")
-    if c.outbound.price_source or c.inbound.price_source:
+    mock_legs = [
+        label
+        for label, flight in (("туда", c.outbound), ("обратно", c.inbound))
+        if flight.demo_source and flight.demo_source.kind == "deterministic_mock"
+    ]
+    if mock_legs:
+        risks.append(
+            f"ДЕМО-МОК: рейс {', '.join(mock_legs)} сгенерирован; расписание и цена не подтверждены поставщиком"
+        )
+        if c.outbound.price_source or c.inbound.price_source:
+            why.append("часть авиацен взята из поискового кэша Aviasales; остальные рейсы явно обозначены моками")
+    elif c.outbound.price_source or c.inbound.price_source:
         why.append("авиацены основаны на котировках из поискового кэша Aviasales")
+    if c.outbound.price_source or c.inbound.price_source:
         risks.append("Котировки Aviasales не подтверждают наличие мест; цена группы и багаж рассчитаны моделью")
     if brief.pets:
         risks.append("Перевозка питомца авиакомпанией не подтверждена; модельная доплата не означает разрешение")

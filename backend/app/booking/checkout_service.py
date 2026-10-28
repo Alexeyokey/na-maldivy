@@ -365,9 +365,20 @@ class CheckoutService:
         ]
         lines = "".join(f"<li>{esc(label)}: {esc(amount)} RUB</li>" for label, amount in components)
         extras = ", ".join(package["unpriced_components"])
+
+        def flight_source(leg: dict[str, Any]) -> str:
+            demo = leg.get("demo_source") or {}
+            if demo.get("kind") == "deterministic_mock":
+                return "ДЕМО-МОК: расписание и цена сгенерированы; это не котировка Aviasales и не наличие мест."
+            price_source = leg.get("price_source") or {}
+            if demo.get("kind") == "provider_replay" or price_source.get("provider") == "aviasales_data_api":
+                return "Aviasales D4: сохранённая котировка; наличие мест и цена покупки не подтверждены."
+            return "СИНТЕТИЧЕСКОЕ ДЕМО: расчётные расписание и цена; наличие мест не подтверждено."
+
         flights = "".join(
-            f"<li>{esc(leg['from'])} → {esc(leg['to'])}: {esc(leg['departure_at'])} — {esc(leg['arrival_at'])}</li>"
-            for leg in (package["outbound"], package["inbound"])
+            f"<li>{title}: {esc(leg['from'])} → {esc(leg['to'])}: "
+            f"{esc(leg['departure_at'])} — {esc(leg['arrival_at'])}. {esc(flight_source(leg))}</li>"
+            for title, leg in (("Туда", package["outbound"]), ("Обратно", package["inbound"]))
         )
         return (
             '<!doctype html><html lang="ru"><meta charset="utf-8"><title>Демо-ваучер</title>'

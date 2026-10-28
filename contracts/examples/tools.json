@@ -276,6 +276,7 @@
         "arrival_at": "2026-11-18T20:00:00+05:00",
         "baggage_price_rub": 2000,
         "carrier": "Demo Air (synthetic)",
+        "demo_source": null,
         "departure_at": "2026-11-18T09:00:00+03:00",
         "destination": {
           "iata": "MLE",
@@ -306,6 +307,7 @@
         "arrival_at": "2026-11-19T10:30:00+05:00",
         "baggage_price_rub": 2000,
         "carrier": "Demo Air (synthetic)",
+        "demo_source": null,
         "departure_at": "2026-11-18T23:30:00+03:00",
         "destination": {
           "iata": "MLE",
