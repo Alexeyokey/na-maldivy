@@ -139,3 +139,13 @@ export async function downloadCheckout({path,sessionId,fetchImpl=globalThis.fetc
     return {blob:await response.blob(),filename:calendar?'demo-trip.ics':'demo-voucher.html',contentType};
   }catch(error){throw checkoutError(error,signal);}
 }
+
+/** Compatibility reader for the participant's validated trip canvas projection. */
+export async function fetchSessionCanvas({sessionId,endpoint='/api/session',signal,fetchImpl=globalThis.fetch}){
+ if(!isSessionId(sessionId))throw new ChatApiError('Некорректная сессия поездки.',{code:'validation'});
+ const response=await fetchImpl(endpoint+'/'+encodeURIComponent(sessionId),{signal,headers:{Accept:'application/json'},credentials:'same-origin',cache:'no-store',redirect:'error'});
+ if(!response.ok)throw new ChatApiError(response.status===404?'Сессия поездки больше не существует.':'Не удалось обновить холст поездки.',{code:response.status===404?'session_missing':'http',status:response.status});
+ const value=await response.json();
+ if(value?.session_id!==sessionId||!value.brief||typeof value.brief!=='object'||Array.isArray(value.brief))throw new ChatApiError('Сервер вернул другой холст поездки.',{code:'protocol'});
+ return value;
+}
