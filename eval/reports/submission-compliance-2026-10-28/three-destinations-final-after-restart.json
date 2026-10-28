@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-10-28T20:59:53.592832+00:00",
+  "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+  "mode": "resume_after_restart",
+  "status": "passed",
+  "integrated_ui_status": "not_run",
+  "completed_stages": [
+    "gateway.load_private_context",
+    "gateway.health",
+    "AYT.restart_order_and_artifacts",
+    "DXB.restart_order_and_artifacts",
+    "MLE.restart_order_and_artifacts"
+  ],
+  "stage_timings_seconds": {
+    "gateway.load_private_context": 0.0,
+    "gateway.health": 0.006,
+    "AYT.restart_order_and_artifacts": 0.125,
+    "DXB.restart_order_and_artifacts": 0.017,
+    "MLE.restart_order_and_artifacts": 0.087
+  },
+  "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+  "full_d9_acceptance_status": "not_completed_by_this_report",
+  "destinations": [
+    {
+      "destination": "AYT",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "48af30a230977f8db2effefb8a15d9903736b5e794500e4311039dad98932f97",
+      "voucher_sha256": "8e24dc6fba63d684e01acedbf4d04e02a5889472ac330005d91995105f60d068",
+      "calendar_sha256": "3fb21a3a91a81095000846d7fcc319cac90b324645598b2e41b97766ce884f9e"
+    },
+    {
+      "destination": "DXB",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "cef2d70454f6d58ba0113a05149d7f8b23c46840a17a5438202bb94d2b03d76f",
+      "voucher_sha256": "e6c816b343ab264ac7271a3e66d8c9e92e1dfa4cf53d77397e69ee95113968b5",
+      "calendar_sha256": "3bbe1c6b608ec98fbac32ab99523cb75896b8bb34e79329152c55e906b347dcc"
+    },
+    {
+      "destination": "MLE",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "86bda50ab81bd812b075c842be4b52df3a2ff6fb46719f37db8ac33962e33e15",
+      "voucher_sha256": "f2dc7c7b33536b026f75f611113d4d91b226fdd95d40798acabb16068a859efd",
+      "calendar_sha256": "13d131edea6f3302048e4342eef37baa1b33682b6cca6bf6c55bfe502a3475e0"
+    }
+  ],
+  "external_model_used": false,
+  "destinations_passed": 3,
+  "duration_seconds": 0.236,
+  "source_commit": "1c1a0233469b0fd728324335138b4b6fb4bed540"
+}

@@ -1,0 +1,150 @@
+{
+  "status": "passed",
+  "scope": "default_docker_package",
+  "checks": [
+    {
+      "name": "mandatory_source_files",
+      "passed": true,
+      "detail": "All required files exist.",
+      "required": true
+    },
+    {
+      "name": "single_browser_entrypoint",
+      "passed": true,
+      "detail": "The only published endpoint must map host 8080 to runtime 8080.",
+      "required": true
+    },
+    {
+      "name": "agent:platform",
+      "passed": true,
+      "detail": "Default services explicitly target linux/amd64.",
+      "required": true
+    },
+    {
+      "name": "agent:health",
+      "passed": true,
+      "detail": "Compose must include an active container health check.",
+      "required": true
+    },
+    {
+      "name": "agent:resources",
+      "passed": true,
+      "detail": "Optional container CPU and memory limits complement the required README resource guidance.",
+      "required": false
+    },
+    {
+      "name": "agent:logs",
+      "passed": true,
+      "detail": "Container stdout/stderr logging is enabled.",
+      "required": true
+    },
+    {
+      "name": "agent:user_override",
+      "passed": true,
+      "detail": "Compose must not override the runtime user to root.",
+      "required": true
+    },
+    {
+      "name": "agent:runtime_image",
+      "passed": true,
+      "detail": "Versioned public images, multiple stages, non-root runtime and health check.",
+      "required": true
+    },
+    {
+      "name": "app:platform",
+      "passed": true,
+      "detail": "Default services explicitly target linux/amd64.",
+      "required": true
+    },
+    {
+      "name": "app:health",
+      "passed": true,
+      "detail": "Compose must include an active container health check.",
+      "required": true
+    },
+    {
+      "name": "app:resources",
+      "passed": true,
+      "detail": "Optional container CPU and memory limits complement the required README resource guidance.",
+      "required": false
+    },
+    {
+      "name": "app:logs",
+      "passed": true,
+      "detail": "Container stdout/stderr logging is enabled.",
+      "required": true
+    },
+    {
+      "name": "app:user_override",
+      "passed": true,
+      "detail": "Compose must not override the runtime user to root.",
+      "required": true
+    },
+    {
+      "name": "app:runtime_image",
+      "passed": true,
+      "detail": "Versioned public images, multiple stages, non-root runtime and health check.",
+      "required": true
+    },
+    {
+      "name": "application_dockerfiles",
+      "passed": true,
+      "detail": "Application builds are defined by checked-in Dockerfiles.",
+      "required": true
+    },
+    {
+      "name": "ui_runtime_port",
+      "passed": true,
+      "detail": "The UI process itself listens on 8080.",
+      "required": true
+    },
+    {
+      "name": "ready_dependencies",
+      "passed": true,
+      "detail": "The browser service waits for healthy dependencies.",
+      "required": true
+    },
+    {
+      "name": "keyless_seeded_demo",
+      "passed": true,
+      "detail": "Default app uses the seeded real tool registry, explicit demo data, and fake LLM without keys.",
+      "required": true
+    },
+    {
+      "name": "example_credentials",
+      "passed": true,
+      "detail": "Rendered example configuration contains no credentials.",
+      "required": true
+    },
+    {
+      "name": "example_file_credentials",
+      "passed": true,
+      "detail": "The example file itself contains only empty credential values.",
+      "required": true
+    },
+    {
+      "name": "dependency_registry",
+      "passed": true,
+      "detail": "Python lock resolves from public PyPI; no private package registry is required.",
+      "required": true
+    },
+    {
+      "name": "frontend_dependencies",
+      "passed": true,
+      "detail": "The packaged frontend requires no private npm dependencies.",
+      "required": true
+    },
+    {
+      "name": "http:/",
+      "passed": true,
+      "detail": "Anonymous local HTTP endpoint is ready."
+    },
+    {
+      "name": "http:/health",
+      "passed": true,
+      "detail": "Anonymous local HTTP endpoint is ready."
+    }
+  ],
+  "handoff_certified": false,
+  "source_commit": "1c1a0233469b0fd728324335138b4b6fb4bed540"
+}

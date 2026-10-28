@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-10-28T20:48:19.758929+00:00",
+  "scope": "preparation_for_submission_not_final_handoff",
+  "status": "pending_clean_runtime_and_handoff",
+  "source_head": "4353a79f77ddac8249f9f9332ecd3ba59672ab76",
+  "technical_package_static": "passed",
+  "technical_package_runtime": "pending_clean_archive_run_by_parent_task",
+  "first_build_duration": "not_measured_in_this_audit",
+  "public_locked_python_packages": 45,
+  "all_python_packages_anonymously_accessible": true,
+  "private_dependency_required": false,
+  "frontend_npm_dependencies": 0,
+  "remote_submission_tag": "absent_at_checked_snapshot",
+  "submission_tag_action": "deferred_by_explicit_owner_request_do_not_create",
+  "main_integration": "not_completed_at_checked_snapshot",
+  "video_url": "not_provided",
+  "video_incognito_check": "not_performed",
+  "deadline": "not_provided_no_schedule_created",
+  "repo_license": "no_root_license_team_choice_not_a_stated_submission_gate",
+  "tracked_sensitive_path_check": {
+    "suspect_paths": [],
+    "passed": true,
+    "scope": "tracked_filenames_only_not_complete_history_or_image_layer_scan"
+  },
+  "source_file_sha256": {
+    "docker-compose.yml": "484d0dfef12a818804b20838e761e27ba5b3abcf191bfc89ceabf7809d99f74a",
+    ".env.example": "52fd9958dd30632f8609b3049122a87203b4f8293b1c5215d92c71616490dec9",
+    "backend/Dockerfile.demo": "3ada143a59472d5bc12bc5e6b2a54a6d8df92276a97615aa739f7a7ebb8cc85e",
+    "frontend/Dockerfile": "b02320c0a97b4cdbf7cd09da085750595bfc9a034988c87228f06d33c40afe6a",
+    "backend/uv.lock": "002a7387b61fea3015409c263a838f20e9b6a556942fd9f58dcbd8ed629bee7b",
+    "frontend/package.json": "2ea6a91c95b4a41c5ab0b57e1a1ab03b2a2bb795380aa753d89d5586e69fb0ad",
+    ".dockerignore": "8b50537a33c8d6c8e22033e08b164f19dbcd19c1c50637c210dc5d11546cf741"
+  },
+  "evidence_files": [
+    "github-state.json",
+    "pr64-before-update.json",
+    "dependencies.json",
+    "package-static.json"
+  ],
+  "limits": [
+    "Static package checks do not establish full submission completion.",
+    "Remote facts are timestamped snapshots; PR64 may be updated after this evidence.",
+    "No final tag, main merge, video recording/upload, Docker build, deployment, or automation was performed by this audit."
+  ]
+}

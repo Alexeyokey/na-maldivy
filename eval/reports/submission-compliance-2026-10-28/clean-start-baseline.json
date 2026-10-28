@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "commit": "1419c9279b758b94d35117aaa1ffde1fb14ac172",
+  "created_from": "git archive HEAD",
+  "private_env_or_artifacts_included": false,
+  "launch_command": "docker compose up --build",
+  "timing_note": "Existing image and layer caches are warm; this is not a cold-network build benchmark",
+  "launch_started_unix": 1793220673.936795,
+  "first_healthy_observed_unix": 1793220705.570446,
+  "ready_observed_within_seconds": 31.634,
+  "health": {
+    "status": "ok",
+    "llm_provider": "fake"
+  },
+  "ui_http_status": 200,
+  "checked_at": "2026-10-28T20:54:03.307994+00:00",
+  "status": "passed",
+  "scope": "clean_git_archive_default_compose",
+  "source_private_env_loaded": false,
+  "env_source": ".env.example copied to .env",
+  "external_model_used": false,
+  "services": {
+    "agent": {
+      "healthy": true,
+      "image_architecture": "amd64",
+      "user": "1000:1000",
+      "published_ports": [],
+      "mount_types": [
+        "volume"
+      ],
+      "memory_limit_bytes": 536870912,
+      "nano_cpus": 1000000000,
+      "nonempty_provider_keys": false,
+      "runtime": {
+        "uid": 1000,
+        "python": "3.12.16",
+        "data_files": 247,
+        "data_bytes": 3082896,
+        "database_permissions": "0o600",
+        "dev_tools": {
+          "uv": null,
+          "gcc": null,
+          "make": null
+        },
+        "dev_packages": {
+          "pytest": false,
+          "ruff": false
+        }
+      }
+    },
+    "app": {
+      "healthy": true,
+      "image_architecture": "amd64",
+      "user": "1000:1000",
+      "published_ports": [
+        {
+          "container_port": "8080/tcp",
+          "host_port": 8080,
+          "host_ip": "0.0.0.0"
+        },
+        {
+          "container_port": "8080/tcp",
+          "host_port": 8080,
+          "host_ip": "::"
+        }
+      ],
+      "mount_types": [],
+      "memory_limit_bytes": 134217728,
+      "nano_cpus": 500000000,
+      "nonempty_provider_keys": false,
+      "runtime": {
+        "uid": 1000,
+        "node": "v22.23.4",
+        "port": "8080"
+      }
+    }
+  },
+  "host": {
+    "cpu": "Apple M3",
+    "ram_bytes": 17179869184,
+    "architecture": "arm64",
+    "docker_version": "Docker version 29.8.2, build 7fc2dff",
+    "compose_version": "5.5.1"
+  },
+  "notice": "Warm Docker cache; ready_observed_within_seconds is an upper bound from command start to the first successful HTTP probe. Runtime inventory collected after both Compose health checks passed. No final submission certification.",
+  "source_commit": "1419c9279b758b94d35117aaa1ffde1fb14ac172"
+}
