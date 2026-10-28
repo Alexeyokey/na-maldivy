@@ -126,9 +126,9 @@ def test_chat_uses_provider_seat_quotes_and_replays_d4_without_token_or_network(
     for option in options:
         assert_quoted_package(option, mode="record", hit=False)
     answer = "".join(data["text"] for name, data in events if name == "delta")
-    assert "Aviasales" in answer and "14 321 ₽" in answer and "16 789 ₽" in answer
-    assert "Цена группы, багаж, отель и трансфер — расчётные" in answer
-    assert "Наличие мест и окончательная стоимость покупки не проверены" in answer
+    assert "сохранённые котировки" in answer and "Aviasales" not in answer
+    assert "цена группы, багаж, отель и трансфер — расчётные" in answer
+    assert "наличие и окончательная цена покупки не подтверждены" in answer
     tool_results = [data for name, data in events if name == "tool_result" and data["name"] == "search_flights"]
     assert len(tool_results) == 2
     assert all(data["ok"] and data["source"] == "aviasales_data_api" for data in tool_results)

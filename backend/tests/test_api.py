@@ -62,7 +62,13 @@ def test_chat_offline_agent_asks_then_plans() -> None:
         session_id = events[-1][1]["session_id"]
 
         events = parse_sse(client.post("/api/chat", json={"message": "из Москвы", "session_id": session_id}).text)
-        assert events[-1] == ("done", {"session_id": session_id, "stage": "destinations_shown", "version": 2})
+        assert events[-1][0] == "done"
+        assert {key: events[-1][1][key] for key in ("session_id", "stage", "version")} == {
+            "session_id": session_id,
+            "stage": "destinations_shown",
+            "version": 2,
+        }
+        assert events[-1][1]["options"]["kind"] == "destinations"
         assert any(name == "tool_call" and data["name"] == "suggest_destinations" for name, data in events)
         assert any(name == "options" for name, _ in events)
 

@@ -123,7 +123,7 @@ def _budget(text: str) -> int | None:
     scale = r"\s*(тыс\w*|т\.?р\b|k\b|к\b|млн\b|миллион\w*)?"
     explicit = re.search(
         r"\b(?:бюджет\w*|потрачу|потратим|потратить)\s*"
-        r"(?:(?:теперь|сейчас|максимум)\s*)?[:=]?\s*" + amount + scale,
+        r"(?:(?:теперь|сейчас|максимум)\s*)?[:=]?\s*(?:на\s*)?" + amount + scale,
         text,
     )
     general = re.search(r"(?:\bдо|\bза|не дороже|в пределах)\s*" + amount + scale, text)
@@ -172,9 +172,18 @@ def relative(text: str, brief: TripBrief) -> dict[str, Any]:
     if longer and brief.nights and (n := _number(longer.group(1))):
         data["nights"] = max(1, brief.nights + (n if longer.group(2) in ("дольше", "больше", "длиннее") else -n))
     money = re.search(r"(?:бюджет\w*|дешевле|дороже)\s*(меньше|больше)?\s*на\s*(\d[\d\s]*)\s*(тыс\w*|к|k)?", t)
-    if money and brief.budget_rub:
+    delta_direction = re.search(r"уменьш\w*|сократ\w*|сниз\w*|увелич\w*|повыс\w*", t)
+    if (
+        money
+        and brief.budget_rub
+        and (money.group(1) or re.search(r"дешевле|дороже", money.group(0)) or delta_direction)
+    ):
         amount = _money(money.group(2).strip(), money.group(3))
-        less = money.group(1) == "меньше" or "дешевле" in money.group(0)
+        less = (
+            money.group(1) == "меньше"
+            or "дешевле" in money.group(0)
+            or bool(delta_direction and re.match(r"уменьш|сократ|сниз", delta_direction.group()))
+        )
         data["budget_rub"] = max(1, brief.budget_rub + (-amount if less else amount))
     return data
 
@@ -214,19 +223,29 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
             break
     for match in re.finditer(r"\b(в|во|на)\s+([а-яa-z-]+)", t):
         code = to_iata(match.group(2))
-        if code in DESTINATIONS or (rail and code in {"MOW", "LED"}):
+        if code in DESTINATIONS or code in {"MOW", "LED"}:
             data["destination"] = code
             break
-    if "destination" not in data and not rail:
-        mentioned = {code for word in re.findall(r"[а-яa-z-]+", t) if (code := to_iata(word)) in DESTINATIONS}
+    mentioned_cities = list(
+        dict.fromkeys(code for word in re.findall(r"[а-яa-z-]+", t) if (code := to_iata(word)) in {"MOW", "LED"})
+    )
+    if len(mentioned_cities) == 2 and "origin" not in data and "destination" not in data:
+        data.update(origin=mentioned_cities[0], destination=mentioned_cities[1])
+    if "destination" not in data:
+        mentioned = {
+            code
+            for word in re.findall(r"[а-яa-z-]+", t)
+            if (code := to_iata(word)) in DESTINATIONS | {"MOW", "LED"} and code != data.get("origin")
+        }
         if len(mentioned) == 1:
             data["destination"] = mentioned.pop()
-    if rail:
-        cities = list(
-            dict.fromkeys(code for word in re.findall(r"[а-яa-z-]+", t) if (code := to_iata(word)) in {"MOW", "LED"})
-        )
-        if len(cities) == 2 and "origin" not in data and "destination" not in data:
-            data.update(origin=cities[0], destination=cities[1])
+    if data.get("destination") in {"MOW", "LED"} and "transport" not in data:
+        infer("transport", "train")
+    elif data.get("destination") in DESTINATIONS and "transport" not in data and rail:
+        infer("transport", "flight")
+    rail = data.get("transport", brief.transport if brief else "flight") == "train"
+    if rail and (data.get("origin") == "SVO" or brief and brief.origin == "SVO" and "origin" not in data):
+        infer("origin", "MOW")
 
     # Когда: «18 ноября», «в ноябре».
     for stem, month in _MONTHS:
@@ -306,20 +325,30 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
         infer("adults", 3)
     elif re.search(r"вдвоем|\bдвое\b|на двоих|с женой|с мужем|с девушкой|с парнем|с подругой|с другом|с супруг", t):
         infer("adults", 2)
+    if re.search(r"\b(?:один|одна|сам|сама)\b", t) and re.search(r"еду|поеду|полечу|лечу|теперь|только|хочу", t):
+        data["adults"] = 1
     ages = [int(a) for a in re.findall(r"\b(\d{1,2})\s*(?:лет|года|год)\b", t) if int(a) <= 17]
     ages += [int(a) for a in re.findall(r"\b(\d{1,2})-?летн", t) if int(a) <= 17]
     if ages:
         data["children_ages"] = sorted(set(ages), key=ages.index)
 
     needs = detect_needs(text)
+    removed: list[str] = []
+    if re.search(r"без\s+дет(?:ей|ьми)|реб[её]нок\s+не\s+едет|дети\s+не\s+едут", t):
+        data["children_ages"] = []
+        removed.append("child")
+    if re.search(r"без\s+(?:собак\w*|кошк\w*|питомц\w*|животн\w*)|(?:собак\w*|кошк\w*|питомц\w*)\s+не\s+едет", t):
+        data["pets"] = 0
+        removed.append("pets")
+    needs = [need for need in needs if need not in removed]
     for rule in RULES:
         if rule.need in needs:
             for name, value in rule.sets.items():
                 infer(name, value)
     if data.get("children_ages") and "child" not in needs:
         needs.append("child")
-    if "child" in needs and "adults" not in data:
+    if "child" in needs and "adults" not in data and (brief is None or brief == TripBrief()):
         # «С ребёнком» чаще всего значит двое взрослых; допущение видно в брифе и правится одним нажатием.
         infer("adults", 1 if re.search(r"\b(одна|один|сама|сам)\b", t) else 2)
 
-    return BriefPatch(**data, needs_add=needs, inferred=list(dict.fromkeys(inferred)))
+    return BriefPatch(**data, needs_add=needs, needs_remove=removed, inferred=list(dict.fromkeys(inferred)))

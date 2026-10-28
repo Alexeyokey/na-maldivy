@@ -54,7 +54,7 @@ def decide(session: Session, analysis: MessageAnalysis, *, search_changed: bool)
     intent = analysis.intent
     stage = session.stage
 
-    if stage is Stage.AWAITING_CONFIRMATION:
+    if stage is Stage.AWAITING_CONFIRMATION and not search_changed:
         if intent == "confirm":
             return Decision(Action.BOOK, "пользователь подтвердил", option=session.selected)
         if intent == "decline":
@@ -71,7 +71,11 @@ def decide(session: Session, analysis: MessageAnalysis, *, search_changed: bool)
             return Decision(Action.ASK_WHICH, "непонятно, какой вариант выбран")
         return Decision(Action.CONFIRM, "выбран вариант, нужно подтверждение", option=option)
 
-    if intent == "question" and not search_changed and (session.packages or session.destinations or session.trains):
+    if (
+        intent == "question"
+        and not search_changed
+        and (session.packages or session.destinations or session.trains or session.booking)
+    ):
         return Decision(Action.EXPLAIN, "вопрос по найденным вариантам")
 
     missing = missing_fields(session)

@@ -34,6 +34,11 @@ class Session:
     destinations: list[dict[str, Any]] = field(default_factory=list)
     packages: list[dict[str, Any]] = field(default_factory=list)
     trains: list[dict[str, Any]] = field(default_factory=list)
+    options_kind: str | None = None
+    options_assumptions: list[dict[str, str]] = field(default_factory=list)
+    options_notes: list[str] = field(default_factory=list)
+    # Only for the next price comparison; never exposed as current results.
+    rebuild_before: dict[str, Any] | None = field(default=None, repr=False)
     # Условия поменялись после поиска: показанные варианты устарели и будут пересобраны.
     stale: bool = False
     selected: int | None = None
@@ -51,15 +56,33 @@ class Session:
 
     def snapshot(self) -> dict[str, Any]:
         """Состояние для интерфейса и отладки."""
+        from app.agent.hidden import NEEDS
+
+        kind = self.options_kind or (
+            "trains" if self.brief.transport == "train" else "packages" if self.brief.destination else "destinations"
+        )
+        items = self.trains if kind == "trains" else self.packages if kind == "packages" else self.destinations
+        sources = {"adults": "default", **self.sources}
         return {
             "session_id": self.id,
             "version": self.version,
             "stage": self.stage.value,
             "brief": self.brief.model_dump(mode="json"),
-            "sources": self.sources,
+            "sources": sources,
             "stale": self.stale,
             "selected": self.selected,
             "booking": self.booking,
+            "needs": [
+                {"code": code, "label": NEEDS[code].label, "effect": NEEDS[code].effect}
+                for code in self.brief.needs
+                if code in NEEDS
+            ],
+            "options": {
+                "kind": kind,
+                "items": [] if self.stale else items,
+                "assumptions": [] if self.stale else self.options_assumptions,
+                "notes": [] if self.stale else self.options_notes,
+            },
         }
 
 

@@ -72,3 +72,29 @@ def test_model_values_win_rules_fill_gaps() -> None:
     assert merged.month == 12 and "month" not in merged.inferred
     assert merged.origin == "MOW"
     assert set(merged.needs_add) == {"sea", "child"}
+
+
+def test_explicit_same_values_confirm_sources_without_invalidating_search() -> None:
+    brief = TripBrief(nights=7)
+    sources = {"adults": "default", "nights": "inferred"}
+    result = apply_patch(brief, sources, BriefPatch(adults=1, nights=7), today=TODAY)
+    assert result.brief == brief and not result.changes and not result.search_changed
+    assert result.sources == {"adults": "explicit", "nights": "explicit"} and result.sources_changed
+    assert sources == {"adults": "default", "nights": "inferred"}
+    repeated = apply_patch(result.brief, result.sources, BriefPatch(adults=1, nights=7), today=TODAY)
+    assert not repeated.sources_changed and not repeated.changes
+
+
+def test_same_inferred_default_or_rejected_values_do_not_confirm_sources() -> None:
+    sources = {"adults": "default", "nights": "default", "start_date": "inferred"}
+    brief = TripBrief(nights=7, start_date="2026-10-01")
+    result = apply_patch(
+        brief,
+        sources,
+        BriefPatch(adults=1, nights=7, start_date="2026-10-01", inferred=["adults"]),
+        today=TODAY,
+        default_fields=frozenset({"nights"}),
+    )
+    assert result.sources == sources and not result.sources_changed
+    assert not result.changes and not result.search_changed
+    assert [row.field for row in result.rejected] == ["start_date"]
