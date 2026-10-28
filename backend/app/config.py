@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     yandex_rasp_api_key: SecretStr | None = Field(default=None, repr=False)
     yandex_cache_dir: Path | None = None
     checkout_db_path: Path | None = None
+    protection_enabled: bool = False  # protection: «Отпуск под защитой», эндпоинты /api/protection
 
     llm_provider: Literal["fake", "openai"] = "fake"
     llm_base_url: str | None = None

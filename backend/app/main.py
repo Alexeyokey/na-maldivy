@@ -55,6 +55,10 @@ def create_app(settings: Settings | None = None, llm: LLMClient | None = None) -
 
     app = FastAPI(title="na-maldivy agent", lifespan=lifespan)
     app.include_router(create_checkout_router())
+    if settings.protection_enabled:  # protection: фича «Отпуск под защитой», см. docs/protection.md
+        from app.protection.api import create_protection_router
+
+        app.include_router(create_protection_router())
     app.add_middleware(
         CORSMiddleware, allow_origins=settings.cors_origin_list, allow_methods=["*"], allow_headers=["*"]
     )
