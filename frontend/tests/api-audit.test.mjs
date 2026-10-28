@@ -36,6 +36,65 @@ test('A missing local order reference is recovered from the server snapshot afte
  assert.equal(controller.state.orders.length,1);
 });
 
+test('A durable paid order and both documents survive a lost chat session and another browser reload',async()=>{
+ let stored=JSON.stringify({schemaVersion:2,sessionId:sid,stage:'booked',version:1,cart:{cart_id:cart.cart_id,status:'paid_demo'},messages:[{role:'user',text:'Подтверждаю'}],orders:[{sessionId:sid,orderId:order.order_id}]});
+ const storage={getItem:()=>stored,setItem:(_,value)=>stored=value},calls=[];
+ const fetchImpl=async(path,init={})=>{
+  calls.push({path,method:init.method||'GET',headers:init.headers});
+  if(path==='/api/session/'+sid)return Response.json({detail:'Session no longer exists'},{status:404});
+  if(path==='/api/checkout/orders/'+order.order_id)return Response.json(order);
+  if(path.endsWith('/voucher'))return new Response('<html>DURABLE DEMO</html>',{headers:{'Content-Type':'text/html'}});
+  if(path.endsWith('/calendar.ics'))return new Response('BEGIN:VCALENDAR\r\nEND:VCALENDAR',{headers:{'Content-Type':'text/calendar'}});
+  throw new Error('Unexpected route');
+ };
+ for(let reload=0;reload<2;reload++){
+  const controller=new ApiTripController({storage,fetchImpl});await controller.restore();
+  assert.equal(controller.state.order?.order_id,order.order_id);
+  assert.equal(controller.state.currentOrderId,order.order_id);
+  assert.equal(controller.state.sessionLost,true,'The expired search session must not be silently reused');
+  assert.match(controller.state.error,/документы сохранены/);
+  assert.equal(controller.state.orders.length,1);
+  await assert.rejects(controller.send('Следующая поездка'),error=>error.code==='recovery');
+  for(const kind of ['voucher','calendar'])assert.ok((await controller.download(kind)).blob instanceof Blob);
+ }
+ assert.ok(calls.every(call=>call.method==='GET'));
+ assert.equal(calls.at(-1).headers['X-Session-ID'],sid);
+});
+
+test('The saved current order reference chooses the right durable order when one session has several bookings',async()=>{
+ const previous={...order,order_id:'DEMO-previous',cart_id:'CART-previous'};
+ const saved={schemaVersion:2,sessionId:sid,stage:'booked',version:2,currentOrderId:order.order_id,orders:[{sessionId:sid,orderId:previous.order_id},{sessionId:sid,orderId:order.order_id}]};
+ const controller=new ApiTripController({storage:storageWith(saved),fetchImpl:async path=>{
+  if(path.startsWith('/api/session/'))return Response.json({detail:'Missing session'},{status:404});
+  return Response.json(path.endsWith(previous.order_id)?previous:order);
+ }});
+ await controller.restore();
+ assert.equal(controller.state.order?.order_id,order.order_id);assert.equal(controller.state.orders.length,2);
+ controller.restartSession();
+ assert.equal(controller.state.order,null);assert.equal(controller.state.currentOrderId,null);
+ assert.equal(controller.state.sessionLost,false);assert.equal(controller.state.orders.length,2);
+});
+
+test('An unavailable durable order cannot be reconstructed from a saved paid marker alone',async()=>{
+ const saved={schemaVersion:2,sessionId:sid,stage:'booked',version:1,currentOrderId:order.order_id,orders:[{sessionId:sid,orderId:order.order_id}]};
+ const controller=new ApiTripController({storage:storageWith(saved),fetchImpl:async()=>Response.json({detail:'Missing object'},{status:404})});
+ await controller.restore();
+ assert.equal(controller.state.sessionLost,true);assert.equal(controller.state.order,null);assert.equal(controller.state.orders.length,0);
+ await assert.rejects(controller.download('voucher'),error=>error.code==='validation');
+});
+
+test('The current order reference remains saved while its authenticated GET is in flight',async()=>{
+ const started=deferred(),response=deferred();
+ let stored=JSON.stringify({schemaVersion:2,sessionId:sid,stage:'booked',version:1,currentOrderId:order.order_id,sessionLost:true,orders:[{sessionId:sid,orderId:order.order_id}]});
+ const storage={getItem:()=>stored,setItem:(_,value)=>stored=value};
+ const controller=new ApiTripController({storage,fetchImpl:async()=>{started.resolve();return response.promise;}});
+ const restoring=controller.restore();await started.promise;
+ assert.equal(JSON.parse(stored).currentOrderId,order.order_id,'Another reload during the GET must retain the durable selection');
+ response.resolve(Response.json(order));await restoring;
+ assert.equal(controller.state.order?.order_id,order.order_id);assert.equal(JSON.parse(stored).order,null);
+ assert.doesNotMatch(stored,/DEMO ONE|1990-01-01/,'The selected reference cannot persist the full traveler payload');
+});
+
 test('A late paid-order read cannot repopulate a reset conversation',async()=>{
  const started=deferred(),response=deferred();
  const controller=new ApiTripController({fetchImpl:async path=>{

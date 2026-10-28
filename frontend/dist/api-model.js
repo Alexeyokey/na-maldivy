@@ -5,7 +5,7 @@ export const visibleText=value=>String(value??'').replace(/\s*\[review_id:[^\]]*
 const copy=value=>structuredClone(value);
 const STORAGE_KEY='na-maldivy-api-session-v1';
 const idempotency=()=>globalThis.crypto?.randomUUID?.()||'web-'+Date.now()+'-'+Math.random().toString(36).slice(2);
-export const createApiModel=()=>({sessionId:null,version:0,stage:'collecting',brief:{},sources:{},needs:[],options:[],optionKind:null,selected:null,cart:null,order:null,orders:[],messages:[],question:null,profile:null,savings:null,statusText:'',busy:false,error:null,stale:false,notes:[],assumptions:[],draft:'',pendingRequest:null,syncNeeded:false,sessionLost:false,connection:'connecting',health:null,storageWarning:null});
+export const createApiModel=()=>({sessionId:null,version:0,stage:'collecting',brief:{},sources:{},needs:[],options:[],optionKind:null,selected:null,cart:null,order:null,currentOrderId:null,orders:[],messages:[],question:null,profile:null,savings:null,statusText:'',busy:false,error:null,stale:false,notes:[],assumptions:[],draft:'',pendingRequest:null,syncNeeded:false,sessionLost:false,connection:'connecting',health:null,storageWarning:null});
 const safeId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(value);
 const safeCheckoutId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(value);
 const stages=['collecting','destinations_shown','packages_shown','trains_shown','awaiting_confirmation','checkout_pending','booked'];
@@ -13,10 +13,10 @@ function checkedOrder(value,sessionId,cartId=null){
  if(!value||value.status!=='paid_demo'||value.is_simulated!==true||!safeCheckoutId(value.order_id)||!safeCheckoutId(value.cart_id)||(cartId&&value.cart_id!==cartId)||value.session_id!==sessionId||!value.package?.hotel||typeof value.package.hotel.name!=='string'||typeof value.package.hotel.check_in!=='string'||typeof value.package.hotel.check_out!=='string')throw new ChatApiError('Сервер не подтвердил результат демо-оплаты.',{code:'protocol'});
  return value;
 }
-const tripKeys=['sessionId','version','stage','brief','sources','needs','options','optionKind','selected','cart','order','question','profile','savings','stale','notes','assumptions'];
+const tripKeys=['sessionId','version','stage','brief','sources','needs','options','optionKind','selected','cart','order','currentOrderId','question','profile','savings','stale','notes','assumptions'];
 const tripCopy=state=>Object.fromEntries(tripKeys.map(key=>[key,copy(state[key])]));
 function storedTrip(state){
- const result=tripCopy(state);result.order=null;
+ const result=tripCopy(state);result.currentOrderId=state.order?.order_id||state.currentOrderId||null;result.order=null;
  if(result.cart){const {cart_id,status,version,option,is_simulated,expected_travelers}=result.cart;result.cart={cart_id,status,version,option,is_simulated,expected_travelers};}
  return result;
 }
@@ -27,6 +27,7 @@ function validMessages(value){
 function restoredTrip(value){
  const result=tripCopy(createApiModel()),record=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
  result.sessionId=safeId(record.sessionId)?record.sessionId:null;
+ result.currentOrderId=safeCheckoutId(record.currentOrderId)?record.currentOrderId:null;
  result.version=Number.isInteger(record.version)&&record.version>=0?record.version:0;
  if(stages.includes(record.stage))result.stage=record.stage;
  for(const key of ['brief','sources'])if(record[key]&&typeof record[key]==='object'&&!Array.isArray(record[key]))result[key]=copy(record[key]);
@@ -59,14 +60,14 @@ function pendingFrom(value,messages){
 export function applyAgentEvent(model,type,data){
  if(type==='brief'){
   model.brief=data.brief||{};model.sources=data.sources||{};model.needs=data.needs||[];
-  if(data.changes?.length){model.selected=null;model.cart=null;model.order=null;model.stale=true;model.options=[];model.savings=null;model.profile=null;}
+  if(data.changes?.length){model.selected=null;model.cart=null;model.order=null;model.currentOrderId=null;model.stale=true;model.options=[];model.savings=null;model.profile=null;}
  }else if(type==='options'){
   model.options=Array.isArray(data.items)?data.items:[];model.optionKind=data.kind;model.assumptions=data.assumptions||[];model.notes=data.notes||[];model.stale=false;
  }else if(type==='question')model.question=data;
  else if(type==='hotel_profile')model.profile=data;
  else if(type==='date_savings')model.savings=data;
  else if(type==='status')model.statusText=data.text||'';
- else if(type==='booking'&&data.cart_id){model.cart=copy(data);model.order=null;}
+ else if(type==='booking'&&data.cart_id){model.cart=copy(data);model.order=null;model.currentOrderId=null;}
  else if(type==='done'){
   if(data.session_id)model.sessionId=data.session_id;
   if(data.stage)model.stage=data.stage;
@@ -120,11 +121,11 @@ export class ApiTripController{
   }
   if(!current())return null;
   if(value.stale||value.version!==this.state.version)this.state.options=[];
-  Object.assign(this.state,{brief:value.brief||{},sources:value.sources||{},version:value.version,stage:value.stage,selected:value.selected,stale:!!value.stale,cart,order});
+  Object.assign(this.state,{brief:value.brief||{},sources:value.sources||{},version:value.version,stage:value.stage,selected:value.selected,stale:!!value.stale,cart,order,currentOrderId:order?.order_id||null});
   if(order)this.keepOrder(order,sessionId);
   return value;
  }
- markSessionLost(){this.state.sessionLost=true;this.state.syncNeeded=false;this.state.stale=true;this.state.error='Восстановить этот ответ уже нельзя. Переписка сохранена; начните новый поиск.';}
+ markSessionLost(){this.state.sessionLost=true;this.state.syncNeeded=false;this.state.stale=true;this.state.error=this.state.order?'Поисковая сессия завершилась. Демо-заказ и документы сохранены; для продолжения начните новый поиск.':'Восстановить этот ответ уже нельзя. Переписка сохранена; начните новый поиск.';}
  async reconnect(){
   if(this.reconnectPromise)return this.reconnectPromise;
   const generation=this.generation,epoch=++this.probeEpoch;
@@ -162,6 +163,10 @@ export class ApiTripController{
    try{const order=checkedOrder(await requestCheckout({path:'/api/checkout/orders/'+encodeURIComponent(row.orderId),sessionId:row.sessionId,fetchImpl:this.fetch}),row.sessionId);if(this.generation!==generation)return;if(order.order_id!==row.orderId)continue;this.keepOrder(order,row.sessionId,false);}catch{if(this.generation!==generation)return;}
   }
   if(this.generation!==generation)return;
+  const ownedOrders=this.state.orders.filter(row=>row.sessionId===this.state.sessionId);
+  const paid=this.state.currentOrderId?ownedOrders.find(row=>row.order.order_id===this.state.currentOrderId):this.state.stage==='booked'?(this.state.cart?.cart_id?ownedOrders.find(row=>row.order.cart_id===this.state.cart.cart_id):ownedOrders.length===1?ownedOrders[0]:null):null;
+  if(paid){this.state.order=paid.order;this.state.currentOrderId=paid.order.order_id;}
+  if(this.state.sessionLost)this.markSessionLost();
   if(!this.state.sessionId||this.state.pendingRequest||this.state.sessionLost){this.notify();return;}
   try{const snapshot=await this.sessionSnapshot();if(this.generation!==generation||!snapshot)return;if(snapshot.version!==saved.version)this.state.options=[];this.state.syncNeeded=false;if(!this.state.messages.length)this.state.messages.push({role:'assistant',text:'Параметры поездки восстановлены с сервера. Можно продолжить разговор.'});}
   catch(error){if(this.generation!==generation)return;if(error.status===404)this.markSessionLost();else{this.state.syncNeeded=true;this.state.connection='offline';this.state.error='Переписка сохранена. Связь с сервером временно недоступна.';}}
@@ -221,7 +226,7 @@ export class ApiTripController{
    if(!current())return null;
    if(result.status==='paid_demo'&&result.is_simulated===true){
     checkedOrder(result,sessionId,this.state.cart.cart_id);
-    this.state.order=result;this.state.stage='booked';this.state.cart={...this.state.cart,status:'paid_demo'};
+    this.state.order=result;this.state.currentOrderId=result.order_id;this.state.stage='booked';this.state.cart={...this.state.cart,status:'paid_demo'};
     this.keepOrder(result,sessionId);
     this.remember();
    }else if(result.status==='payment_declined'&&result.is_simulated===true&&result.cart_id===this.state.cart.cart_id){this.state.cart={...this.state.cart,status:'payment_declined'};}
