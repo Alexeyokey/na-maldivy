@@ -23,6 +23,7 @@ test('Same-origin configuration, assets, health and streaming proxy match the re
  let received=null,agentDone=false;
  const agent=http.createServer(async(req,res)=>{
   if(req.url==='/health'){res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify({status:'ok',llm_provider:'fake'}));return;}
+  if(req.url==='/api/session/test-session'){if(req.method==='DELETE'){res.writeHead(204).end();return;}res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify({session_id:'test-session',version:2,brief:{budget_rub:200000},sources:{budget_rub:'explicit'}}));return;}
   let body='';for await(const chunk of req)body+=chunk;received=JSON.parse(body);
   res.writeHead(200,{'Content-Type':'text/event-stream'});res.write('event: delta\ndata: {"text":"Первая часть"}\n\n');
   setTimeout(()=>{agentDone=true;res.end('event: delta\ndata: {"text":" и вторая"}\n\nevent: done\ndata: {}\n\n');},60);
@@ -33,6 +34,8 @@ test('Same-origin configuration, assets, health and streaming proxy match the re
  assert.match(await (await fetch(base+'/config.js')).text(),/"mode":"api"/);
  assert.match(await (await fetch(base+'/polish.css')).text(),/prefers-reduced-motion/);
  assert.deepEqual(await (await fetch(base+'/health')).json(),{status:'ok',llm_provider:'fake'});
+ assert.deepEqual(await (await fetch(base+'/api/session/test-session')).json(),{session_id:'test-session',version:2,brief:{budget_rub:200000},sources:{budget_rub:'explicit'}});
+ assert.equal((await fetch(base+'/api/session/test-session',{method:'DELETE'})).status,204);
  let sawFirst=false;
  const answer=await streamChat({message:'Проверка без ключа',endpoint:base+'/api/chat',onDelta:(_,all)=>{if(!sawFirst){assert.equal(agentDone,false,'SSE must stream before done');sawFirst=true;assert.equal(all,'Первая часть');}}});
  assert.deepEqual(received,{message:'Проверка без ключа'});assert.equal(answer.text,'Первая часть и вторая');
