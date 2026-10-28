@@ -47,13 +47,27 @@
     }
 }
 
+(canonical_domain_redirect) {
+    header {
+        -Server
+        Cache-Control no-store
+        Referrer-Policy no-referrer
+        X-Content-Type-Options nosniff
+    }
+    redir https://na-maldivy.eu.cc{uri} 308
+}
+
+http://201.8.90.64 {
+    import canonical_domain_redirect
+}
+
 https://201.8.90.64 {
     tls {
         issuer acme https://acme-v02.api.letsencrypt.org/directory {
             profile shortlived
         }
     }
-    import owner_private_site
+    import canonical_domain_redirect
 }
 
 https://na-maldivy.eu.cc {

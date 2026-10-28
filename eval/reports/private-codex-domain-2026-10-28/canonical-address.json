@@ -1,0 +1,115 @@
+{
+  "checked_at": "2026-10-28T19:53:43.877101+00:00",
+  "canonical_url": "https://na-maldivy.eu.cc",
+  "checks": [
+    {
+      "url": "https://na-maldivy.eu.cc/health",
+      "status": 200,
+      "location": null,
+      "basic_challenge": false
+    },
+    {
+      "url": "http://201.8.90.64/",
+      "status": 308,
+      "location": "https://na-maldivy.eu.cc/",
+      "basic_challenge": false
+    },
+    {
+      "url": "http://201.8.90.64/config.js",
+      "status": 308,
+      "location": "https://na-maldivy.eu.cc/config.js",
+      "basic_challenge": false
+    },
+    {
+      "url": "http://201.8.90.64/path-check?demo=1",
+      "status": 308,
+      "location": "https://na-maldivy.eu.cc/path-check?demo=1",
+      "basic_challenge": false
+    },
+    {
+      "url": "http://201.8.90.64/api/chat",
+      "status": 308,
+      "location": "https://na-maldivy.eu.cc/api/chat",
+      "basic_challenge": false
+    },
+    {
+      "url": "https://201.8.90.64/",
+      "status": 308,
+      "location": "https://na-maldivy.eu.cc/",
+      "basic_challenge": false
+    },
+    {
+      "url": "https://201.8.90.64/config.js",
+      "status": 308,
+      "location": "https://na-maldivy.eu.cc/config.js",
+      "basic_challenge": false
+    },
+    {
+      "url": "https://201.8.90.64/path-check?demo=1",
+      "status": 308,
+      "location": "https://na-maldivy.eu.cc/path-check?demo=1",
+      "basic_challenge": false
+    },
+    {
+      "url": "https://201.8.90.64/api/chat",
+      "status": 308,
+      "location": "https://na-maldivy.eu.cc/api/chat",
+      "basic_challenge": false
+    },
+    {
+      "url": "http://na-maldivy.eu.cc/",
+      "status": 308,
+      "location": "https://na-maldivy.eu.cc/",
+      "basic_challenge": false
+    },
+    {
+      "url": "https://na-maldivy.eu.cc/",
+      "status": 401,
+      "location": null,
+      "basic_challenge": true
+    },
+    {
+      "url": "https://na-maldivy.eu.cc/api/chat",
+      "status": 401,
+      "location": null,
+      "basic_challenge": true
+    },
+    {
+      "url": "https://na-maldivy.eu.cc/",
+      "status": 200,
+      "location": null,
+      "basic_challenge": false
+    },
+    {
+      "url": "https://na-maldivy.eu.cc/health",
+      "status": 200,
+      "location": null,
+      "basic_challenge": false
+    }
+  ],
+  "redirect_and_anonymous_requests_model_calls": 0,
+  "tls": {
+    "na-maldivy.eu.cc": {
+      "valid": true,
+      "san": [
+        [
+          "DNS",
+          "na-maldivy.eu.cc"
+        ]
+      ],
+      "expires": "Jan 26 18:50:12 2027 GMT"
+    },
+    "201.8.90.64": {
+      "valid": true,
+      "san": [
+        [
+          "IP Address",
+          "201.8.90.64"
+        ]
+      ],
+      "expires": "Nov  4 10:09:39 2026 GMT"
+    }
+  },
+  "status": "passed",
+  "application_restarted_for_redirect": false
+}

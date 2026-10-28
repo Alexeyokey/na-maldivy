@@ -44,7 +44,7 @@
     "frontend_http_integration_tests_passed": 11,
     "syntax_and_diff_checks": "passed",
     "backend_http_port": "not published",
-    "existing_ip": "still available with valid HTTPS and password"
+    "existing_ip": "HTTP and HTTPS redirect 308 to canonical domain, preserving URI; no IP login prompt"
   },
   "images": {
     "backend": "na-maldivy-private-agent:20261028-1 (unchanged)",
@@ -52,12 +52,14 @@
     "gateway": "caddy:2.11.7-alpine"
   },
   "data_boundaries": "Existing D4 replay/mock travel data and simulated payment remain; domain setup is not live booking or D7 extraction",
-  "browser_ui_status": "authenticated HTTPS API checked; automated browser does not support this Basic auth prompt",
+  "browser_ui_status": "Existing user-authenticated Chrome tab inspected read-only: rendered trip cards and subsequent successful agent reply visible. Automated BasicAuth login and full new browser checkout not claimed.",
   "evidence": [
     "access-gate.json",
     "chat.json",
     "original-orders-preserved.json",
     "private-orders-preserved.json",
-    "origin-and-ip-regression.json"
-  ]
+    "origin-and-ip-regression.json",
+    "canonical-address.json"
+  ],
+  "canonical_address_checked_at": "2026-10-28T19:53:43.877101+00:00"
 }
