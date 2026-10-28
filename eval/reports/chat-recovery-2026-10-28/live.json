@@ -1,0 +1,57 @@
+{
+  "checked_at": "2026-10-28T20:19:18.931642+00:00",
+  "status": "passed",
+  "scope": "actual_owner_authenticated_https_chat_recovery",
+  "url": "https://na-maldivy.eu.cc",
+  "model": "gpt-6-luna",
+  "reasoning_effort": "low",
+  "elapsed_seconds": 26.65,
+  "initial_https_stream_closed_after_first_event": true,
+  "manual_same_request_recovery_completed": true,
+  "completed_replay_events_identical": true,
+  "replay_additional_model_calls": 0,
+  "validated_model_calls_for_original_turn": 2,
+  "conflicting_payload_status": 409,
+  "existing_orders_and_documents_preserved": 6,
+  "new_browser_assets_verified": true,
+  "travel_data": "Existing D4 replay/labelled mocks and simulated booking unchanged",
+  "security_smoke_checks": [
+    {
+      "path": "/",
+      "status": 401
+    },
+    {
+      "path": "/health",
+      "status": 401
+    },
+    {
+      "path": "/api/chat",
+      "status": 403
+    }
+  ],
+  "all_existing_checkout_database_rows_preserved": true,
+  "existing_orders_database_count": 7,
+  "live_browser": {
+    "manual_stop_then_retry_without_reload": "passed",
+    "single_user_and_assistant_bubble": "passed",
+    "draft_preserved": "passed",
+    "reload_retained_conversation_and_draft": "passed",
+    "screenshots": [
+      "live-interrupted.jpg",
+      "live-recovered.jpg"
+    ]
+  },
+  "deployment": {
+    "backend_image": "na-maldivy-private-agent:20261028-recovery1",
+    "frontend_image": "na-maldivy-private-web:20261028-recovery1",
+    "services": "all ready; no OOM or restarts",
+    "recovery_ledger_mode": "0600",
+    "recovery_ledger_contains_only_ids_hashes_timestamps": true,
+    "memory_after_live_tests_mib": {
+      "agent": 222.5,
+      "web": 27.91,
+      "edge": 3.66,
+      "gateway": 20.14
+    }
+  }
+}

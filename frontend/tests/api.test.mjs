@@ -5,7 +5,7 @@ const encoder=new TextEncoder();
 function response(chunks){return new Response(new ReadableStream({start(c){for(const chunk of chunks)c.enqueue(typeof chunk==='string'?encoder.encode(chunk):chunk);c.close();}}),{headers:{'Content-Type':'text/event-stream'}});}
 test('POST body matches the existing repository contract; UTF-8 chunks stream intact',async()=>{
  const raw=encoder.encode(': ping\r\nevent: delta\r\ndata: {"text":"Привет 🌴"}\r\n\r\nevent: done\r\ndata: {}\r\n\r\n');const deltas=[];
- const r=await streamChat({message:'В Казань',onDelta:(d,all)=>deltas.push(all),fetchImpl:async(url,init)=>{assert.equal(url,'/api/chat');assert.equal(init.method,'POST');assert.deepEqual(JSON.parse(init.body),{message:'В Казань'});return response(Array.from(raw,byte=>new Uint8Array([byte])));}});
+ const r=await streamChat({message:'В Казань',onDelta:(d,all)=>deltas.push(all),fetchImpl:async(url,init)=>{assert.equal(url,'/api/chat');assert.equal(init.method,'POST');assert.equal(init.credentials,'same-origin');assert.equal(init.cache,'no-store');assert.equal(init.redirect,'error');assert.deepEqual(JSON.parse(init.body),{message:'В Казань'});return response(Array.from(raw,byte=>new Uint8Array([byte])));}});
  assert.equal(r.text,'Привет 🌴');assert.deepEqual(deltas,['Привет 🌴']);
 });
 test('Multiline data and comments follow SSE framing',async()=>{
@@ -26,9 +26,88 @@ test('Validation, HTTP error and wrong content type are explicit',async()=>{
 test('Abort remains distinguishable from server failure',async()=>{
  const controller=new AbortController();controller.abort();await assert.rejects(streamChat({message:'hi',signal:controller.signal,fetchImpl:async()=>{throw new DOMException('Aborted','AbortError');}}),e=>e.name==='AbortError'&&e.code==='aborted');
 });
+test('A caller-provided request ID is sent unchanged together with the original message and session',async()=>{
+ for(const requestId of ['a','retry_01-safe','A'.repeat(64)]){
+  let calls=0;
+  const result=await streamChat({message:'  Повторяю сообщение  ',sessionId:'session_01',requestId,fetchImpl:async(_,init)=>{
+   calls++;assert.deepEqual(JSON.parse(init.body),{message:'  Повторяю сообщение  ',session_id:'session_01',request_id:requestId});
+   return response(['event: done\ndata: {"session_id":"session_01"}\n\n']);
+  }});
+  assert.equal(calls,1);assert.equal(result.sessionId,'session_01');
+ }
+});
+test('Unsafe request IDs are rejected before any network call',async()=>{
+ for(const requestId of ['',null,42,{},'A'.repeat(65),'bad/identifier','bad identifier','header\r\ninjection','юникод']){
+  await assert.rejects(streamChat({message:'Привет',requestId,fetchImpl:()=>assert.fail('Invalid ID reached the network')}),e=>e instanceof ChatApiError&&e.code==='validation');
+ }
+});
+test('An explicit manual retry preserves the original request payload and sends retry only when true',async()=>{
+ const original={message:'  Первое сообщение  ',sessionId:'original-session',requestId:'original-request'};
+ for(const retry of [undefined,false,true]){
+  let calls=0;
+  await streamChat({...original,retry,fetchImpl:async(_,init)=>{
+   calls++;assert.deepEqual(JSON.parse(init.body),{message:original.message,session_id:original.sessionId,request_id:original.requestId,...(retry?{retry:true}:{})});
+   return response(['event: done\ndata: {"session_id":"original-session"}\n\n']);
+  }});
+  assert.equal(calls,1);
+ }
+ await streamChat({message:'Первое сообщение без сессии',requestId:'original-request',retry:true,fetchImpl:async(_,init)=>{
+  assert.deepEqual(JSON.parse(init.body),{message:'Первое сообщение без сессии',request_id:'original-request',retry:true});
+  return response(['event: done\ndata: {"session_id":"new-session"}\n\n']);
+ }});
+});
+test('A retry needs a valid original request ID and a boolean flag before any network call',async()=>{
+ for(const options of [{retry:true},{retry:true,requestId:null},{retry:true,requestId:''},...[null,0,1,'true','false',{}].map(retry=>({retry,requestId:'safe-request'}))]){
+  await assert.rejects(streamChat({message:'Привет',...options,fetchImpl:()=>assert.fail('Invalid retry reached the network')}),e=>e instanceof ChatApiError&&e.code==='validation');
+ }
+});
+test('Transport never automatically repeats a POST after a network failure or redirect rejection',async()=>{
+ let calls=0;
+ await assert.rejects(streamChat({message:'Привет',requestId:'same-request',fetchImpl:async(_,init)=>{
+  calls++;assert.equal(init.redirect,'error');throw new TypeError('Failed to fetch https://user:secret@example.test/private-token');
+ }}),e=>e instanceof ChatApiError&&e.code==='network'&&e.partialText===''&&!/secret|example|private-token|Failed to fetch/.test(e.message));
+ assert.equal(calls,1);
+});
+test('A failed reader preserves partial text and hides raw connection diagnostics',async()=>{
+ let reads=0,cancels=0,releases=0,posts=0;const deltas=[];
+ const reader={
+  async read(){if(reads++===0)return {done:false,value:encoder.encode('event: delta\ndata: {"text":"Уже найдено"}\n\n')};throw new TypeError('socket closed: auth=private-token');},
+  async cancel(){cancels++;throw new Error('cancel-private-secret');},
+  releaseLock(){releases++;throw new Error('release-private-secret');},
+ };
+ await assert.rejects(streamChat({message:'Привет',requestId:'same-request',onDelta:(_,all)=>deltas.push(all),fetchImpl:async()=>{
+  posts++;return {ok:true,headers:new Headers({'Content-Type':'text/event-stream'}),body:{getReader:()=>reader}};
+ }}),e=>e instanceof ChatApiError&&e.code==='network'&&e.partialText==='Уже найдено'&&e.message.includes('Связь прервалась')&&!/socket|auth|private|secret/.test(e.message));
+ assert.deepEqual(deltas,['Уже найдено']);assert.equal(posts,1);assert.equal(reads,2);assert.equal(cancels,1);assert.equal(releases,1);
+});
+test('HTTP failures keep a status and a safe actionable message without exposing response details',async()=>{
+ const statuses=new Map([[401,/войдите/],[403,/Нет доступа/],[409,/Дождитесь/],[410,/Срок восстановления ответа истёк/],[422,/длину/],[429,/Подождите/],[502,/повторить/],[503,/Подождите/],[504,/ожидания/],[500,/недоступен/]]);
+ for(const [status,pattern] of statuses){
+  let calls=0;
+  await assert.rejects(streamChat({message:'Привет',requestId:'same-request',fetchImpl:async()=>{
+   calls++;return new Response('upstream-private-secret',{status,headers:{'Content-Type':'text/event-stream'}});
+  }}),e=>e instanceof ChatApiError&&e.code==='http'&&e.status===status&&e.partialText===''&&pattern.test(e.message)&&!/upstream|private|secret/.test(e.message));
+  assert.equal(calls,1);
+ }
+});
+test('An expired manual retry is not converted into a new POST and explains how to recover',async()=>{
+ let calls=0;
+ await assert.rejects(streamChat({message:'Привет',requestId:'expired-request',retry:true,fetchImpl:async(_,init)=>{
+  calls++;assert.equal(JSON.parse(init.body).retry,true);return new Response('private cached request detail',{status:410});
+ }}),e=>e.code==='http'&&e.status===410&&e.message==='Срок восстановления ответа истёк. Переписка сохранена; начните новый поиск.');
+ assert.equal(calls,1);
+});
 test('Health validates the real repository response',async()=>{
  for(const provider of ['fake','openai','codex_local','codex_private']) assert.deepEqual(await checkAgentHealth({fetchImpl:async()=>Response.json({status:'ok',llm_provider:provider})}),{status:'ok',llm_provider:provider});
  await assert.rejects(checkAgentHealth({fetchImpl:async()=>Response.json({status:'ok',provider:'fake'})}),ChatApiError);
+});
+test('Health recovery checks are uncached same-origin GETs and retain authentication failures',async()=>{
+ await assert.rejects(checkAgentHealth({fetchImpl:async(url,init)=>{
+  assert.equal(url,'/health');assert.equal(init.method,'GET');assert.equal(init.credentials,'same-origin');assert.equal(init.cache,'no-store');assert.equal(init.redirect,'error');
+  return new Response('private-detail',{status:401});
+ }}),e=>e.code==='http'&&e.status===401&&!e.message.includes('private-detail'));
+ await assert.rejects(checkAgentHealth({fetchImpl:async()=>{throw new TypeError('private-token');}}),e=>e.code==='network'&&!e.message.includes('private-token'));
+ await assert.rejects(checkAgentHealth({fetchImpl:async()=>{throw new DOMException('private-token','AbortError');}}),e=>e.code==='aborted'&&!e.message.includes('private-token'));
 });
 
 test('The next chat request carries its session and exposes all SSE metadata intact',async()=>{

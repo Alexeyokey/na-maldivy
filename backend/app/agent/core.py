@@ -113,6 +113,9 @@ class TravelAgent:
         finally:
             if not task.done():  # клиент отключился посреди ответа
                 task.cancel()
+                # Wait for provider/subprocess cleanup before closing shared clients
+                # during shutdown or declaring the cancelled turn finished.
+                await asyncio.gather(task, return_exceptions=True)
 
     # ======================================================================
     # Один ход

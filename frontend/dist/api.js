@@ -5,14 +5,16 @@ export class ChatApiError extends Error {
     this.code=code;this.partialText=partialText;this.status=status;
   }
 }
-export async function streamChat({message,sessionId,endpoint='/api/chat',signal,onDelta=()=>{},onEvent=()=>{},fetchImpl=globalThis.fetch}) {
+export async function streamChat({message,sessionId,requestId,retry=false,endpoint='/api/chat',signal,onDelta=()=>{},onEvent=()=>{},fetchImpl=globalThis.fetch}) {
   if(typeof message!=='string'||!message.trim()||message.length>4000)throw new ChatApiError('Напишите сообщение длиной от 1 до 4000 символов.',{code:'validation'});
   if(sessionId!==undefined&&sessionId!==null&&!isSessionId(sessionId))throw new ChatApiError('Не удалось продолжить диалог. Начните новый поиск.',{code:'validation'});
+  if(requestId!==undefined&&!isSessionId(requestId))throw new ChatApiError('Не удалось повторить сообщение. Отправьте его заново.',{code:'validation'});
+  if(typeof retry!=='boolean'||retry&&requestId===undefined)throw new ChatApiError('Не удалось восстановить сообщение. Начните новый поиск.',{code:'validation'});
   let text='',reader,finished=false,done=null;
   const events=[];let resultSessionId=sessionId||null;
   try {
-    const response=await fetchImpl(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'text/event-stream'},body:JSON.stringify({message,...(sessionId?{session_id:sessionId}:{})}),signal});
-    if(!response.ok)throw new ChatApiError(response.status===422?'Сервер не принял сообщение. Проверьте его длину.':'Агент сейчас недоступен. Попробуйте ещё раз.',{code:'http',status:response.status});
+    const response=await fetchImpl(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'text/event-stream'},body:JSON.stringify({message,...(sessionId?{session_id:sessionId}:{}),...(requestId!==undefined?{request_id:requestId}:{}),...(retry?{retry:true}:{})}),signal,credentials:'same-origin',cache:'no-store',redirect:'error'});
+    if(!response.ok)throw chatHttpError(response.status);
     if(!response.headers.get('content-type')?.includes('text/event-stream')||!response.body)throw new ChatApiError('Сервер вернул ответ в неподдерживаемом формате.',{code:'protocol'});
     reader=response.body.getReader();const decoder=new TextDecoder();let pending='',event='message',data=[];
     const dispatch=()=>{
@@ -50,20 +52,38 @@ export async function streamChat({message,sessionId,endpoint='/api/chat',signal,
     return {text,sessionId:resultSessionId,done,events};
   }catch(error){
     if(error instanceof ChatApiError){error.partialText=text;throw error;}
-    throw new ChatApiError(signal?.aborted||error?.name==='AbortError'?'Ответ остановлен.':'Не удалось связаться с агентом. Проверьте, запущен ли сервер.',{code:signal?.aborted||error?.name==='AbortError'?'aborted':'network',partialText:text});
-  }finally{if(reader){try{await reader.cancel();}catch{}reader.releaseLock();}}
+    throw new ChatApiError(signal?.aborted||error?.name==='AbortError'?'Ответ остановлен.':reader?'Связь прервалась во время ответа. Полученный текст сохранён. Можно повторить сообщение.':'Не удалось связаться с агентом. Проверьте соединение и повторите сообщение.',{code:signal?.aborted||error?.name==='AbortError'?'aborted':'network',partialText:text});
+  }finally{if(reader){try{await reader.cancel();}catch{}try{reader.releaseLock();}catch{}}}
 }
 export async function checkAgentHealth({endpoint='/health',signal,fetchImpl=globalThis.fetch}={}){
   try{
-    const response=await fetchImpl(endpoint,{signal,headers:{Accept:'application/json'}});
-    if(!response.ok)throw new Error('Unavailable');
+    const response=await fetchImpl(endpoint,{method:'GET',signal,headers:{Accept:'application/json'},credentials:'same-origin',cache:'no-store',redirect:'error'});
+    if(!response.ok)throw chatHttpError(response.status);
     const value=await response.json();
     if(value.status!=='ok'||!['fake','openai','codex_local','codex_private'].includes(value.llm_provider))throw new Error('Invalid health');
     return value;
-  }catch(error){throw new ChatApiError(signal?.aborted?'Проверка остановлена.':'Сервер агента недоступен.',{code:signal?.aborted?'aborted':'network'});}
+  }catch(error){
+    if(signal?.aborted||error?.name==='AbortError')throw new ChatApiError('Проверка остановлена.',{code:'aborted'});
+    if(error instanceof ChatApiError)throw error;
+    throw new ChatApiError('Сервер агента недоступен. Проверьте соединение и повторите попытку.',{code:'network'});
+  }
 }
 
 const isSessionId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(value);
+function chatHttpError(status){
+  const messages={
+    401:'Для доступа к чату войдите на сайт и повторите сообщение.',
+    403:'Нет доступа к чату. Проверьте, что вы вошли на сайт.',
+    409:'Не удалось повторить сообщение с этими данными. Дождитесь текущего ответа или отправьте новое сообщение.',
+    410:'Срок восстановления ответа истёк. Переписка сохранена; начните новый поиск.',
+    422:'Сервер не принял сообщение. Проверьте его длину.',
+    429:'Слишком много запросов. Подождите немного и повторите сообщение.',
+    502:'Связь с агентом временно недоступна. Можно повторить сообщение.',
+    503:'Агент временно недоступен. Подождите немного и повторите сообщение.',
+    504:'Время ожидания ответа истекло. Можно повторить сообщение.',
+  };
+  return new ChatApiError(messages[status]||'Агент сейчас недоступен. Попробуйте ещё раз.',{code:'http',status});
+}
 const checkoutRoutes=[
   [/^\/api\/checkout\/carts$/,['POST']],
   [/^\/api\/checkout\/carts\/[A-Za-z0-9_-]{1,128}$/,['GET']],
