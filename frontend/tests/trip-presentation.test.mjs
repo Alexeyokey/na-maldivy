@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {adultsLabel,nightsLabel,optionsLabel,formatDate,formatRating,refundLabel,transferLabel,priceRows,tripAssumptions,narrativeView,trainPresentation,demoDepartureDate} from '../dist/trip-presentation.js';
+import {adultsLabel,nightsLabel,optionsLabel,formatDate,formatRating,refundLabel,transferLabel,priceRows,tripAssumptions,narrativeView,trainPresentation,demoDepartureDate,demoTravelerBirthDate,earliestSearchDate} from '../dist/trip-presentation.js';
 
 test('Russian counts keep teens and large values grammatical',()=>{
  assert.deepEqual([1,2,5,11,21].map(adultsLabel),['1 взрослый','2 взрослых','5 взрослых','11 взрослых','21 взрослый']);
@@ -14,6 +14,33 @@ test('Dates and ratings have one safe consistent display',()=>{
  assert.equal(formatDate('<img src=x>'),'дата не уточнена');
  assert.equal(formatRating(9.1),'9,1');assert.equal(formatRating(9),'9,0');
  assert.equal(formatRating(null),'нет оценки');assert.equal(formatRating(11),'нет оценки');
+});
+test('Demo birth dates match departure-day ages without placing an infant in the future',()=>{
+ const today='2026-10-29T12:00:00Z';
+ assert.deepEqual(demoTravelerBirthDate(0,'2027-01-18',today),{value:'2026-10-29',min:'2026-01-19',max:'2026-10-29',note:''});
+ assert.equal(demoTravelerBirthDate(5,'2027-01-18',today).value,'2022-01-18');
+ assert.equal(demoTravelerBirthDate(0,'2028-02-29','2028-02-28').value,'2028-02-28');
+ assert.equal(demoTravelerBirthDate(2,'2027-02-28',today).min,'2024-02-29');
+ assert.equal(demoTravelerBirthDate(1,'2027-01-01','2026-12-31').value,'2026-01-01');
+ const impossible=demoTravelerBirthDate(0,'2028-01-18',today);
+ assert.equal(impossible.value,'');assert.equal(impossible.max,'2026-10-29');assert.match(impossible.note,/Уже родившийся ребёнок не может/);
+ for(const departure of ['2026-11-18','2027-01-01','2027-02-28','2028-02-29','2028-03-01']){
+  for(let age=0;age<18;age++){
+   const result=demoTravelerBirthDate(age,departure,today);if(!result.value)continue;
+   const calculated=Number(departure.slice(0,4))-Number(result.value.slice(0,4))-(departure.slice(5)<result.value.slice(5)?1:0);
+   assert.equal(calculated,age,`${departure}: ${result.value} must have age ${age}`);
+   assert.ok(result.value<='2026-10-29');assert.ok(result.value>=result.min&&result.value<=result.max);
+  }
+ }
+ assert.equal(demoTravelerBirthDate(35,'2027-01-18',today).max,'2009-01-18');
+ assert.equal(demoTravelerBirthDate(0,'2027-02-30',today).value,'');
+});
+test('Search forms require tomorrow in UTC across year and leap-day boundaries',()=>{
+ assert.equal(earliestSearchDate('2026-10-29T23:59:59Z'),'2026-10-30');
+ assert.equal(earliestSearchDate('2026-12-31T12:00:00Z'),'2027-01-01');
+ assert.equal(earliestSearchDate('2028-02-28T12:00:00Z'),'2028-02-29');
+ assert.equal(earliestSearchDate('2028-02-29T12:00:00Z'),'2028-03-01');
+ assert.throws(()=>earliestSearchDate('invalid'),TypeError);
 });
 test('Only unconfirmed assumptions are presented; explicit input wins over old plan assumptions',()=>{
  const state={brief:{adults:1,month:1,nights:null,start_date:null},sources:{month:'explicit'},assumptions:[{field:'nights',text:'беру 7 ночей'},{field:'start_date',text:'минимальная цена в календаре в одну сторону'}],options:[{outbound:{departure_at:'2027-01-29T12:00:00Z'},hotel:{nights:7}}]};

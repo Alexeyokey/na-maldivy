@@ -8,9 +8,9 @@ const cart={cart_id:'CART-private_01',session_id:sid,status:'awaiting_travelers'
 const travelers=[{full_name:'DEMO ONE',birth_date:'1990-01-01'},{full_name:'DEMO TWO',birth_date:'1991-01-01'}];
 const order={order_id:'DEMO-private_01',cart_id:cart.cart_id,session_id:sid,status:'paid_demo',is_simulated:true,package:packageOption,travelers,created_at:'2026-10-28T12:00:00Z',voucher_path:'/api/checkout/orders/DEMO-private_01/voucher',calendar_path:'/api/checkout/orders/DEMO-private_01/calendar.ics'};
 const eventResponse=events=>new Response(events.map(([type,data])=>'event: '+type+'\ndata: '+JSON.stringify(data)+'\n\n').join(''),{headers:{'Content-Type':'text/event-stream'}});
-function checkoutController(payment){
+function checkoutController(payment,options={}){
  const calls=[];
- const controller=new ApiTripController({onChange:()=>{},fetchImpl:async(path,init={})=>{
+ const controller=new ApiTripController({...options,onChange:()=>{},fetchImpl:async(path,init={})=>{
   const body=init.body?JSON.parse(init.body):undefined;calls.push({path,method:init.method||'GET',headers:init.headers,body});
   if(path.endsWith('/travelers'))return Response.json({...cart,cart_id:path.split('/').at(-2),status:'ready_for_demo_payment',travelers});
   if(path.endsWith('/pay'))return payment({path,init,body,calls});
@@ -78,6 +78,47 @@ test('An ambiguous payment network failure retries the identical key without res
  await assert.rejects(controller.pay(paymentArgs),error=>error.code==='network');assert.equal(controller.state.order,null);assert.ok(controller.state.error);
  await controller.pay(paymentArgs);assert.equal(controller.state.order.order_id,order.order_id);
  const payments=calls.filter(call=>call.path.endsWith('/pay'));assert.equal(payments.length,2);assert.equal(payments[0].body.idempotency_key,payments[1].body.idempotency_key);assert.equal(calls.filter(call=>call.path.endsWith('/travelers')).length,1);
+});
+
+test('An ambiguous payment timeout retries its original key after stalled headers or body without duplicate orders',async()=>{
+ for(const phase of ['headers','body']){
+  const accepted=new Map(),late=deferred();let attempts=0;
+  const {controller,calls}=checkoutController(({body})=>{
+   if(!accepted.has(body.idempotency_key))accepted.set(body.idempotency_key,structuredClone(order));
+   if(++attempts===1)return phase==='headers'?late.promise:{ok:true,headers:new Headers({'Content-Type':'application/json'}),json:()=>late.promise};
+   return Response.json(accepted.get(body.idempotency_key));
+  },{checkoutTimeoutMs:15});
+  await assert.rejects(controller.pay(paymentArgs),error=>error.code==='timeout');
+  assert.equal(controller.state.busy,false);assert.equal(controller.state.order,null);assert.ok(controller.pendingPayment?.key);
+  assert.doesNotMatch(controller.state.error,/заказ не создан|отказ оплаты/i);
+  await controller.pay(paymentArgs);
+  assert.equal(controller.state.order.order_id,order.order_id);assert.equal(controller.state.orders.length,1);assert.equal(accepted.size,1);
+  const payments=calls.filter(call=>call.path.endsWith('/pay'));
+  assert.equal(payments.length,2);assert.equal(payments[0].body.idempotency_key,payments[1].body.idempotency_key);
+  assert.equal(calls.filter(call=>call.path.endsWith('/travelers')).length,1);
+  const confirmed=structuredClone(controller.state);
+  late.resolve(phase==='headers'?Response.json({...order,order_id:'DEMO-late-ignored'}):{...order,order_id:'DEMO-late-ignored'});
+  await Promise.resolve();await Promise.resolve();assert.deepEqual(controller.state,confirmed,'Late consumption cannot replace the confirmed payment');
+ }
+});
+
+test('A stalled cart body cannot partly apply a newer snapshot and a later reconciliation recovers',async()=>{
+ let attempts=0;
+ const controller=new ApiTripController({checkoutTimeoutMs:15,fetchImpl:async path=>{
+  if(path.startsWith('/api/session/'))return Response.json({session_id:sid,stage:'checkout_pending',version:2,brief:{destination:'AYT'},selected:1,booking:{cart_id:cart.cart_id}});
+  if(++attempts===1)return {ok:true,headers:new Headers({'Content-Type':'application/json'}),json:()=>new Promise(()=>{})};
+  return Response.json(cart);
+ }});
+ controller.state.sessionId=sid;controller.state.version=1;controller.state.brief={destination:'MLE'};
+ const before=structuredClone(controller.state);
+ await assert.rejects(controller.sessionSnapshot(),error=>error.code==='timeout');assert.deepEqual(controller.state,before);
+ await controller.sessionSnapshot();assert.equal(controller.state.version,2);assert.equal(controller.state.cart.cart_id,cart.cart_id);
+});
+
+test('A stalled session body is bounded even if its response ignores the abort signal',async()=>{
+ const controller=new ApiTripController({recoveryTimeoutMs:15,fetchImpl:async()=>({ok:true,json:()=>new Promise(()=>{})})});
+ controller.state.sessionId=sid;const before=structuredClone(controller.state);
+ await assert.rejects(controller.sessionSnapshot(),error=>error.code==='timeout');assert.deepEqual(controller.state,before);
 });
 
 test('User-visible text excludes source review identifiers and runtime access identifiers',()=>{

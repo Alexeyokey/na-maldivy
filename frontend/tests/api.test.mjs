@@ -177,3 +177,57 @@ test('Session restoration reads the real snapshot and handles expiry or another 
  await assert.rejects(fetchSessionCanvas({sessionId:'trip-a',fetchImpl:async()=>new Response('',{status:404})}),e=>e.code==='session_missing');
  await assert.rejects(fetchSessionCanvas({sessionId:'trip-a',fetchImpl:async()=>Response.json({...snapshot,session_id:'trip-b'})}),e=>e.code==='protocol');
 });
+
+test('Checkout deadlines cover stalled headers and JSON bodies even when fetch ignores abort',async()=>{
+ for(const phase of ['headers','body'])for(const [path,method,body] of [
+  ['/api/checkout/orders/DEMO-private','GET',undefined],
+  ['/api/checkout/carts/CART-private/travelers','PUT',{travelers:[]}],
+  ['/api/checkout/carts/CART-private/pay','POST',{outcome:'approved',idempotency_key:'same-private-key'}],
+ ]){
+  let requestSignal;const never=new Promise(()=>{});
+  await assert.rejects(requestCheckout({path,method,body,sessionId:'private-owner',timeoutMs:15,fetchImpl:async(_,init)=>{
+   requestSignal=init.signal;
+   if(phase==='headers')return never;
+   return {ok:true,headers:new Headers({'Content-Type':'application/json'}),json:()=>never};
+  }}),error=>error.code==='timeout'&&error.name!=='AbortError'&&!/private|CART-|DEMO-|нет заказа|заказ не создан/i.test(error.message));
+  assert.equal(requestSignal.aborted,true,'The deadline must also abort the underlying request');
+ }
+});
+
+test('A user cancellation stays distinct from timeout for stalled checkout headers or body',async()=>{
+ for(const phase of ['headers','body']){
+  const abort=new AbortController();let started;const ready=new Promise(resolve=>started=resolve),never=new Promise(()=>{});
+  const pending=requestCheckout({path:'/api/checkout/orders/DEMO-test',sessionId:'owner-test',signal:abort.signal,timeoutMs:1000,fetchImpl:async()=>{
+   if(phase==='headers'){started();return never;}
+   return {ok:true,headers:new Headers({'Content-Type':'application/json'}),json:()=>{started();return never;}};
+  }});
+  await ready;abort.abort();await assert.rejects(pending,error=>error.code==='aborted'&&error.name==='AbortError');
+ }
+ const abort=new AbortController();abort.abort();
+ await assert.rejects(requestCheckout({path:'/api/checkout/orders/DEMO-test',sessionId:'owner-test',signal:abort.signal,fetchImpl:()=>assert.fail('A cancelled request cannot start')}),error=>error.code==='aborted');
+});
+
+test('A document deadline includes its stalled blob, preserves safe filenames and allows retry',async()=>{
+ for(const [suffix,type] of [['voucher','text/html'],['calendar.ics','text/calendar']]){
+  let attempts=0,signal;
+  const options={path:'/api/checkout/orders/DEMO-private/'+suffix,sessionId:'private-owner',timeoutMs:15,fetchImpl:async(_,init)=>{
+   signal=init.signal;
+   return ++attempts===1?{ok:true,headers:new Headers({'Content-Type':type}),blob:()=>new Promise(()=>{})}:new Response('document',{headers:{'Content-Type':type}});
+  }};
+  await assert.rejects(downloadCheckout(options),error=>error.code==='timeout'&&/повторите скачивание/i.test(error.message)&&!/private|DEMO-/.test(error.message));
+  assert.equal(signal.aborted,true);
+  const result=await downloadCheckout(options);assert.equal(await result.blob.text(),'document');assert.doesNotMatch(result.filename,/private/);
+ }
+});
+
+test('Health body parsing also ends at its own deadline without misclassifying it as user cancellation',async()=>{
+ let signal;
+ await assert.rejects(checkAgentHealth({timeoutMs:15,fetchImpl:async(_,init)=>{
+  signal=init.signal;return {ok:true,json:()=>new Promise(()=>{})};
+ }}),error=>error.code==='timeout'&&error.name!=='AbortError');
+ assert.equal(signal.aborted,true);
+});
+
+test('Checkout validation errors provide a safe actionable age hint without response inputs',async()=>{
+ await assert.rejects(requestCheckout({path:'/api/checkout/carts/CART-private/travelers',method:'PUT',body:{travelers:[]},sessionId:'private-owner',fetchImpl:async()=>Response.json({detail:[{input:'PRIVATE PERSON AND BIRTH DATE',msg:'private-owner'}]},{status:422})}),error=>error.status===422&&/имена/.test(error.message)&&/даты рождения/.test(error.message)&&/возраст на день отправления/.test(error.message)&&!/PRIVATE|private-owner|CART-|input/.test(error.message));
+});

@@ -16,6 +16,12 @@ export function demoDepartureDate(now=new Date()){
  date.setUTCDate(date.getUTCDate()+28);
  return date.toISOString().slice(0,10);
 }
+export function earliestSearchDate(now=new Date()){
+ const date=new Date(now);
+ if(!Number.isFinite(date.getTime()))throw new TypeError('A valid reference date is required');
+ date.setUTCDate(date.getUTCDate()+1);
+ return date.toISOString().slice(0,10);
+}
 
 export function isoDay(value){
  if(typeof value!=='string')return null;
@@ -23,6 +29,26 @@ export function isoDay(value){
  if(!/^\d{4}-\d{2}-\d{2}$/.test(part))return null;
  const parsed=new Date(part+'T12:00:00Z');
  return Number.isFinite(parsed.getTime())&&parsed.toISOString().slice(0,10)===part?part:null;
+}
+
+/** Match the checkout's completed-years rule without inventing a future birth. */
+export function demoTravelerBirthDate(age,departure,now=new Date()){
+ const trip=isoDay(departure),reference=new Date(now),today=Number.isFinite(reference.getTime())?reference.toISOString().slice(0,10):null;
+ const invalid={value:'',min:'',max:today||'',note:'Проверьте дату вылета и возраст путешественника перед оформлением.'};
+ if(!trip||!today||!Number.isInteger(age)||age<0||age>130)return invalid;
+ const yearsBefore=years=>{
+  const year=Number(trip.slice(0,4))-years;if(year<1)return null;
+  const candidate=String(year).padStart(4,'0')+trip.slice(4);
+  return isoDay(candidate)||(trip.slice(5)==='02-29'?String(year).padStart(4,'0')+'-02-28':null);
+ };
+ const nextDay=day=>{if(!day)return null;const value=new Date(day+'T12:00:00Z');value.setUTCDate(value.getUTCDate()+1);return isoDay(value.toISOString());};
+ // For children the exact age is priced; adults only need to be 18–130.
+ const child=age<18,min=nextDay(yearsBefore(child?age+1:131)),upper=yearsBefore(child?age:18);
+ if(!min||!upper)return invalid;
+ const max=upper<today?upper:today;
+ if(min>max)return {value:'',min:'',max:today,note:child?'Уже родившийся ребёнок не может иметь указанный возраст на эту дату вылета. Измените возраст в чате или дату поездки.':'Для выбранной даты нет допустимой даты рождения взрослого. Измените дату поездки.'};
+ const preferred=yearsBefore(age)||max,value=preferred<min?min:preferred>max?max:preferred;
+ return {value,min,max,note:''};
 }
 export function formatDate(value){
  const date=isoDay(value);return date?`${date.slice(8,10)}.${date.slice(5,7)}.${date.slice(0,4)}`:'дата не уточнена';

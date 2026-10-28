@@ -5,6 +5,26 @@ export class ChatApiError extends Error {
     this.code=code;this.partialText=partialText;this.status=status;
   }
 }
+export const CHECKOUT_REQUEST_TIMEOUT_MS=10000;
+/** Bound headers and body consumption, including transports that ignore abort. */
+export async function withRequestDeadline(operation,{signal,timeoutMs=CHECKOUT_REQUEST_TIMEOUT_MS,timeoutMessage='Не получили результат оформления вовремя. Проверьте связь и повторите попытку.',abortMessage='Запрос оформления остановлен.'}={}){
+  if(!Number.isFinite(timeoutMs)||timeoutMs<=0||timeoutMs>120000)throw new ChatApiError('Некорректное время ожидания запроса.',{code:'validation'});
+  const controller=new AbortController();let timer,onAbort;
+  const interrupted=new Promise((_,reject)=>{
+    const stop=error=>{reject(error);controller.abort();};
+    onAbort=()=>stop(new ChatApiError(abortMessage,{code:'aborted'}));
+    if(signal?.aborted){onAbort();return;}
+    signal?.addEventListener('abort',onAbort,{once:true});
+    timer=setTimeout(()=>stop(new ChatApiError(timeoutMessage,{code:'timeout'})),timeoutMs);
+  });
+  try{
+    if(signal?.aborted)return await interrupted;
+    return await Promise.race([interrupted,Promise.resolve().then(()=>{
+      if(controller.signal.aborted)throw new ChatApiError(abortMessage,{code:'aborted'});
+      return operation(controller.signal);
+    })]);
+  }finally{clearTimeout(timer);signal?.removeEventListener('abort',onAbort);}
+}
 export async function streamChat({message,sessionId,requestId,retry=false,endpoint='/api/chat',signal,onDelta=()=>{},onEvent=()=>{},fetchImpl=globalThis.fetch}) {
   if(typeof message!=='string'||!message.trim()||message.length>4000)throw new ChatApiError('Напишите сообщение длиной от 1 до 4000 символов.',{code:'validation'});
   if(sessionId!==undefined&&sessionId!==null&&!isSessionId(sessionId))throw new ChatApiError('Не удалось продолжить диалог. Начните новый поиск.',{code:'validation'});
@@ -55,13 +75,15 @@ export async function streamChat({message,sessionId,requestId,retry=false,endpoi
     throw new ChatApiError(signal?.aborted||error?.name==='AbortError'?'Ответ остановлен.':reader?'Связь прервалась во время ответа. Полученный текст сохранён. Можно повторить сообщение.':'Не удалось связаться с агентом. Проверьте соединение и повторите сообщение.',{code:signal?.aborted||error?.name==='AbortError'?'aborted':'network',partialText:text});
   }finally{if(reader){try{await reader.cancel();}catch{}try{reader.releaseLock();}catch{}}}
 }
-export async function checkAgentHealth({endpoint='/health',signal,fetchImpl=globalThis.fetch}={}){
+export async function checkAgentHealth({endpoint='/health',signal,fetchImpl=globalThis.fetch,timeoutMs=5000}={}){
   try{
-    const response=await fetchImpl(endpoint,{method:'GET',signal,headers:{Accept:'application/json'},credentials:'same-origin',cache:'no-store',redirect:'error'});
-    if(!response.ok)throw chatHttpError(response.status);
-    const value=await response.json();
-    if(value.status!=='ok'||!['fake','openai','codex_local','codex_private'].includes(value.llm_provider))throw new Error('Invalid health');
-    return value;
+    return await withRequestDeadline(async requestSignal=>{
+      const response=await fetchImpl(endpoint,{method:'GET',signal:requestSignal,headers:{Accept:'application/json'},credentials:'same-origin',cache:'no-store',redirect:'error'});
+      if(!response.ok)throw chatHttpError(response.status);
+      const value=await response.json();
+      if(value.status!=='ok'||!['fake','openai','codex_local','codex_private'].includes(value.llm_provider))throw new Error('Invalid health');
+      return value;
+    },{signal,timeoutMs,timeoutMessage:'Проверка связи заняла слишком много времени. Повторите попытку.',abortMessage:'Проверка остановлена.'});
   }catch(error){
     if(signal?.aborted||error?.name==='AbortError')throw new ChatApiError('Проверка остановлена.',{code:'aborted'});
     if(error instanceof ChatApiError)throw error;
@@ -113,30 +135,34 @@ function checkoutError(error,signal){
 async function checkoutFetch(path,init,fetchImpl){
   // Avoid redirects sending the private session header to a different origin.
   const response=await fetchImpl(path,{...init,redirect:'error'});
-  if(!response.ok)throw new ChatApiError(response.status===409?'Условия поездки изменились. Повторите поиск и выберите вариант заново.':'Не удалось выполнить оформление. Проверьте данные и повторите попытку.',{code:'http',status:response.status});
+  if(!response.ok)throw new ChatApiError(response.status===409?'Условия поездки изменились. Повторите поиск и выберите вариант заново.':response.status===422?'Проверьте вымышленные имена, даты рождения и возраст на день отправления, а также подтверждения в форме.':'Не удалось выполнить оформление. Проверьте данные и повторите попытку.',{code:'http',status:response.status});
   return response;
 }
 /** Session identifiers stay in the private header or JSON body, never in a query string. */
-export async function requestCheckout({path,method='GET',body,sessionId,fetchImpl=globalThis.fetch,signal}){
+export async function requestCheckout({path,method='GET',body,sessionId,fetchImpl=globalThis.fetch,signal,timeoutMs=CHECKOUT_REQUEST_TIMEOUT_MS}){
   try{
-    const init=checkoutRequest({path,method,body,sessionId,signal});
-    const response=await checkoutFetch(path,init,fetchImpl);
-    if(!response.headers.get('content-type')?.includes('application/json'))throw new ChatApiError('Сервис оформления вернул неподдерживаемый ответ.',{code:'protocol'});
-    let value;try{value=await response.json();}catch{throw new ChatApiError('Не удалось прочитать результат оформления.',{code:'protocol'});}
-    if(value===null||typeof value!=='object'||Array.isArray(value))throw new ChatApiError('Не удалось прочитать результат оформления.',{code:'protocol'});
-    return value;
+    return await withRequestDeadline(async requestSignal=>{
+      const init=checkoutRequest({path,method,body,sessionId,signal:requestSignal});
+      const response=await checkoutFetch(path,init,fetchImpl);
+      if(!response.headers.get('content-type')?.includes('application/json'))throw new ChatApiError('Сервис оформления вернул неподдерживаемый ответ.',{code:'protocol'});
+      let value;try{value=await response.json();}catch(error){if(!(error instanceof SyntaxError))throw error;throw new ChatApiError('Не удалось прочитать результат оформления.',{code:'protocol'});}
+      if(value===null||typeof value!=='object'||Array.isArray(value))throw new ChatApiError('Не удалось прочитать результат оформления.',{code:'protocol'});
+      return value;
+    },{signal,timeoutMs,...(typeof path==='string'&&path.endsWith('/pay')?{timeoutMessage:'Не получили результат демо-оплаты вовремя. Повторите оплату, чтобы проверить результат того же платежа.'}:{})});
   }catch(error){throw checkoutError(error,signal);}
 }
 /** The displayed filename is fixed by document type, not by an order/session identifier. */
-export async function downloadCheckout({path,sessionId,fetchImpl=globalThis.fetch,signal}){
+export async function downloadCheckout({path,sessionId,fetchImpl=globalThis.fetch,signal,timeoutMs=CHECKOUT_REQUEST_TIMEOUT_MS}){
   try{
-    const init=checkoutRequest({path,sessionId,signal});
-    const calendar=path.endsWith('/calendar.ics'),voucher=path.endsWith('/voucher');
-    if(!calendar&&!voucher)throw new ChatApiError('Выберите документ для скачивания.',{code:'validation'});
-    const contentType=calendar?'text/calendar':'text/html';init.headers.Accept=contentType;
-    const response=await checkoutFetch(path,init,fetchImpl);
-    if(!response.headers.get('content-type')?.toLowerCase().startsWith(contentType))throw new ChatApiError('Документ вернулся в неподдерживаемом формате.',{code:'protocol'});
-    return {blob:await response.blob(),filename:calendar?'demo-trip.ics':'demo-voucher.html',contentType};
+    return await withRequestDeadline(async requestSignal=>{
+      const init=checkoutRequest({path,sessionId,signal:requestSignal});
+      const calendar=path.endsWith('/calendar.ics'),voucher=path.endsWith('/voucher');
+      if(!calendar&&!voucher)throw new ChatApiError('Выберите документ для скачивания.',{code:'validation'});
+      const contentType=calendar?'text/calendar':'text/html';init.headers.Accept=contentType;
+      const response=await checkoutFetch(path,init,fetchImpl);
+      if(!response.headers.get('content-type')?.toLowerCase().startsWith(contentType))throw new ChatApiError('Документ вернулся в неподдерживаемом формате.',{code:'protocol'});
+      return {blob:await response.blob(),filename:calendar?'demo-trip.ics':'demo-voucher.html',contentType};
+    },{signal,timeoutMs,timeoutMessage:'Не получили документ вовремя. Проверьте связь и повторите скачивание.',abortMessage:'Скачивание остановлено.'});
   }catch(error){throw checkoutError(error,signal);}
 }
 
