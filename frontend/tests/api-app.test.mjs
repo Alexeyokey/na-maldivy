@@ -146,6 +146,20 @@ test('Mounted comparison is local, permits up to three current options and disap
  assert.doesNotMatch(root.innerHTML,/data-api-action="choose"/);
 });
 
+test('The hotel explanation button for one adult requests reviews without inventing a family segment',async t=>{
+ const {root,controller,click}=await mountedSearch(t);
+ Object.assign(controller.state.brief,{adults:1,children_ages:[],pets:0});controller.notify();
+ assert.match(root.innerHTML,/data-api-action="profile" data-index="2"/);
+ const brief=structuredClone(controller.state.brief),sent=[];
+ controller.send=async text=>{sent.push(text);};
+ click('profile',{index:'2'});
+ await until(()=>sent.length===1);
+ assert.equal(sent[0],'Почему вариант 2 подходит? Что говорят отзывы?');
+ assert.doesNotMatch(sent[0],/семь|семе|дет|family/i,'The backend must choose the review segment from the actual brief');
+ assert.deepEqual(controller.state.brief,brief);
+ assert.equal(controller.state.selected,null);assert.equal(controller.state.cart,null);
+});
+
 test('Stale search closes its composition dialog and quick correction sends explicit conditions rather than booking confirmation',async t=>{
  const {root,modal,controller,click,document}=await mountedSearch(t);
  click('plan',{index:'1'});assert.equal(modal.open,true);assert.match(modal.innerHTML,/Server Hotel 1/);
