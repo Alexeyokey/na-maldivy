@@ -15,8 +15,8 @@ export function createFrontendServer({root=path.join(here,'dist'),agentUrl=proce
    res.writeHead(200,{'Content-Type':types['.js'],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
    res.end('window.NA_MALDIVY_CONFIG = Object.freeze('+JSON.stringify({mode:mode==='demo'?'demo':'api',apiEnabled:true,chatEndpoint:'/api/chat',healthEndpoint:'/health'})+');');return;
   }
-  if(pathname==='/api/chat'||pathname==='/health'){
-   if(req.method!==(pathname==='/health'?'GET':'POST')){res.writeHead(405).end('Method not allowed');return;}
+  if(pathname==='/api/chat'||pathname==='/health'||/^\/api\/session\/[A-Za-z0-9_-]{1,64}$/.test(pathname)){
+   if(req.method!==(pathname==='/api/chat'?'POST':'GET')){res.writeHead(405).end('Method not allowed');return;}
    const headers={accept:pathname==='/api/chat'?'text/event-stream':'application/json'};
    if(req.headers['content-type'])headers['content-type']=req.headers['content-type'];
    const transport=origin.protocol==='https:'?https:http;

@@ -45,7 +45,10 @@ const templates=[
   {id:'loft',name:'Маленький лофт',style:'Апарт-отель',price:4200,rating:8.6,reviews:204,stars:3,center:false,pets:true,spa:false,quiet:false,seaside:false,image:'room-cozy',distance:'3,1 км от центра',tag:'Своя маленькая квартира',desc:'Номер с кухней и рабочим местом. Удобно для долгой поездки и самостоятельных завтраков.',risk:'Невозвратный тариф; оживлённая улица.',cancel:false},
   {id:'grand',name:'Гранд ателье',style:'Гранд-отель',price:11000,rating:9.7,reviews:421,stars:5,center:true,pets:false,spa:true,quiet:true,seaside:false,image:'room-warm',distance:'0,3 км от центра',tag:'Особенный случай',desc:'Высокие потолки, ресторан и сервис с вниманием к деталям. Для поездки, которую хочется запомнить.',risk:'Самый высокий тариф в подборке.',cancel:true}
 ];
-export function allHotels(s){return templates.map((h,i)=>({...h,id:`${s.city}-${h.id}`,price:Math.round(h.price*cityById(s.city).factor/100)*100+(s.breakfast?450:0)+(s.pets?300:0)+(s.earlyCheckIn?Math.round(h.price*.35/nights(s)/100)*100:0),breakfast:s.breakfast,city:s.city,seaside:s.city==='sochi'&&h.seaside}));}
+export function allHotels(s){return templates.map(h=>{
+ const basePrice=Math.round(h.price*cityById(s.city).factor/100)*100;
+ return {...h,id:`${s.city}-${h.id}`,basePrice,price:basePrice+(s.breakfast?450:0)+(s.pets?300:0),breakfast:s.breakfast,city:s.city,seaside:s.city==='sochi'&&h.seaside};
+});}
 export function transportOptions(s){
  const city=cityById(s.city);const pax=s.adults+s.children;
  if(s.origin===s.city)return [{id:'none',title:'Уже на месте',time:'Без переезда',price:0,arrival:'12:00',departure:'12:00',returnDeparture:'19:00',overnight:0,note:'Транспорт между городами не нужен.'}];
@@ -56,13 +59,21 @@ export function transportOptions(s){
 }
 export function currentTransport(s){const opts=transportOptions(s);return opts.find(t=>t.id===s.transport)||opts[0];}
 export function transferPrice(s){return s.transfer?((s.adults+s.children)>4?1800:900)*2:0;}
-export function planTotal(s,h){return h.price*nights(s)+currentTransport(s).price+transferPrice(s);}
+export function earlyCheckInPrice(s,h){return s.earlyCheckIn?Math.round(h.basePrice*.35):0;}
+export function hotelTotal(s,h){return h.price*nights(s)+earlyCheckInPrice(s,h);}
+export function planTotal(s,h){return hotelTotal(s,h)+currentTransport(s).price+transferPrice(s);}
+export function checkBudget(s,h){
+ const total=planTotal(s,h),budget=s.totalBudget;
+ const hasBudget=budget!==null&&budget!==undefined;
+ const validBudget=Number.isFinite(budget)&&budget>0;
+ return {total,budget,remaining:validBudget?budget-total:null,withinBudget:Number.isFinite(total)&&total>=0&&(!hasBudget||(validBudget&&total<=budget))};
+}
 export function searchHotels(s){
- let list=allHotels(s).filter(h=>h.price<=s.budget&&(!s.center||h.center)&&(!s.pets||h.pets)&&(!s.spa||h.spa)&&(!s.quiet||h.quiet)&&(!s.seaside||h.seaside)&&(!s.cancel||h.cancel)&&(!s.totalBudget||planTotal(s,h)<=s.totalBudget));
+ let list=allHotels(s).filter(h=>h.price<=s.budget&&(!s.center||h.center)&&(!s.pets||h.pets)&&(!s.spa||h.spa)&&(!s.quiet||h.quiet)&&(!s.seaside||h.seaside)&&(!s.cancel||h.cancel)&&checkBudget(s,h).withinBudget);
  if(s.sort==='price')list.sort((a,b)=>a.price-b.price);else if(s.sort==='rating')list.sort((a,b)=>b.rating-a.rating);else list.sort((a,b)=>(b.rating+(b.id.endsWith('light')?.5:0))-(a.rating+(a.id.endsWith('light')?.5:0)));
  return list;
 }
-export function reasons(s,h){const r=[];if(s.center&&h.center)r.push('Прогулки начинаются у порога');if(s.pets&&h.pets)r.push('Можно с собакой');if(s.spa&&h.spa)r.push('Есть спа для перезагрузки');if(s.quiet&&h.quiet)r.push('Тихие номера для отдыха');if(s.seaside&&h.seaside)r.push('Море рядом');if(s.breakfast)r.push('Завтрак уже включён');if(h.cancel)r.push('Бесплатная отмена за 48 часов');if(h.price<=s.budget*.85)r.push('Остаётся бюджет на впечатления');return r.slice(0,3);}
+export function reasons(s,h){const r=[];if(s.center&&h.center)r.push('Прогулки начинаются у порога');if(s.pets&&h.pets)r.push('Можно с собакой');if(s.spa&&h.spa)r.push('Есть спа для перезагрузки');if(s.quiet&&h.quiet)r.push('Тихие номера для отдыха');if(s.seaside&&h.seaside)r.push('Море рядом');if(s.breakfast)r.push('Завтрак уже включён');if(h.cancel)r.push('Бесплатная отмена за 48 часов');const budget=checkBudget(s,h);if(budget.withinBudget&&budget.remaining>=s.totalBudget*.15&&budget.remaining>0)r.push('Остаётся бюджет на впечатления');return r.slice(0,3);}
 export function connections(s){
  const t=currentTransport(s); const [ah,am]=t.arrival.split(':').map(Number);const arrival=ah*60+am;const transferMinutes=s.transfer?45:75;const hotelArrival=arrival+transferMinutes;const hour=x=>`${String(Math.floor(x/60)).padStart(2,'0')}:${String(x%60).padStart(2,'0')}`;
  return [
