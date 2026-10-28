@@ -13,7 +13,7 @@ const until=async predicate=>{
 };
 
 test('The mounted chat keeps its paid-order sidebar and document dialog after the in-memory session expires',async t=>{
- let stored=JSON.stringify({schemaVersion:2,sessionId:sid,version:1,stage:'booked',currentOrderId:order.order_id,orders:[{sessionId:sid,orderId:order.order_id}],messages:[{role:'user',text:'Подтверждаю'}]});
+ let stored=JSON.stringify({schemaVersion:2,sessionId:sid,version:1,stage:'booked',currentOrderId:order.order_id,orders:[{sessionId:sid,orderId:order.order_id}],messages:[{role:'user',text:'**Подтверждаю** <img src=x onerror=alert(1)>'},{role:'assistant',text:'Сравним варианты.\n\n1. **JEN** — поездка [review_id:rv_001]\n\n2. **Villa Nautica** — второй вариант.\n\nУсловия нужно уточнить.'}]});
  const storage={getItem:()=>stored,setItem:(_,value)=>stored=value},calls=[];
  const document=Object.assign(new EventTarget(),{visibilityState:'visible',activeElement:null});
  const window=new EventTarget(),input={value:'',selectionStart:0,selectionEnd:0};
@@ -40,6 +40,10 @@ test('The mounted chat keeps its paid-order sidebar and document dialog after th
  };
  controller=mountApiApp({root,modal,icon:()=>'',config:{}});
  await until(()=>controller.state.sessionLost&&controller.state.order&&controller.state.connection==='online');
+ assert.match(root.innerHTML,/<strong>JEN<\/strong>/);
+ assert.match(root.innerHTML,/<ol\b/);assert.match(root.innerHTML,/<strong>Villa Nautica<\/strong>/);
+ assert.match(root.innerHTML,/\*\*Подтверждаю\*\* &lt;img src=x onerror=alert\(1\)&gt;/,'User input remains literal escaped text');
+ assert.doesNotMatch(root.innerHTML,/rv_001|<img src=x/,'Formatting cannot expose source IDs or execute message HTML');
  assert.match(root.innerHTML,/Демо-заказ и документы/);
  assert.match(root.innerHTML,/Демо-заказ и документы доступны/);
  const documentsButton=root.innerHTML.match(/<button[^>]*data-api-action="success"[^>]*>/)?.[0];

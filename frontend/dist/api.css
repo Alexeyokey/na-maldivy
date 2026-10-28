@@ -3,3 +3,16 @@
 @media(max-width:650px){.api-mode .hotel-card{flex:0 0 280px}.api-mode .hero-art{display:none}.api-mode .header-actions{gap:8px}.api-mode .text-icon{font-size:10px}.api-mode .connection-badge{font-size:9px}.api-mode .api-source{font-size:8px}.api-mode .composer-foot>span{display:block}.api-payment-buttons>*{flex:1}.api-mode .api-evidence{font-size:11px}.api-mode .hotel-card .price-total{font-size:9px}}
 
 .api-recovery{margin:16px 0;padding:16px 18px;border:1px solid #d8dfef;border-radius:14px;background:#f5f8ff;line-height:1.6}.api-recovery strong{display:block;font-size:14px}.api-recovery p{margin:6px 0 10px;font-size:13px}.api-recovery small,.api-partial-label{display:block;color:#687489;font-size:12px;margin-top:8px}.api-recovery .action-row{display:flex;flex-wrap:wrap;gap:8px}.api-mode .send-button:disabled{opacity:.45;cursor:not-allowed}
+
+/* Readable assistant messages share the same layout during streaming and reload. */
+.assistant-text,.api-mode .assistant-text{white-space:normal}
+.assistant-text p{margin:0 0 .85em}
+.assistant-text ol,.assistant-text ul{margin:.8em 0 1em;padding-left:1.65em;list-style-position:outside}
+.assistant-text ol{list-style-type:decimal}.assistant-text ul{list-style-type:disc}
+.assistant-text li{padding-left:.3em;margin:.4em 0}.assistant-text li+li{margin-top:.85em}
+.assistant-text li::marker{color:#657792;font-weight:650}
+.assistant-text li p{margin:.5em 0}
+.assistant-text strong{font-weight:750;color:#263b5f}
+.assistant-text code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.92em;padding:.12em .35em;border-radius:4px;background:#eef2f8;white-space:pre-wrap}
+.assistant-text>:first-child{margin-top:0}.assistant-text>:last-child{margin-bottom:0}
+@media(max-width:650px){.assistant-text ol,.assistant-text ul{padding-left:1.45em}.assistant-text li{padding-left:.15em}}
