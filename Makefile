@@ -37,3 +37,14 @@ schemas:
 
 tool-examples:
 	cd backend && uv run python ../scripts/export_tool_examples.py
+
+# Интерфейс без установки зависимостей: прокси /api/chat и /health к agent.
+.PHONY: web web-demo web-test
+web:
+	cd frontend && npm run dev
+
+web-demo:
+	cd frontend && CHAT_MODE=demo npm run dev
+
+web-test:
+	cd frontend && npm run check && npm test && npm run test:integration

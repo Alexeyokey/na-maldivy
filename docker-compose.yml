@@ -16,7 +16,17 @@ services:
       - agent-state:/state # приватные заказы и записываемый runtime-кэш
     restart: unless-stopped
 
-  # web: интерфейс появится в U1 (#6)
+  web:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:${WEB_PORT:-5173}:5173"
+    environment:
+      AGENT_URL: http://agent:8000
+      CHAT_MODE: api
+    depends_on:
+      agent:
+        condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   agent-state:
