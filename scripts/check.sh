@@ -25,7 +25,7 @@ smoke_compose() {
 
 smoke() {
   trap 'smoke_compose down >/dev/null 2>&1' EXIT
-  if ! smoke_compose up --build -d --wait --wait-timeout 120; then
+  if ! smoke_compose up --build -d --wait --wait-timeout 120 agent gateway; then
     smoke_compose logs
     exit 1
   fi
