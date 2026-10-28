@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "port": 5173,
+      "externally_reachable": false
+    },
+    {
+      "port": 8000,
+      "externally_reachable": false
+    },
+    {
+      "port": 8080,
+      "externally_reachable": false
+    }
+  ]
+}

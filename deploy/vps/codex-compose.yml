@@ -1,0 +1,53 @@
+# Apply ONLY after private-compose.yml. All entry points require the owner's
+# HTTPS password; this layer must not be used with the public HTTP profile alone.
+services:
+  agent:
+    image: ${NA_PRIVATE_AGENT_IMAGE:?required}
+    build:
+      context: ${NA_PRIVATE_SOURCE_DIR:?required}
+      dockerfile: backend/Dockerfile.private-codex
+      additional_contexts:
+        codex-runtime: ${NA_CODEX_RUNTIME_DIR:?required}
+    env_file:
+      - ${NA_PRIVATE_RUNTIME_ENV:?required}
+    environment:
+      LLM_PROVIDER: codex_private
+      LLM_MODEL_MAIN: gpt-6-luna
+      LLM_MODEL_FAST: gpt-6-luna
+      LLM_TIMEOUT_S: "75"
+      CODEX_HOME: /codex-auth
+      CODEX_BINARY: /usr/local/bin/codex
+      HOME: /home/agent
+      CORS_ORIGINS: https://201.8.90.64
+    command: ["uvicorn", "app.personal_codex:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]
+    volumes:
+      - ${NA_CODEX_AUTH_DIR:?required}:/codex-auth
+    # Only the agent needs outbound access for the official Codex CLI.
+    networks:
+      - private-demo
+      - default
+    mem_limit: 512m
+    pids_limit: 192
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,urllib.request; r=urllib.request.Request('http://127.0.0.1:8000/health',headers={'x-local-codex-token':os.environ['CODEX_LOCAL_TOKEN']}); urllib.request.build_opener(urllib.request.ProxyHandler({})).open(r,timeout=2).close()"]
+      interval: 10s
+      timeout: 3s
+      start_period: 10s
+      retries: 10
+
+  web:
+    image: ${NA_PRIVATE_WEB_IMAGE:?required}
+    build:
+      context: ${NA_PRIVATE_SOURCE_DIR:?required}/frontend
+    env_file:
+      - ${NA_PRIVATE_RUNTIME_ENV:?required}
+    environment:
+      PRIVATE_SITE_MODE: "1"
+      LOCAL_ONLY: "0"
+    healthcheck:
+      # Node 22 fetch may replace Host; use the HTTP client explicitly.
+      test: ["CMD", "node", "-e", "require('node:http').get({host:'127.0.0.1',port:5173,path:'/health',headers:{Host:'201.8.90.64'}},r=>{r.resume();process.exit(r.statusCode===200?0:1)}).on('error',()=>process.exit(1))"]
+
+  edge:
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--header", "Host: 201.8.90.64", "-O", "/dev/null", "http://127.0.0.1/health"]

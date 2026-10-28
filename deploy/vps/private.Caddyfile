@@ -1,0 +1,54 @@
+{
+    admin off
+    persist_config off
+    default_sni 201.8.90.64
+    log {
+        level WARN
+        exclude http.log.error
+    }
+}
+
+https://201.8.90.64 {
+    tls {
+        issuer acme https://acme-v02.api.letsencrypt.org/directory {
+            profile shortlived
+        }
+    }
+
+    route {
+        # Normal responses; authentication errors use handle_errors below.
+        header {
+            -Server
+            X-Content-Type-Options nosniff
+            Referrer-Policy no-referrer
+            X-Frame-Options DENY
+            Cache-Control no-store
+        }
+
+        basic_auth {
+            import /run/secrets/site-users.caddy
+        }
+
+        request_body {
+            max_size 64KB
+        }
+
+        # Caddy streams text/event-stream immediately. Keep disconnect cancellation.
+        reverse_proxy edge:80 {
+            header_up -Authorization
+        }
+    }
+
+    # basic_auth returns an error, outside the normal deferred-header chain.
+    # Keep its WWW-Authenticate challenge, without exposing error diagnostics.
+    handle_errors {
+        header {
+            -Server
+            X-Content-Type-Options nosniff
+            Referrer-Policy no-referrer
+            X-Frame-Options DENY
+            Cache-Control no-store
+        }
+        respond "{err.status_text}" {err.status_code}
+    }
+}

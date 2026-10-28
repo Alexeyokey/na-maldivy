@@ -25,7 +25,7 @@ __all__ = [
 def create_llm_client(settings: Settings) -> LLMClient:
     if settings.llm_provider == "fake":
         return FakeLLMClient()
-    if settings.llm_provider == "codex_local":
+    if settings.llm_provider in {"codex_local", "codex_private"}:
         return CodexLocalClient(
             binary=settings.codex_binary,
             models={"main": settings.llm_model_main, "fast": settings.llm_model_fast or settings.llm_model_main},

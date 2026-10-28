@@ -28,11 +28,23 @@ function readBody(req){
   req.on('error',()=>reject(Object.assign(new Error('Invalid body'),{status:400})));
  });
 }
-export function createFrontendServer({root=path.join(here,'dist'),agentUrl=process.env.AGENT_URL||'http://127.0.0.1:8000',mode=process.env.CHAT_MODE||'api',localOnly=process.env.LOCAL_ONLY==='1',agentToken=process.env.CODEX_LOCAL_TOKEN||''}={}){
+export function createFrontendServer({root=path.join(here,'dist'),agentUrl=process.env.AGENT_URL||'http://127.0.0.1:8000',mode=process.env.CHAT_MODE||'api',localOnly=process.env.LOCAL_ONLY==='1',privateSiteMode=process.env.PRIVATE_SITE_MODE==='1',agentToken=process.env.CODEX_LOCAL_TOKEN||''}={}){
  const origin=new URL(agentUrl);
  if(!['http:','https:'].includes(origin.protocol)||origin.username||origin.password)throw new Error('AGENT_URL must use HTTP or HTTPS without credentials');
- if(agentToken&&(!localOnly||!['127.0.0.1','localhost','[::1]'].includes(origin.hostname)))throw new Error('Personal Codex token requires a loopback-only proxy');
+ const loopbackAgent=['127.0.0.1','localhost','[::1]'].includes(origin.hostname);
+ // This mode is exclusively for the owner, behind HTTPS edge authentication.
+ // The agent is reachable only within the private container network.
+ if(privateSiteMode){
+  if(localOnly||agentToken.length<32)throw new Error('Private owner mode requires a server-only token of at least 32 characters');
+  if(!loopbackAgent&&origin.href!=='http://agent:8000/')throw new Error('Private owner mode requires the internal agent');
+ }else if(agentToken&&(!localOnly||!loopbackAgent))throw new Error('Personal Codex token requires a loopback-only proxy');
  return http.createServer(async(req,res)=>{
+  if(privateSiteMode){
+   // Never trust forwarded headers to override these browser-origin boundaries.
+   if(req.headers.host!=='201.8.90.64'||(req.headers.origin!==undefined&&req.headers.origin!=='https://201.8.90.64')||req.headers['sec-fetch-site']==='cross-site'){
+    fail(res,403,'Доступ к личному интерфейсу запрещён.');return;
+   }
+  }
   if(localOnly){
    const allowed=new Set([`127.0.0.1:${req.socket.localPort}`,`localhost:${req.socket.localPort}`]);
    const host=req.headers.host,origin=req.headers.origin;

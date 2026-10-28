@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     yandex_cache_dir: Path | None = None
     checkout_db_path: Path | None = None
 
-    llm_provider: Literal["fake", "openai", "codex_local"] = "fake"
+    llm_provider: Literal["fake", "openai", "codex_local", "codex_private"] = "fake"
     llm_base_url: str | None = None
     llm_api_key: SecretStr | None = None
     llm_model_main: str | None = None
@@ -65,6 +65,12 @@ class Settings(BaseSettings):
             self.codex_local_token is None or len(self.codex_local_token.get_secret_value()) < 32
         ):
             raise ValueError("Для личного Codex используйте scripts/run_personal_codex.py")
+        if self.llm_provider == "codex_private":
+            if self.codex_local_token is None or len(self.codex_local_token.get_secret_value()) < 32:
+                raise ValueError("Для приватного Codex задайте CODEX_LOCAL_TOKEN длиной не менее 32 символов")
+            if any(model not in {None, "gpt-6-luna"} for model in (self.llm_model_main, self.llm_model_fast)):
+                raise ValueError("Личный сервер использует только быструю модель gpt-6-luna")
+            self.llm_model_main = self.llm_model_fast = "gpt-6-luna"
         return self
 
     @property

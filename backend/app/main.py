@@ -57,8 +57,13 @@ def create_app(settings: Settings | None = None, llm: LLMClient | None = None) -
                 await client.aclose()
 
     app = FastAPI(title="na-maldivy agent", lifespan=lifespan)
-    if settings.llm_provider == "codex_local":
-        # A server-only token joins the two loopback processes; it never reaches the browser.
+    app.add_middleware(
+        CORSMiddleware, allow_origins=settings.cors_origin_list, allow_methods=["*"], allow_headers=["*"]
+    )
+    if settings.llm_provider in {"codex_local", "codex_private"}:
+        # The token joins trusted server processes and never reaches the browser.
+        # codex_private additionally requires owner authentication at the HTTPS edge;
+        # its agent container must never publish a host port.
         assert settings.codex_local_token is not None
         local_token = settings.codex_local_token.get_secret_value()
 
@@ -66,21 +71,17 @@ def create_app(settings: Settings | None = None, llm: LLMClient | None = None) -
         async def personal_codex_only(request: Request, call_next: Any) -> Response:
             peer = request.client.host if request.client else ""
             supplied = request.headers.get("x-local-codex-token", "")
-            if peer not in {"127.0.0.1", "::1", "localhost"} or not secrets.compare_digest(
-                supplied.encode(), local_token.encode()
-            ):
-                return JSONResponse({"detail": "Личный Codex доступен только через локальный интерфейс."}, 403)
+            allowed_peer = settings.llm_provider == "codex_private" or peer in {"127.0.0.1", "::1", "localhost"}
+            if not allowed_peer or not secrets.compare_digest(supplied.encode(), local_token.encode()):
+                return JSONResponse({"detail": "Доступ к личному Codex запрещён."}, 403)
             return await call_next(request)
 
     app.include_router(create_checkout_router())
-    app.add_middleware(
-        CORSMiddleware, allow_origins=settings.cors_origin_list, allow_methods=["*"], allow_headers=["*"]
-    )
 
     @app.get("/health")
     async def health() -> dict[str, str | int]:
         result: dict[str, str | int] = {"status": "ok", "llm_provider": settings.llm_provider}
-        if settings.llm_provider == "codex_local":
+        if settings.llm_provider in {"codex_local", "codex_private"}:
             result["codex_completed_calls"] = getattr(getattr(app.state, "llm", None), "completed_calls", 0)
             result["codex_model"] = settings.llm_model_main or "CLI-default"
             result["codex_reasoning_effort"] = "low"

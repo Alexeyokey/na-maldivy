@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28",
+  "status": "passed",
+  "scope": "owner_only_private_https_site_with_fresh_official_codex_cli_login",
+  "url": "https://201.8.90.64",
+  "access": "one owner; separate HTTPS Basic authentication; internal server nonce; no backend host ports",
+  "model": "gpt-6-luna",
+  "reasoning_effort": "low",
+  "paid_fast_tier_enabled": false,
+  "server_login": "fresh official device flow completed by owner; Mac auth file not copied or read",
+  "real_echo": {
+    "status": "passed",
+    "elapsed_seconds": 10.051,
+    "text": "Личный сервер готов",
+    "input_tokens": 8843,
+    "output_tokens": 22
+  },
+  "real_https_chat": {
+    "status": "passed",
+    "elapsed_seconds": 15.661,
+    "validated_model_calls": 2,
+    "option_count": 2,
+    "known_totals_rub": [
+      83234,
+      112856
+    ]
+  },
+  "checks": {
+    "backend_tests_passed": 1198,
+    "frontend_unit_and_http_tests_passed": 92,
+    "ruff": "passed",
+    "actual_linux_container_native_tool_isolation": "passed",
+    "unauthorized_model_invocations": 0,
+    "old_paid_demo_orders_preserved": 6,
+    "old_voucher_and_calendar_hashes": "unchanged",
+    "internal_ports_5173_8000_8080": "not externally reachable",
+    "application_healthchecks": "passed; gateway externally tested",
+    "secret_file_permissions": "site hash0400; runtime nonce0600; CLI directory0700 and credentials0600"
+  },
+  "images": {
+    "agent": "na-maldivy-private-agent:20261028-1",
+    "agent_image_id": "sha256:bd7c21aab0452a1d6af104ed69fb5758e948271cd1d15f15e266b369eeadab3b",
+    "web": "na-maldivy-private-web:20261028-1",
+    "gateway": "caddy:2.11.7-alpine"
+  },
+  "sqlite_state_volume": "na-maldivy-public_agent-state",
+  "backup": "consistent SQLite backup created before upgrade, private server storage",
+  "browser_ui_status": "new private VPS browser path not completed: automation rejected HTTP Basic challenge; actual chat verified over authenticated HTTPS API; earlier local Luna browser proof is separate",
+  "legal_status": "technical implementation, no blanket legal approval inferred; public/shared subscription proxy is outside this scope",
+  "data_boundaries": [
+    "D4 Aviasales replay plus explicitly labelled demo mocks",
+    "synthetic hotel pricing, rules, transfer and train data",
+    "D7 live extraction not run",
+    "simulated payment and booking"
+  ],
+  "evidence": [
+    "access-gate.json",
+    "chat.json",
+    "linux-tool-isolation.json",
+    "container-tool-isolation.json",
+    "original-orders-preserved.json",
+    "private-orders-preserved.json",
+    "ports.json",
+    "package-integrity.json"
+  ],
+  "deployed_source_verification": {
+    "matching_files": 84,
+    "manifest_sha256": "2e4ce3e03a3ef740b4a2d6ffe31d3a28e82e0f798fca0ca93c5daed482b5dbb1"
+  }
+}

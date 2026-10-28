@@ -27,7 +27,7 @@ test('Abort remains distinguishable from server failure',async()=>{
  const controller=new AbortController();controller.abort();await assert.rejects(streamChat({message:'hi',signal:controller.signal,fetchImpl:async()=>{throw new DOMException('Aborted','AbortError');}}),e=>e.name==='AbortError'&&e.code==='aborted');
 });
 test('Health validates the real repository response',async()=>{
- for(const provider of ['fake','openai','codex_local']) assert.deepEqual(await checkAgentHealth({fetchImpl:async()=>Response.json({status:'ok',llm_provider:provider})}),{status:'ok',llm_provider:provider});
+ for(const provider of ['fake','openai','codex_local','codex_private']) assert.deepEqual(await checkAgentHealth({fetchImpl:async()=>Response.json({status:'ok',llm_provider:provider})}),{status:'ok',llm_provider:provider});
  await assert.rejects(checkAgentHealth({fetchImpl:async()=>Response.json({status:'ok',provider:'fake'})}),ChatApiError);
 });
 

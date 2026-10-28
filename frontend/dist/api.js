@@ -58,7 +58,7 @@ export async function checkAgentHealth({endpoint='/health',signal,fetchImpl=glob
     const response=await fetchImpl(endpoint,{signal,headers:{Accept:'application/json'}});
     if(!response.ok)throw new Error('Unavailable');
     const value=await response.json();
-    if(value.status!=='ok'||!['fake','openai','codex_local'].includes(value.llm_provider))throw new Error('Invalid health');
+    if(value.status!=='ok'||!['fake','openai','codex_local','codex_private'].includes(value.llm_provider))throw new Error('Invalid health');
     return value;
   }catch(error){throw new ChatApiError(signal?.aborted?'Проверка остановлена.':'Сервер агента недоступен.',{code:signal?.aborted?'aborted':'network'});}
 }
