@@ -55,7 +55,14 @@ async def test_real_d4_record_replay_without_key_preserves_mixed_provenance(tmp_
     monkeypatch.setattr(httpx.AsyncClient, "send", forbidden_network)
     async with cache.CachedHttpClient(mode="replay", cache_dir=tmp_path) as replay:
         reproduced = await FlightTool(mode="provider", http=replay).search_with_provenance(query())
-    assert result == reproduced
+    assert [q.model_dump(mode="json") for q in result.quotes] == [q.model_dump(mode="json") for q in reproduced.quotes]
+    assert result.provenance == reproduced.provenance
+    for recorded, restored in zip(result.flights, reproduced.flights, strict=True):
+        assert recorded.model_dump(exclude={"price_source"}) == restored.model_dump(exclude={"price_source"})
+        assert recorded.price_source.cache_mode == "record" and recorded.price_source.cache_hit is False
+        assert restored.price_source.cache_mode == "replay" and restored.price_source.cache_hit is True
+        assert recorded.price_source.recorded_at == restored.price_source.recorded_at
+        assert recorded.price_source.seat_price_rub == restored.price_source.seat_price_rub
 
 
 async def test_real_d4_replay_miss_never_falls_back_to_network_or_demo(tmp_path, monkeypatch):

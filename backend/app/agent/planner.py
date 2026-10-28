@@ -266,6 +266,7 @@ def _flight_dump(f: Flight) -> dict[str, Any]:
         "price_rub": f.price_rub,
         "baggage_price_rub": f.baggage_price_rub,
         "is_overnight": f.is_overnight,
+        "price_source": f.price_source.model_dump(mode="json") if f.price_source else None,
     }
 
 
@@ -326,6 +327,9 @@ def _explain(c: _Combo, brief: TripBrief) -> tuple[list[str], list[str], list[st
         tradeoffs.append("отель без возврата денег при отмене")
     if c.outbound.stops == 0 and c.inbound.stops == 0:
         why.append("прямые рейсы")
+    if c.outbound.price_source or c.inbound.price_source:
+        why.append("авиацены основаны на котировках из поискового кэша Aviasales")
+        risks.append("Котировки Aviasales не подтверждают наличие мест; цена группы и багаж рассчитаны моделью")
     if brief.pets:
         if h.pets_allowed:
             why.append("с животными можно")

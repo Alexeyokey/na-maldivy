@@ -414,11 +414,12 @@ class CachedHttpClient:
         except Exception:
             raise ProviderRequestError("Public provider request failed; credentials and payload omitted") from None
         if self.mode == "record":
-            await asyncio.to_thread(self._record, key, identity, safe)
+            recorded_at = await asyncio.to_thread(self._record, key, identity, safe)
+            safe.extensions["recorded_at"] = recorded_at
         safe.extensions.update(cache_mode=self.mode, cache_hit=False)
         return safe
 
-    def _record(self, key: str, identity: dict[str, Any], response: httpx.Response) -> None:
+    def _record(self, key: str, identity: dict[str, Any], response: httpx.Response) -> str:
         entry = {
             "schema_version": 1,
             "recorded_at": datetime.now(UTC).isoformat(),
@@ -451,6 +452,7 @@ class CachedHttpClient:
                     Path(temporary).unlink(missing_ok=True)
                 except OSError:
                     pass
+        return entry["recorded_at"]
 
     def _replay(self, key: str, identity: dict[str, Any], secrets: set[str]) -> httpx.Response:
         try:

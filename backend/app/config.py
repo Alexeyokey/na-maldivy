@@ -11,12 +11,17 @@ from app.data_paths import resolve_data_dir
 
 class Settings(BaseSettings):
     # ../.env — при запуске из backend/, .env — из корня; в docker переменные приходят из compose
-    model_config = SettingsConfigDict(env_file=("../.env", ".env"), env_ignore_empty=True, extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=("../.env", ".env"), env_ignore_empty=True, extra="ignore", hide_input_in_errors=True
+    )
 
     log_level: str = "INFO"
     cors_origins: str = "http://localhost:5173,http://localhost:3000"
     tools_mode: Literal["stub", "real"] = "stub"
     data_dir: Path = Field(default_factory=resolve_data_dir)
+    flights_mode: Literal["synthetic", "aviasales"] = "synthetic"
+    aviasales_api_token: SecretStr | None = Field(default=None, repr=False)
+    aviasales_cache_dir: Path | None = None
 
     llm_provider: Literal["fake", "openai"] = "fake"
     llm_base_url: str | None = None
@@ -30,6 +35,11 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _check_llm(self) -> "Settings":
+        if self.flights_mode == "aviasales":
+            if self.tools_mode != "real":
+                raise ValueError("FLIGHTS_MODE=aviasales requires TOOLS_MODE=real")
+            if self.cache_mode != "replay" and not self.aviasales_api_token:
+                raise ValueError("AVIASALES_API_TOKEN is required for record/live; replay works without a token")
         if self.llm_provider == "openai":
             required = {"LLM_API_KEY": self.llm_api_key, "LLM_MODEL_MAIN": self.llm_model_main}
             missing = [name for name, value in required.items() if not value]

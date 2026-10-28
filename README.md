@@ -26,7 +26,9 @@ curl -N localhost:8000/api/chat -H 'Content-Type: application/json' -d '{"messag
 **Инструменты D1 v0.1.** Контракты шести инструментов лежат в `backend/app/contracts/tools.py`,
 заглушки и реестр — в `backend/app/tools`. Они работают без сети и ключей, по умолчанию `TOOLS_MODE=stub`.
 Примеры, смысл цен, JSON Schema и список решений для согласования — в [docs/tool-contracts.md](docs/tool-contracts.md).
-Подключение инструментов к диалогу появится в A2.
+Общий реестр подключён к диалогу. Для котировок Aviasales через D4 выберите
+`TOOLS_MODE=real` и `FLIGHTS_MODE=aviasales`; настройки, ограничения и фактическая
+проверка чата — в [docs/chat-aviasales.md](docs/chat-aviasales.md).
 Для опубликованной базы S4 есть `S4TransferTool`: аэропорт и ID отеля разрешаются на сервере,
 а результат передаётся в S3/S5 через `transfer_leg()`. Инструкция — в
 [docs/d1-s4-migration.md](docs/d1-s4-migration.md). Остальные решения TripState и событий интерфейса остаются O1.

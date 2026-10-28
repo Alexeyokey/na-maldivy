@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 import httpx
 from pydantic import AwareDatetime, BaseModel, Field, TypeAdapter, ValidationError
 
-from app.contracts.tools import Flight, FlightSearch, Place, Travelers
+from app.contracts.tools import Flight, FlightPriceSource, FlightSearch, Place, Travelers
 from app.data_paths import resolve_data_dir
 from app.tools.transport import (
     DATA_DIR,
@@ -132,6 +132,10 @@ class FlightQuote(BaseModel):
     duration_to: int | None = Field(default=None, strict=True, gt=0)
     link: str = ""
     currency: Literal["RUB"] = "RUB"
+    # HTTP transport metadata does not change the provider's quoted fare.
+    cache_mode: Literal["record", "replay", "live"] = Field(default="live", exclude=True)
+    cache_hit: bool = Field(default=False, exclude=True)
+    recorded_at: AwareDatetime | None = Field(default=None, exclude=True)
 
 
 class AviasalesDataClient:
@@ -188,7 +192,15 @@ class AviasalesDataClient:
                 if not isinstance(item_currency, str) or item_currency.lower() != "rub":
                     raise ProviderResponseError("Expected RUB from each Aviasales quote")
                 try:
-                    quote = FlightQuote.model_validate({**raw, "currency": "RUB"})
+                    quote = FlightQuote.model_validate(
+                        {
+                            **raw,
+                            "currency": "RUB",
+                            "cache_mode": self.http.mode,
+                            "cache_hit": response.extensions.get("cache_hit", False),
+                            "recorded_at": response.extensions.get("recorded_at"),
+                        }
+                    )
                 except ValidationError as exc:
                     raise ProviderResponseError("Malformed Aviasales one-way quote") from exc
                 if quote.origin_airport != origin or quote.destination_airport != destination:
@@ -284,6 +296,13 @@ class FlightTool:
                 baggage_price_rub=2000 * seated_count(query.travelers),
                 is_overnight=arrival.date() > departure.date(),
                 is_synthetic=True,
+                price_source=FlightPriceSource(
+                    seat_price_rub=quote.price,
+                    cache_mode=quote.cache_mode,
+                    cache_hit=quote.cache_hit,
+                    recorded_at=quote.recorded_at,
+                    duration_is_modelled=quote.duration_to is None,
+                ),
             )
             flights.append(flight)
             provenance.append(
@@ -305,3 +324,12 @@ class FlightTool:
 
     async def run(self, input: FlightSearch) -> list[Flight]:
         return list((await self.search_with_provenance(input)).flights)
+
+    def public_metadata(self, result: list[Flight]) -> dict[str, Any]:
+        if self.mode != "provider":
+            return {"source": "synthetic"}
+        return {
+            "source": "aviasales_data_api",
+            "cache_mode": self.provider.http.mode,
+            "quotes": [item.price_source.model_dump(mode="json") for item in result if item.price_source],
+        }

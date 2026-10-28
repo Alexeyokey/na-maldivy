@@ -299,6 +299,7 @@
           "timezone": "Europe/Moscow"
         },
         "price_rub": 43000,
+        "price_source": null,
         "stops": 0
       },
       {
@@ -328,6 +329,7 @@
           "timezone": "Europe/Moscow"
         },
         "price_rub": 44000,
+        "price_source": null,
         "stops": 0
       }
     ]

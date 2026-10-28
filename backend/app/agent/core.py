@@ -367,13 +367,24 @@ class TravelAgent:
                 emit("tool_result", {"name": name, "ok": False, "error": _validation_message(exc)})
                 return None
             except Exception as exc:  # неподдерживаемый маршрут, сбой источника — поиск продолжается
-                log.warning("Инструмент %s упал: %s", name, exc)
+                log.warning("Инструмент %s упал (%s)", name, type(exc).__name__)
                 emit(
                     "tool_result",
                     {"name": name, "ok": False, "error": "Источник недоступен или вернул неподдерживаемые данные"},
                 )
                 return None
-            emit("tool_result", {"name": name, "ok": True, "count": len(result) if isinstance(result, list) else 1})
+            metadata = (
+                self._tools[name].public_metadata(result) if hasattr(self._tools[name], "public_metadata") else {}
+            )
+            emit(
+                "tool_result",
+                {
+                    "name": name,
+                    "ok": True,
+                    "count": len(result) if isinstance(result, list) else 1,
+                    **metadata,
+                },
+            )
             return result
 
         return call

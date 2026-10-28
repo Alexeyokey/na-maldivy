@@ -103,11 +103,26 @@ class Journey(Contract):
         return self
 
 
+class FlightPriceSource(Contract):
+    """Public quote evidence only; credentials and HTTP request headers are never part of this model."""
+
+    provider: Literal["aviasales_data_api"] = "aviasales_data_api"
+    seat_price_rub: Rubles
+    currency: Literal["RUB"] = "RUB"
+    cache_mode: Literal["record", "replay", "live"]
+    cache_hit: bool
+    recorded_at: AwareDatetime | None = None
+    duration_is_modelled: bool
+    group_price_is_modelled: Literal[True] = True
+    baggage_price_is_modelled: Literal[True] = True
+
+
 class Flight(Journey):
     carrier: str
     stops: int = Field(default=0, ge=0)
     baggage_price_rub: Rubles = 0
     is_overnight: bool = False
+    price_source: FlightPriceSource | None = None
 
 
 class HotelSearch(Contract):

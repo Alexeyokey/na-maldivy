@@ -147,7 +147,7 @@ flowchart TD
 ### 4.1. Сервер принимает сообщение
 
 Интерфейс отправляет `POST /api/chat` с телом `{"message": "давай первый", "session_id": "f002…"}`.
-Обработчик [`main.py` → `create_app`](../backend/app/main.py#L26-L72) передаёт сообщение агенту и пересылает в интерфейс всё, что агент
+Обработчик [`main.py` → `create_app`](../backend/app/main.py#L26-L78) передаёт сообщение агенту и пересылает в интерфейс всё, что агент
 «выкрикивает» по ходу работы. `session_id` связывает сообщения в один разговор: первый запрос приходит
 без него, сервер создаёт новую сессию и сообщает её номер в последнем событии `done`.
 
@@ -231,7 +231,7 @@ flowchart TD
 
 [`core.py` → `TravelAgent._execute`](../backend/app/agent/core.py#L190-L214) — это «переключатель»: по действию вызывает нужный метод.
 
-**Собрать поездку.** [`core.py` → `TravelAgent._search`](../backend/app/agent/core.py#L252-L280) вызывает [`planner.py` → `search_trip`](../backend/app/agent/planner.py#L365-L464), подробно о нём
+**Собрать поездку.** [`core.py` → `TravelAgent._search`](../backend/app/agent/core.py#L252-L280) вызывает [`planner.py` → `search_trip`](../backend/app/agent/planner.py#L369-L468), подробно о нём
 в [5.6](#56-plannerpy-поиск-и-сравнение). Если до этого уже были варианты, агент запоминает лучший,
 а после пересборки отправляет событие `diff` («было → стало»).
 
@@ -245,7 +245,7 @@ flowchart TD
 
 ### 4.7. Ответ на вопрос: модель сама зовёт инструменты
 
-[`core.py` → `TravelAgent._tool_loop`](../backend/app/agent/core.py#L381-L418) — единственное место, где модель *сама* решает, какие инструменты
+[`core.py` → `TravelAgent._tool_loop`](../backend/app/agent/core.py#L392-L429) — единственное место, где модель *сама* решает, какие инструменты
 вызвать. Например, на вопрос «а 20 ноября есть рейсы?» модель может вызвать `search_flights`.
 Это классический **агентный цикл (agent loop)**:
 
@@ -267,13 +267,13 @@ flowchart TD
 
 Текст ответа получается одним из двух способов:
 
-- [`core.py` → `TravelAgent._speak`](../backend/app/agent/core.py#L447-L463) просит модель написать ответ и отправляет его кусочками (событие `delta`).
+- [`core.py` → `TravelAgent._speak`](../backend/app/agent/core.py#L458-L474) просит модель написать ответ и отправляет его кусочками (событие `delta`).
   Если модель оборвалась на середине, недописанный текст дополняется шаблоном;
-- [`core.py` → `TravelAgent._say`](../backend/app/agent/core.py#L465-L467) отправляет готовый текст-шаблон из [`formatting.py`](../backend/app/agent/formatting.py).
+- [`core.py` → `TravelAgent._say`](../backend/app/agent/core.py#L476-L478) отправляет готовый текст-шаблон из [`formatting.py`](../backend/app/agent/formatting.py).
 
 Модели при этом передаётся **контекст**: бриф, варианты, допущения — одним JSON-сообщением
-([`prompts.py` → `context_message`](../backend/app/agent/prompts.py#L93-L95)). Модель не вспоминает факты из переписки, а читает их из контекста.
-В промпте [`prompts.py` → `SUMMARY_PROMPT`](../backend/app/agent/prompts.py#L71-L83) прямо сказано: «все цены и время — ровно как в options, ничего не
+([`prompts.py` → `context_message`](../backend/app/agent/prompts.py#L96-L98)). Модель не вспоминает факты из переписки, а читает их из контекста.
+В промпте [`prompts.py` → `SUMMARY_PROMPT`](../backend/app/agent/prompts.py#L71-L86) прямо сказано: «все цены и время — ровно как в options, ничего не
 пересчитывай и не придумывай».
 
 В конце хода сообщение и ответ добавляются в историю, а интерфейс получает `done` с номером сессии, этапом
@@ -353,7 +353,7 @@ flowchart TD
 | `child` | роутер спрашивает возраст; отели «только для взрослых» отсекаются ([`planner.py` → `_hotel_fits`](../backend/app/agent/planner.py#L217-L227)); валидатор S5 проверяет детское кресло |
 | `pets` | отели, где животные запрещены, отсекаются; в рисках — «уточнить у отеля», если неизвестно |
 | `sea`, `warm` | направления с холодной водой не предлагаются; в объяснении — температура воды |
-| `budget_low` | цена весит вдвое больше в оценке вариантов ([`planner.py` → `_score`](../backend/app/agent/planner.py#L293-L308)) |
+| `budget_low` | цена весит вдвое больше в оценке вариантов ([`planner.py` → `_score`](../backend/app/agent/planner.py#L294-L309)) |
 | `short_flight` | направления сортируются по времени перелёта |
 | `romantic`, `quiet` | отели «только для взрослых» выше в списке |
 | `late_arrival` | отели без круглосуточного ресепшена ниже |
@@ -377,9 +377,9 @@ flowchart TD
 |---|---|---|
 | [`prompts.py` → `ANALYZE_PROMPT`](../backend/app/agent/prompts.py#L20-L65) | разбор | вернуть JSON с намерением и патчем, ничего не придумывать |
 | [`prompts.py` → `ASK_PROMPT`](../backend/app/agent/prompts.py#L67-L69) | уточнение | задать один вопрос и назвать сделанные допущения |
-| [`prompts.py` → `SUMMARY_PROMPT`](../backend/app/agent/prompts.py#L71-L83) | после поиска | по каждому варианту: почему подходит, чем жертвуем, риски, цены как в данных |
-| [`prompts.py` → `EXPLAIN_PROMPT`](../backend/app/agent/prompts.py#L85-L87) | вопрос | ответить по данным, при нужде вызвать инструмент |
-| [`prompts.py` → `OFF_TOPIC_PROMPT`](../backend/app/agent/prompts.py#L89-L90) | не о поездке | вежливо вернуть к теме |
+| [`prompts.py` → `SUMMARY_PROMPT`](../backend/app/agent/prompts.py#L71-L86) | после поиска | по каждому варианту: почему подходит, чем жертвуем, риски, цены как в данных |
+| [`prompts.py` → `EXPLAIN_PROMPT`](../backend/app/agent/prompts.py#L88-L90) | вопрос | ответить по данным, при нужде вызвать инструмент |
+| [`prompts.py` → `OFF_TOPIC_PROMPT`](../backend/app/agent/prompts.py#L92-L93) | не о поездке | вежливо вернуть к теме |
 
 Обратите внимание: списки мест и скрытых требований подставляются в [`prompts.py` → `ANALYZE_PROMPT`](../backend/app/agent/prompts.py#L20-L65) прямо из
 [`places.py` → `PLACE_NAMES`](../backend/app/agent/places.py#L12-L19) и [`hidden.py` → `NEEDS`](../backend/app/agent/hidden.py#L32-L44). Добавили требование в словарь — модель узнает о нём
@@ -407,7 +407,7 @@ flowchart TD
 Если в бюджет не влезло ничего, ищет ещё раз без бюджета и честно пишет: «В бюджет ничего не помещается,
 показываю ближайшие варианты дороже». Пустой ответ «ничего не найдено» хуже, чем честный компромисс.
 
-**Сборка поездки** — [`planner.py` → `search_trip`](../backend/app/agent/planner.py#L365-L464). Пошагово:
+**Сборка поездки** — [`planner.py` → `search_trip`](../backend/app/agent/planner.py#L369-L468). Пошагово:
 
 1. **Дата.** Если её не назвали, [`planner.py` → `_pick_start_date`](../backend/app/agent/planner.py#L189-L214) смотрит календарь цен и берёт самый
    дешёвый день месяца. Это *допущение*, и оно попадает в ответ: «вылет 07.11 — самый дешёвый день месяца».
@@ -416,18 +416,18 @@ flowchart TD
    день, заселение и обратный рейс считаются от даты прилёта.
 4. **Фильтр отелей** ([`planner.py` → `_hotel_fits`](../backend/app/agent/planner.py#L217-L227)): с ребёнком не берём «только для взрослых», с собакой —
    отели, где животные точно запрещены. Важно: *неизвестное* (`null`) не отсекается — это риск, а не запрет.
-5. **Трансфер** из аэропорта в отель ([`planner.py` → `_transfer`](../backend/app/agent/planner.py#L467-L484)), через 45 минут после посадки
+5. **Трансфер** из аэропорта в отель ([`planner.py` → `_transfer`](../backend/app/agent/planner.py#L471-L488)), через 45 минут после посадки
    (паспортный контроль и багаж).
-6. **Проверка стыковок** ([`planner.py` → `_validate`](../backend/app/agent/planner.py#L487-L502)): строится таймлайн поездки (код коллег, задача S3)
+6. **Проверка стыковок** ([`planner.py` → `_validate`](../backend/app/agent/planner.py#L491-L506)): строится таймлайн поездки (код коллег, задача S3)
    и прогоняется валидатор (задача S5). Он находит проблемы вроде «приезжаете в 3 ночи, а ресепшен закрыт
    в 22:00» или «неизвестно, будет ли детское кресло».
-7. **Оценка** ([`planner.py` → `_score`](../backend/app/agent/planner.py#L293-L308)): итоговая цена плюс «штрафы». Критичная проблема стыковки стоит как
+7. **Оценка** ([`planner.py` → `_score`](../backend/app/agent/planner.py#L294-L309)): итоговая цена плюс «штрафы». Критичная проблема стыковки стоит как
    30 000 ₽ переплаты ([`planner.py` → `PENALTY`](../backend/app/agent/planner.py#L34)). Выход за бюджет штрафуется вдвойне. Отель «только для
    взрослых» для романтической поездки получает бонус. **Меньше — лучше.**
-8. **Выбор трёх разных отелей** ([`planner.py` → `_pick_packages`](../backend/app/agent/planner.py#L505-L611)): «Оптимальный» (лучшая оценка),
+8. **Выбор трёх разных отелей** ([`planner.py` → `_pick_packages`](../backend/app/agent/planner.py#L509-L615)): «Оптимальный» (лучшая оценка),
    «Подешевле» и «Комфорт» (больше звёзд и выше рейтинг). Самый дешёвый из показанных получает пометку
    «дешевле всех», чтобы метка всегда говорила правду.
-9. **Объяснение** ([`planner.py` → `_explain`](../backend/app/agent/planner.py#L311-L362)): по каждому варианту три списка фактов. Только из данных —
+9. **Объяснение** ([`planner.py` → `_explain`](../backend/app/agent/planner.py#L312-L366)): по каждому варианту три списка фактов. Только из данных —
    никаких «уютных номеров», если об этом нигде не сказано.
 
 Каждый вариант на выходе — словарь с рейсами, отелем, трансфером, итоговой ценой, найденными проблемами
@@ -440,12 +440,12 @@ flowchart TD
 
 Тексты, которые пишет код, а не модель. Используются в трёх случаях:
 - модель не подключена или упала;
-- нужна точность: подтверждение покупки ([`formatting.py` → `confirmation`](../backend/app/agent/formatting.py#L157-L187)) и чек
-  ([`formatting.py` → `booked`](../backend/app/agent/formatting.py#L190-L195)) всегда шаблонные;
+- нужна точность: подтверждение покупки ([`formatting.py` → `confirmation`](../backend/app/agent/formatting.py#L170-L200)) и чек
+  ([`formatting.py` → `booked`](../backend/app/agent/formatting.py#L203-L208)) всегда шаблонные;
 - короткие служебные ответы: «какой вариант выбираете?».
 
 Мелочи, которые делают текст человеческим: [`planner.py` → `plural`](../backend/app/agent/planner.py#L60-L63) склоняет числа («1 ночь», «4 ночи»,
-«7 ночей»), [`planner.py` → `rub`](../backend/app/agent/planner.py#L56-L57) пишет «151 600 ₽», [`formatting.py` → `when`](../backend/app/agent/formatting.py#L140-L142) превращает
+«7 ночей»), [`planner.py` → `rub`](../backend/app/agent/planner.py#L56-L57) пишет «151 600 ₽», [`formatting.py` → `when`](../backend/app/agent/formatting.py#L153-L155) превращает
 `2026-11-07T09:00:00+03:00` в «07.11 09:00».
 
 ### 5.8. session.py: память разговора
@@ -471,7 +471,7 @@ flowchart TD
 планировщик, записываются в бриф с источником `default`. Без этого «а если на два дня позже?» не от чего
 было бы считать: пользователь дату не называл.
 
-[`core.py` → `TravelAgent._caller`](../backend/app/agent/core.py#L358-L379) — обёртка над инструментами. Каждый вызов отправляет в интерфейс события
+[`core.py` → `TravelAgent._caller`](../backend/app/agent/core.py#L358-L390) — обёртка над инструментами. Каждый вызов отправляет в интерфейс события
 `tool_call` и `tool_result`, а ошибки (неподдерживаемый маршрут, неверные аргументы) не роняют ход:
 инструмент просто возвращает «ничего», и поиск продолжается с тем, что есть.
 
@@ -492,7 +492,7 @@ flowchart TD
 
 ### 5.10. main.py: HTTP-сервер
 
-[`main.py` → `create_app`](../backend/app/main.py#L26-L72) создаёт приложение и три адреса:
+[`main.py` → `create_app`](../backend/app/main.py#L26-L78) создаёт приложение и три адреса:
 - `POST /api/chat` — главный: сообщение → поток событий;
 - `GET /api/session/{id}` — посмотреть текущий бриф и этап. Удобно для отладки;
 - `DELETE /api/session/{id}` — начать разговор заново.
@@ -573,15 +573,15 @@ diff:   было Demo DXB budget 234 980 ₽ (07–14.11) → стало 237 980
 | Что пошло не так | Что делает агент | Где в коде |
 |---|---|---|
 | Модель вернула не JSON | одна попытка исправиться, потом разбор правилами | [`analysis.py` → `analyze_message`](../backend/app/agent/analysis.py#L84-L134) |
-| Модель не ответила (сеть, таймаут) | разбор правилами, текст шаблоном, `warning` в интерфейс | [`analysis.py` → `analyze_message`](../backend/app/agent/analysis.py#L84-L134), [`core.py` → `TravelAgent._speak`](../backend/app/agent/core.py#L447-L463) |
+| Модель не ответила (сеть, таймаут) | разбор правилами, текст шаблоном, `warning` в интерфейс | [`analysis.py` → `analyze_message`](../backend/app/agent/analysis.py#L84-L134), [`core.py` → `TravelAgent._speak`](../backend/app/agent/core.py#L458-L474) |
 | Модель предложила бюджет −5 ₽ или город «Марс» | поле отклонено с причиной, остальные приняты | [`brief.py` → `apply_patch`](../backend/app/agent/brief.py#L214-L288) |
 | Модель придумала несуществующее требование | выброшено | [`analysis.py` → `MessageAnalysis._known_codes`](../backend/app/agent/analysis.py#L36-L44) |
 | Модель забыла «с собакой» | правило добавит | [`hidden.py` → `hidden_only`](../backend/app/agent/hidden.py#L119-L127) |
-| Модель хочет искать на другой состав группы | состав подменяется из брифа | [`core.py` → `TravelAgent._tool_loop`](../backend/app/agent/core.py#L381-L418) |
+| Модель хочет искать на другой состав группы | состав подменяется из брифа | [`core.py` → `TravelAgent._tool_loop`](../backend/app/agent/core.py#L392-L429) |
 | Модель зациклилась на инструментах | лимит 3 итерации и 6 вызовов | [`core.py` → `MAX_TOOL_STEPS`](../backend/app/agent/core.py#L51) |
 | Модель «поняла» покупку без подтверждения | покупка возможна только с этапа «ждём подтверждения» | [`router.py` → `decide`](../backend/app/agent/router.py#L53-L88), [`core.py` → `TravelAgent._book`](../backend/app/agent/core.py#L337-L352) |
-| Модель выдумала цену в тексте | промпт запрещает; карточки и чек всегда из данных | [`prompts.py` → `SUMMARY_PROMPT`](../backend/app/agent/prompts.py#L71-L83), [`formatting.py` → `confirmation`](../backend/app/agent/formatting.py#L157-L187) |
-| Инструмент упал | ход продолжается без этого результата | [`core.py` → `TravelAgent._caller`](../backend/app/agent/core.py#L358-L379) |
+| Модель выдумала цену в тексте | промпт запрещает; карточки и чек всегда из данных | [`prompts.py` → `SUMMARY_PROMPT`](../backend/app/agent/prompts.py#L71-L86), [`formatting.py` → `confirmation`](../backend/app/agent/formatting.py#L170-L200) |
+| Инструмент упал | ход продолжается без этого результата | [`core.py` → `TravelAgent._caller`](../backend/app/agent/core.py#L358-L390) |
 | Упало что угодно посреди хода | сессия не меняется, пользователь видит `error` | [`core.py` → `TravelAgent.run`](../backend/app/agent/core.py#L81-L108) |
 
 ---
@@ -663,7 +663,7 @@ curl -N localhost:8000/api/chat -H 'Content-Type: application/json' \
 
 **Упражнение 2. Меньше вопросов.** Сделайте так, чтобы агент не спрашивал город вылета, а считал его
 Москвой по умолчанию. Подсказка: уберите `"origin"` из [`router.py` → `REQUIRED`](../backend/app/agent/router.py#L32) и подумайте, где задать
-допущение (посмотрите, как это сделано для срока поездки в [`planner.py` → `search_trip`](../backend/app/agent/planner.py#L365-L464)). Какие тесты упадут
+допущение (посмотрите, как это сделано для срока поездки в [`planner.py` → `search_trip`](../backend/app/agent/planner.py#L369-L468)). Какие тесты упадут
 и почему? Это хороший повод обсудить с командой: что лучше — лишний вопрос или неверная догадка?
 
 **Упражнение 3. Прочитать ход.** Откройте [`core.py` → `TravelAgent._turn`](../backend/app/agent/core.py#L114-L144) и по разделу 4 подпишите
@@ -680,7 +680,7 @@ curl -N localhost:8000/api/chat -H 'Content-Type: application/json' \
 
 **Почему поиск запускает код, а не модель через tool calling? Разве агент — это не когда модель сама
 вызывает инструменты?**
-Можно и так, и в [`core.py` → `TravelAgent._tool_loop`](../backend/app/agent/core.py#L381-L418) модель действительно вызывает инструменты сама.
+Можно и так, и в [`core.py` → `TravelAgent._tool_loop`](../backend/app/agent/core.py#L392-L429) модель действительно вызывает инструменты сама.
 Но для основного поиска мы знаем точную последовательность: календарь → рейсы → отели → трансфер →
 проверка. Отдавать её модели — значит рисковать, что она пропустит трансфер или поищет не на те даты.
 Код делает это одинаково каждый раз и проверяется тестами. Модель решает там, где нужна гибкость:

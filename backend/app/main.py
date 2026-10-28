@@ -30,14 +30,20 @@ def create_app(settings: Settings | None = None, llm: LLMClient | None = None) -
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         client = llm or create_llm_client(settings)
-        # С фейковой моделью разбор идёт правилами, а тексты — по шаблонам: агент работает без ключей.
-        app.state.agent = TravelAgent(
-            client, create_tools(settings), llm_writes_text=llm is not None or settings.llm_provider != "fake"
-        )
+        tools = None
         try:
+            tools = create_tools(settings)
+            # Fake selects rules/text templates independently from the flight data source.
+            app.state.agent = TravelAgent(
+                client, tools, llm_writes_text=llm is not None or settings.llm_provider != "fake"
+            )
             yield
         finally:
-            await client.aclose()
+            try:
+                if tools is not None:
+                    await tools.aclose()
+            finally:
+                await client.aclose()
 
     app = FastAPI(title="na-maldivy agent", lifespan=lifespan)
     app.add_middleware(

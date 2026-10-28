@@ -8,12 +8,22 @@ from app.llm.base import ToolSpec
 from app.tools.base import Tool, tool_spec
 from app.tools.stubs import create_stub_tools
 
-type ToolRegistry = dict[str, Tool[Any, Any]]
+
+class ToolRegistry(dict[str, Tool[Any, Any]]):
+    """Tools plus resources owned by their factory; injected resources remain caller-owned."""
+
+    def __init__(self, tools, *, owned_clients=()):
+        super().__init__(tools)
+        self._owned_clients = tuple(owned_clients)
+
+    async def aclose(self) -> None:
+        for client in self._owned_clients:
+            await client.aclose()
 
 
-def create_tools(settings: Settings) -> ToolRegistry:
+def create_tools(settings: Settings, *, flight_http=None) -> ToolRegistry:
     if settings.tools_mode == "stub":
-        return create_stub_tools()
+        return ToolRegistry(create_stub_tools())
     # Imports stay lazy: the default stub mode also works before implementation PRs are merged.
     try:
         from app.tools.d5_adapter import DestinationTool
@@ -32,7 +42,21 @@ def create_tools(settings: Settings) -> ToolRegistry:
         }:
             raise
         raise RuntimeError("TOOLS_MODE=real requires the D2, D3, D5, D6 and D8 implementation PRs") from None
-    flights = FlightTool(data_dir=settings.data_dir)
+    owned_clients = []
+    if settings.flights_mode == "aviasales":
+        token = settings.aviasales_api_token.get_secret_value() if settings.aviasales_api_token else None
+        if flight_http is None:
+            from app.tools.http_cache import CachedHttpClient
+
+            flight_http = CachedHttpClient(
+                mode=settings.cache_mode,
+                cache_dir=settings.aviasales_cache_dir or settings.data_dir / "cache/aviasales/runtime",
+                secret_values=(token,) if token else (),
+            )
+            owned_clients.append(flight_http)
+        flights = FlightTool(mode="provider", http=flight_http, token=token, data_dir=settings.data_dir)
+    else:
+        flights = FlightTool(data_dir=settings.data_dir)
     tools = (
         flights,
         HotelSearchTool(data_dir=settings.data_dir),
@@ -41,12 +65,12 @@ def create_tools(settings: Settings) -> ToolRegistry:
         TrainTool(data_dir=settings.data_dir),
         PriceCalendarTool(flights=flights),
     )
-    return {tool.name: tool for tool in tools}
+    return ToolRegistry({tool.name: tool for tool in tools}, owned_clients=owned_clients)
 
 
 # Готовый реестр для разработки без Settings/.env и без сети.
 # Приложение с конфигурацией должно вызывать create_tools(settings).
-TOOLS: ToolRegistry = create_stub_tools()
+TOOLS: ToolRegistry = ToolRegistry(create_stub_tools())
 
 
 def tool_specs(tools: Mapping[str, Tool[Any, Any]] | None = None) -> list[ToolSpec]:

@@ -349,6 +349,17 @@
           "title": "Price Rub",
           "type": "integer"
         },
+        "price_source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FlightPriceSource"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "stops": {
           "default": 0,
           "minimum": 0,
@@ -367,6 +378,79 @@
         "carrier"
       ],
       "title": "Flight",
+      "type": "object"
+    },
+    "FlightPriceSource": {
+      "additionalProperties": false,
+      "description": "Public quote evidence only; credentials and HTTP request headers are never part of this model.",
+      "properties": {
+        "baggage_price_is_modelled": {
+          "const": true,
+          "default": true,
+          "title": "Baggage Price Is Modelled",
+          "type": "boolean"
+        },
+        "cache_hit": {
+          "title": "Cache Hit",
+          "type": "boolean"
+        },
+        "cache_mode": {
+          "enum": [
+            "record",
+            "replay",
+            "live"
+          ],
+          "title": "Cache Mode",
+          "type": "string"
+        },
+        "currency": {
+          "const": "RUB",
+          "default": "RUB",
+          "title": "Currency",
+          "type": "string"
+        },
+        "duration_is_modelled": {
+          "title": "Duration Is Modelled",
+          "type": "boolean"
+        },
+        "group_price_is_modelled": {
+          "const": true,
+          "default": true,
+          "title": "Group Price Is Modelled",
+          "type": "boolean"
+        },
+        "provider": {
+          "const": "aviasales_data_api",
+          "default": "aviasales_data_api",
+          "title": "Provider",
+          "type": "string"
+        },
+        "recorded_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recorded At"
+        },
+        "seat_price_rub": {
+          "minimum": 0,
+          "title": "Seat Price Rub",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "seat_price_rub",
+        "cache_mode",
+        "cache_hit",
+        "duration_is_modelled"
+      ],
+      "title": "FlightPriceSource",
       "type": "object"
     },
     "FlightSearch": {

@@ -126,13 +126,26 @@ def packages(plan: PlanResult, diff: str = "") -> str:
             f"   Отель {plural(o['hotel']['nights'], 'ночь', 'ночи', 'ночей')} с {day(o['hotel']['check_in'])}, "
             + flight_line(o)
         )
+        for label, leg in (("Туда", "outbound"), ("Обратно", "inbound")):
+            source = o[leg].get("price_source")
+            if source:
+                snapshot = f", запись {source['recorded_at'][:10]}" if source.get("recorded_at") else ""
+                lines.append(
+                    f"   {label}: котировка Aviasales {rub(source['seat_price_rub'])} за одно место{snapshot}."
+                )
         for title, key in (("Почему", "why"), ("Чем жертвуем", "tradeoffs"), ("Риски", "risks")):
             if o[key]:
                 lines.append(f"   {title}: " + "; ".join(o[key]) + ".")
     lines += [*plan.notes, assumptions_line(plan.assumptions)]
+    provider = any(o[leg].get("price_source") for o in plan.options for leg in ("outbound", "inbound"))
+    notice = (
+        "Котировки Aviasales взяты из кэша поисков. Цена группы, багаж, отель и трансфер — расчётные. "
+        "Наличие мест и окончательная стоимость покупки не проверены. "
+        if provider
+        else "Цены и наличие демонстрационные. "
+    )
     lines.append(
-        "Цены и наличие демонстрационные. Обратный трансфер, виза и прочие доплаты не оценены. "
-        "Можно выбрать вариант или поменять условия."
+        notice + "Обратный трансфер, виза и прочие доплаты не оценены. Можно выбрать вариант или поменять условия."
     )
     return "\n".join(line for line in lines if line)
 
