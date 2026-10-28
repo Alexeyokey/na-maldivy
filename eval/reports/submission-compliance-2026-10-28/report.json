@@ -54,7 +54,8 @@
     "three-destinations-final.json",
     "three-destinations-final-after-restart.json",
     "local-ui.json",
-    "automated-checks.json"
+    "automated-checks.json",
+    "pr64-after-update.json"
   ],
   "limits": [
     "Technical package success does not establish full submission completion.",
@@ -88,5 +89,12 @@
     "new_search_preserves_paid_history": "passed"
   },
   "upstream_main_included": "63b4c2f54bf55553028438730ba89f78af7d981b",
-  "handoff_certified": false
+  "handoff_certified": false,
+  "pr64_after_update": {
+    "snapshot": "pr64-after-update.json",
+    "head_at_checked_snapshot": "426bd075e69894218a6497bc0909a2953651d9d5",
+    "draft": true,
+    "mergeable": true,
+    "mergeable_state": "clean"
+  }
 }
