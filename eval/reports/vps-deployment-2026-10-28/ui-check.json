@@ -1,0 +1,37 @@
+{
+  "scope": "public_vps_visible_ui_through_demo_order_and_downloads",
+  "method": "computer_use_ui_automation",
+  "base_url": "http://201.8.90.64",
+  "deployed_commit": "faf779edab3e9237ed626b51526d2589ba453dd7",
+  "status": "passed",
+  "observed_steps": [
+    "search",
+    "D7",
+    "D8",
+    "select",
+    "server_cart",
+    "fictitious_travelers",
+    "two_acknowledgments",
+    "payment_declined",
+    "payment_approved",
+    "voucher_download",
+    "calendar_download"
+  ],
+  "observations": [
+    "AYT search:Sky Business Hotel83234RUB,both legs cached Aviasales,unknown extras visible.",
+    "D7 literal synthetic quotes and D8 Nov16 71086/saving12148 shown.",
+    "Server-created cart;fictitious travelers;two explicit notices;declined then saved demo order.",
+    "Both downloads triggered success notices after server GET;document content separately verified by HTTP."
+  ],
+  "performed_at": "2026-10-28T18:11:26.846Z",
+  "after_restart": {
+    "status": "passed",
+    "observed_steps": [
+      "reload",
+      "my_trips",
+      "open_saved_order",
+      "voucher_download_success_notice"
+    ],
+    "performed_at": "2026-10-28T18:13:33.639Z"
+  }
+}
