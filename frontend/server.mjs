@@ -28,10 +28,18 @@ function readBody(req){
   req.on('error',()=>reject(Object.assign(new Error('Invalid body'),{status:400})));
  });
 }
-export function createFrontendServer({root=path.join(here,'dist'),agentUrl=process.env.AGENT_URL||'http://127.0.0.1:8000',mode=process.env.CHAT_MODE||'api'}={}){
+export function createFrontendServer({root=path.join(here,'dist'),agentUrl=process.env.AGENT_URL||'http://127.0.0.1:8000',mode=process.env.CHAT_MODE||'api',localOnly=process.env.LOCAL_ONLY==='1',agentToken=process.env.CODEX_LOCAL_TOKEN||''}={}){
  const origin=new URL(agentUrl);
  if(!['http:','https:'].includes(origin.protocol)||origin.username||origin.password)throw new Error('AGENT_URL must use HTTP or HTTPS without credentials');
+ if(agentToken&&(!localOnly||!['127.0.0.1','localhost','[::1]'].includes(origin.hostname)))throw new Error('Personal Codex token requires a loopback-only proxy');
  return http.createServer(async(req,res)=>{
+  if(localOnly){
+   const allowed=new Set([`127.0.0.1:${req.socket.localPort}`,`localhost:${req.socket.localPort}`]);
+   const host=req.headers.host,origin=req.headers.origin;
+   if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress)||!allowed.has(host)||(origin&&origin!==`http://${host}`)||req.headers['sec-fetch-site']==='cross-site'){
+    fail(res,403,'Личный Codex доступен только с этого компьютера.');return;
+   }
+  }
   // Match API routes before URL normalization. Encoded slashes, dot segments and query
   // strings must never expand the upstream allowlist or carry private credentials.
   const rawUrl=req.url||'';
@@ -46,6 +54,7 @@ export function createFrontendServer({root=path.join(here,'dist'),agentUrl=proce
    let body;try{body=await readBody(req);}catch(error){if(!res.destroyed)fail(res,error.status||400,error.status===413?'Слишком большой запрос.':'Не удалось прочитать запрос.');return;}
    if(!['POST','PUT'].includes(req.method)&&body.length){fail(res,400,'Этот запрос не должен содержать данные.');return;}
    const headers={accept:rawUrl==='/api/chat'?'text/event-stream':'application/json'};
+   if(agentToken)headers['x-local-codex-token']=agentToken;
    for(const name of ['accept','content-type','x-session-id'])if(typeof req.headers[name]==='string')headers[name]=req.headers[name];
    const transport=origin.protocol==='https:'?https:http;
    const upstream=transport.request(new URL(rawUrl,origin),{method:req.method,headers},incoming=>{

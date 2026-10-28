@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "checked_date": "2026-10-28",
+  "scope": "personal_local_codex_demo_only",
+  "public_vps_model_changed": false,
+  "cli_version": "0.163.0-alpha.11",
+  "model_requested": "gpt-6-luna",
+  "reasoning_effort": "low",
+  "paid_fast_tier_enabled": false,
+  "credentials_copied": false,
+  "real_luna_inference": {
+    "scope": "real_personal_codex_luna_low_inference",
+    "passed": true,
+    "model_requested": "gpt-6-luna",
+    "reasoning_effort": "low",
+    "response": "Личный чат готов",
+    "completed_calls": 1,
+    "usage": {
+      "input_tokens": 8925,
+      "output_tokens": 22
+    },
+    "duration_s": 5.321
+  },
+  "ui": {
+    "free_text_date_and_budget_in_words": true,
+    "destination": "AYT",
+    "origin": "MOW",
+    "start_date": "2026-11-18",
+    "nights": 7,
+    "adults": 2,
+    "budget_rub": 120000,
+    "option_known_totals_rub": [
+      83234,
+      112856
+    ],
+    "model_explanation_received": true,
+    "health_after_ui": {
+      "status": "ok",
+      "llm_provider": "codex_local",
+      "codex_completed_calls": 2,
+      "codex_model": "gpt-6-luna",
+      "codex_reasoning_effort": "low"
+    },
+    "screenshot": "luna-chat.jpg",
+    "checkout_live_model_tested": false,
+    "end_to_end_latency_precisely_measured": false
+  },
+  "lifecycle": {
+    "health": {
+      "status": "ok",
+      "llm_provider": "codex_local",
+      "codex_completed_calls": 0
+    },
+    "direct_backend_rejected": true,
+    "sigterm_closes_both_ports": true
+  },
+  "tests": {
+    "backend": 1188,
+    "frontend_unit": 82,
+    "frontend_http": 8,
+    "codex_subprocess_tests_in_backend_count": 31
+  },
+  "limits": [
+    "Personal loopback service; not a public Codex model backend",
+    "CLI output is buffered until validated completion",
+    "Travel data remains frozen provider replay or labelled synthetic data",
+    "No live D7 extraction run is claimed",
+    "A single 5.321s model probe is not a guarantee of end-to-end chat latency"
+  ]
+}

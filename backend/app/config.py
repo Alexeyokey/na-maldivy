@@ -27,13 +27,15 @@ class Settings(BaseSettings):
     yandex_cache_dir: Path | None = None
     checkout_db_path: Path | None = None
 
-    llm_provider: Literal["fake", "openai"] = "fake"
+    llm_provider: Literal["fake", "openai", "codex_local"] = "fake"
     llm_base_url: str | None = None
     llm_api_key: SecretStr | None = None
     llm_model_main: str | None = None
     llm_model_fast: str | None = None  # если не задана, берётся основная
     llm_timeout_s: float = 60.0
     llm_max_retries: int = 2
+    codex_binary: str = "codex"
+    codex_local_token: SecretStr | None = Field(default=None, repr=False)
 
     cache_mode: Literal["record", "replay", "live"] = "replay"
 
@@ -59,6 +61,10 @@ class Settings(BaseSettings):
             missing = [name for name, value in required.items() if not value]
             if missing:
                 raise ValueError("Для LLM_PROVIDER=openai задайте " + ", ".join(missing))
+        if self.llm_provider == "codex_local" and (
+            self.codex_local_token is None or len(self.codex_local_token.get_secret_value()) < 32
+        ):
+            raise ValueError("Для личного Codex используйте scripts/run_personal_codex.py")
         return self
 
     @property

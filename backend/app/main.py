@@ -2,6 +2,7 @@
 
 import json
 import logging
+import secrets
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -10,6 +11,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.sse import EventSourceResponse, ServerSentEvent
 from pydantic import BaseModel, Field
+from starlette.responses import JSONResponse
 
 from app.agent import TravelAgent
 from app.booking.checkout import create_checkout_router
@@ -32,6 +34,7 @@ def create_app(settings: Settings | None = None, llm: LLMClient | None = None) -
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         client = llm or create_llm_client(settings)
+        app.state.llm = client
         tools = None
         try:
             tools = create_tools(settings)
@@ -54,14 +57,34 @@ def create_app(settings: Settings | None = None, llm: LLMClient | None = None) -
                 await client.aclose()
 
     app = FastAPI(title="na-maldivy agent", lifespan=lifespan)
+    if settings.llm_provider == "codex_local":
+        # A server-only token joins the two loopback processes; it never reaches the browser.
+        assert settings.codex_local_token is not None
+        local_token = settings.codex_local_token.get_secret_value()
+
+        @app.middleware("http")
+        async def personal_codex_only(request: Request, call_next: Any) -> Response:
+            peer = request.client.host if request.client else ""
+            supplied = request.headers.get("x-local-codex-token", "")
+            if peer not in {"127.0.0.1", "::1", "localhost"} or not secrets.compare_digest(
+                supplied.encode(), local_token.encode()
+            ):
+                return JSONResponse({"detail": "Личный Codex доступен только через локальный интерфейс."}, 403)
+            return await call_next(request)
+
     app.include_router(create_checkout_router())
     app.add_middleware(
         CORSMiddleware, allow_origins=settings.cors_origin_list, allow_methods=["*"], allow_headers=["*"]
     )
 
     @app.get("/health")
-    async def health() -> dict[str, str]:
-        return {"status": "ok", "llm_provider": settings.llm_provider}
+    async def health() -> dict[str, str | int]:
+        result: dict[str, str | int] = {"status": "ok", "llm_provider": settings.llm_provider}
+        if settings.llm_provider == "codex_local":
+            result["codex_completed_calls"] = getattr(getattr(app.state, "llm", None), "completed_calls", 0)
+            result["codex_model"] = settings.llm_model_main or "CLI-default"
+            result["codex_reasoning_effort"] = "low"
+        return result
 
     @app.post("/api/chat", response_class=EventSourceResponse)
     async def chat(body: ChatRequest, request: Request) -> AsyncIterator[ServerSentEvent]:
