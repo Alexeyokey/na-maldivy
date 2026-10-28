@@ -44,6 +44,8 @@ services:
     image: na-maldivy-demo-web:20261028-full-ui
     pull_policy: never
     environment:
+      HOST: 0.0.0.0
+      PORT: "5173"
       AGENT_URL: http://agent:8000
       CHAT_MODE: api
     depends_on:

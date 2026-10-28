@@ -35,11 +35,13 @@ fi
 docker compose --env-file /dev/null --project-directory "$PACKAGE_ROOT" \
     --project-name na-maldivy-package \
     -f "$PACKAGE_ROOT/docker-compose.yml" -f "$PACKAGE_ROOT/docker-compose.demo.yml" \
-    build agent gateway web
+    build agent gateway app
 
 docker image tag na-maldivy-package-agent "$PACKAGE_AGENT_IMAGE"
 docker image tag na-maldivy-package-gateway "$PACKAGE_GATEWAY_IMAGE"
-docker image tag na-maldivy-package-web "$PACKAGE_WEB_IMAGE"
+# The default stack now calls its browser service app. Keep the exported web tag
+# and standalone release service stable for existing offline packages.
+docker image tag na-maldivy-package-app "$PACKAGE_WEB_IMAGE"
 mkdir -p "$PACKAGE_BUNDLE/docs" "$PACKAGE_BUNDLE/attributions/sources" "$PACKAGE_BUNDLE/scripts"
 docker image save --output "$PACKAGE_BUNDLE/images.tar" \
     "$PACKAGE_AGENT_IMAGE" "$PACKAGE_GATEWAY_IMAGE" "$PACKAGE_WEB_IMAGE"

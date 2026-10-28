@@ -27,6 +27,7 @@ services:
     ports: !reset []
 
   gateway:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: backend/Dockerfile.gateway
@@ -40,9 +41,11 @@ services:
       - default
     restart: unless-stopped
 
-  web:
+  app:
     build: ./frontend
     environment:
+      HOST: 0.0.0.0
+      PORT: "5173"
       AGENT_URL: http://agent:8000
       CHAT_MODE: api
     depends_on:

@@ -20,7 +20,7 @@ SMOKE_PROJECT=na-maldivy-check
 SMOKE_PORT=18000
 
 smoke_compose() {
-  AGENT_PORT=$SMOKE_PORT docker compose -f docker-compose.yml -f docker-compose.demo.yml -p "$SMOKE_PROJECT" "$@"
+  AGENT_PORT=$SMOKE_PORT docker compose --env-file /dev/null -f docker-compose.yml -f docker-compose.demo.yml -p "$SMOKE_PROJECT" "$@"
 }
 
 smoke() {

@@ -1,10 +1,10 @@
 .PHONY: demo-data-check demo-data-rehearse demo-cache-check demo-rehearse u2-eval demo-up demo-down demo-dev offline-package submission-eval three-destination-rehearse
 
 demo-up:
-	docker compose -f docker-compose.yml -f docker-compose.demo.yml up --build -d --wait
+	docker compose --env-file /dev/null -f docker-compose.yml -f docker-compose.demo.yml up --build -d --wait
 
 demo-down:
-	docker compose -f docker-compose.yml -f docker-compose.demo.yml down
+	docker compose --env-file /dev/null -f docker-compose.yml -f docker-compose.demo.yml down
 
 demo-dev:
 	cd backend && TOOLS_MODE=real FLIGHTS_MODE=demo TRAINS_MODE=synthetic CACHE_MODE=replay LLM_PROVIDER=fake \

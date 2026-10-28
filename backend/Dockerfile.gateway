@@ -1,9 +1,14 @@
-# Root build context; this image contains only the public proxy configuration.
-FROM nginx:alpine
+# Repository-root build context; configuration contains no runtime credentials.
+FROM nginx:1.31.8-alpine3.24@sha256:1ef7ca94d7879df82421428ce13bd1eaa412404953859cf7a5b6512c25e67a60 AS configuration
+COPY docker/nginx-demo.conf /configuration/nginx.conf
 
-COPY docker/nginx-demo.conf /etc/nginx/conf.d/default.conf
-
+FROM nginx:1.31.8-alpine3.24@sha256:1ef7ca94d7879df82421428ce13bd1eaa412404953859cf7a5b6512c25e67a60 AS runtime
+COPY --from=configuration /configuration/nginx.conf /etc/nginx/nginx.conf
+# The full configuration uses /tmp for PID and request/proxy temporary files.
+# Bypass the root-oriented entrypoint scripts; no template rewriting is needed.
+USER 101:101
 EXPOSE 8080
-
 HEALTHCHECK --interval=5s --timeout=3s --start-period=5s --retries=10 \
     CMD wget -q -O /dev/null http://127.0.0.1:8080/health || exit 1
+ENTRYPOINT ["nginx"]
+CMD ["-g", "daemon off;"]
