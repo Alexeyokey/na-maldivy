@@ -135,6 +135,7 @@ async def test_missing_transfer_keeps_unknown_total_and_blocks_confirmation():
         row["total_rub"] is None and row["known_total_rub"] > 0 and not row["can_confirm"] for row in result.options
     )
     assert "цена неполная" in fmt.packages(result)
+    assert "дешевле всех" not in fmt.packages(result)
     agent = TravelAgent(FakeLLMClient(), create_stub_tools(), llm_writes_text=False)
     session = Session(packages=result.options, stage=Stage.PACKAGES_SHOWN)
     from app.agent.router import Action, Decision
@@ -205,6 +206,33 @@ def test_explicit_past_year_is_rejected_instead_of_rolled_forward(text):
 def test_d5_iata_and_rail_cities_are_not_limited_to_three_seed_destinations():
     assert TripBrief(destination="HKT").destination == "HKT"
     assert TripBrief(transport="train", destination="Москва").destination == "MOW"
+
+
+def test_free_dates_do_not_match_sv_train_class():
+    assert extract("хочу на море, свободные даты в ноябре", TODAY).transport is None
+
+
+async def test_flight_limit_is_checked_against_actual_elapsed_duration():
+    async def call(name, arguments):
+        return await run_tool(name, arguments, tools=create_stub_tools())
+
+    result = await search_trip(
+        TripBrief(origin="SVO", destination="MLE", start_date=date(2026, 11, 18), max_flight_minutes=60),
+        call,
+        TODAY,
+    )
+    assert not result.options
+
+
+async def test_hotel_source_failure_is_distinguished_from_no_offers():
+    async def call(name, arguments):
+        if name == "search_hotels":
+            return None
+        return await run_tool(name, arguments, tools=create_stub_tools())
+
+    result = await search_trip(TripBrief(origin="SVO", destination="DXB", start_date=date(2026, 11, 18)), call, TODAY)
+    assert not result.options and "недоступен" in fmt.packages(result)
+    assert "нет отелей" not in fmt.packages(result)
 
 
 @pytest.mark.parametrize("field,value", [("refundable_only", True), ("min_stars", 4)])
