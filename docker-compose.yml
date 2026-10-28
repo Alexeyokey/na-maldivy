@@ -10,4 +10,14 @@ services:
       - ./data:/data:ro # справочники и базы инструментов, например data/transfers
     restart: unless-stopped
 
-  # web: интерфейс появится в U1 (#6)
+  web:
+    build: ./frontend
+    ports:
+      - "${WEB_PORT:-5173}:5173"
+    environment:
+      AGENT_URL: http://agent:8000
+      CHAT_MODE: api
+    depends_on:
+      agent:
+        condition: service_healthy
+    restart: unless-stopped

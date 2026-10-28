@@ -14,7 +14,7 @@ SMOKE_PORT=18000
 
 smoke() {
   trap 'AGENT_PORT=$SMOKE_PORT docker compose -p $SMOKE_PROJECT down >/dev/null 2>&1' EXIT
-  if ! AGENT_PORT=$SMOKE_PORT docker compose -p $SMOKE_PROJECT up --build -d --wait --wait-timeout 120; then
+  if ! AGENT_PORT=$SMOKE_PORT docker compose -p $SMOKE_PROJECT up --build -d --wait --wait-timeout 120 agent; then
     AGENT_PORT=$SMOKE_PORT docker compose -p $SMOKE_PROJECT logs
     exit 1
   fi
