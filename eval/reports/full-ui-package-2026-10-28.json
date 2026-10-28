@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "exported_three_image_offline_package_web_api_three_destinations_and_restart",
+  "app_version": "a728e37",
+  "platform": [
+    "linux/arm64",
+    "linux/arm64",
+    "linux/arm64"
+  ],
+  "notice": "Actual exported images loaded and started with pull never, no build, no env or keys. Full HTTP paths through web proxy; separate actual visible UI protocol is computer automation, not human speech rehearsal.",
+  "containers": {
+    "agent": {
+      "image_id": "sha256:83f0f40821b189cc7cf769c820efd4631b74301b0580c5c75dfa74ce3439f948",
+      "health": "healthy",
+      "running": true
+    },
+    "gateway": {
+      "image_id": "sha256:109cd38725c57b0e1cc305ea36e849cd6a2e0c9584d2ef02397bee766173d8f6",
+      "health": "healthy",
+      "running": true
+    },
+    "web": {
+      "image_id": "sha256:91629120ef47211ed1e0d304dae990d6d7c23152a4878f861f23e0d23f003353",
+      "health": "healthy",
+      "running": true
+    }
+  },
+  "agent_internet_isolated": true,
+  "keys_empty": true,
+  "web_assets_match_source_sha256": {
+    "app.js": "968827ff21fad008227257d0d0f09f267352d4c19440f5f46ff01025e697779a",
+    "api-app.js": "2bd95f3ab4a7a2300c796e1072fa6ebd68121ae3b12e4b6962714930618c34d9",
+    "api-model.js": "f1c63d26878be166ab49efebd55c292a67bfe1aea81fbee3436fdd924d9bf493",
+    "api.js": "a9b6e8b337722d067be841b244f6cd5cd6b2bf32d5b4105854e21de249c93a63",
+    "api.css": "01ef2fccda7db52daf06d716ead2261e719515f42e1dea584f6fe1aa264d0133"
+  },
+  "initial_run": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T17:28:51.372241+00:00",
+    "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+    "mode": "initial_run",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway.health",
+      "AYT.search_sources",
+      "AYT.d7_evidence",
+      "AYT.d8_comparison",
+      "AYT.confirm_unpaid_cart",
+      "AYT.decline_approve_retry",
+      "AYT.private_downloads",
+      "DXB.search_sources",
+      "DXB.d7_evidence",
+      "DXB.d8_comparison",
+      "DXB.confirm_unpaid_cart",
+      "DXB.decline_approve_retry",
+      "DXB.private_downloads",
+      "MLE.search_sources",
+      "MLE.d7_evidence",
+      "MLE.d8_comparison",
+      "MLE.confirm_unpaid_cart",
+      "MLE.decline_approve_retry",
+      "MLE.private_downloads",
+      "gateway.save_private_context"
+    ],
+    "stage_timings_seconds": {
+      "gateway.health": 0.01,
+      "AYT.search_sources": 0.089,
+      "AYT.d7_evidence": 0.008,
+      "AYT.d8_comparison": 0.084,
+      "AYT.confirm_unpaid_cart": 0.028,
+      "AYT.decline_approve_retry": 0.019,
+      "AYT.private_downloads": 0.021,
+      "DXB.search_sources": 0.455,
+      "DXB.d7_evidence": 0.01,
+      "DXB.d8_comparison": 0.198,
+      "DXB.confirm_unpaid_cart": 0.013,
+      "DXB.decline_approve_retry": 0.013,
+      "DXB.private_downloads": 0.009,
+      "MLE.search_sources": 0.029,
+      "MLE.d7_evidence": 0.005,
+      "MLE.d8_comparison": 0.132,
+      "MLE.confirm_unpaid_cart": 0.014,
+      "MLE.decline_approve_retry": 0.132,
+      "MLE.private_downloads": 0.067,
+      "gateway.save_private_context": 0.002
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "full_d9_acceptance_status": "not_completed_by_this_report",
+    "destinations": [
+      {
+        "destination": "AYT",
+        "status": "passed",
+        "known_total_rub": 83234,
+        "leg_sources": [
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 11251
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 14147
+          }
+        ],
+        "package_sha256": "ee65483f258ee9144c6057e1881348734d6063fecff46f2106c3890491ca3805",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "d7d5640f9cc3ec172c64f28860fa4973a272e30e048ad8e57fcc2eb5fdd3bb7b"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 1,
+          "contains_mock": false,
+          "state_preserved": true,
+          "facts_sha256": "e4dc6fdf938fa91e6d29fe3d027949d14a73468cfdec2080d4ee860e00d9cf70"
+        },
+        "order_sha256": "ff8dad48b7b23812d132c878c903b327705abc8525243545657b02f70f809c22",
+        "voucher_sha256": "06d1683a7bae8f427d4f55ddd78f8411db39b87fa5055d5075a8510f817b2865",
+        "calendar_sha256": "746150a121ea57aa621183559ca9f1774ffd2cf9f75ed32898f09d621043eac4"
+      },
+      {
+        "destination": "DXB",
+        "status": "passed",
+        "known_total_rub": 131161,
+        "leg_sources": [
+          {
+            "kind": "deterministic_mock",
+            "provider_evidence": false
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 19547
+          }
+        ],
+        "package_sha256": "56a5dcafa0a62ca71afc46629ffd22f110c84536433dbf0fdf5d82f74d8febf2",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "c9b1ded6c12c95cb1587b7745fc4ee467dd71d1930e6fbe87ca813a9ab8f734a"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 0,
+          "contains_mock": true,
+          "state_preserved": true,
+          "facts_sha256": "3ce258609bf2fa225bd1934b6754b39feca2bc49033933c8774cd6c515243c1d"
+        },
+        "order_sha256": "60dfb07757ab7d5593be8fc91f15d615803bd4e7ae07fa07337461855ab01f05",
+        "voucher_sha256": "41cb1f3df7a1d6e04b00efeeba0ceddac201dda2b35b8d64d51941c698f37628",
+        "calendar_sha256": "7f28f64a7033144c999d6b6c90e874dd1b198b411bbf13d0404861d556454786"
+      },
+      {
+        "destination": "MLE",
+        "status": "passed",
+        "known_total_rub": 216983,
+        "leg_sources": [
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 32488
+          },
+          {
+            "kind": "provider_replay",
+            "provider_evidence": true,
+            "seat_price_rub": 46070
+          }
+        ],
+        "package_sha256": "6c64e36fe9dfdadc00e0d38d73c11f95d02f0718ecf6018fead3c525af2883d9",
+        "d7": {
+          "is_synthetic": true,
+          "live_model_run": false,
+          "facts_sha256": "78c409cb9cb137ee236007da589fc9362966c53837eed9e91067ebdb8810a8ea"
+        },
+        "d8": {
+          "comparable_dates": 6,
+          "suggestions_count": 2,
+          "contains_mock": false,
+          "state_preserved": true,
+          "facts_sha256": "0dd4ed435a8093e25a3556284aabb31cb8c35662b15aa3f8f46c310a650aa262"
+        },
+        "order_sha256": "a59a4958d6f73bff2638fdced703787bb4bc070854d60bd4d5a26e9c780e9ed0",
+        "voucher_sha256": "6097ed6eb1550a2efb45519f2b333398de994bbf6eae48f1d69aee3ad65f99a4",
+        "calendar_sha256": "2567cc1f04c1071d73f93c9eab0d165258c8c3602c064cd26ec2929fdbf7cd71"
+      }
+    ],
+    "external_model_used": false,
+    "destinations_passed": 3,
+    "duration_seconds": 1.339
+  },
+  "after_agent_restart": {
+    "schema_version": 1,
+    "started_at": "2026-10-28T17:30:33.781740+00:00",
+    "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+    "mode": "resume_after_restart",
+    "status": "passed",
+    "integrated_ui_status": "not_run",
+    "completed_stages": [
+      "gateway.load_private_context",
+      "gateway.health",
+      "AYT.restart_order_and_artifacts",
+      "DXB.restart_order_and_artifacts",
+      "MLE.restart_order_and_artifacts"
+    ],
+    "stage_timings_seconds": {
+      "gateway.load_private_context": 0.0,
+      "gateway.health": 0.014,
+      "AYT.restart_order_and_artifacts": 0.036,
+      "DXB.restart_order_and_artifacts": 0.014,
+      "MLE.restart_order_and_artifacts": 0.009
+    },
+    "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+    "full_d9_acceptance_status": "not_completed_by_this_report",
+    "destinations": [
+      {
+        "destination": "AYT",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "ff8dad48b7b23812d132c878c903b327705abc8525243545657b02f70f809c22",
+        "voucher_sha256": "06d1683a7bae8f427d4f55ddd78f8411db39b87fa5055d5075a8510f817b2865",
+        "calendar_sha256": "746150a121ea57aa621183559ca9f1774ffd2cf9f75ed32898f09d621043eac4"
+      },
+      {
+        "destination": "DXB",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "60dfb07757ab7d5593be8fc91f15d615803bd4e7ae07fa07337461855ab01f05",
+        "voucher_sha256": "41cb1f3df7a1d6e04b00efeeba0ceddac201dda2b35b8d64d51941c698f37628",
+        "calendar_sha256": "7f28f64a7033144c999d6b6c90e874dd1b198b411bbf13d0404861d556454786"
+      },
+      {
+        "destination": "MLE",
+        "status": "passed",
+        "old_session_absent": true,
+        "order_sha256": "a59a4958d6f73bff2638fdced703787bb4bc070854d60bd4d5a26e9c780e9ed0",
+        "voucher_sha256": "6097ed6eb1550a2efb45519f2b333398de994bbf6eae48f1d69aee3ad65f99a4",
+        "calendar_sha256": "2567cc1f04c1071d73f93c9eab0d165258c8c3602c064cd26ec2929fdbf7cd71"
+      }
+    ],
+    "external_model_used": false,
+    "destinations_passed": 3,
+    "duration_seconds": 0.073
+  },
+  "visible_ui_protocol": "eval/demo-runs.json",
+  "package_ui_source_checks": "eval/reports/ui-rehearsal-2026-10-28/package-source-checks.json",
+  "security": {
+    "status": "passed",
+    "public_bundle_files_checked": 81,
+    "image_entries_checked": 53,
+    "gzip_image_layers_decoded": 26,
+    "private_credential_values_absent": true,
+    "runtime_databases_and_env_absent": true,
+    "archive_sha256": "991a0ba7df9bd2cae314f82073bf2becc3c8c9d6517b7fbb385ce619fba5b60b",
+    "archive_bytes": 178246610,
+    "presentation_sha256": "43a06ef4e1d5e089e9ef7073e87664f7bc984061bed378d05217abb34cfa4a04"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "scope": "visible_ui_search_in_exported_offline_package",
+  "method": "computer_use_ui_automation",
+  "performed_at": "2026-10-28T17:29:48.229Z",
+  "app_version": "a728e37",
+  "status": "passed",
+  "destinations": [
+    {
+      "destination": "DXB",
+      "known_total_rub": 131161,
+      "outbound_label": "deterministic_mock",
+      "inbound_label": "provider_replay",
+      "artifact": "dxb-sources.jpg"
+    },
+    {
+      "destination": "MLE",
+      "hotel": "JEN",
+      "known_total_rub": 216983,
+      "outbound_label": "provider_replay",
+      "inbound_label": "provider_replay",
+      "artifact": "mle-sources.jpg"
+    }
+  ],
+  "notice": "Search/cards/source labels only. Full three-destination checkout is independently verified through same exported package HTTP."
+}
