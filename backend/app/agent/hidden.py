@@ -172,7 +172,8 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
     # A train query must reach D6 rather than the flight/hotel planner.
     classes = {"купе": "coupe", "плацкарт": "platzkart", "св": "sv", "сидяч": "seated"}
     for word, code in classes.items():
-        if re.search(rf"\b{word}\w*\b", t):
+        suffix = "" if word == "св" else r"\w*"
+        if re.search(rf"\b{word}{suffix}\b", t):
             data.update(transport="train", seat_class=code)
             break
     if re.search(r"\bпоезд(?:ом|а|е|ы)?\b|железнодорож|\bжд\b", t):

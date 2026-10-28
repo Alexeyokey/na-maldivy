@@ -42,12 +42,8 @@ class Decision:
 
 def missing_fields(session: Session) -> list[str]:
     brief = session.brief
-    missing = [name for name in REQUIRED if getattr(brief, name) is None]
-    if brief.transport == "train":
-        if brief.destination is None:
-            missing.append("destination")
-        if brief.start_date is None:
-            missing.append("start_date")
+    required = ("origin", "destination", "start_date") if brief.transport == "train" else REQUIRED
+    missing = [name for name in required if getattr(brief, name) is None]
     # Возраст детей меняет цену и правила отеля, а угадать его нельзя.
     if "child" in brief.needs and not brief.children_ages:
         missing.append("children_ages")

@@ -532,9 +532,19 @@ def _pick_packages(combos: list[_Combo], brief: TripBrief) -> list[dict[str, Any
 
     add("Подешевле", sorted(safe, key=lambda c: (c.total, _score(c, brief))))
     add("Комфорт", sorted(safe, key=lambda c: (-(c.hotel.stars or 0), -(c.hotel.rating or 0), _score(c, brief))))
-    cheapest = min(c.total for _, c in picks)
+    cheapest = min((c.total for _, c in picks if c.transfer is not None), default=None)
     picks = [(label, c) for label, c in picks if not (label == "Подешевле" and c.total > picks[0][1].total)] or picks
-    picks = [(f"{label} · дешевле всех" if c.total == cheapest and len(picks) > 1 else label, c) for label, c in picks]
+    picks = [
+        (
+            "Требует уточнения цены"
+            if c.transfer is None
+            else f"{label} · дешевле всех"
+            if c.total == cheapest and len(picks) > 1
+            else label,
+            c,
+        )
+        for label, c in picks
+    ]
 
     packages = []
     for i, (label, c) in enumerate(picks, 1):
