@@ -8,13 +8,7 @@
     }
 }
 
-https://201.8.90.64 {
-    tls {
-        issuer acme https://acme-v02.api.letsencrypt.org/directory {
-            profile shortlived
-        }
-    }
-
+(owner_private_site) {
     route {
         # Normal responses; authentication errors use handle_errors below.
         header {
@@ -51,4 +45,17 @@ https://201.8.90.64 {
         }
         respond "{err.status_text}" {err.status_code}
     }
+}
+
+https://201.8.90.64 {
+    tls {
+        issuer acme https://acme-v02.api.letsencrypt.org/directory {
+            profile shortlived
+        }
+    }
+    import owner_private_site
+}
+
+https://na-maldivy.eu.cc {
+    import owner_private_site
 }

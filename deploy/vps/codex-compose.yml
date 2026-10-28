@@ -18,7 +18,7 @@ services:
       CODEX_HOME: /codex-auth
       CODEX_BINARY: /usr/local/bin/codex
       HOME: /home/agent
-      CORS_ORIGINS: https://201.8.90.64
+      CORS_ORIGINS: https://201.8.90.64,https://na-maldivy.eu.cc
     command: ["uvicorn", "app.personal_codex:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]
     volumes:
       - ${NA_CODEX_AUTH_DIR:?required}:/codex-auth

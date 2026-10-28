@@ -67,3 +67,45 @@ test('Private owner proxy validates host and origin before forwarding its server
  assert.equal(calls,before);
  const absentOrigin=await request('/health');assert.equal(absentOrigin.status,200);
 });
+
+test('Private domain proxy accepts its own HTTPS origin and rejects cross-host requests',async t=>{
+ const token='synthetic-server-only-token-1234567890-test';let calls=0,received;
+ const agent=http.createServer((req,res)=>{calls++;received=req.headers;res.setHeader('Content-Type','application/json');res.end(JSON.stringify({status:'ok',llm_provider:'codex_private'}));});
+ const upstream=await listen(agent),web=createFrontendServer({agentUrl:upstream,privateSiteMode:true,agentToken:token});
+ const base=await listen(web);t.after(async()=>{await close(web);await close(agent);});
+ const request=(path,headers={})=>new Promise((resolve,reject)=>{
+  const req=http.request(base+path,{headers:{Host:'na-maldivy.eu.cc',...headers}},res=>{
+   let body='';res.on('data',chunk=>body+=chunk);res.on('end',()=>resolve({status:res.statusCode,body}));
+  });req.on('error',reject);req.end();
+ });
+ const response=await request('/health',{
+  Origin:'https://na-maldivy.eu.cc','Sec-Fetch-Site':'same-origin',
+  'X-Local-Codex-Token':'browser-cannot-replace-server-token',Authorization:'Basic browser-credential',
+ });
+ assert.equal(response.status,200);assert.equal(JSON.parse(response.body).llm_provider,'codex_private');
+ assert.equal(received['x-local-codex-token'],token);assert.equal(received.authorization,undefined);assert.equal(received.origin,undefined);
+ const config=await request('/config.js');assert.equal(config.status,200);assert.ok(!config.body.includes(token));
+ const absentOrigin=await request('/health');assert.equal(absentOrigin.status,200);
+ const before=calls;
+ for(const headers of [
+  {Host:'foreign.example','X-Forwarded-Host':'na-maldivy.eu.cc'},
+  {Host:'www.na-maldivy.eu.cc'},
+  {Host:'na-maldivy.eu.cc.evil.example'},
+  {Host:'na-maldivy.eu.cc:443'},
+  {Host:'na-maldivy.eu.cc:5173'},
+  {Origin:'http://na-maldivy.eu.cc','X-Forwarded-Proto':'https'},
+  {Origin:'https://na-maldivy.eu.cc:443'},
+  {Origin:'https://na-maldivy.eu.cc/'},
+  {Origin:'https://foreign.example','X-Forwarded-Host':'na-maldivy.eu.cc'},
+  {Origin:'https://201.8.90.64','Sec-Fetch-Site':'same-site'},
+  {Host:'201.8.90.64',Origin:'https://na-maldivy.eu.cc','Sec-Fetch-Site':'same-site'},
+  {Origin:'null'},
+  {Origin:''},
+  {'Sec-Fetch-Site':'cross-site'},
+ ]){
+  for(const path of ['/health','/config.js','/']){
+   const denied=await request(path,headers);assert.equal(denied.status,403,JSON.stringify({path,headers}));assert.ok(!denied.body.includes(token));
+  }
+ }
+ assert.equal(calls,before);
+});

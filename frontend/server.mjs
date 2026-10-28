@@ -18,6 +18,7 @@ const routes=[
  [/^\/api\/checkout\/orders\/[A-Za-z0-9_-]{1,128}\/(?:voucher|calendar\.ics)$/,['GET']],
 ];
 const MAX_BODY_BYTES=64*1024;
+const PRIVATE_SITE_HOSTS=new Set(['201.8.90.64','na-maldivy.eu.cc']);
 const fail=(res,status,message)=>res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(JSON.stringify({message}));
 function readBody(req){
  return new Promise((resolve,reject)=>{
@@ -41,7 +42,8 @@ export function createFrontendServer({root=path.join(here,'dist'),agentUrl=proce
  return http.createServer(async(req,res)=>{
   if(privateSiteMode){
    // Never trust forwarded headers to override these browser-origin boundaries.
-   if(req.headers.host!=='201.8.90.64'||(req.headers.origin!==undefined&&req.headers.origin!=='https://201.8.90.64')||req.headers['sec-fetch-site']==='cross-site'){
+   const host=req.headers.host,browserOrigin=req.headers.origin;
+   if(!PRIVATE_SITE_HOSTS.has(host)||(browserOrigin!==undefined&&browserOrigin!==`https://${host}`)||req.headers['sec-fetch-site']==='cross-site'){
     fail(res,403,'Доступ к личному интерфейсу запрещён.');return;
    }
   }
