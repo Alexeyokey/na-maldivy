@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title">
+<title id="title">Иллюстрация светлого номера в шалфейных оттенках</title>
+<defs>
+<linearGradient id="sky" x2="0" y2="1">
+<stop stop-color="#b9dcde"/>
+<stop offset="1" stop-color="#edf3df"/>
+</linearGradient>
+<linearGradient id="wall" x2="1" y2="1">
+<stop stop-color="#f3edde"/>
+<stop offset="1" stop-color="#d6cfb9"/>
+</linearGradient>
+<linearGradient id="floor" x2="0.7" y2="1">
+<stop stop-color="#cfb995"/>
+<stop offset="1" stop-color="#aa8c67"/>
+</linearGradient>
+<linearGradient id="linen" x2="0.2" y2="1">
+<stop stop-color="#fffdf3"/>
+<stop offset="1" stop-color="#deddd0"/>
+</linearGradient>
+<linearGradient id="wood" x2="1" y2="1">
+<stop stop-color="#a67b4e"/>
+<stop offset="1" stop-color="#6f4e34"/>
+</linearGradient>
+<linearGradient id="glass" x2="0" y2="1">
+<stop stop-color="#abcfd0"/>
+<stop offset="1" stop-color="#e1e3c4"/>
+</linearGradient>
+<filter id="shadow" x="-35%" y="-40%" width="170%" height="190%">
+<feGaussianBlur stdDeviation="10"/>
+</filter>
+</defs>
+<rect width="960" height="600" fill="#eeeedd"/>
+<path d="M0 0H326V390H0Z" fill="#d7e0cd"/>
+<path d="M326 0H960V389H326Z" fill="url(#wall)"/>
+<path d="M0 389H960V600H0Z" fill="#bca98b"/>
+<path d="M0 437H960M0 489H960M0 553H960M170 390L0 600M380 390L300 600M592 390L660 600M805 390L960 552" stroke="#a58e6d" stroke-width="2" opacity=".35"/>
+<rect x="26" y="51" width="262" height="284" rx="5" fill="#8b9b85"/>
+<rect x="35" y="60" width="244" height="266" fill="url(#glass)"/>
+<path d="M35 249Q75 215 132 239T279 217V326H35Z" fill="#aac2a2"/>
+<path d="M35 284Q138 257 279 284V326H35Z" fill="#d0d7b4"/>
+<path d="M157 61V326M35 192H279" stroke="#f9f7e7" stroke-width="8"/>
+<path d="M13 42H69L54 349H7Z" fill="#f4f2e1"/>
+<path d="M243 42H303L310 349H261Z" fill="#f6f2df"/>
+<path d="M25 55L22 333M45 55L39 333M263 55L280 331M283 55L294 330" stroke="#dfdfcb" stroke-width="3"/>
+<circle cx="645" cy="138" r="79" fill="#d8decb"/>
+<circle cx="645" cy="138" r="61" fill="#f3ecda"/>
+<path d="M599 158Q628 96 660 143Q677 129 693 157V184H599Z" fill="#9fb19b"/>
+<path d="M622 163Q653 139 683 165V184H622Z" fill="#c6bb9d"/>
+<rect x="405" y="246" width="431" height="126" rx="27" fill="#a6b19a"/>
+<path d="M425 262H815V362H425Z" fill="#b8c1a9"/>
+<path d="M472 264V358M544 264V358M617 264V358M690 264V358M762 264V358" stroke="#9faa94" stroke-width="2"/>
+<ellipse cx="576" cy="501" rx="299" ry="48" fill="#565d4d" opacity=".16" filter="url(#shadow)"/>
+<path d="M320 413L821 410L915 560L350 582L276 481Z" fill="#e3dec9"/>
+<path d="M405 321H800L868 474L357 490Z" fill="#897657"/>
+<path d="M398 322H804L875 461L350 477Z" fill="url(#linen)"/>
+<path d="M350 452L875 440V481L363 497Z" fill="#dedfcf"/>
+<path d="M427 330Q457 312 532 329L541 378L412 380Z" fill="#fffdf2"/>
+<path d="M587 329Q625 314 707 330L733 381L590 378Z" fill="#fcfaed"/>
+<path d="M460 345H512L519 383H453Z" fill="#b9c2a5"/>
+<path d="M629 345H680L696 382H634Z" fill="#d5bda0"/>
+<path d="M379 395L832 385L857 436L356 451Z" fill="#bdc6ad"/>
+<path d="M384 402L836 392M378 414L842 404M371 427L848 417" stroke="#a3b093" stroke-width="3"/>
+<path d="M369 481V515M844 475V507" stroke="#756348" stroke-width="9"/>
+<path d="M300 328H383V392H300Z" fill="#b39870"/>
+<path d="M294 324H391V337H294Z" fill="#ceb68d"/>
+<path d="M339 321V262" stroke="#9b896c" stroke-width="4"/>
+<path d="M307 262L316 222H362L373 262Z" fill="#faf1d1"/>
+<path d="M39 426Q90 413 158 431L203 471L74 478Z" fill="#9dab91"/>
+<path d="M72 476V508M177 469V496" stroke="#8f795a" stroke-width="7"/>
+<path d="M56 442L178 446M64 454L190 459" stroke="#c1cbb4" stroke-width="2"/>
+<g transform="translate(873 377) scale(0.86)">
+<ellipse cx="0" cy="25" rx="43" ry="10" fill="#5c5944" opacity=".14"/>
+<path d="M-25-16H25L18 24H-18Z" fill="#bb8860"/>
+<path d="M-21-9H21M-19-2H19" stroke="#d7a67f" stroke-width="3"/>
+<path d="M0-15V-95M0-40Q-45-38-40-72Q-6-73 0-40M0-62Q36-65 34-99Q1-93 0-62M0-84Q-27-95-16-121Q8-107 0-84" fill="#4e7559" stroke="#4e7559" stroke-width="3"/>
+<path d="M0-19Q-28-18-34-45Q-7-51 0-19M0-36Q33-28 43-54Q16-65 0-36" fill="#72906b"/>
+</g>
+<path d="M73 80L243 278" stroke="#fffef2" stroke-width="26" opacity=".2"/>
+</svg>

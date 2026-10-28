@@ -20,6 +20,7 @@ WORKDIR /app
 COPY --from=builder /opt/venv /opt/venv
 COPY backend/app ./app
 COPY data /data
+COPY scripts/check_running_demo.py scripts/check_running_three_destinations.py /app/scripts/
 
 RUN useradd --create-home --uid 1000 agent \
     && mkdir /state \

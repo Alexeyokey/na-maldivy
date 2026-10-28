@@ -8,6 +8,15 @@ export const adultsLabel=value=>counted(value,'взрослый','взрослы
 export const nightsLabel=value=>counted(value,'ночь','ночи','ночей');
 export const optionsLabel=value=>counted(value,'вариант','варианта','вариантов');
 
+/** Prefer the bundled quote scenario while future, then keep quick prompts usable. */
+export function demoDepartureDate(now=new Date()){
+ const date=new Date(now);
+ if(!Number.isFinite(date.getTime()))throw new TypeError('A valid reference date is required');
+ if(date.toISOString().slice(0,10)<'2026-11-18')return '2026-11-18';
+ date.setUTCDate(date.getUTCDate()+28);
+ return date.toISOString().slice(0,10);
+}
+
 export function isoDay(value){
  if(typeof value!=='string')return null;
  const part=value.slice(0,10);

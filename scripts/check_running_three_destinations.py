@@ -7,10 +7,22 @@ No .env, application imports, credentials, access IDs or traveler data in report
 import argparse
 import json
 import time
-from datetime import datetime
 from pathlib import Path
 
-from check_running_demo import Check, atomic_private_json, digest, require, single
+from check_running_demo import (
+    Check,
+    HTTPStatusError,
+    VerificationError,
+    atomic_private_json,
+    departure_date,
+    digest,
+    gateway_argument,
+    require,
+    single,
+)
+from check_running_demo import (
+    flight_source as source,
+)
 
 ROUTES = (
     ("AYT", "Анталью", 83234, ("provider_replay", "provider_replay")),
@@ -23,51 +35,9 @@ TRAVELERS = [
 ]
 
 
-def source(value, expected=None):
-    demo, price = value.get("demo_source") or {}, value.get("price_source")
-    kind = demo.get("kind")
-    require(
-        kind in {"provider_replay", "deterministic_mock"},
-        "Explicit flight source missing",
-    )
-    require(expected is None or kind == expected, "Frozen source composition changed")
-    if kind == "deterministic_mock":
-        require(
-            price is None
-            and "ДЕМО-МОК" in demo.get("notice", "")
-            and "не котировка Aviasales" in demo["notice"]
-            and "не наличие мест" in demo["notice"],
-            "Mock is not honestly labelled",
-        )
-        return {"kind": kind, "provider_evidence": False}
-    require(
-        price
-        and price.get("provider") == "aviasales_data_api"
-        and price.get("cache_mode") == "replay"
-        and price.get("cache_hit") is True,
-        "Provider replay evidence missing",
-    )
-    require(
-        "не подтвержден" in demo.get("notice", "")
-        and price.get("seat_price_rub", 0) > 0,
-        "Provider source cannot confirm live inventory",
-    )
-    require(
-        datetime.fromisoformat(price["recorded_at"]).utcoffset() is not None,
-        "Recording timestamp missing",
-    )
-    if "price_rub" in value:
-        require(value["price_rub"] == 2 * price["seat_price_rub"], "Group fare changed")
-    return {
-        "kind": kind,
-        "provider_evidence": True,
-        "seat_price_rub": price["seat_price_rub"],
-    }
-
-
 class ThreeCheck(Check):
-    def __init__(self, base_url, context_path, resume):
-        super().__init__(base_url, context_path, resume)
+    def __init__(self, base_url, context_path, resume, trip_date=None):
+        super().__init__(base_url, context_path, resume, trip_date)
         self.report.update(
             scope="running_gateway_three_destination_mixed_backend_simulated_checkout",
             full_d9_acceptance_status="not_completed_by_this_report",
@@ -263,6 +233,7 @@ class ThreeCheck(Check):
         }
 
     def initial(self):
+        self.gateway_ui()
         self.health()
         contexts = []
         for code, destination, total, expected in ROUTES:
@@ -272,7 +243,7 @@ class ThreeCheck(Check):
             with self.step("search_sources"):
                 options = single(
                     self.chat(
-                        f"Из Москвы в {destination} 18 ноября 2026 на неделю вдвоём"
+                        f"Из Москвы в {destination} {self.departure_date.isoformat()} на неделю вдвоём"
                     ),
                     "options",
                 )
@@ -289,21 +260,27 @@ class ThreeCheck(Check):
                 ]
                 require(safe, "Unsafe checkout cannot be forced")
                 selected = safe[0]
+                self.verify_package(selected, code)
                 require(
-                    selected["known_total_rub"] == selected["total_rub"] == total,
-                    "Frozen primary price changed",
+                    selected["known_total_rub"] == selected["total_rub"] > 0,
+                    "Known primary price is missing",
                 )
+                if self.reference_fixture:
+                    require(
+                        selected["known_total_rub"] == total,
+                        "Frozen primary price changed",
+                    )
                 sources = [
-                    source(selected[leg], kind)
-                    for leg, kind in zip(("outbound", "inbound"), expected)
+                    source(selected[leg], kind if self.reference_fixture else None)
+                    for leg, kind in zip(("outbound", "inbound"), expected, strict=True)
                 ]
-                if code == "AYT":
+                if code == "AYT" and self.reference_fixture:
                     require(
                         [row["seat_price_rub"] for row in sources] == [11251, 14147],
                         "Antalya seat prices changed",
                     )
                 public.update(
-                    known_total_rub=total,
+                    known_total_rub=selected["known_total_rub"],
                     leg_sources=sources,
                     package_sha256=digest(selected),
                 )
@@ -368,7 +345,7 @@ class ThreeCheck(Check):
                     "Private order read changed",
                 )
                 hashes = self.downloads(order)
-                public.update(order_sha256=digest(order), **hashes, status="passed")
+                public.update(order_sha256=digest(order), **hashes)
                 contexts.append(
                     {
                         "destination": code,
@@ -378,10 +355,19 @@ class ThreeCheck(Check):
                         "download_hashes": hashes,
                     }
                 )
+            with self.step("order_capability_boundaries"):
+                self.verify_order_privacy(order)
+            self.verify_trip_changes(order)
+            public["status"] = "passed"
         with self.stage("gateway.save_private_context"):
             atomic_private_json(
                 self.context_path,
-                {"schema_version": 1, "base_url": self.base_url, "orders": contexts},
+                {
+                    "schema_version": 1,
+                    "base_url": self.base_url,
+                    "departure_date": self.departure_date.isoformat(),
+                    "orders": contexts,
+                },
             )
         self.report.update(status="passed", destinations_passed=3)
 
@@ -401,6 +387,7 @@ class ThreeCheck(Check):
                 == {row[0] for row in ROUTES},
                 "Context must contain all three orders",
             )
+        self.restore_scenario(context)
         self.health()
         for row in context["orders"]:
             self.route, self.session_id = row["destination"], row["session_id"]
@@ -432,7 +419,14 @@ class ThreeCheck(Check):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base-url", default="http://localhost:8000")
+    parser.add_argument(
+        "--base-url", default="http://localhost:8080", type=gateway_argument
+    )
+    parser.add_argument(
+        "--departure-date",
+        type=departure_date,
+        help="Future YYYY-MM-DD; generated data is always labelled honestly.",
+    )
     parser.add_argument(
         "--output",
         type=Path,
@@ -445,7 +439,7 @@ def main():
     )
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
-    check = ThreeCheck(args.base_url, args.context, args.resume)
+    check = ThreeCheck(args.base_url, args.context, args.resume, args.departure_date)
     started = time.perf_counter()
     try:
         check.resume() if args.resume else check.initial()
@@ -456,6 +450,12 @@ def main():
             failed_stage=check.current_stage,
             error_type=type(error).__name__,
         )
+        if isinstance(error, (VerificationError, HTTPStatusError)):
+            check.report["error"] = str(error)
+        elif isinstance(error, OSError):
+            check.report["hint"] = (
+                "Start the default Docker Compose application and wait for http://localhost:8080/health."
+            )
     check.report["duration_seconds"] = round(time.perf_counter() - started, 3)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(

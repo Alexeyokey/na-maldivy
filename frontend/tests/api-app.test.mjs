@@ -96,6 +96,16 @@ async function mountedSearch(t){
  return {root,modal,controller,calls,click,document};
 }
 
+test('A new judge session renders three usable future-dated quick prompts',async t=>{
+ const {root,controller,calls}=await mountedSearch(t);
+ controller.reset();
+ const prompts=[...root.innerHTML.matchAll(/data-api-prompt="([^"]+)"/g)].map(row=>row[1]);
+ assert.equal(prompts.length,3);
+ assert.ok(prompts.every(text=>/Из Москвы в .+ \d{2}\.\d{2}\.\d{4} на неделю вдвоём/.test(text)));
+ assert.doesNotMatch(root.innerHTML,/\.jpg|Unsplash/);
+ assert.ok(calls.every(row=>row.method==='GET'),'Rendering quick prompts must not send a chat request');
+});
+
 test('Mounted search shows unconfirmed sources, server-only price rows and accepts assumptions without checkout or POST',async t=>{
  const {root,controller,calls,click}=await mountedSearch(t);
  assert.match(root.innerHTML,/Предположения для расчёта/);assert.match(root.innerHTML,/Взрослые: 1 взрослый/);

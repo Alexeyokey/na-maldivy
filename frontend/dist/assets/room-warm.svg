@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="title">
+<title id="title">Иллюстрация тёплого номера с деревом и видом на сад</title>
+<defs>
+<linearGradient id="sky" x2="0" y2="1">
+<stop stop-color="#b9dcde"/>
+<stop offset="1" stop-color="#edf3df"/>
+</linearGradient>
+<linearGradient id="wall" x2="1" y2="1">
+<stop stop-color="#f3edde"/>
+<stop offset="1" stop-color="#d6cfb9"/>
+</linearGradient>
+<linearGradient id="floor" x2="0.7" y2="1">
+<stop stop-color="#cfb995"/>
+<stop offset="1" stop-color="#aa8c67"/>
+</linearGradient>
+<linearGradient id="linen" x2="0.2" y2="1">
+<stop stop-color="#fffdf3"/>
+<stop offset="1" stop-color="#deddd0"/>
+</linearGradient>
+<linearGradient id="wood" x2="1" y2="1">
+<stop stop-color="#a67b4e"/>
+<stop offset="1" stop-color="#6f4e34"/>
+</linearGradient>
+<linearGradient id="glass" x2="0" y2="1">
+<stop stop-color="#abcfd0"/>
+<stop offset="1" stop-color="#e1e3c4"/>
+</linearGradient>
+<filter id="shadow" x="-35%" y="-40%" width="170%" height="190%">
+<feGaussianBlur stdDeviation="10"/>
+</filter>
+</defs>
+<rect width="960" height="600" fill="url(#wall)"/>
+<path d="M0 386H960V600H0Z" fill="url(#floor)"/>
+<path d="M0 386L960 600M180 386L960 546M388 386L960 466M670 386L960 412M0 420H960M0 465H960M0 524H960" stroke="#9c825f" stroke-width="2" opacity=".35"/>
+<path d="M0 0H301V385H0Z" fill="#d5cfb8"/>
+<rect x="34" y="41" width="232" height="306" rx="3" fill="#755f47"/>
+<rect x="43" y="49" width="214" height="286" fill="url(#glass)"/>
+<path d="M43 225Q108 155 172 211T257 180V335H43Z" fill="#87a17d"/>
+<path d="M43 283Q134 237 257 260V335H43Z" fill="#b2c3a0"/>
+<path d="M149 51V335M44 185H257" stroke="#ece7d3" stroke-width="9"/>
+<path d="M22 32H74L63 351H19Z" fill="#eee9d8"/>
+<path d="M222 32H277V351H239Z" fill="#e8e0cc"/>
+<path d="M30 43L33 337M52 44L46 339M243 44L250 339M263 43L269 338" stroke="#d3cbb5" stroke-width="3" opacity=".7"/>
+<path d="M305 123H779V377H305Z" fill="url(#wood)"/>
+<path d="M310 160H773M310 202H773M310 244H773M310 286H773M310 328H773" stroke="#c49a6a" opacity=".55"/>
+<ellipse cx="520" cy="497" rx="307" ry="56" fill="#615a45" opacity=".2" filter="url(#shadow)"/>
+<path d="M224 421L752 409L848 560L235 582L167 486Z" fill="#e1d7bc"/>
+<path d="M258 304H721L800 490L230 504Z" fill="#795a3e"/>
+<path d="M250 313H728L809 474L222 484Z" fill="url(#linen)"/>
+<path d="M222 453L809 447V489L234 504Z" fill="#e2dfd0"/>
+<path d="M270 320Q296 305 380 319L397 375L268 376Z" fill="#fffaf0"/>
+<path d="M408 319Q441 304 522 317L538 376L406 375Z" fill="#f9f5e8"/>
+<path d="M558 318Q593 307 681 321L709 377L567 375Z" fill="#f7f3e5"/>
+<path d="M298 334H362L373 375H294Z" fill="#75846a"/>
+<path d="M595 333H654L676 375H607Z" fill="#a9ac87"/>
+<path d="M247 396L768 390L790 442L230 454Z" fill="#7f9076"/>
+<path d="M252 399L255 446M270 398L273 446M287 397L290 445M305 397L308 444M323 397L327 443" stroke="#a4b096" stroke-width="2" opacity=".6"/>
+<path d="M245 485V516M780 477V507" stroke="#684d36" stroke-width="12"/>
+<rect x="765" y="323" width="98" height="68" rx="4" fill="#9c7b50"/>
+<path d="M760 323H871V337H760Z" fill="#b7976a"/>
+<path d="M816 318V257" stroke="#79664d" stroke-width="4"/>
+<path d="M783 257L794 213H838L851 257Z" fill="#f2deb2"/>
+<ellipse cx="817" cy="258" rx="34" ry="5" fill="#d7c194"/>
+<path d="M855 394Q836 346 876 330Q923 322 947 369L960 427L884 452Z" fill="#c6ab70"/>
+<path d="M877 388Q922 370 951 398L960 431L890 449Z" fill="#dcc18b"/>
+<path d="M887 446V478M949 434V464" stroke="#80654a" stroke-width="7"/>
+<g transform="translate(117 377) scale(0.75)">
+<ellipse cx="0" cy="25" rx="43" ry="10" fill="#5c5944" opacity=".14"/>
+<path d="M-25-16H25L18 24H-18Z" fill="#bb8860"/>
+<path d="M-21-9H21M-19-2H19" stroke="#d7a67f" stroke-width="3"/>
+<path d="M0-15V-95M0-40Q-45-38-40-72Q-6-73 0-40M0-62Q36-65 34-99Q1-93 0-62M0-84Q-27-95-16-121Q8-107 0-84" fill="#4e7559" stroke="#4e7559" stroke-width="3"/>
+<path d="M0-19Q-28-18-34-45Q-7-51 0-19M0-36Q33-28 43-54Q16-65 0-36" fill="#72906b"/>
+</g>
+<ellipse cx="741" cy="115" rx="39" ry="48" fill="#e4dbc5"/>
+<path d="M717 129Q733 85 755 109Q742 104 730 131" fill="none" stroke="#89977a" stroke-width="8"/>
+</svg>

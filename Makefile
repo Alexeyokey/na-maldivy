@@ -48,3 +48,12 @@ web-demo:
 
 web-test:
 	cd frontend && npm run check && npm test && npm run test:integration
+
+# Проверка уже запущенного стандартного демо; Python на компьютере не нужен.
+.PHONY: judge-check judge-resume
+judge-check:
+	docker compose exec -T agent python /app/scripts/check_running_three_destinations.py --base-url http://app:8080 --context /state/judge-three-private.json --output /state/judge-three-report.json
+
+# Сначала перезапустите agent и дождитесь healthy; контекст остаётся в томе.
+judge-resume:
+	docker compose exec -T agent python /app/scripts/check_running_three_destinations.py --base-url http://app:8080 --context /state/judge-three-private.json --output /state/judge-three-resume.json --resume

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {adultsLabel,nightsLabel,optionsLabel,formatDate,formatRating,refundLabel,transferLabel,priceRows,tripAssumptions,narrativeView,trainPresentation} from '../dist/trip-presentation.js';
+import {adultsLabel,nightsLabel,optionsLabel,formatDate,formatRating,refundLabel,transferLabel,priceRows,tripAssumptions,narrativeView,trainPresentation,demoDepartureDate} from '../dist/trip-presentation.js';
 
 test('Russian counts keep teens and large values grammatical',()=>{
  assert.deepEqual([1,2,5,11,21].map(adultsLabel),['1 взрослый','2 взрослых','5 взрослых','11 взрослых','21 взрослый']);
@@ -84,4 +84,13 @@ test('Rail presentation uses the actual Train contract and never reuses flight n
  const assumptions=tripAssumptions({brief:{transport:'train',adults:1,nights:7,start_date:'2027-01-29'},sources:{adults:'default',nights:'default',start_date:'inferred'},assumptions:[{field:'nights',text:'7 ночей'}],options:[train]});
  assert.deepEqual(assumptions.map(row=>row.field),['adults','start_date']);
  assert.equal(assumptions[1].label,'Дата отправления');
+});
+
+
+test('Quick prompts use the recorded scenario only while it is a future date',()=>{
+ assert.equal(demoDepartureDate('2026-10-29T23:00:00Z'),'2026-11-18');
+ assert.equal(demoDepartureDate('2026-11-18T00:00:00Z'),'2026-12-16');
+ assert.equal(demoDepartureDate('2027-12-20T20:00:00Z'),'2028-01-17');
+ assert.equal(demoDepartureDate('2028-02-10T12:00:00Z'),'2028-03-09');
+ assert.throws(()=>demoDepartureDate('invalid'),TypeError);
 });

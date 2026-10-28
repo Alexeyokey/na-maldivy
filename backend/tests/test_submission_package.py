@@ -29,7 +29,10 @@ def package(tmp_path):
         "LLM_API_KEY=PRIVATE-TEST-ONLY\nTRAP=${SUBMISSION_PRIVATE_FILE_MUST_NOT_BE_READ:?private-env-trap}\n",
         encoding="utf-8",
     )
-    (root / "backend/uv.lock").write_text('source = { registry = "https://pypi.org/simple" }\n', encoding="utf-8")
+    (root / "backend/uv.lock").write_text(
+        '[[package]]\nname = "test-public"\nversion = "1.0"\nsource = { registry = "https://pypi.org/simple" }\n',
+        encoding="utf-8",
+    )
     (root / "frontend/package.json").write_text("{}", encoding="utf-8")
     for directory, image, user in (
         ("backend", "python:3.12.14-slim", "1000"),
@@ -128,7 +131,9 @@ def test_private_registry_or_example_credentials_are_reported_without_values(pac
     root, config = package
     config["services"]["agent"]["environment"]["LLM_API_KEY"] = "PRIVATE-TEST-ONLY"
     (root / "backend/uv.lock").write_text(
-        'source = { registry = "https://private.invalid/simple" }\n', encoding="utf-8"
+        '[[package]]\nname = "test-private"\nversion = "1.0"\n'
+        'source = { registry = "https://private.invalid/simple" }\n',
+        encoding="utf-8",
     )
     result, report = run_cli(root, config)
     assert result.returncode == 2
@@ -160,6 +165,50 @@ def test_copy_from_an_external_image_is_part_of_the_active_dependency_graph(pack
     assert any(row["name"] == "agent:runtime_image" and not row["passed"] for row in report["checks"])
 
 
+@pytest.mark.parametrize("kind", ["bind", "env_file"])
+def test_host_only_runtime_inputs_cannot_pass_as_a_reproducible_checkout(package, kind):
+    root, config = package
+    if kind == "bind":
+        config["services"]["agent"]["volumes"] = [{"type": "bind", "source": "/private/local-data", "target": "/data"}]
+    else:
+        config["services"]["agent"]["env_file"] = [{"path": "/private/local-secrets", "required": True}]
+    report = CHECKER.inspect_package(root, config)
+    assert report["status"] == "failed"
+    assert any(row["name"] == "agent:repository_inputs" and not row["passed"] for row in report["checks"])
+
+
+def test_a_public_registry_entry_does_not_hide_an_additional_private_git_dependency(package):
+    root, config = package
+    lock = root / "backend/uv.lock"
+    lock.write_text(
+        lock.read_text()
+        + '[[package]]\nname = "private-extra"\nversion = "1"\n'
+        + 'source = { git = "ssh://private.invalid/team/tool", rev = "abc123" }\n'
+    )
+    report = CHECKER.inspect_package(root, config)
+    assert report["status"] == "failed"
+    assert any(row["name"] == "dependency_registry" and not row["passed"] for row in report["checks"])
+    assert "private.invalid" not in json.dumps(report)
+
+
+def test_pypi_package_with_a_private_download_artifact_is_not_treated_as_public(package):
+    root, config = package
+    lock = root / "backend/uv.lock"
+    lock.write_text(lock.read_text() + 'sdist = { url = "https://private.invalid/tool.tar.gz" }\n')
+    report = CHECKER.inspect_package(root, config)
+    assert report["status"] == "failed"
+    assert any(row["name"] == "dependency_registry" and not row["passed"] for row in report["checks"])
+
+
+@pytest.mark.parametrize("kind", ["volumes", "networks"])
+def test_external_resources_cannot_pass_as_an_independent_compose_start(package, kind):
+    root, config = package
+    config[kind] = {"existing-resource": {"external": True, "name": "private-existing-resource"}}
+    report = CHECKER.inspect_package(root, config)
+    assert report["status"] == "failed"
+    assert any(row["name"] == "self_contained_storage_and_networks" and not row["passed"] for row in report["checks"])
+
+
 @pytest.mark.parametrize("value", [[], None, {"status": "starting"}])
 def test_http_probe_does_not_accept_a_200_with_an_invalid_health_payload(monkeypatch, value):
     class Response:
@@ -180,7 +229,14 @@ def test_http_probe_does_not_accept_a_200_with_an_invalid_health_payload(monkeyp
 
     class Opener:
         def open(self, url, **_kwargs):
-            return Response(json.dumps(value).encode() if url.endswith("/health") else b"<!DOCTYPE html><html></html>")
+            return Response(
+                json.dumps(value).encode()
+                if url.endswith("/health")
+                else (
+                    b'<!DOCTYPE html><html><div id="app"></div><script src="./config.js"></script>'
+                    b'<script src="./app.js"></script></html>'
+                )
+            )
 
     monkeypatch.setattr(CHECKER.urllib.request, "build_opener", lambda *_args: Opener())
     checks = CHECKER.probe_http("http://localhost:8080")

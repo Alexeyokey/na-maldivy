@@ -12,6 +12,7 @@ import json
 import os
 import re
 import subprocess
+import tomllib
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -110,8 +111,36 @@ def inspect_package(root: Path, config: dict) -> dict:
     if not isinstance(services, dict) or not services:
         add("default_services", False, "The default Compose project has no services.")
         return {"status": "failed", "scope": "default_docker_package", "checks": checks}
+    add(
+        "self_contained_storage_and_networks",
+        not any(
+            value.get("external")
+            for group in ("volumes", "networks")
+            for value in config.get(group, {}).values()
+        ),
+        "The default project creates its own volumes and networks without preconfigured external resources.",
+    )
     public = []
     for name, service in services.items():
+        mounts = service.get("volumes", [])
+        bind_sources = [
+            Path(mount["source"]) for mount in mounts if mount.get("type") == "bind"
+        ]
+        files = service.get("env_file", [])
+        env_paths = [
+            Path(entry["path"] if isinstance(entry, dict) else entry) for entry in files
+        ]
+        inputs = bind_sources + env_paths
+        add(
+            name + ":repository_inputs",
+            all(
+                (path if path.is_absolute() else root / path)
+                .resolve()
+                .is_relative_to(root.resolve())
+                for path in inputs
+            ),
+            "Runtime bind mounts and environment files must not depend on another checkout or a host-only secret path.",
+        )
         for port in service.get("ports", []):
             public.append((name, str(port.get("published")), port.get("target")))
     add(
@@ -240,10 +269,28 @@ def inspect_package(root: Path, config: dict) -> dict:
         if (root / "backend/uv.lock").is_file()
         else ""
     )
-    registries = set(re.findall(r'registry\s*=\s*"([^\"]+)"', lock))
+    packages = tomllib.loads(lock).get("package", [])
+    sources = [package.get("source") for package in packages]
+    public_sources = bool(sources) and all(
+        source
+        in (
+            {"registry": "https://pypi.org/simple"},
+            {"editable": "."},
+            {"virtual": "."},
+        )
+        for source in sources
+    )
+    public_artifacts = all(
+        urllib.parse.urlsplit(artifact.get("url", "")).scheme == "https"
+        and urllib.parse.urlsplit(artifact.get("url", "")).netloc
+        == "files.pythonhosted.org"
+        for package in packages
+        for artifact in ([package["sdist"]] if "sdist" in package else [])
+        + package.get("wheels", [])
+    )
     add(
         "dependency_registry",
-        bool(registries) and registries <= {"https://pypi.org/simple"},
+        public_sources and public_artifacts,
         "Python lock resolves from public PyPI; no private package registry is required.",
     )
     add(
@@ -332,6 +379,9 @@ def probe_http(base_url: str) -> list[dict]:
                         response.status == 200
                         and "text/html" in response.headers.get("content-type", "")
                         and b"<html" in body.lower()
+                        and b'id="app"' in body
+                        and b"./app.js" in body
+                        and b"./config.js" in body
                     )
                 else:
                     value = json.loads(body) if len(body) <= 65536 else None

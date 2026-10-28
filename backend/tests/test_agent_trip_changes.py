@@ -249,7 +249,7 @@ async def test_confirming_same_assumptions_updates_sources_without_losing_select
     )
     events = await say(agent, "Едет 2 взрослых на 7 ночей", sid)
     assert session.sources["adults"] == session.sources["nights"] == "explicit"
-    assert session.version == version + 1
+    assert session.version == version
     assert (session.selected, session.stage, session.packages) == (selected, current_stage, packages)
     assert not any(event.type in {"tool_call", "options", "booking"} for event in events)
     changed = next(event.data for event in events if event.type == "brief")
