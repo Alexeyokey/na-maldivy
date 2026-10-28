@@ -42,6 +42,27 @@ function assertClearedResults(state){
 const tripKeys=['sessionId','version','stage','brief','sources','needs','options','optionKind','selected','cart','order','currentOrderId','question','profile','savings','stale','notes','assumptions','assumptionsAccepted','acceptedAssumptions'];
 const trip=state=>Object.fromEntries(tripKeys.map(key=>[key,structuredClone(state[key])]));
 
+test('Restored cards cannot be selected or paid before the server reconciles the session',async()=>{
+ const storage=memoryStorage();seed(new ApiTripController({storage}),{stage:'awaiting_confirmation',selected:1}).remember();
+ const started=deferred(),read=deferred(),calls=[];
+ const restored=new ApiTripController({storage,fetchImpl:async(path,init={})=>{
+  calls.push({path,method:init.method||'GET'});
+  if(path==='/health')return Response.json({status:'ok',llm_provider:'fake'});
+  assert.equal(path,'/api/session/'+sid);started.resolve();return read.promise;
+ }});
+ const restoring=restored.restore();await started.promise;
+ assert.equal(restored.state.syncNeeded,true);
+ await assert.rejects(restored.send('Беру вариант 1'),error=>error.code==='recovery');
+ await assert.rejects(restored.pay({acknowledgeDemo:true,acknowledgeUnpriced:true}),error=>error.code==='recovery');
+ await restored.reconnect();
+ assert.equal(restored.state.syncNeeded,true,'A concurrent health check cannot unlock cached cards');
+ assert.equal(calls.filter(row=>row.path.startsWith('/api/session/')).length,1);
+ read.resolve(Response.json(snapshot({version:7,stage:'packages_shown',brief:initialBrief,sources:{destination:'explicit'},needs:[{code:'beach',label:'У пляжа'}]})));
+ await restoring;
+ assert.equal(restored.state.syncNeeded,false);assert.equal(restored.state.options[0].hotel.name,oldPackage.hotel.name);
+ assert.equal(calls.filter(row=>row.method==='POST').length,0);
+});
+
 test('A changed authoritative brief clears old offers even when done already applied the new version',async()=>{
  const calls=[];
  const controller=seed(new ApiTripController({fetchImpl:async(path,init={})=>{

@@ -121,7 +121,7 @@ export function applyAgentEvent(model,type,data){
 
 export class ApiTripController{
  constructor({fetchImpl=globalThis.fetch,onChange=()=>{},storage=null}={}){
-  this.fetch=fetchImpl.bind(globalThis);this.onChange=onChange;this.storage=storage;this.state=createApiModel();this.abort=null;this.generation=0;this.pendingPayment=null;this.savedTravelers=null;this.orderRefs=[];this.reconnectPromise=null;this.probeEpoch=0;
+  this.fetch=fetchImpl.bind(globalThis);this.onChange=onChange;this.storage=storage;this.state=createApiModel();this.abort=null;this.generation=0;this.pendingPayment=null;this.savedTravelers=null;this.orderRefs=[];this.reconnectPromise=null;this.probeEpoch=0;this.restoring=false;
  }
  notify(){this.remember();this.onChange(this.state);}
  remember(){
@@ -189,7 +189,7 @@ export class ApiTripController{
    try{
     const health=await checkAgentHealth({fetchImpl:this.fetch,signal:AbortSignal.timeout(5000)});
     if(!current())return null;this.state.health=health;this.state.connection='online';
-    if(this.state.syncNeeded&&!this.state.pendingRequest&&!this.state.busy&&this.state.sessionId){
+    if(this.state.syncNeeded&&!this.state.pendingRequest&&!this.state.busy&&!this.restoring&&this.state.sessionId){
      try{await this.sessionSnapshot();if(!current())return null;this.state.syncNeeded=false;this.state.error=null;}
      catch(error){if(!current())return null;if(error.status===404)this.markSessionLost();else this.state.error='Ответ сохранён. Пока не удалось обновить состояние поездки; проверьте связь ещё раз.';}
     }
@@ -201,6 +201,8 @@ export class ApiTripController{
  }
  async restore(){
   const generation=this.generation;
+  this.restoring=true;
+  try{
   let saved;try{const raw=this.storage?.getItem(STORAGE_KEY)||'null';if(raw.length>4000000)return;saved=JSON.parse(raw);}catch{return;}
   if(!saved||typeof saved!=='object')return;
   if(saved.schemaVersion===2){
@@ -211,6 +213,7 @@ export class ApiTripController{
    if(this.state.pendingRequest){this.state.messages[this.state.pendingRequest.replyIndex].interrupted=true;this.state.error='Ответ прервался. Переписка сохранена; можно повторить сообщение.';}
   }else{this.state.sessionId=safeId(saved.sessionId)?saved.sessionId:null;this.state.options=Array.isArray(saved.options)?saved.options:[];this.state.optionKind=saved.optionKind;}
   this.orderRefs=Array.isArray(saved.orders)?saved.orders.filter(row=>safeId(row?.sessionId)&&typeof row.orderId==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(row.orderId)).slice(0,1000):[];
+  if(this.state.sessionId&&!this.state.pendingRequest&&!this.state.sessionLost)this.state.syncNeeded=true;
   this.notify();
   for(const row of this.orderRefs){
    if(this.generation!==generation)return;
@@ -225,6 +228,7 @@ export class ApiTripController{
   try{const snapshot=await this.sessionSnapshot();if(this.generation!==generation||!snapshot)return;this.state.syncNeeded=false;if(!this.state.messages.length)this.state.messages.push({role:'assistant',text:'Параметры поездки восстановлены с сервера. Можно продолжить разговор.'});}
   catch(error){if(this.generation!==generation)return;if(error.status===404)this.markSessionLost();else{this.state.syncNeeded=true;this.state.connection='offline';this.state.error='Переписка сохранена. Связь с сервером временно недоступна.';}}
   this.notify();
+  }finally{this.restoring=false;}
  }
  async send(message){
   message=String(message||'').trim();if(!message||this.state.busy)return null;

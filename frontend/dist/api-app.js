@@ -60,6 +60,7 @@ export function mountApiApp({root,modal,icon,config}){
  }
  function cards(){
   const state=current();
+  if(state.sessionLost)return '';
   if(state.stage==='collecting'&&!state.stale&&!state.sessionLost&&!state.options.length&&state.notes.length)return `<div class="empty-result"><strong>Подтверждённых вариантов пока нет.</strong><p>${esc(visibleText(state.notes.join(' ')))}</p><p>Измените даты или условия в чате, чтобы повторить поиск.</p></div>`;
   if(!searchReady())return state.messages.length&&Object.keys(state.brief).length?`<section class="api-search-update" role="status"><strong>${state.busy?'Обновляем подбор':'Уточняем условия поездки'}</strong><p>Предыдущие предложения больше не показываются как актуальные. ${state.busy?'Новые варианты появятся после ответа.':'Ответьте в чате или измените условия, чтобы продолжить поиск.'}</p></section>`:'';
   if(state.optionKind==='packages'){
