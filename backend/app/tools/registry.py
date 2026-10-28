@@ -21,7 +21,7 @@ class ToolRegistry(dict[str, Tool[Any, Any]]):
             await client.aclose()
 
 
-def create_tools(settings: Settings, *, flight_http=None) -> ToolRegistry:
+def create_tools(settings: Settings, *, flight_http=None, train_http=None) -> ToolRegistry:
     if settings.tools_mode == "stub":
         return ToolRegistry(create_stub_tools())
     # Imports stay lazy: the default stub mode also works before implementation PRs are merged.
@@ -57,12 +57,26 @@ def create_tools(settings: Settings, *, flight_http=None) -> ToolRegistry:
         flights = FlightTool(mode="provider", http=flight_http, token=token, data_dir=settings.data_dir)
     else:
         flights = FlightTool(data_dir=settings.data_dir)
+    if settings.trains_mode == "yandex":
+        key = settings.yandex_rasp_api_key.get_secret_value() if settings.yandex_rasp_api_key else None
+        if train_http is None:
+            from app.tools.http_cache import CachedHttpClient
+
+            train_http = CachedHttpClient(
+                mode=settings.cache_mode,
+                cache_dir=settings.yandex_cache_dir or settings.data_dir / "cache/yandex/runtime",
+                secret_values=(key,) if key else (),
+            )
+            owned_clients.append(train_http)
+        trains = TrainTool(mode="provider", http=train_http, key=key, data_dir=settings.data_dir)
+    else:
+        trains = TrainTool(data_dir=settings.data_dir)
     tools = (
         flights,
         HotelSearchTool(data_dir=settings.data_dir),
         DestinationTool(data_dir=settings.data_dir),
         S4TransferTool(data_dir=settings.data_dir),
-        TrainTool(data_dir=settings.data_dir),
+        trains,
         PriceCalendarTool(flights=flights),
     )
     return ToolRegistry({tool.name: tool for tool in tools}, owned_clients=owned_clients)

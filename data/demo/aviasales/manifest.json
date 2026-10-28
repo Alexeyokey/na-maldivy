@@ -1,0 +1,164 @@
+{
+  "contains_personal_data": false,
+  "credential_required_for_replay": false,
+  "endpoint": "https://api.travelpayouts.com/aviasales/v3/prices_for_dates",
+  "entries": [
+    {
+      "body_sha256": "4cd2d901385d5810d5e02fc4df7186ef64420b7169f584a23a03888bc1a43f43",
+      "departure_date": "2026-11-20",
+      "destination": "AYT",
+      "file": "19bc134666d5ddb0525d57ff5a5c3f8decdbd822454f351bc8147614ecb321c8.json",
+      "origin": "SVO",
+      "recorded_at": "2026-10-28T08:55:12.599608+00:00",
+      "sha256": "c0428860eb3b9f490ca76ef59d1ebb6fe8581e38ab4cbb2e96179c79179251c3"
+    },
+    {
+      "body_sha256": "26eacdc2c8b2a123526cb6f58a56f70f910af8588ceb76360227ddf6a4c99144",
+      "departure_date": "2026-11-21",
+      "destination": "AYT",
+      "file": "1adbf41d8d8ac578b165f0df1f2ce715d7013d0bad8ca68e0c8a4dc993505c35.json",
+      "origin": "SVO",
+      "recorded_at": "2026-10-28T08:55:13.101035+00:00",
+      "sha256": "4c57443c372fb11f41d23e6c64d4102187575ecae35b9bba3c02ee392b9a13fc"
+    },
+    {
+      "body_sha256": "12456b97ee39ed6150e64f7a903baa33bf67bf6d9bab5ccd17caa0141c209eab",
+      "departure_date": "2026-11-27",
+      "destination": "SVO",
+      "file": "1d2375b5d064f4e9b49a09efa0a65e3074719612defcc2217b21891c9e7beff1.json",
+      "origin": "AYT",
+      "recorded_at": "2026-10-28T08:55:12.942516+00:00",
+      "sha256": "518b26e1868965cccd4fad1d3d251d1f85361bc414eda0466607df5afe27a651"
+    },
+    {
+      "body_sha256": "1675c574ed769dba83a7c3f03f942d2a0432c64dcac5719a27dee1849737cc3d",
+      "departure_date": "2026-11-16",
+      "destination": "AYT",
+      "file": "209120df281e81d1dd895c1424ff3bf37058d6bfed833c8c55fc0a174d0200f8.json",
+      "origin": "SVO",
+      "recorded_at": "2026-10-28T08:55:11.245731+00:00",
+      "sha256": "63a91265cb3cf0d6de5adc4463f00f90c87817c61a2cdba9ad91c6d54f497213"
+    },
+    {
+      "body_sha256": "81b5dfb3b7c71a71fdf3d0d2061d54890b41dc7fc95904d394e80b28172a4185",
+      "departure_date": "2026-11-18",
+      "destination": "MLE",
+      "file": "22cb81ec96cdf3447c8e6e00d8baf5865008e6ac4cd6cb6b3231528b3435f09f.json",
+      "origin": "SVO",
+      "recorded_at": "2026-10-28T07:33:19.542263+00:00",
+      "sha256": "8f7fef706204c2bab2fe27bbb29d9eee010ea96daae31274e2bf8aebad7738d1"
+    },
+    {
+      "body_sha256": "9f10e86b60592b9eda9f26018010fa283ceb9b2cac0b408e81390d394f6c4b37",
+      "departure_date": "2026-11-17",
+      "destination": "AYT",
+      "file": "230483d81620817a6919c32060ff09c1d6ebe34d976a050fb526eab76ecda095.json",
+      "origin": "SVO",
+      "recorded_at": "2026-10-28T08:55:11.762939+00:00",
+      "sha256": "067eabedb5e42811ec397e59d37ff2e6307e8d67d7dc66815f6c851ba525e96b"
+    },
+    {
+      "body_sha256": "b2b73d9fe1d83745553f2d32c1e8e636bd6ce923588b2a04f9f122dfe8eed101",
+      "departure_date": "2026-11-25",
+      "destination": "SVO",
+      "file": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+      "origin": "AYT",
+      "recorded_at": "2026-10-28T07:54:11.485448+00:00",
+      "sha256": "852809d6bd3ae03a5b7d4c855d64c76041315363d936de26ec77ce448c769a97"
+    },
+    {
+      "body_sha256": "81a57d5a47f4be2d395c47ad4520a1618a60c66e8ddec2cdd5f83f9f3a654846",
+      "departure_date": "2026-11-29",
+      "destination": "SVO",
+      "file": "294d1ffe8b4000ea5a3bd9ddddda311e62497003c1aeb47247e57dec0150d949.json",
+      "origin": "AYT",
+      "recorded_at": "2026-10-28T09:50:54.727505+00:00",
+      "sha256": "26957dcecf667758ea0d42537d421b2f1ec6f04496470e718097013066d9af00"
+    },
+    {
+      "body_sha256": "b0497d1a66b50bd83d2a44d8a0ba2cf63f533ed53f54d5df6205abfe9fd06094",
+      "departure_date": "2026-11-23",
+      "destination": "SVO",
+      "file": "30d279687712dbc6064dd804abf0b5c2be3dd7910db5de72b6760306aea8d2d8.json",
+      "origin": "AYT",
+      "recorded_at": "2026-10-28T08:55:11.420049+00:00",
+      "sha256": "98217287b03bfe48d44cfc492f98800cf1a58e6daa2deb6be5b3e16d1fe4afe9"
+    },
+    {
+      "body_sha256": "32d569d26902faa151329f75544e5fd9a9681c9af7eaa75cb53ccae3b98e211e",
+      "departure_date": "2026-11-15",
+      "destination": "AYT",
+      "file": "3a15cff847b1d51d36acb392a8f8fd61a65168f33563bc78232a8fbeb62fee61.json",
+      "origin": "SVO",
+      "recorded_at": "2026-10-28T08:55:10.731441+00:00",
+      "sha256": "9c21e6f2cfdc144204fd5e71c22b652b01e2204e081024fe4811fe8a1533d296"
+    },
+    {
+      "body_sha256": "34f8f02d885495315a1b7f40019f5fbb41a782cd19a43d1f580488221e27d16b",
+      "departure_date": "2026-11-22",
+      "destination": "SVO",
+      "file": "3b582b5be6f82ff8bfec7db742d28485b83c5869515371a6e6a0e4d532df79c2.json",
+      "origin": "AYT",
+      "recorded_at": "2026-10-28T08:55:10.891059+00:00",
+      "sha256": "399fc7e80006e22096024781b9baa395a2eeb687dcab253511743efc726499fd"
+    },
+    {
+      "body_sha256": "499efec806b1a9e4f247501ff2738dfcd4f0509f23b28400f67f07c022d4d673",
+      "departure_date": "2026-11-18",
+      "destination": "AYT",
+      "file": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+      "origin": "SVO",
+      "recorded_at": "2026-10-28T07:54:11.091831+00:00",
+      "sha256": "5fed72ad320ada592025e2e65496185e71b8288c30b7fe9a6af23d69d6b045d1"
+    },
+    {
+      "body_sha256": "d3803483a0c3b61cfc7be9110dd43b0cdd7eba7467d2e827547d5ea01d7b47fb",
+      "departure_date": "2026-11-24",
+      "destination": "SVO",
+      "file": "7d83b9b748c6cf03443d678df082cbd182c3bbf13ad13c6eaec40a51b8146bba.json",
+      "origin": "AYT",
+      "recorded_at": "2026-10-28T08:55:11.934071+00:00",
+      "sha256": "13803c2a5dae9c42515bfbd536283225edfdafec57f89a5a89cd584f673daff9"
+    },
+    {
+      "body_sha256": "d528c95e9e2feafafb75e336ab355fa263cf2858177e49c5ff800a70b17cf8cf",
+      "departure_date": "2026-11-26",
+      "destination": "SVO",
+      "file": "cf1eecf563d4e216c70f72e9cf3dffce6a4bfa3651c16e7c872c42aabda3a5b4.json",
+      "origin": "AYT",
+      "recorded_at": "2026-10-28T08:55:12.441679+00:00",
+      "sha256": "9b1d6df8feaf1eeb9ebbf47c06ea1c3170fe80d00cbda7463c69f2e04df120dc"
+    },
+    {
+      "body_sha256": "426848836b27a783bc71fc92587aafc25c5b270aa47043c8ed489c974e1d8360",
+      "departure_date": "2026-11-28",
+      "destination": "SVO",
+      "file": "d77f2defb99a65206b0d9349e26cec542abf748c0a42f40b59988a1e625b6380.json",
+      "origin": "AYT",
+      "recorded_at": "2026-10-28T08:55:13.438579+00:00",
+      "sha256": "97fb209cd6cb15ccf527f70b40141f53122c670217e36133f14b24603893fd5b"
+    },
+    {
+      "body_sha256": "e85eb82f2c2c0c5ceee66c30a6e2d08b1919fcebf9505690bb43dd6bfab5e1d6",
+      "departure_date": "2026-11-18",
+      "destination": "DXB",
+      "file": "eda51c3f86754b2c090a72f72d64066d870427ee9aba091a313bfd16bbb427eb.json",
+      "origin": "SVO",
+      "recorded_at": "2026-10-28T07:54:11.670648+00:00",
+      "sha256": "386dd816bf2f6648e5c3899ef1943fc41c814d6a14e0879169dcc148183cc8a5"
+    },
+    {
+      "body_sha256": "617aae35c4984479ad56b4a92e65ea5dc2dd97ef8d883ff00390f11e1ea169dc",
+      "departure_date": "2026-11-19",
+      "destination": "AYT",
+      "file": "ef9fa0ad1cef29e334184551d8db0dc804b91c333262003bb049aa37f5590522.json",
+      "origin": "SVO",
+      "recorded_at": "2026-10-28T08:55:12.097866+00:00",
+      "sha256": "aeac61a3755c31eb160ac1f7e672b6623df7f4551a000b8131f09f3e4dfe67af"
+    }
+  ],
+  "is_live_availability": false,
+  "notice": "Real cached search-price observations; group/baggage/hotel/transfer prices are modelled; availability and purchase price unconfirmed.",
+  "schema_version": 1,
+  "source": "aviasales_data_api"
+}

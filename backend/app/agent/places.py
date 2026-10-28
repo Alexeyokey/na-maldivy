@@ -24,6 +24,7 @@ _ALIASES: tuple[tuple[str, str], ...] = (
     ("шереметьев", "SVO"),
     ("москв", "MOW"),
     ("moscow", "MOW"),
+    (r"мск\b", "MOW"),
     ("питер", "LED"),
     ("петербург", "LED"),
     ("спб", "LED"),
@@ -43,10 +44,14 @@ _ALIASES: tuple[tuple[str, str], ...] = (
     (r"мале\b", "MLE"),
     ("maldives", "MLE"),
     (r"male\b", "MLE"),
+    ("нячанг", "CXR"),
+    ("nha trang", "CXR"),
 )
 
+PLACE_NAMES["CXR"] = "Нячанг"
+
 ORIGINS = frozenset({"MOW", "SVO", "LED"})
-DESTINATIONS = frozenset({"AYT", "DXB", "MLE"})
+DESTINATIONS = frozenset({"AYT", "DXB", "MLE", "CXR"})
 
 
 def to_iata(value: str | None) -> str | None:

@@ -6,12 +6,24 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_integrated_demo_protocol_does_not_claim_unperformed_passes():
+def test_integrated_demo_protocol_requires_evidence_for_completed_runs():
     report = json.loads((ROOT / "eval/demo-runs.json").read_text(encoding="utf-8"))
     assert report["scope"] == "integrated_product_through_demo_payment_and_voucher"
     assert report["target_seconds"] == 300 and report["required_consecutive_passes"] == 5
     assert [row["run"] for row in report["runs"]] == [1, 2, 3, 4, 5]
-    assert all(row["status"] == "not_run" and row["trace"] is None for row in report["runs"])
+    for row in report["runs"]:
+        assert row["status"] in {"not_run", "passed", "failed"}
+        if row["status"] == "not_run":
+            assert row["duration_seconds"] is None and row["trace"] is None
+            continue
+        assert isinstance(row["duration_seconds"], (int, float)) and row["duration_seconds"] >= 0
+        trace_path = (ROOT / row["trace"]).resolve()
+        assert trace_path.is_relative_to((ROOT / "eval/reports").resolve()) and trace_path.is_file()
+        evidence = json.loads(trace_path.read_text(encoding="utf-8"))
+        assert evidence["scope"] == report["scope"] and evidence["status"] == row["status"]
+        assert evidence["integrated_ui_status"] == "performed"
+        if row["status"] == "passed":
+            assert row["duration_seconds"] <= report["target_seconds"]
 
 
 def test_missing_implementations_cannot_create_a_successful_data_report(tmp_path):

@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     flights_mode: Literal["synthetic", "aviasales"] = "synthetic"
     aviasales_api_token: SecretStr | None = Field(default=None, repr=False)
     aviasales_cache_dir: Path | None = None
+    trains_mode: Literal["synthetic", "yandex"] = "synthetic"
+    yandex_rasp_api_key: SecretStr | None = Field(default=None, repr=False)
+    yandex_cache_dir: Path | None = None
+    checkout_db_path: Path | None = None
 
     llm_provider: Literal["fake", "openai"] = "fake"
     llm_base_url: str | None = None
@@ -40,6 +44,11 @@ class Settings(BaseSettings):
                 raise ValueError("FLIGHTS_MODE=aviasales requires TOOLS_MODE=real")
             if self.cache_mode != "replay" and not self.aviasales_api_token:
                 raise ValueError("AVIASALES_API_TOKEN is required for record/live; replay works without a token")
+        if self.trains_mode == "yandex":
+            if self.tools_mode != "real":
+                raise ValueError("TRAINS_MODE=yandex requires TOOLS_MODE=real")
+            if self.cache_mode != "replay" and not self.yandex_rasp_api_key:
+                raise ValueError("YANDEX_RASP_API_KEY is required for record/live; replay works without a key")
         if self.llm_provider == "openai":
             required = {"LLM_API_KEY": self.llm_api_key, "LLM_MODEL_MAIN": self.llm_model_main}
             missing = [name for name, value in required.items() if not value]

@@ -43,7 +43,7 @@
 | `search_hotels` | `HotelSearch` | `list[HotelOffer]` | `destination`, `check_in`, `check_out`, `travelers`, `min_stars`, `refundable_only`, `max_price_rub` |
 | `search_trains` | `TrainSearch` | `list[Train]` | `origin`, `destination`, `departure_date`, `travelers`, `seat_class` |
 | `get_transfer` | `TransferRequest` | `list[Transfer]` | `airport`, `hotel_id`, `pickup_at`, `travelers` |
-| `suggest_destinations` | `DestinationQuery` | `list[Destination]` | `month`, `origin`, `travelers`, `nights`, `budget_rub`, `min_water_temperature_c`, `visa_free_only` |
+| `suggest_destinations` | `DestinationQuery` | `list[Destination]` | `month`, `origin`, `travelers`, `nights`, `budget_rub`, `min_water_temperature_c`, `visa_free_only`, опциональный `departure_date` |
 | `price_calendar` | `PriceCalendarQuery` | `list[DayPrice]` | `origin`, `destination`, `month`, `travelers` |
 
 Варианты `seat_class`: `platzkart`, `coupe`, `sv`, `seated`.
@@ -60,6 +60,27 @@
 а S5 возвращает `hotel_times_unknown` с предложением уточнить часы у отеля. Остальные проверки работают.
 Синтетические отели задают свои модельные часы явно. У `DestinationQuery.origin` нет значения по умолчанию:
 если город отправления неизвестен, агент должен его уточнить.
+
+### Датированные источники D5
+
+`DestinationQuery.departure_date: date | null` дополняет месяц точной датой
+поездки: D5 использует её при проверке периода визового правила. Поле необязательное;
+существующие запросы только с месяцем продолжают работать. Отсутствие точной даты
+нельзя трактовать как проверку права въезда на произвольный будущий год.
+
+Дополнительные поля ответа `Destination` сохраняют исходную справку:
+
+| Поле | Значение при наличии данных | Значение по умолчанию |
+|---|---|---|
+| `visa` | `VisaEvidence`: режим, статус проверки, условия, `checked_on`, `effective_from` / `effective_until`, лимит дней и `source_url` | `null` |
+| `sources` | Список `ReferenceSource`: `title`, `url`, дата получения `as_of`, опциональный период `period` | `[]` |
+| `as_of` | Дата среза каталога | `null` |
+
+`visa_required` остаётся кратким трёхзначным признаком; он не заменяет проверку
+дат поездки, срока действия правила и условий из `visa`. Сохранённый источник
+не является новой онлайн-проверкой. Неизвестные цены остаются `null` независимо
+от наличия ссылки или визовой справки. Выгрузка JSON Schema и примеры содержат
+эти необязательные расширения; заглушки вправе возвращать значения по умолчанию.
 
 ## Трансферы S4
 

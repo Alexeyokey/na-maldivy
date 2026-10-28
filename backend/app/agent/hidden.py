@@ -65,7 +65,8 @@ RULES: tuple[Rule, ...] = (
     Rule("quiet", r"\bтих|\bтиш|спокойн|без тусов|без вечерин|без аниматор"),
     Rule(
         "flexible",
-        r"бесплатн\w* отмен|с возвратом|возвратн|планы могут|могут поменяться|не уверен\w* в дат",
+        r"бесплатн\w* отмен|с возвратом|возвратн|деньги.{0,30}верн\w*.{0,20}отмен|"
+        r"планы могут|могут поменяться|не уверен\w* в дат",
         {"refundable_only": True},
     ),
 )
@@ -193,6 +194,10 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
         if code in DESTINATIONS or (rail and code in {"MOW", "LED"}):
             data["destination"] = code
             break
+    if "destination" not in data and not rail:
+        mentioned = {code for word in re.findall(r"[а-яa-z-]+", t) if (code := to_iata(word)) in DESTINATIONS}
+        if len(mentioned) == 1:
+            data["destination"] = mentioned.pop()
     if rail:
         cities = list(
             dict.fromkeys(code for word in re.findall(r"[а-яa-z-]+", t) if (code := to_iata(word)) in {"MOW", "LED"})
@@ -213,9 +218,29 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
                 break
         if re.search(rf"\b{stem}", t):
             data["month"] = month
+            if year_match := re.search(rf"\b{stem}[а-я]*\s+(\d{{4}})\b", t):
+                data["year"] = int(year_match.group(1))
             break
     if iso := re.search(r"\b\d{4}-\d{2}-\d{2}\b", t):
         data["start_date"] = iso.group()
+    elif dotted := re.search(r"\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b", t):
+        data["start_date"] = f"{dotted.group(3)}-{int(dotted.group(2)):02d}-{int(dotted.group(1)):02d}"
+    # Explicit same-month ranges, including Unicode dash, retain both dates.
+    for stem, month in _MONTHS:
+        span = re.search(rf"\b(\d{{1,2}})\s*[–—-]\s*(\d{{1,2}})\s+{stem}[а-я]*(?:\s+(\d{{4}}))?", t)
+        if span:
+            try:
+                first = (
+                    date(int(span.group(3)), month, int(span.group(1)))
+                    if span.group(3)
+                    else _future(month, int(span.group(1)), today)
+                )
+                last = date(first.year, month, int(span.group(2))) if first else None
+                if first and last and last > first:
+                    data.update(start_date=first.isoformat(), nights=(last - first).days)
+            except ValueError:
+                pass  # malformed dates are handled by normal field validation
+            break
 
     # Срок: «на неделю», «на 5 ночей», «дней на десять».
     if "nights" in data:
@@ -249,6 +274,8 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
         data["max_flight_minutes"] = int(m.group(1)) * 60
     if re.search(r"без пересад|прям\w* рейс|прям\w* перел", t):
         data["direct_only"] = True
+    if re.search(r"поздно вечером|ночн\w* вылет|вылет.{0,25}вечер|вечерн\w* вылет", t):
+        data["late_departure"] = True
     if re.search(r"без виз", t):
         data["visa_free_only"] = True
     if m := re.search(r"([1-5])\s*(?:\*|зв[её]зд)", t):
@@ -260,7 +287,7 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
             data["adults"] = n
     elif re.search(r"втроем", t):
         infer("adults", 3)
-    elif re.search(r"вдвоем|на двоих|нас двое|с женой|с мужем|с девушкой|с парнем|с подругой|с другом|с супруг", t):
+    elif re.search(r"вдвоем|\bдвое\b|на двоих|с женой|с мужем|с девушкой|с парнем|с подругой|с другом|с супруг", t):
         infer("adults", 2)
     ages = [int(a) for a in re.findall(r"\b(\d{1,2})\s*(?:лет|года|год)\b", t) if int(a) <= 17]
     ages += [int(a) for a in re.findall(r"\b(\d{1,2})-?летн", t) if int(a) <= 17]

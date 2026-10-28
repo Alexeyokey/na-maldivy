@@ -3,3 +3,6 @@
 
 # Preserve the pinned upstream MIT notice byte-for-byte, including its final blank line.
 data/sources/airports-MIT-LICENSE.txt whitespace=-blank-at-eof
+
+# iCalendar exports require CRLF; preserve evidence bytes and SHA256 across checkout.
+*.ics -text whitespace=-blank-at-eol,cr-at-eol

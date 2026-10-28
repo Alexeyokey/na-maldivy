@@ -6,10 +6,17 @@ services:
         required: false # без .env агент работает на фейковой модели
     environment:
       DATA_DIR: /data
+      AVIASALES_CACHE_DIR: /state/aviasales
+      YANDEX_CACHE_DIR: /state/yandex
+      CHECKOUT_DB_PATH: /state/checkout.sqlite3
     ports:
       - "${AGENT_PORT:-8000}:8000"
     volumes:
       - ./data:/data:ro # справочники и базы инструментов, например data/transfers
+      - agent-state:/state # приватные заказы и записываемый runtime-кэш
     restart: unless-stopped
 
   # web: интерфейс появится в U1 (#6)
+
+volumes:
+  agent-state:

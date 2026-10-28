@@ -21,6 +21,7 @@ class Stage(StrEnum):
     PACKAGES_SHOWN = "packages_shown"
     TRAINS_SHOWN = "trains_shown"
     AWAITING_CONFIRMATION = "awaiting_confirmation"
+    CHECKOUT_PENDING = "checkout_pending"
     BOOKED = "booked"
 
 

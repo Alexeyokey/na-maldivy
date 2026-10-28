@@ -153,7 +153,8 @@ def test_http_real_registry_search_selection_confirmation_and_simulated_purchase
         confirmed = sse(client.post("/api/chat", json={"message": "да, оформляй", "session_id": sid}))
         booking = next(data for kind, data in confirmed if kind == "booking")
         assert booking["is_simulated"] is True and booking["total_rub"] == chosen["total_rub"]
-        assert client.get(f"/api/session/{sid}").json()["stage"] == "booked"
+        assert booking["status"] == "awaiting_travelers" and booking["paid"] is False
+        assert client.get(f"/api/session/{sid}").json()["stage"] == "checkout_pending"
 
 
 def test_http_real_registry_failure_does_not_fall_back_to_stub(settings, tmp_path):

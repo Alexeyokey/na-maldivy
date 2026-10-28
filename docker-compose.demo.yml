@@ -1,0 +1,44 @@
+# Combine with docker-compose.yml. Runtime network has no Internet route.
+# No credential is needed: quotes are the committed, sanitised D4 snapshot.
+services:
+  agent:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.demo
+    environment:
+      TOOLS_MODE: real
+      FLIGHTS_MODE: aviasales
+      TRAINS_MODE: synthetic
+      YANDEX_RASP_API_KEY: ""
+      YANDEX_CACHE_DIR: /state/yandex
+      CACHE_MODE: replay
+      AVIASALES_API_TOKEN: ""
+      AVIASALES_CACHE_DIR: /data/demo/aviasales
+      LLM_PROVIDER: fake
+      LLM_API_KEY: ""
+      LLM_BASE_URL: ""
+      LLM_MODEL_MAIN: ""
+      LLM_MODEL_FAST: ""
+    networks:
+      - offline-demo
+    volumes: !override
+      - agent-state:/state
+    ports: !reset []
+
+  gateway:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.gateway
+    depends_on:
+      agent:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${AGENT_PORT:-8000}:8080"
+    networks:
+      - offline-demo
+      - default
+    restart: unless-stopped
+
+networks:
+  offline-demo:
+    internal: true

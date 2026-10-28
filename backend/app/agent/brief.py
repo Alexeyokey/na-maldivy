@@ -35,6 +35,7 @@ FIELD_LABELS: dict[str, str] = {
     "origin": "город отправления",
     "destination": "направление",
     "month": "месяц поездки",
+    "year": "год поездки",
     "start_date": "дата отправления",
     "nights": "число ночей",
     "adults": "взрослые",
@@ -43,6 +44,7 @@ FIELD_LABELS: dict[str, str] = {
     "budget_rub": "бюджет",
     "max_flight_minutes": "максимум в пути",
     "direct_only": "только прямые рейсы",
+    "late_departure": "вечерний или ночной вылет",
     "refundable_only": "только возвратные тарифы",
     "min_stars": "звёзды отеля",
     "min_water_temperature_c": "температура воды",
@@ -64,6 +66,7 @@ class TripBrief(BaseModel):
     origin: str | None = None
     destination: str | None = None
     month: int | None = Field(default=None, ge=1, le=12)
+    year: int | None = Field(default=None, ge=1900, le=9999)
     start_date: date | None = None
     nights: int | None = Field(default=None, ge=1, le=60)
     adults: int = Field(default=1, ge=1, le=12)
@@ -72,6 +75,7 @@ class TripBrief(BaseModel):
     budget_rub: int | None = Field(default=None, gt=0)
     max_flight_minutes: int | None = Field(default=None, gt=0, le=24 * 60)
     direct_only: bool = False
+    late_departure: bool = False
     refundable_only: bool = False
     min_stars: int | None = Field(default=None, ge=1, le=5)
     min_water_temperature_c: float | None = Field(default=None, ge=10, le=35)
@@ -116,6 +120,10 @@ class TripBrief(BaseModel):
                 self.month = self.start_date.month
             elif self.month != self.start_date.month:
                 raise ValueError(f"дата {self.start_date.isoformat()} не попадает в месяц {self.month}")
+            if self.year is None:
+                self.year = self.start_date.year
+            elif self.year != self.start_date.year:
+                raise ValueError(f"дата {self.start_date.isoformat()} не попадает в год {self.year}")
         return self
 
     @property
@@ -137,6 +145,7 @@ class BriefPatch(BaseModel):
     origin: str | None = None
     destination: str | None = None
     month: int | None = None
+    year: int | None = None
     start_date: str | None = Field(default=None, description="YYYY-MM-DD")
     nights: int | None = None
     adults: int | None = None
@@ -145,6 +154,7 @@ class BriefPatch(BaseModel):
     budget_rub: int | None = None
     max_flight_minutes: int | None = None
     direct_only: bool | None = None
+    late_departure: bool | None = None
     refundable_only: bool | None = None
     min_stars: int | None = None
     min_water_temperature_c: float | None = None
@@ -241,9 +251,14 @@ def apply_patch(
                 rejected.append(RejectedChange("start_date", values.pop("start_date"), "дата уже прошла"))
             else:
                 values.setdefault("month", new_date.month)
+                values.setdefault("year", new_date.year)
+                candidate.update(start_date=None, month=None, year=None)
     if "month" in values and "start_date" not in values and candidate["start_date"] is not None:
         if candidate["start_date"].month != values["month"]:
             candidate["start_date"] = None  # «а если в декабре?» — старая дата больше не действует
+    if "year" in values and "start_date" not in values and candidate["start_date"] is not None:
+        if candidate["start_date"].year != values["year"]:
+            candidate["start_date"] = None
 
     for name, value in values.items():
         trial = {**candidate, name: value}
@@ -276,7 +291,7 @@ def apply_patch(
         elif (
             name in patch.inferred
             or name == "needs"  # скрытые требования всегда выведены, а не названы полем
-            or (name == "month" and "start_date" in values and "month" not in patch.values())
+            or (name in {"month", "year"} and "start_date" in values and name not in patch.values())
         ):
             source = "inferred"
         else:

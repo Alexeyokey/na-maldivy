@@ -322,6 +322,25 @@ class DestinationQuery(Contract):
     budget_rub: Rubles | None = None
     min_water_temperature_c: float | None = None
     visa_free_only: bool = False
+    departure_date: date | None = None
+
+
+class VisaEvidence(Contract):
+    regime: Literal["domestic", "exempt", "on_arrival", "evisa", "required", "unknown"]
+    verification_status: Literal["official_verified", "partial", "unknown", "domestic"]
+    conditions: str
+    checked_on: date | None = None
+    effective_from: date | None = None
+    effective_until: date | None = None
+    max_stay_days: int | None = Field(default=None, gt=0)
+    source_url: str | None = None
+
+
+class ReferenceSource(Contract):
+    title: str
+    url: str
+    as_of: date
+    period: str | None = None
 
 
 class Destination(Contract):
@@ -335,6 +354,9 @@ class Destination(Contract):
     estimated_total_price_rub: Rubles | None
     tags: list[str] = Field(default_factory=list)
     risks: list[str] = Field(default_factory=list)
+    visa: VisaEvidence | None = None
+    sources: list[ReferenceSource] = Field(default_factory=list)
+    as_of: date | None = None
     is_synthetic: bool
 
 

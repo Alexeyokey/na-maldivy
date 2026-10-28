@@ -108,7 +108,7 @@ async def test_rebuild_keeps_brief_and_shows_diff() -> None:
     sid = t.last.data["session_id"]
     first_date = agent.sessions.get(sid).brief.start_date
 
-    t = await say(agent, "а если на два дня позже?", sid)
+    t = await say(agent, "Перенеси на два дня позже", sid)
     session = agent.sessions.get(sid)
     assert session.brief.start_date == date.fromordinal(first_date.toordinal() + 2)
     assert session.brief.destination == "AYT" and session.brief.adults == 2  # не начали с нуля

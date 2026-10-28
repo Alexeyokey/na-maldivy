@@ -310,3 +310,17 @@ class TrainTool:
 
     async def run(self, input: TrainSearch) -> list[Train]:
         return list((await self.search_with_provenance(input)).trains)
+
+    def public_metadata(self, result: list[Train]) -> dict[str, Any]:
+        """Public source boundaries; no headers, key, raw provider payload or fare claim."""
+        source = "yandex_timetable" if self.mode == "provider" else "synthetic"
+        return {
+            "source": source if result else None,
+            "configured_source": source,
+            "schedule_quote_count": len(result),
+            "cache_mode": self.provider.http.mode if self.mode == "provider" and self.provider else None,
+            "price_modelled": True,
+            "availability_confirmed": False,
+            "class_availability_confirmed": False,
+            "price_scope": "group_one_way",
+        }

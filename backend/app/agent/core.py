@@ -31,13 +31,17 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, ValidationError
 
 from app.agent import formatting as fmt
-from app.agent.analysis import MessageAnalysis, analyze_message
+from app.agent.analysis import MessageAnalysis, analyze_message, requests_fabricated_offers
 from app.agent.brief import FIELD_LABELS, ApplyResult, BriefPatch, apply_patch
+from app.agent.date_savings import compare_date_savings, is_date_savings_question
+from app.agent.destination_info import destination_information, is_destination_information_question
 from app.agent.hidden import NEEDS
 from app.agent.planner import DEFAULT_NIGHTS, PlanResult, needs_summary, search_train_trip, search_trip, suggest
 from app.agent.prompts import ASK_PROMPT, EXPLAIN_PROMPT, OFF_TOPIC_PROMPT, SUMMARY_PROMPT, context_message
+from app.agent.review_explanations import explain_hotel_reviews
 from app.agent.router import Action, Decision, decide
 from app.agent.session import Session, SessionStore, Stage
+from app.booking.checkout_service import CheckoutError, CheckoutService
 from app.llm import LLMClient, LLMError, Message
 from app.tools import Tool, run_tool, tool_specs
 
@@ -45,7 +49,8 @@ log = logging.getLogger(__name__)
 
 EventType = Literal[
     "status", "brief", "question", "tool_call", "tool_result", "options", "diff",
-    "booking", "warning", "delta", "done", "error",
+    "booking", "warning", "delta", "done", "error", "date_savings",
+    "hotel_profile", "destination_info", "data_integrity",
 ]  # fmt: skip
 
 MAX_TOOL_STEPS = 3  # итераций модели с инструментами при ответе на вопрос
@@ -69,6 +74,7 @@ class TravelAgent:
         llm_writes_text: bool = True,
         sessions: SessionStore | None = None,
         today: Callable[[], date] = date.today,
+        checkout: CheckoutService | None = None,
     ) -> None:
         """llm_writes_text=False — тексты по шаблонам (фейковый провайдер), разбор правилами."""
         self._llm = llm
@@ -76,6 +82,7 @@ class TravelAgent:
         self._llm_writes = llm_writes_text
         self.sessions = sessions or SessionStore()
         self._today = today
+        self._checkout = checkout
         self._locks: dict[str, asyncio.Lock] = {}
 
     async def run(self, message: str, session_id: str | None = None) -> AsyncIterator[AgentEvent]:
@@ -114,6 +121,25 @@ class TravelAgent:
     async def _turn(self, s: Session, text: str, emit: Emit) -> None:
         today = self._today()
         emit("status", {"stage": "analyze", "text": "Разбираю запрос"})
+        if requests_fabricated_offers(text):
+            emit("data_integrity", {"status": "refused_fabrication", "state_changed": False})
+            reply = self._say(
+                "Не могу подтвердить выдуманные наличие и цены. Демонстрационные данные помечаю явно; "
+                "неизвестная цена остаётся неизвестной, а не нулевой. Укажите маршрут и даты для проверяемого поиска.",
+                emit,
+            )
+            s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
+            return
+        if s.packages and is_date_savings_question(text):
+            reply = await self._explain(s, text, emit)
+            s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
+            return
+        profile = explain_hotel_reviews(s, text) if s.packages else None
+        if profile is not None:
+            emit("hotel_profile", profile.facts)
+            reply = self._say(profile.text, emit)
+            s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
+            return
         outcome = await analyze_message(
             self._llm if self._llm_writes else None,
             text,
@@ -130,6 +156,14 @@ class TravelAgent:
 
         applied = apply_patch(s.brief, s.sources, analysis.patch, today=today)
         self._commit_brief(s, applied, emit)
+
+        if is_destination_information_question(text) and not s.packages:
+            information = destination_information(s.brief, self._tools, today=today)
+            if information is not None:
+                emit("destination_info", information.facts)
+                reply = self._say(information.text, emit)
+                s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
+                return
 
         # Об отклонённых значениях говорим сразу и честно, а не теряем их молча.
         rejected = fmt.rejected_line(applied)
@@ -158,7 +192,7 @@ class TravelAgent:
             if search and applied.search_changed:
                 s.stale = bool(s.packages or s.destinations or s.trains)
                 s.selected = None
-                if s.stage in (Stage.AWAITING_CONFIRMATION, Stage.PACKAGES_SHOWN, Stage.BOOKED):
+                if s.stage in (Stage.AWAITING_CONFIRMATION, Stage.PACKAGES_SHOWN, Stage.BOOKED, Stage.CHECKOUT_PENDING):
                     s.stage = Stage.PACKAGES_SHOWN if s.packages else Stage.COLLECTING
                 if any(c.field in ("origin", "month") for c in applied.changes) and not s.brief.destination:
                     s.destinations = []
@@ -296,6 +330,10 @@ class TravelAgent:
         self._commit_brief(s, ApplyResult(applied.brief, applied.sources, applied.changes), emit, search=False)
 
     async def _explain(self, s: Session, text: str, emit: Emit) -> str:
+        if s.packages and is_date_savings_question(text):
+            comparison = await compare_date_savings(s, self._caller(s, emit), today=self._today(), text=text)
+            emit("date_savings", comparison.facts)
+            return self._say(comparison.text, emit)
         options = s.packages or s.trains or s.destinations
         fallback = (
             fmt.packages(PlanResult(options=s.packages))
@@ -339,6 +377,30 @@ class TravelAgent:
         # Двойная проверка инварианта: покупка только после явного подтверждения выбранного варианта.
         if s.stage is not Stage.AWAITING_CONFIRMATION or package is None or package.get("can_confirm") is False:
             return self._say("Сначала выберите вариант — я покажу состав поездки и попрошу подтверждение.", emit)
+        if self._checkout is not None:
+            try:
+                cart = self._checkout.create_cart(s, option=s.selected, expected_version=s.version)
+            except CheckoutError as exc:
+                return self._say(str(exc), emit)
+            s.stage = Stage.CHECKOUT_PENDING
+            s.booking = {
+                "id": cart["cart_id"],
+                "cart_id": cart["cart_id"],
+                "status": cart["status"],
+                "option": s.selected,
+                "hotel": package["hotel"]["name"],
+                "total_rub": package["total_rub"],
+                "is_simulated": True,
+                "paid": False,
+                "checkout_url": f"/api/checkout/carts/{cart['cart_id']}",
+            }
+            emit("booking", dict(s.booking))
+            return self._say(
+                "Создана демонстрационная корзина. Оплата ещё не выполнена: нужны тестовые данные "
+                "путешественников и явное подтверждение имитации оплаты. После неё будут доступны ваучер и .ics. "
+                "Деньги не списываются, билеты не выпускаются; неоценённые доплаты остаются вне суммы.",
+                emit,
+            )
         s.booking = {
             "id": "DEMO-" + uuid.uuid4().hex[:8].upper(),
             "option": s.selected,

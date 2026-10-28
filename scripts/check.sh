@@ -8,6 +8,7 @@ export CACHE_MODE=replay
 export LLM_PROVIDER=fake
 export TOOLS_MODE=stub
 export FLIGHTS_MODE=synthetic
+export TRAINS_MODE=synthetic
 
 steps=("$@")
 if [ ${#steps[@]} -eq 0 ]; then
@@ -18,10 +19,14 @@ fi
 SMOKE_PROJECT=na-maldivy-check
 SMOKE_PORT=18000
 
+smoke_compose() {
+  AGENT_PORT=$SMOKE_PORT docker compose -f docker-compose.yml -f docker-compose.demo.yml -p "$SMOKE_PROJECT" "$@"
+}
+
 smoke() {
-  trap 'AGENT_PORT=$SMOKE_PORT docker compose -p $SMOKE_PROJECT down >/dev/null 2>&1' EXIT
-  if ! AGENT_PORT=$SMOKE_PORT docker compose -p $SMOKE_PROJECT up --build -d --wait --wait-timeout 120; then
-    AGENT_PORT=$SMOKE_PORT docker compose -p $SMOKE_PROJECT logs
+  trap 'smoke_compose down >/dev/null 2>&1' EXIT
+  if ! smoke_compose up --build -d --wait --wait-timeout 120; then
+    smoke_compose logs
     exit 1
   fi
   curl -fsS "localhost:$SMOKE_PORT/health"
@@ -31,7 +36,7 @@ smoke() {
   if ! grep -q '^event: done' <<<"$out"; then
     echo "Чат не дошёл до события done:" >&2
     echo "$out" >&2
-    AGENT_PORT=$SMOKE_PORT docker compose -p $SMOKE_PROJECT logs
+    smoke_compose logs
     exit 1
   fi
 }

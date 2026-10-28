@@ -126,6 +126,12 @@ def packages(plan: PlanResult, diff: str = "") -> str:
             f"   Отель {plural(o['hotel']['nights'], 'ночь', 'ночи', 'ночей')} с {day(o['hotel']['check_in'])}, "
             + flight_line(o)
         )
+        timeline = o.get("timeline")
+        if timeline:
+            zone = o["outbound"].get("destination_timezone", "часовой пояс отеля")
+            arrival = when(timeline["hotel_arrival_at"])
+            check_in = when(timeline["booked_check_in"]) if timeline.get("booked_check_in") else "время неизвестно"
+            lines.append(f"   Приезд в отель {arrival}, заселение {check_in}; местное время ({zone}).")
         for label, leg in (("Туда", "outbound"), ("Обратно", "inbound")):
             source = o[leg].get("price_source")
             if source:

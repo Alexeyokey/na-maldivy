@@ -57,6 +57,15 @@ _ORDINALS = {"перв": 1, "втор": 2, "трет": 3, "1": 1, "2": 2, "3": 3
 _TRAVEL_WORDS = r"поезд|поездк|отдых|отпуск|лет\w*|отел|мор|билет|куда|тур|виз|рейс|перел|трансфер|ночей|недел"
 
 
+def requests_fabricated_offers(text: str) -> bool:
+    normalized = text.casefold().replace("ё", "е")
+    return bool(
+        re.search(r"(?:забей|игнорируй|не учитывай).{0,30}(?:реальн|данн|налич)", normalized)
+        or re.search(r"(?:выдумай|придумай).{0,35}(?:налич|цен|билет|предложен)", normalized)
+        or re.search(r"(?:напиши|скажи).{0,15}что.{0,80}(?:за 1 руб|за 1 р\b|за 1 ₽|люкс в любом)", normalized)
+    )
+
+
 def rules_intent(text: str, patch: BriefPatch, has_options: bool, awaiting_confirmation: bool) -> MessageAnalysis:
     """Намерение без модели: только явные сигналы, иначе plan."""
     t = text.lower().replace("ё", "е")

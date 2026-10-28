@@ -16,7 +16,7 @@ RUN uv sync --locked --no-dev
 
 COPY app ./app
 
-RUN useradd --create-home --uid 1000 agent
+RUN useradd --create-home --uid 1000 agent && mkdir /state && chown agent:agent /state
 USER agent
 
 EXPOSE 8000

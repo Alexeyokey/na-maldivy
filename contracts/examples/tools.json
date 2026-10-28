@@ -516,6 +516,7 @@
   "suggest_destinations": {
     "input": {
       "budget_rub": null,
+      "departure_date": null,
       "min_water_temperature_c": 24.0,
       "month": 11,
       "nights": 7,
@@ -530,6 +531,7 @@
     "output": [
       {
         "air_temperature_c": 30.0,
+        "as_of": null,
         "country": "ОАЭ",
         "estimated_total_price_rub": 111300,
         "flight_duration_minutes": 330,
@@ -547,15 +549,18 @@
         "risks": [
           "Демонстрационные климат, цены и визовые условия; требуется проверка реальных источников"
         ],
+        "sources": [],
         "tags": [
           "море",
           "synthetic"
         ],
+        "visa": null,
         "visa_required": false,
         "water_temperature_c": 27.0
       },
       {
         "air_temperature_c": 29.0,
+        "as_of": null,
         "country": "Мальдивы",
         "estimated_total_price_rub": 185300,
         "flight_duration_minutes": 540,
@@ -573,10 +578,12 @@
         "risks": [
           "Демонстрационные климат, цены и визовые условия; требуется проверка реальных источников"
         ],
+        "sources": [],
         "tags": [
           "море",
           "synthetic"
         ],
+        "visa": null,
         "visa_required": false,
         "water_temperature_c": 28.0
       }

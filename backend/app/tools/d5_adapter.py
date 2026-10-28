@@ -4,7 +4,7 @@ from pathlib import Path
 
 from pydantic import TypeAdapter
 
-from app.contracts.tools import Destination, DestinationQuery, Place
+from app.contracts.tools import Destination, DestinationQuery, Place, ReferenceSource, VisaEvidence
 from app.data_paths import resolve_data_dir
 from app.tools.destinations import Catalogue, Preferences, suggest_destinations
 
@@ -30,6 +30,7 @@ class DestinationTool:
             limit=100,
             catalogue=self.catalogue,
             data_path=self.data_dir / "destinations.yaml" if self.catalogue is None else None,
+            departure_date=input.departure_date,
         )
         result = []
         for item in response.candidates:
@@ -61,6 +62,22 @@ class DestinationTool:
                     estimated_total_price_rub=item.trip_cost_estimate_rub,
                     tags=list(record.tags),
                     risks=risks,
+                    visa=VisaEvidence(
+                        **visa.model_dump(
+                            exclude={"citizenship", "passport_type", "purpose", "rolling_window_days", "source"}
+                        ),
+                        source_url=str(response.sources[visa.source].url) if visa.source else None,
+                    ),
+                    sources=[
+                        ReferenceSource(
+                            title=source.title, url=str(source.url), as_of=source.retrieved_at, period=source.period
+                        )
+                        for key in dict.fromkeys(
+                            [record.geo_source, record.climate.air_source, record.climate.water_source, visa.source]
+                        )
+                        if key is not None and (source := response.sources[key])
+                    ],
+                    as_of=response.catalogue_as_of,
                     # Geographic flight duration and group/room estimates are modelled.
                     is_synthetic=True,
                 )

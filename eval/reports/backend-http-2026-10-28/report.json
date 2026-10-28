@@ -1,0 +1,1101 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-10-28T10:09:41.157671+00:00",
+  "scope": "backend_http_through_simulated_payment_voucher_ics",
+  "status": "passed",
+  "runs_requested": 5,
+  "runs_passed": 5,
+  "five_consecutive_backend_runs_passed": true,
+  "sources_unchanged_during_runs": true,
+  "same_cache_snapshot_across_runs": true,
+  "integrated_ui_rehearsal_status": "not_run",
+  "full_d9_acceptance_status": "not_completed_by_this_report",
+  "notice": "Backend/HTTP only. Simulated payment, no issued tickets, no real bookings. Integrated UI rehearsal and full D9 acceptance are not verified.",
+  "provenance": {
+    "python": "3.12.14",
+    "git_head": "13039eb6140da7edc5de140bd7893517802079ac",
+    "source_files_sha256": {
+      "backend/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/app/agent/__init__.py": "f695cbced94f7def7de07c69439bb2386ada63580b048ba612566411e6a5d0c4",
+      "backend/app/agent/analysis.py": "34e1f920410bc558970e770a639d9ffc79b688f47879e8940a2e060040d5f339",
+      "backend/app/agent/brief.py": "b503c1a0bf7ce4f739e5e3dd3184688da48c6f8c19efc87aa3051725d63960d0",
+      "backend/app/agent/core.py": "7f1185cc86b21eb7c428cb7016b0951c8d6bc3b217b2afa5a986deb202653e73",
+      "backend/app/agent/date_savings.py": "2ccb4842ceb9b6e0d74dd5e65b7fb1183ddb548dfdebcb5db26c1580d592f039",
+      "backend/app/agent/destination_info.py": "08e461f9e79809e8b091e7a3b767303b96e5f62821560300f0770deb63314fd3",
+      "backend/app/agent/formatting.py": "ffa29b79632418a5d3d461c7e328c01cd1c57b6473cc4d6568d783e31892455d",
+      "backend/app/agent/hidden.py": "a4f53af10966fe6d66a9aca657e93a52fff64a07625a00ca731bb26f72416547",
+      "backend/app/agent/places.py": "ec61171a431af66faf7350c14497408252a1adfe2a0b6a56a915625673fe6dfb",
+      "backend/app/agent/planner.py": "0492389b6b2999a77f7f87c20e2b0cc9158da1d33e3ea73985da3ed63623da0b",
+      "backend/app/agent/prompts.py": "1f342c1063ac9a537e1c95cbfa8546a446cc54cedb2b96076e3a72627df08430",
+      "backend/app/agent/review_explanations.py": "fe208015a9cbb380cfaae8cebf6340a83154af1063092d0c8132ed62800ffe79",
+      "backend/app/agent/router.py": "2813910aa6fec73a75a166bff057c9c61a5f1ce82d378a19157f7affa3da806c",
+      "backend/app/agent/session.py": "1dd56b1697bd89d84aa70500885eb0adaa3fbbc9c9a8f4f710e3a735e2146cd8",
+      "backend/app/booking/__init__.py": "8e1d43adb5243824d65b3b45c5319a7d8c75583e92eb1b1200c4dcc3ebddf9c9",
+      "backend/app/booking/checkout.py": "419a59dcdf323e4112c18c2ef2748bd7320633f0e96d4c0332f1d52e6ba2ed3f",
+      "backend/app/booking/checkout_service.py": "f3f3720412481fbb0867c8a8f66a7b3330091f81caaf66fe07e52608ee880683",
+      "backend/app/booking/timeline.py": "3f0f56f39b8f28d9a6aafb791cf270246649e3296ae06b28a82a3c10bb5a3fd5",
+      "backend/app/booking/validator.py": "5a79be962605c4020043d0f89cea1cd3bf3de53f6f9ec8f3d604c0148cb580c9",
+      "backend/app/config.py": "07f7c2deb8b75917c410245b0b25660e2154dd1208e07e752728ad83d2db5a0b",
+      "backend/app/contracts/__init__.py": "006d73dfa56458a9f00400f32833ced963672ce820775b3d8ba6e9e986c60476",
+      "backend/app/contracts/hotel_profiles.py": "6fd1e25ac0036a14acc750f95ac91ed7c44b9c405084f9f8af82394e9cbe282c",
+      "backend/app/contracts/identifiers.py": "02fb8c044f3598a06758f2ed8fe79a6ded87a2ceb5beb1a59efaa2c4a8fbde23",
+      "backend/app/contracts/tools.py": "4c13bff6ad433f0cc60b1e38169f24d8988ebcd4b43f296073ea796afed10f20",
+      "backend/app/d2_cli.py": "c32ee0cd99ce9e4b7bbdca8af66cc49e1956b98261e77b1b0751f27e029f1166",
+      "backend/app/d4_cli.py": "dfb4482debafb0a27c68edeec0eb2086111f7739479de658678a6320d04eb2e2",
+      "backend/app/d6_cli.py": "87ee5788b5c78f7fc99d2c9adeb2107bd746b96552a34cd53158dc1e39c8bd65",
+      "backend/app/d8_cli.py": "a4595943925d8b6e207e9fbd5883b2d51fd795bdb4c72c12360beb9b2c5fc250",
+      "backend/app/data_paths.py": "d28de53ef8c9ffdc5c676c250c0fc4b0465806323c212b63e05e10c17884b052",
+      "backend/app/demo_rehearsal.py": "38f9da5166e454707d39b3edabb7400d5562e85c13cc3d984335588402aa9e68",
+      "backend/app/destination_cli.py": "d309a11c004fd07b7d05ad3305e19a5b5fcc2d5e48b92cbfbee26e23a275d263",
+      "backend/app/llm/__init__.py": "50ebf0a1e71e385130f07dcf138abd5a5c321cc3884d7c764e31ff9d875c745b",
+      "backend/app/llm/base.py": "73c7db6090dc8e09858eb31c5d35c046ac7d0f53d1028a9dee3739db35403442",
+      "backend/app/llm/fake.py": "dcc2898e8dc561c28273d4fdd290f3507cf0ae95d236d938515d883b84c10485",
+      "backend/app/llm/openai_compat.py": "368972f298e155235ef2885a4e054ae31cbdcd19f90c82243861cda4c69578f8",
+      "backend/app/main.py": "4122445fcb38d715e2dee59eb471a85bd8658e7e40a517548cbe060d2d9d3525",
+      "backend/app/submission_rehearsal.py": "06b4327fc2d9f6c28abf62f65233346ae742d1ea5114604fdb48da791d1344da",
+      "backend/app/tools/__init__.py": "a0a4f30932a313bf4e5f6a027e470e69ca99e42d01228302f98d392ece9e97d8",
+      "backend/app/tools/base.py": "4ca915563b0264b050171a82867c7729d72dad18e8069c473362842fe5867e5b",
+      "backend/app/tools/currency.py": "9d86e0a2c7f8baafc3a36287d3fa368fb868a1839c2682b81f5bac8fe5152220",
+      "backend/app/tools/d5_adapter.py": "861a72401002d834883233c80309aded14dbcfd831a93fc8011e034d1f22e48d",
+      "backend/app/tools/destinations.py": "1cbed424b64b5c3ff21760d41e95b63827a823a69f25d6988eba8f764f650f07",
+      "backend/app/tools/errors.py": "fd3ab4f11dd7f2ce7b1f338c27c0242b6a9963adf50cce8fd799d44bb2c2c113",
+      "backend/app/tools/flights.py": "fc559e915b35146ebe83d1f9023357e01c7fe373a9904f0be8a6e02134b305be",
+      "backend/app/tools/hotel_profiles.py": "94a964f1c7214604b249854edea46a82d0e3f6003e3ebe91442856f5a377798e",
+      "backend/app/tools/hotels.py": "68243203d1887e60f33004d7f89ae689c2c136338add967c909f9a584a355637",
+      "backend/app/tools/http_cache.py": "2783436b3b11d6a729e533f6a773de8461659939258c633d57d99acea778a91b",
+      "backend/app/tools/price_calendar.py": "e77886dfe98de2a17dff943276d610576c4d1720b8bb1c634b7b15af0ef820a1",
+      "backend/app/tools/registry.py": "b80f1bb2c0a86d578e7cb77626df7ebbc31f24405c09d164192592d69ef78340",
+      "backend/app/tools/s4_adapter.py": "7eb3e3e8b7ecf86c8bf771606ab112dab8ef7611274840909c57b39fdeef20aa",
+      "backend/app/tools/schema.py": "32669eeb1a36dca0f7cef0228dca329cc3f4ba4f45958491cf7b232cad520141",
+      "backend/app/tools/schema_refs.py": "db0328ce3110252a19f3814167dae0b42901ed366c79bfe9a5661d6d88b411e9",
+      "backend/app/tools/stubs.py": "a526517bbabdfb7fdc177e1e1bfc2b867f61af1513bea30b8150088ef02e280c",
+      "backend/app/tools/trains.py": "240c9feb302a8385b9377e321980592b55492d366b6abc497dade046dea12b30",
+      "backend/app/tools/transfers.py": "dbdc57cd914cda44f47a8042bd5abe5af6d4770dde51f7ade011a65fb6e26fc9",
+      "backend/app/tools/transport.py": "d926d6180ef3cd968d9fd89a6e46d86921f373351ea2c321a003b4074c02f0f3",
+      "backend/app/u2_eval.py": "55171ca2dbed56b73eb3e9447bfa30e2c44cdae81f6ce50af6ce6d7ce457617d"
+    },
+    "source_bundle_sha256": "64a6e416635bb438165284479f7cd89b5e44398836a7bfa554203b99476f8a9c",
+    "agent_evaluation_date": "2026-10-28",
+    "llm_provider": "fake",
+    "live_model_run": false,
+    "tools_mode": "real",
+    "flights_mode": "aviasales",
+    "cache_mode": "replay",
+    "api_token_supplied": false,
+    "env_file_loaded": false,
+    "network_guard": [
+      "httpx.AsyncClient.send",
+      "socket.connect",
+      "socket.create_connection"
+    ],
+    "traveler_data": "synthetic demonstration fixtures",
+    "private_database": "temporary and deleted"
+  },
+  "runs": [
+    {
+      "run": 1,
+      "scope": "backend_http_through_simulated_payment_voucher_ics",
+      "status": "passed",
+      "cache_files": [
+        {
+          "path": "19bc134666d5ddb0525d57ff5a5c3f8decdbd822454f351bc8147614ecb321c8.json",
+          "sha256": "c0428860eb3b9f490ca76ef59d1ebb6fe8581e38ab4cbb2e96179c79179251c3",
+          "body_sha256": "4cd2d901385d5810d5e02fc4df7186ef64420b7169f584a23a03888bc1a43f43",
+          "recorded_at": "2026-10-28T08:55:12.599608+00:00"
+        },
+        {
+          "path": "1adbf41d8d8ac578b165f0df1f2ce715d7013d0bad8ca68e0c8a4dc993505c35.json",
+          "sha256": "4c57443c372fb11f41d23e6c64d4102187575ecae35b9bba3c02ee392b9a13fc",
+          "body_sha256": "26eacdc2c8b2a123526cb6f58a56f70f910af8588ceb76360227ddf6a4c99144",
+          "recorded_at": "2026-10-28T08:55:13.101035+00:00"
+        },
+        {
+          "path": "1d2375b5d064f4e9b49a09efa0a65e3074719612defcc2217b21891c9e7beff1.json",
+          "sha256": "518b26e1868965cccd4fad1d3d251d1f85361bc414eda0466607df5afe27a651",
+          "body_sha256": "12456b97ee39ed6150e64f7a903baa33bf67bf6d9bab5ccd17caa0141c209eab",
+          "recorded_at": "2026-10-28T08:55:12.942516+00:00"
+        },
+        {
+          "path": "209120df281e81d1dd895c1424ff3bf37058d6bfed833c8c55fc0a174d0200f8.json",
+          "sha256": "63a91265cb3cf0d6de5adc4463f00f90c87817c61a2cdba9ad91c6d54f497213",
+          "body_sha256": "1675c574ed769dba83a7c3f03f942d2a0432c64dcac5719a27dee1849737cc3d",
+          "recorded_at": "2026-10-28T08:55:11.245731+00:00"
+        },
+        {
+          "path": "22cb81ec96cdf3447c8e6e00d8baf5865008e6ac4cd6cb6b3231528b3435f09f.json",
+          "sha256": "8f7fef706204c2bab2fe27bbb29d9eee010ea96daae31274e2bf8aebad7738d1",
+          "body_sha256": "81b5dfb3b7c71a71fdf3d0d2061d54890b41dc7fc95904d394e80b28172a4185",
+          "recorded_at": "2026-10-28T07:33:19.542263+00:00"
+        },
+        {
+          "path": "230483d81620817a6919c32060ff09c1d6ebe34d976a050fb526eab76ecda095.json",
+          "sha256": "067eabedb5e42811ec397e59d37ff2e6307e8d67d7dc66815f6c851ba525e96b",
+          "body_sha256": "9f10e86b60592b9eda9f26018010fa283ceb9b2cac0b408e81390d394f6c4b37",
+          "recorded_at": "2026-10-28T08:55:11.762939+00:00"
+        },
+        {
+          "path": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "sha256": "852809d6bd3ae03a5b7d4c855d64c76041315363d936de26ec77ce448c769a97",
+          "body_sha256": "b2b73d9fe1d83745553f2d32c1e8e636bd6ce923588b2a04f9f122dfe8eed101",
+          "recorded_at": "2026-10-28T07:54:11.485448+00:00"
+        },
+        {
+          "path": "294d1ffe8b4000ea5a3bd9ddddda311e62497003c1aeb47247e57dec0150d949.json",
+          "sha256": "26957dcecf667758ea0d42537d421b2f1ec6f04496470e718097013066d9af00",
+          "body_sha256": "81a57d5a47f4be2d395c47ad4520a1618a60c66e8ddec2cdd5f83f9f3a654846",
+          "recorded_at": "2026-10-28T09:50:54.727505+00:00"
+        },
+        {
+          "path": "30d279687712dbc6064dd804abf0b5c2be3dd7910db5de72b6760306aea8d2d8.json",
+          "sha256": "98217287b03bfe48d44cfc492f98800cf1a58e6daa2deb6be5b3e16d1fe4afe9",
+          "body_sha256": "b0497d1a66b50bd83d2a44d8a0ba2cf63f533ed53f54d5df6205abfe9fd06094",
+          "recorded_at": "2026-10-28T08:55:11.420049+00:00"
+        },
+        {
+          "path": "3a15cff847b1d51d36acb392a8f8fd61a65168f33563bc78232a8fbeb62fee61.json",
+          "sha256": "9c21e6f2cfdc144204fd5e71c22b652b01e2204e081024fe4811fe8a1533d296",
+          "body_sha256": "32d569d26902faa151329f75544e5fd9a9681c9af7eaa75cb53ccae3b98e211e",
+          "recorded_at": "2026-10-28T08:55:10.731441+00:00"
+        },
+        {
+          "path": "3b582b5be6f82ff8bfec7db742d28485b83c5869515371a6e6a0e4d532df79c2.json",
+          "sha256": "399fc7e80006e22096024781b9baa395a2eeb687dcab253511743efc726499fd",
+          "body_sha256": "34f8f02d885495315a1b7f40019f5fbb41a782cd19a43d1f580488221e27d16b",
+          "recorded_at": "2026-10-28T08:55:10.891059+00:00"
+        },
+        {
+          "path": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "sha256": "5fed72ad320ada592025e2e65496185e71b8288c30b7fe9a6af23d69d6b045d1",
+          "body_sha256": "499efec806b1a9e4f247501ff2738dfcd4f0509f23b28400f67f07c022d4d673",
+          "recorded_at": "2026-10-28T07:54:11.091831+00:00"
+        },
+        {
+          "path": "7d83b9b748c6cf03443d678df082cbd182c3bbf13ad13c6eaec40a51b8146bba.json",
+          "sha256": "13803c2a5dae9c42515bfbd536283225edfdafec57f89a5a89cd584f673daff9",
+          "body_sha256": "d3803483a0c3b61cfc7be9110dd43b0cdd7eba7467d2e827547d5ea01d7b47fb",
+          "recorded_at": "2026-10-28T08:55:11.934071+00:00"
+        },
+        {
+          "path": "cf1eecf563d4e216c70f72e9cf3dffce6a4bfa3651c16e7c872c42aabda3a5b4.json",
+          "sha256": "9b1d6df8feaf1eeb9ebbf47c06ea1c3170fe80d00cbda7463c69f2e04df120dc",
+          "body_sha256": "d528c95e9e2feafafb75e336ab355fa263cf2858177e49c5ff800a70b17cf8cf",
+          "recorded_at": "2026-10-28T08:55:12.441679+00:00"
+        },
+        {
+          "path": "d77f2defb99a65206b0d9349e26cec542abf748c0a42f40b59988a1e625b6380.json",
+          "sha256": "97fb209cd6cb15ccf527f70b40141f53122c670217e36133f14b24603893fd5b",
+          "body_sha256": "426848836b27a783bc71fc92587aafc25c5b270aa47043c8ed489c974e1d8360",
+          "recorded_at": "2026-10-28T08:55:13.438579+00:00"
+        },
+        {
+          "path": "eda51c3f86754b2c090a72f72d64066d870427ee9aba091a313bfd16bbb427eb.json",
+          "sha256": "386dd816bf2f6648e5c3899ef1943fc41c814d6a14e0879169dcc148183cc8a5",
+          "body_sha256": "e85eb82f2c2c0c5ceee66c30a6e2d08b1919fcebf9505690bb43dd6bfab5e1d6",
+          "recorded_at": "2026-10-28T07:54:11.670648+00:00"
+        },
+        {
+          "path": "ef9fa0ad1cef29e334184551d8db0dc804b91c333262003bb049aa37f5590522.json",
+          "sha256": "aeac61a3755c31eb160ac1f7e672b6623df7f4551a000b8131f09f3e4dfe67af",
+          "body_sha256": "617aae35c4984479ad56b4a92e65ea5dc2dd97ef8d883ff00390f11e1ea169dc",
+          "recorded_at": "2026-10-28T08:55:12.097866+00:00"
+        }
+      ],
+      "verified_quotes": [
+        {
+          "from": "SVO",
+          "to": "AYT",
+          "departure_at": "2026-11-18T00:50:00+03:00",
+          "seat_price_rub": 11251,
+          "group_price_rub": 22502,
+          "cache_file": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "recorded_at": "2026-10-28T07:54:11.091831Z"
+        },
+        {
+          "from": "AYT",
+          "to": "SVO",
+          "departure_at": "2026-11-25T05:35:00+03:00",
+          "seat_price_rub": 14147,
+          "group_price_rub": 28294,
+          "cache_file": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "recorded_at": "2026-10-28T07:54:11.485448Z"
+        }
+      ],
+      "selected_option": 1,
+      "hotel_id": "osm:node/5369319975",
+      "known_total_rub": 83234,
+      "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+      "unpriced_components": [
+        "return_transfer",
+        "visa_and_other_required_extras"
+      ],
+      "d7_evidence": {
+        "hotel_id": "osm:node/5369319975",
+        "segment": "family",
+        "profile_sha256": "6daf0de80f4413674fcc2f354e316cdc2a9a5f5471c612eaf3841a9d869bd838",
+        "corpus_sha256": "ccf16591d8c010017681fb2f0dddc2e484d267084a8883df9bcae6dfeacbb07b",
+        "literal_quotes_verified": true,
+        "live_model_run": false
+      },
+      "d8_comparison": {
+        "comparison_status": "compared",
+        "checked_dates": 6,
+        "comparable_dates": 6,
+        "suggestions": [
+          {
+            "original_departure": "2026-11-18",
+            "suggested_departure": "2026-11-16",
+            "shift_days": -2,
+            "original_total_rub": 83234,
+            "suggested_total_rub": 71086,
+            "saving_rub": 12148,
+            "saving_percent": "14.59",
+            "flight_delta_rub": -12148,
+            "hotel_delta_rub": 0,
+            "other_delta_rub": 0,
+            "hotel_id": "osm:node/5369319975",
+            "is_synthetic": true,
+            "fact_type": "date_shift_saving"
+          }
+        ],
+        "provider_quotes_verified_against_raw_d4": 12,
+        "state_preserved": true
+      },
+      "external_network_attempts": 0,
+      "private_database_deleted": true,
+      "duration_seconds": 0.226,
+      "completed_stages": [
+        "cache_provenance",
+        "search_recorded_fares",
+        "d7_profile_explanation",
+        "d8_date_comparison",
+        "select_safe_option",
+        "confirm_cart_without_payment",
+        "synthetic_traveler_data",
+        "deliberate_payment_decline",
+        "simulated_payment_approved",
+        "idempotent_payment_retry",
+        "persisted_order_after_app_restart",
+        "download_demo_voucher_and_calendar"
+      ],
+      "within_300_seconds": true,
+      "artifacts": [
+        {
+          "path": "run-01/voucher.html",
+          "sha256": "4c2f2cd8f3745c05b8e790e495837e8e8fa476346159f16369f1775d9518bcae"
+        },
+        {
+          "path": "run-01/trip.ics",
+          "sha256": "ea9b4aa4cfc51bf4e0a3b1b8257b375f1153ace45cefbe84cb1017328ac6a8af"
+        }
+      ],
+      "trace": {
+        "path": "run-01/trace.json",
+        "sha256": "16bf52058514a2d53d74882af23934647c134ac81a5675705da442481698923e"
+      }
+    },
+    {
+      "run": 2,
+      "scope": "backend_http_through_simulated_payment_voucher_ics",
+      "status": "passed",
+      "cache_files": [
+        {
+          "path": "19bc134666d5ddb0525d57ff5a5c3f8decdbd822454f351bc8147614ecb321c8.json",
+          "sha256": "c0428860eb3b9f490ca76ef59d1ebb6fe8581e38ab4cbb2e96179c79179251c3",
+          "body_sha256": "4cd2d901385d5810d5e02fc4df7186ef64420b7169f584a23a03888bc1a43f43",
+          "recorded_at": "2026-10-28T08:55:12.599608+00:00"
+        },
+        {
+          "path": "1adbf41d8d8ac578b165f0df1f2ce715d7013d0bad8ca68e0c8a4dc993505c35.json",
+          "sha256": "4c57443c372fb11f41d23e6c64d4102187575ecae35b9bba3c02ee392b9a13fc",
+          "body_sha256": "26eacdc2c8b2a123526cb6f58a56f70f910af8588ceb76360227ddf6a4c99144",
+          "recorded_at": "2026-10-28T08:55:13.101035+00:00"
+        },
+        {
+          "path": "1d2375b5d064f4e9b49a09efa0a65e3074719612defcc2217b21891c9e7beff1.json",
+          "sha256": "518b26e1868965cccd4fad1d3d251d1f85361bc414eda0466607df5afe27a651",
+          "body_sha256": "12456b97ee39ed6150e64f7a903baa33bf67bf6d9bab5ccd17caa0141c209eab",
+          "recorded_at": "2026-10-28T08:55:12.942516+00:00"
+        },
+        {
+          "path": "209120df281e81d1dd895c1424ff3bf37058d6bfed833c8c55fc0a174d0200f8.json",
+          "sha256": "63a91265cb3cf0d6de5adc4463f00f90c87817c61a2cdba9ad91c6d54f497213",
+          "body_sha256": "1675c574ed769dba83a7c3f03f942d2a0432c64dcac5719a27dee1849737cc3d",
+          "recorded_at": "2026-10-28T08:55:11.245731+00:00"
+        },
+        {
+          "path": "22cb81ec96cdf3447c8e6e00d8baf5865008e6ac4cd6cb6b3231528b3435f09f.json",
+          "sha256": "8f7fef706204c2bab2fe27bbb29d9eee010ea96daae31274e2bf8aebad7738d1",
+          "body_sha256": "81b5dfb3b7c71a71fdf3d0d2061d54890b41dc7fc95904d394e80b28172a4185",
+          "recorded_at": "2026-10-28T07:33:19.542263+00:00"
+        },
+        {
+          "path": "230483d81620817a6919c32060ff09c1d6ebe34d976a050fb526eab76ecda095.json",
+          "sha256": "067eabedb5e42811ec397e59d37ff2e6307e8d67d7dc66815f6c851ba525e96b",
+          "body_sha256": "9f10e86b60592b9eda9f26018010fa283ceb9b2cac0b408e81390d394f6c4b37",
+          "recorded_at": "2026-10-28T08:55:11.762939+00:00"
+        },
+        {
+          "path": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "sha256": "852809d6bd3ae03a5b7d4c855d64c76041315363d936de26ec77ce448c769a97",
+          "body_sha256": "b2b73d9fe1d83745553f2d32c1e8e636bd6ce923588b2a04f9f122dfe8eed101",
+          "recorded_at": "2026-10-28T07:54:11.485448+00:00"
+        },
+        {
+          "path": "294d1ffe8b4000ea5a3bd9ddddda311e62497003c1aeb47247e57dec0150d949.json",
+          "sha256": "26957dcecf667758ea0d42537d421b2f1ec6f04496470e718097013066d9af00",
+          "body_sha256": "81a57d5a47f4be2d395c47ad4520a1618a60c66e8ddec2cdd5f83f9f3a654846",
+          "recorded_at": "2026-10-28T09:50:54.727505+00:00"
+        },
+        {
+          "path": "30d279687712dbc6064dd804abf0b5c2be3dd7910db5de72b6760306aea8d2d8.json",
+          "sha256": "98217287b03bfe48d44cfc492f98800cf1a58e6daa2deb6be5b3e16d1fe4afe9",
+          "body_sha256": "b0497d1a66b50bd83d2a44d8a0ba2cf63f533ed53f54d5df6205abfe9fd06094",
+          "recorded_at": "2026-10-28T08:55:11.420049+00:00"
+        },
+        {
+          "path": "3a15cff847b1d51d36acb392a8f8fd61a65168f33563bc78232a8fbeb62fee61.json",
+          "sha256": "9c21e6f2cfdc144204fd5e71c22b652b01e2204e081024fe4811fe8a1533d296",
+          "body_sha256": "32d569d26902faa151329f75544e5fd9a9681c9af7eaa75cb53ccae3b98e211e",
+          "recorded_at": "2026-10-28T08:55:10.731441+00:00"
+        },
+        {
+          "path": "3b582b5be6f82ff8bfec7db742d28485b83c5869515371a6e6a0e4d532df79c2.json",
+          "sha256": "399fc7e80006e22096024781b9baa395a2eeb687dcab253511743efc726499fd",
+          "body_sha256": "34f8f02d885495315a1b7f40019f5fbb41a782cd19a43d1f580488221e27d16b",
+          "recorded_at": "2026-10-28T08:55:10.891059+00:00"
+        },
+        {
+          "path": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "sha256": "5fed72ad320ada592025e2e65496185e71b8288c30b7fe9a6af23d69d6b045d1",
+          "body_sha256": "499efec806b1a9e4f247501ff2738dfcd4f0509f23b28400f67f07c022d4d673",
+          "recorded_at": "2026-10-28T07:54:11.091831+00:00"
+        },
+        {
+          "path": "7d83b9b748c6cf03443d678df082cbd182c3bbf13ad13c6eaec40a51b8146bba.json",
+          "sha256": "13803c2a5dae9c42515bfbd536283225edfdafec57f89a5a89cd584f673daff9",
+          "body_sha256": "d3803483a0c3b61cfc7be9110dd43b0cdd7eba7467d2e827547d5ea01d7b47fb",
+          "recorded_at": "2026-10-28T08:55:11.934071+00:00"
+        },
+        {
+          "path": "cf1eecf563d4e216c70f72e9cf3dffce6a4bfa3651c16e7c872c42aabda3a5b4.json",
+          "sha256": "9b1d6df8feaf1eeb9ebbf47c06ea1c3170fe80d00cbda7463c69f2e04df120dc",
+          "body_sha256": "d528c95e9e2feafafb75e336ab355fa263cf2858177e49c5ff800a70b17cf8cf",
+          "recorded_at": "2026-10-28T08:55:12.441679+00:00"
+        },
+        {
+          "path": "d77f2defb99a65206b0d9349e26cec542abf748c0a42f40b59988a1e625b6380.json",
+          "sha256": "97fb209cd6cb15ccf527f70b40141f53122c670217e36133f14b24603893fd5b",
+          "body_sha256": "426848836b27a783bc71fc92587aafc25c5b270aa47043c8ed489c974e1d8360",
+          "recorded_at": "2026-10-28T08:55:13.438579+00:00"
+        },
+        {
+          "path": "eda51c3f86754b2c090a72f72d64066d870427ee9aba091a313bfd16bbb427eb.json",
+          "sha256": "386dd816bf2f6648e5c3899ef1943fc41c814d6a14e0879169dcc148183cc8a5",
+          "body_sha256": "e85eb82f2c2c0c5ceee66c30a6e2d08b1919fcebf9505690bb43dd6bfab5e1d6",
+          "recorded_at": "2026-10-28T07:54:11.670648+00:00"
+        },
+        {
+          "path": "ef9fa0ad1cef29e334184551d8db0dc804b91c333262003bb049aa37f5590522.json",
+          "sha256": "aeac61a3755c31eb160ac1f7e672b6623df7f4551a000b8131f09f3e4dfe67af",
+          "body_sha256": "617aae35c4984479ad56b4a92e65ea5dc2dd97ef8d883ff00390f11e1ea169dc",
+          "recorded_at": "2026-10-28T08:55:12.097866+00:00"
+        }
+      ],
+      "verified_quotes": [
+        {
+          "from": "SVO",
+          "to": "AYT",
+          "departure_at": "2026-11-18T00:50:00+03:00",
+          "seat_price_rub": 11251,
+          "group_price_rub": 22502,
+          "cache_file": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "recorded_at": "2026-10-28T07:54:11.091831Z"
+        },
+        {
+          "from": "AYT",
+          "to": "SVO",
+          "departure_at": "2026-11-25T05:35:00+03:00",
+          "seat_price_rub": 14147,
+          "group_price_rub": 28294,
+          "cache_file": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "recorded_at": "2026-10-28T07:54:11.485448Z"
+        }
+      ],
+      "selected_option": 1,
+      "hotel_id": "osm:node/5369319975",
+      "known_total_rub": 83234,
+      "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+      "unpriced_components": [
+        "return_transfer",
+        "visa_and_other_required_extras"
+      ],
+      "d7_evidence": {
+        "hotel_id": "osm:node/5369319975",
+        "segment": "family",
+        "profile_sha256": "6daf0de80f4413674fcc2f354e316cdc2a9a5f5471c612eaf3841a9d869bd838",
+        "corpus_sha256": "ccf16591d8c010017681fb2f0dddc2e484d267084a8883df9bcae6dfeacbb07b",
+        "literal_quotes_verified": true,
+        "live_model_run": false
+      },
+      "d8_comparison": {
+        "comparison_status": "compared",
+        "checked_dates": 6,
+        "comparable_dates": 6,
+        "suggestions": [
+          {
+            "original_departure": "2026-11-18",
+            "suggested_departure": "2026-11-16",
+            "shift_days": -2,
+            "original_total_rub": 83234,
+            "suggested_total_rub": 71086,
+            "saving_rub": 12148,
+            "saving_percent": "14.59",
+            "flight_delta_rub": -12148,
+            "hotel_delta_rub": 0,
+            "other_delta_rub": 0,
+            "hotel_id": "osm:node/5369319975",
+            "is_synthetic": true,
+            "fact_type": "date_shift_saving"
+          }
+        ],
+        "provider_quotes_verified_against_raw_d4": 12,
+        "state_preserved": true
+      },
+      "external_network_attempts": 0,
+      "private_database_deleted": true,
+      "duration_seconds": 0.171,
+      "completed_stages": [
+        "cache_provenance",
+        "search_recorded_fares",
+        "d7_profile_explanation",
+        "d8_date_comparison",
+        "select_safe_option",
+        "confirm_cart_without_payment",
+        "synthetic_traveler_data",
+        "deliberate_payment_decline",
+        "simulated_payment_approved",
+        "idempotent_payment_retry",
+        "persisted_order_after_app_restart",
+        "download_demo_voucher_and_calendar"
+      ],
+      "within_300_seconds": true,
+      "artifacts": [
+        {
+          "path": "run-02/voucher.html",
+          "sha256": "4c2f2cd8f3745c05b8e790e495837e8e8fa476346159f16369f1775d9518bcae"
+        },
+        {
+          "path": "run-02/trip.ics",
+          "sha256": "ea9b4aa4cfc51bf4e0a3b1b8257b375f1153ace45cefbe84cb1017328ac6a8af"
+        }
+      ],
+      "trace": {
+        "path": "run-02/trace.json",
+        "sha256": "8b6fc7897f8bff08f11c55bd80667c1fa56543f73b0aa50fd1558015dda6fbd8"
+      }
+    },
+    {
+      "run": 3,
+      "scope": "backend_http_through_simulated_payment_voucher_ics",
+      "status": "passed",
+      "cache_files": [
+        {
+          "path": "19bc134666d5ddb0525d57ff5a5c3f8decdbd822454f351bc8147614ecb321c8.json",
+          "sha256": "c0428860eb3b9f490ca76ef59d1ebb6fe8581e38ab4cbb2e96179c79179251c3",
+          "body_sha256": "4cd2d901385d5810d5e02fc4df7186ef64420b7169f584a23a03888bc1a43f43",
+          "recorded_at": "2026-10-28T08:55:12.599608+00:00"
+        },
+        {
+          "path": "1adbf41d8d8ac578b165f0df1f2ce715d7013d0bad8ca68e0c8a4dc993505c35.json",
+          "sha256": "4c57443c372fb11f41d23e6c64d4102187575ecae35b9bba3c02ee392b9a13fc",
+          "body_sha256": "26eacdc2c8b2a123526cb6f58a56f70f910af8588ceb76360227ddf6a4c99144",
+          "recorded_at": "2026-10-28T08:55:13.101035+00:00"
+        },
+        {
+          "path": "1d2375b5d064f4e9b49a09efa0a65e3074719612defcc2217b21891c9e7beff1.json",
+          "sha256": "518b26e1868965cccd4fad1d3d251d1f85361bc414eda0466607df5afe27a651",
+          "body_sha256": "12456b97ee39ed6150e64f7a903baa33bf67bf6d9bab5ccd17caa0141c209eab",
+          "recorded_at": "2026-10-28T08:55:12.942516+00:00"
+        },
+        {
+          "path": "209120df281e81d1dd895c1424ff3bf37058d6bfed833c8c55fc0a174d0200f8.json",
+          "sha256": "63a91265cb3cf0d6de5adc4463f00f90c87817c61a2cdba9ad91c6d54f497213",
+          "body_sha256": "1675c574ed769dba83a7c3f03f942d2a0432c64dcac5719a27dee1849737cc3d",
+          "recorded_at": "2026-10-28T08:55:11.245731+00:00"
+        },
+        {
+          "path": "22cb81ec96cdf3447c8e6e00d8baf5865008e6ac4cd6cb6b3231528b3435f09f.json",
+          "sha256": "8f7fef706204c2bab2fe27bbb29d9eee010ea96daae31274e2bf8aebad7738d1",
+          "body_sha256": "81b5dfb3b7c71a71fdf3d0d2061d54890b41dc7fc95904d394e80b28172a4185",
+          "recorded_at": "2026-10-28T07:33:19.542263+00:00"
+        },
+        {
+          "path": "230483d81620817a6919c32060ff09c1d6ebe34d976a050fb526eab76ecda095.json",
+          "sha256": "067eabedb5e42811ec397e59d37ff2e6307e8d67d7dc66815f6c851ba525e96b",
+          "body_sha256": "9f10e86b60592b9eda9f26018010fa283ceb9b2cac0b408e81390d394f6c4b37",
+          "recorded_at": "2026-10-28T08:55:11.762939+00:00"
+        },
+        {
+          "path": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "sha256": "852809d6bd3ae03a5b7d4c855d64c76041315363d936de26ec77ce448c769a97",
+          "body_sha256": "b2b73d9fe1d83745553f2d32c1e8e636bd6ce923588b2a04f9f122dfe8eed101",
+          "recorded_at": "2026-10-28T07:54:11.485448+00:00"
+        },
+        {
+          "path": "294d1ffe8b4000ea5a3bd9ddddda311e62497003c1aeb47247e57dec0150d949.json",
+          "sha256": "26957dcecf667758ea0d42537d421b2f1ec6f04496470e718097013066d9af00",
+          "body_sha256": "81a57d5a47f4be2d395c47ad4520a1618a60c66e8ddec2cdd5f83f9f3a654846",
+          "recorded_at": "2026-10-28T09:50:54.727505+00:00"
+        },
+        {
+          "path": "30d279687712dbc6064dd804abf0b5c2be3dd7910db5de72b6760306aea8d2d8.json",
+          "sha256": "98217287b03bfe48d44cfc492f98800cf1a58e6daa2deb6be5b3e16d1fe4afe9",
+          "body_sha256": "b0497d1a66b50bd83d2a44d8a0ba2cf63f533ed53f54d5df6205abfe9fd06094",
+          "recorded_at": "2026-10-28T08:55:11.420049+00:00"
+        },
+        {
+          "path": "3a15cff847b1d51d36acb392a8f8fd61a65168f33563bc78232a8fbeb62fee61.json",
+          "sha256": "9c21e6f2cfdc144204fd5e71c22b652b01e2204e081024fe4811fe8a1533d296",
+          "body_sha256": "32d569d26902faa151329f75544e5fd9a9681c9af7eaa75cb53ccae3b98e211e",
+          "recorded_at": "2026-10-28T08:55:10.731441+00:00"
+        },
+        {
+          "path": "3b582b5be6f82ff8bfec7db742d28485b83c5869515371a6e6a0e4d532df79c2.json",
+          "sha256": "399fc7e80006e22096024781b9baa395a2eeb687dcab253511743efc726499fd",
+          "body_sha256": "34f8f02d885495315a1b7f40019f5fbb41a782cd19a43d1f580488221e27d16b",
+          "recorded_at": "2026-10-28T08:55:10.891059+00:00"
+        },
+        {
+          "path": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "sha256": "5fed72ad320ada592025e2e65496185e71b8288c30b7fe9a6af23d69d6b045d1",
+          "body_sha256": "499efec806b1a9e4f247501ff2738dfcd4f0509f23b28400f67f07c022d4d673",
+          "recorded_at": "2026-10-28T07:54:11.091831+00:00"
+        },
+        {
+          "path": "7d83b9b748c6cf03443d678df082cbd182c3bbf13ad13c6eaec40a51b8146bba.json",
+          "sha256": "13803c2a5dae9c42515bfbd536283225edfdafec57f89a5a89cd584f673daff9",
+          "body_sha256": "d3803483a0c3b61cfc7be9110dd43b0cdd7eba7467d2e827547d5ea01d7b47fb",
+          "recorded_at": "2026-10-28T08:55:11.934071+00:00"
+        },
+        {
+          "path": "cf1eecf563d4e216c70f72e9cf3dffce6a4bfa3651c16e7c872c42aabda3a5b4.json",
+          "sha256": "9b1d6df8feaf1eeb9ebbf47c06ea1c3170fe80d00cbda7463c69f2e04df120dc",
+          "body_sha256": "d528c95e9e2feafafb75e336ab355fa263cf2858177e49c5ff800a70b17cf8cf",
+          "recorded_at": "2026-10-28T08:55:12.441679+00:00"
+        },
+        {
+          "path": "d77f2defb99a65206b0d9349e26cec542abf748c0a42f40b59988a1e625b6380.json",
+          "sha256": "97fb209cd6cb15ccf527f70b40141f53122c670217e36133f14b24603893fd5b",
+          "body_sha256": "426848836b27a783bc71fc92587aafc25c5b270aa47043c8ed489c974e1d8360",
+          "recorded_at": "2026-10-28T08:55:13.438579+00:00"
+        },
+        {
+          "path": "eda51c3f86754b2c090a72f72d64066d870427ee9aba091a313bfd16bbb427eb.json",
+          "sha256": "386dd816bf2f6648e5c3899ef1943fc41c814d6a14e0879169dcc148183cc8a5",
+          "body_sha256": "e85eb82f2c2c0c5ceee66c30a6e2d08b1919fcebf9505690bb43dd6bfab5e1d6",
+          "recorded_at": "2026-10-28T07:54:11.670648+00:00"
+        },
+        {
+          "path": "ef9fa0ad1cef29e334184551d8db0dc804b91c333262003bb049aa37f5590522.json",
+          "sha256": "aeac61a3755c31eb160ac1f7e672b6623df7f4551a000b8131f09f3e4dfe67af",
+          "body_sha256": "617aae35c4984479ad56b4a92e65ea5dc2dd97ef8d883ff00390f11e1ea169dc",
+          "recorded_at": "2026-10-28T08:55:12.097866+00:00"
+        }
+      ],
+      "verified_quotes": [
+        {
+          "from": "SVO",
+          "to": "AYT",
+          "departure_at": "2026-11-18T00:50:00+03:00",
+          "seat_price_rub": 11251,
+          "group_price_rub": 22502,
+          "cache_file": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "recorded_at": "2026-10-28T07:54:11.091831Z"
+        },
+        {
+          "from": "AYT",
+          "to": "SVO",
+          "departure_at": "2026-11-25T05:35:00+03:00",
+          "seat_price_rub": 14147,
+          "group_price_rub": 28294,
+          "cache_file": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "recorded_at": "2026-10-28T07:54:11.485448Z"
+        }
+      ],
+      "selected_option": 1,
+      "hotel_id": "osm:node/5369319975",
+      "known_total_rub": 83234,
+      "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+      "unpriced_components": [
+        "return_transfer",
+        "visa_and_other_required_extras"
+      ],
+      "d7_evidence": {
+        "hotel_id": "osm:node/5369319975",
+        "segment": "family",
+        "profile_sha256": "6daf0de80f4413674fcc2f354e316cdc2a9a5f5471c612eaf3841a9d869bd838",
+        "corpus_sha256": "ccf16591d8c010017681fb2f0dddc2e484d267084a8883df9bcae6dfeacbb07b",
+        "literal_quotes_verified": true,
+        "live_model_run": false
+      },
+      "d8_comparison": {
+        "comparison_status": "compared",
+        "checked_dates": 6,
+        "comparable_dates": 6,
+        "suggestions": [
+          {
+            "original_departure": "2026-11-18",
+            "suggested_departure": "2026-11-16",
+            "shift_days": -2,
+            "original_total_rub": 83234,
+            "suggested_total_rub": 71086,
+            "saving_rub": 12148,
+            "saving_percent": "14.59",
+            "flight_delta_rub": -12148,
+            "hotel_delta_rub": 0,
+            "other_delta_rub": 0,
+            "hotel_id": "osm:node/5369319975",
+            "is_synthetic": true,
+            "fact_type": "date_shift_saving"
+          }
+        ],
+        "provider_quotes_verified_against_raw_d4": 12,
+        "state_preserved": true
+      },
+      "external_network_attempts": 0,
+      "private_database_deleted": true,
+      "duration_seconds": 0.194,
+      "completed_stages": [
+        "cache_provenance",
+        "search_recorded_fares",
+        "d7_profile_explanation",
+        "d8_date_comparison",
+        "select_safe_option",
+        "confirm_cart_without_payment",
+        "synthetic_traveler_data",
+        "deliberate_payment_decline",
+        "simulated_payment_approved",
+        "idempotent_payment_retry",
+        "persisted_order_after_app_restart",
+        "download_demo_voucher_and_calendar"
+      ],
+      "within_300_seconds": true,
+      "artifacts": [
+        {
+          "path": "run-03/voucher.html",
+          "sha256": "4c2f2cd8f3745c05b8e790e495837e8e8fa476346159f16369f1775d9518bcae"
+        },
+        {
+          "path": "run-03/trip.ics",
+          "sha256": "ea9b4aa4cfc51bf4e0a3b1b8257b375f1153ace45cefbe84cb1017328ac6a8af"
+        }
+      ],
+      "trace": {
+        "path": "run-03/trace.json",
+        "sha256": "49a0d1701a5c894ac205cbadcbf55e94101374035c7feadb45673cd386ace578"
+      }
+    },
+    {
+      "run": 4,
+      "scope": "backend_http_through_simulated_payment_voucher_ics",
+      "status": "passed",
+      "cache_files": [
+        {
+          "path": "19bc134666d5ddb0525d57ff5a5c3f8decdbd822454f351bc8147614ecb321c8.json",
+          "sha256": "c0428860eb3b9f490ca76ef59d1ebb6fe8581e38ab4cbb2e96179c79179251c3",
+          "body_sha256": "4cd2d901385d5810d5e02fc4df7186ef64420b7169f584a23a03888bc1a43f43",
+          "recorded_at": "2026-10-28T08:55:12.599608+00:00"
+        },
+        {
+          "path": "1adbf41d8d8ac578b165f0df1f2ce715d7013d0bad8ca68e0c8a4dc993505c35.json",
+          "sha256": "4c57443c372fb11f41d23e6c64d4102187575ecae35b9bba3c02ee392b9a13fc",
+          "body_sha256": "26eacdc2c8b2a123526cb6f58a56f70f910af8588ceb76360227ddf6a4c99144",
+          "recorded_at": "2026-10-28T08:55:13.101035+00:00"
+        },
+        {
+          "path": "1d2375b5d064f4e9b49a09efa0a65e3074719612defcc2217b21891c9e7beff1.json",
+          "sha256": "518b26e1868965cccd4fad1d3d251d1f85361bc414eda0466607df5afe27a651",
+          "body_sha256": "12456b97ee39ed6150e64f7a903baa33bf67bf6d9bab5ccd17caa0141c209eab",
+          "recorded_at": "2026-10-28T08:55:12.942516+00:00"
+        },
+        {
+          "path": "209120df281e81d1dd895c1424ff3bf37058d6bfed833c8c55fc0a174d0200f8.json",
+          "sha256": "63a91265cb3cf0d6de5adc4463f00f90c87817c61a2cdba9ad91c6d54f497213",
+          "body_sha256": "1675c574ed769dba83a7c3f03f942d2a0432c64dcac5719a27dee1849737cc3d",
+          "recorded_at": "2026-10-28T08:55:11.245731+00:00"
+        },
+        {
+          "path": "22cb81ec96cdf3447c8e6e00d8baf5865008e6ac4cd6cb6b3231528b3435f09f.json",
+          "sha256": "8f7fef706204c2bab2fe27bbb29d9eee010ea96daae31274e2bf8aebad7738d1",
+          "body_sha256": "81b5dfb3b7c71a71fdf3d0d2061d54890b41dc7fc95904d394e80b28172a4185",
+          "recorded_at": "2026-10-28T07:33:19.542263+00:00"
+        },
+        {
+          "path": "230483d81620817a6919c32060ff09c1d6ebe34d976a050fb526eab76ecda095.json",
+          "sha256": "067eabedb5e42811ec397e59d37ff2e6307e8d67d7dc66815f6c851ba525e96b",
+          "body_sha256": "9f10e86b60592b9eda9f26018010fa283ceb9b2cac0b408e81390d394f6c4b37",
+          "recorded_at": "2026-10-28T08:55:11.762939+00:00"
+        },
+        {
+          "path": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "sha256": "852809d6bd3ae03a5b7d4c855d64c76041315363d936de26ec77ce448c769a97",
+          "body_sha256": "b2b73d9fe1d83745553f2d32c1e8e636bd6ce923588b2a04f9f122dfe8eed101",
+          "recorded_at": "2026-10-28T07:54:11.485448+00:00"
+        },
+        {
+          "path": "294d1ffe8b4000ea5a3bd9ddddda311e62497003c1aeb47247e57dec0150d949.json",
+          "sha256": "26957dcecf667758ea0d42537d421b2f1ec6f04496470e718097013066d9af00",
+          "body_sha256": "81a57d5a47f4be2d395c47ad4520a1618a60c66e8ddec2cdd5f83f9f3a654846",
+          "recorded_at": "2026-10-28T09:50:54.727505+00:00"
+        },
+        {
+          "path": "30d279687712dbc6064dd804abf0b5c2be3dd7910db5de72b6760306aea8d2d8.json",
+          "sha256": "98217287b03bfe48d44cfc492f98800cf1a58e6daa2deb6be5b3e16d1fe4afe9",
+          "body_sha256": "b0497d1a66b50bd83d2a44d8a0ba2cf63f533ed53f54d5df6205abfe9fd06094",
+          "recorded_at": "2026-10-28T08:55:11.420049+00:00"
+        },
+        {
+          "path": "3a15cff847b1d51d36acb392a8f8fd61a65168f33563bc78232a8fbeb62fee61.json",
+          "sha256": "9c21e6f2cfdc144204fd5e71c22b652b01e2204e081024fe4811fe8a1533d296",
+          "body_sha256": "32d569d26902faa151329f75544e5fd9a9681c9af7eaa75cb53ccae3b98e211e",
+          "recorded_at": "2026-10-28T08:55:10.731441+00:00"
+        },
+        {
+          "path": "3b582b5be6f82ff8bfec7db742d28485b83c5869515371a6e6a0e4d532df79c2.json",
+          "sha256": "399fc7e80006e22096024781b9baa395a2eeb687dcab253511743efc726499fd",
+          "body_sha256": "34f8f02d885495315a1b7f40019f5fbb41a782cd19a43d1f580488221e27d16b",
+          "recorded_at": "2026-10-28T08:55:10.891059+00:00"
+        },
+        {
+          "path": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "sha256": "5fed72ad320ada592025e2e65496185e71b8288c30b7fe9a6af23d69d6b045d1",
+          "body_sha256": "499efec806b1a9e4f247501ff2738dfcd4f0509f23b28400f67f07c022d4d673",
+          "recorded_at": "2026-10-28T07:54:11.091831+00:00"
+        },
+        {
+          "path": "7d83b9b748c6cf03443d678df082cbd182c3bbf13ad13c6eaec40a51b8146bba.json",
+          "sha256": "13803c2a5dae9c42515bfbd536283225edfdafec57f89a5a89cd584f673daff9",
+          "body_sha256": "d3803483a0c3b61cfc7be9110dd43b0cdd7eba7467d2e827547d5ea01d7b47fb",
+          "recorded_at": "2026-10-28T08:55:11.934071+00:00"
+        },
+        {
+          "path": "cf1eecf563d4e216c70f72e9cf3dffce6a4bfa3651c16e7c872c42aabda3a5b4.json",
+          "sha256": "9b1d6df8feaf1eeb9ebbf47c06ea1c3170fe80d00cbda7463c69f2e04df120dc",
+          "body_sha256": "d528c95e9e2feafafb75e336ab355fa263cf2858177e49c5ff800a70b17cf8cf",
+          "recorded_at": "2026-10-28T08:55:12.441679+00:00"
+        },
+        {
+          "path": "d77f2defb99a65206b0d9349e26cec542abf748c0a42f40b59988a1e625b6380.json",
+          "sha256": "97fb209cd6cb15ccf527f70b40141f53122c670217e36133f14b24603893fd5b",
+          "body_sha256": "426848836b27a783bc71fc92587aafc25c5b270aa47043c8ed489c974e1d8360",
+          "recorded_at": "2026-10-28T08:55:13.438579+00:00"
+        },
+        {
+          "path": "eda51c3f86754b2c090a72f72d64066d870427ee9aba091a313bfd16bbb427eb.json",
+          "sha256": "386dd816bf2f6648e5c3899ef1943fc41c814d6a14e0879169dcc148183cc8a5",
+          "body_sha256": "e85eb82f2c2c0c5ceee66c30a6e2d08b1919fcebf9505690bb43dd6bfab5e1d6",
+          "recorded_at": "2026-10-28T07:54:11.670648+00:00"
+        },
+        {
+          "path": "ef9fa0ad1cef29e334184551d8db0dc804b91c333262003bb049aa37f5590522.json",
+          "sha256": "aeac61a3755c31eb160ac1f7e672b6623df7f4551a000b8131f09f3e4dfe67af",
+          "body_sha256": "617aae35c4984479ad56b4a92e65ea5dc2dd97ef8d883ff00390f11e1ea169dc",
+          "recorded_at": "2026-10-28T08:55:12.097866+00:00"
+        }
+      ],
+      "verified_quotes": [
+        {
+          "from": "SVO",
+          "to": "AYT",
+          "departure_at": "2026-11-18T00:50:00+03:00",
+          "seat_price_rub": 11251,
+          "group_price_rub": 22502,
+          "cache_file": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "recorded_at": "2026-10-28T07:54:11.091831Z"
+        },
+        {
+          "from": "AYT",
+          "to": "SVO",
+          "departure_at": "2026-11-25T05:35:00+03:00",
+          "seat_price_rub": 14147,
+          "group_price_rub": 28294,
+          "cache_file": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "recorded_at": "2026-10-28T07:54:11.485448Z"
+        }
+      ],
+      "selected_option": 1,
+      "hotel_id": "osm:node/5369319975",
+      "known_total_rub": 83234,
+      "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+      "unpriced_components": [
+        "return_transfer",
+        "visa_and_other_required_extras"
+      ],
+      "d7_evidence": {
+        "hotel_id": "osm:node/5369319975",
+        "segment": "family",
+        "profile_sha256": "6daf0de80f4413674fcc2f354e316cdc2a9a5f5471c612eaf3841a9d869bd838",
+        "corpus_sha256": "ccf16591d8c010017681fb2f0dddc2e484d267084a8883df9bcae6dfeacbb07b",
+        "literal_quotes_verified": true,
+        "live_model_run": false
+      },
+      "d8_comparison": {
+        "comparison_status": "compared",
+        "checked_dates": 6,
+        "comparable_dates": 6,
+        "suggestions": [
+          {
+            "original_departure": "2026-11-18",
+            "suggested_departure": "2026-11-16",
+            "shift_days": -2,
+            "original_total_rub": 83234,
+            "suggested_total_rub": 71086,
+            "saving_rub": 12148,
+            "saving_percent": "14.59",
+            "flight_delta_rub": -12148,
+            "hotel_delta_rub": 0,
+            "other_delta_rub": 0,
+            "hotel_id": "osm:node/5369319975",
+            "is_synthetic": true,
+            "fact_type": "date_shift_saving"
+          }
+        ],
+        "provider_quotes_verified_against_raw_d4": 12,
+        "state_preserved": true
+      },
+      "external_network_attempts": 0,
+      "private_database_deleted": true,
+      "duration_seconds": 0.187,
+      "completed_stages": [
+        "cache_provenance",
+        "search_recorded_fares",
+        "d7_profile_explanation",
+        "d8_date_comparison",
+        "select_safe_option",
+        "confirm_cart_without_payment",
+        "synthetic_traveler_data",
+        "deliberate_payment_decline",
+        "simulated_payment_approved",
+        "idempotent_payment_retry",
+        "persisted_order_after_app_restart",
+        "download_demo_voucher_and_calendar"
+      ],
+      "within_300_seconds": true,
+      "artifacts": [
+        {
+          "path": "run-04/voucher.html",
+          "sha256": "4c2f2cd8f3745c05b8e790e495837e8e8fa476346159f16369f1775d9518bcae"
+        },
+        {
+          "path": "run-04/trip.ics",
+          "sha256": "ea9b4aa4cfc51bf4e0a3b1b8257b375f1153ace45cefbe84cb1017328ac6a8af"
+        }
+      ],
+      "trace": {
+        "path": "run-04/trace.json",
+        "sha256": "86b2fb089a66ded1811231ea9fa2ec3b6e171522ff075fac4aefe06f8b74ab1a"
+      }
+    },
+    {
+      "run": 5,
+      "scope": "backend_http_through_simulated_payment_voucher_ics",
+      "status": "passed",
+      "cache_files": [
+        {
+          "path": "19bc134666d5ddb0525d57ff5a5c3f8decdbd822454f351bc8147614ecb321c8.json",
+          "sha256": "c0428860eb3b9f490ca76ef59d1ebb6fe8581e38ab4cbb2e96179c79179251c3",
+          "body_sha256": "4cd2d901385d5810d5e02fc4df7186ef64420b7169f584a23a03888bc1a43f43",
+          "recorded_at": "2026-10-28T08:55:12.599608+00:00"
+        },
+        {
+          "path": "1adbf41d8d8ac578b165f0df1f2ce715d7013d0bad8ca68e0c8a4dc993505c35.json",
+          "sha256": "4c57443c372fb11f41d23e6c64d4102187575ecae35b9bba3c02ee392b9a13fc",
+          "body_sha256": "26eacdc2c8b2a123526cb6f58a56f70f910af8588ceb76360227ddf6a4c99144",
+          "recorded_at": "2026-10-28T08:55:13.101035+00:00"
+        },
+        {
+          "path": "1d2375b5d064f4e9b49a09efa0a65e3074719612defcc2217b21891c9e7beff1.json",
+          "sha256": "518b26e1868965cccd4fad1d3d251d1f85361bc414eda0466607df5afe27a651",
+          "body_sha256": "12456b97ee39ed6150e64f7a903baa33bf67bf6d9bab5ccd17caa0141c209eab",
+          "recorded_at": "2026-10-28T08:55:12.942516+00:00"
+        },
+        {
+          "path": "209120df281e81d1dd895c1424ff3bf37058d6bfed833c8c55fc0a174d0200f8.json",
+          "sha256": "63a91265cb3cf0d6de5adc4463f00f90c87817c61a2cdba9ad91c6d54f497213",
+          "body_sha256": "1675c574ed769dba83a7c3f03f942d2a0432c64dcac5719a27dee1849737cc3d",
+          "recorded_at": "2026-10-28T08:55:11.245731+00:00"
+        },
+        {
+          "path": "22cb81ec96cdf3447c8e6e00d8baf5865008e6ac4cd6cb6b3231528b3435f09f.json",
+          "sha256": "8f7fef706204c2bab2fe27bbb29d9eee010ea96daae31274e2bf8aebad7738d1",
+          "body_sha256": "81b5dfb3b7c71a71fdf3d0d2061d54890b41dc7fc95904d394e80b28172a4185",
+          "recorded_at": "2026-10-28T07:33:19.542263+00:00"
+        },
+        {
+          "path": "230483d81620817a6919c32060ff09c1d6ebe34d976a050fb526eab76ecda095.json",
+          "sha256": "067eabedb5e42811ec397e59d37ff2e6307e8d67d7dc66815f6c851ba525e96b",
+          "body_sha256": "9f10e86b60592b9eda9f26018010fa283ceb9b2cac0b408e81390d394f6c4b37",
+          "recorded_at": "2026-10-28T08:55:11.762939+00:00"
+        },
+        {
+          "path": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "sha256": "852809d6bd3ae03a5b7d4c855d64c76041315363d936de26ec77ce448c769a97",
+          "body_sha256": "b2b73d9fe1d83745553f2d32c1e8e636bd6ce923588b2a04f9f122dfe8eed101",
+          "recorded_at": "2026-10-28T07:54:11.485448+00:00"
+        },
+        {
+          "path": "294d1ffe8b4000ea5a3bd9ddddda311e62497003c1aeb47247e57dec0150d949.json",
+          "sha256": "26957dcecf667758ea0d42537d421b2f1ec6f04496470e718097013066d9af00",
+          "body_sha256": "81a57d5a47f4be2d395c47ad4520a1618a60c66e8ddec2cdd5f83f9f3a654846",
+          "recorded_at": "2026-10-28T09:50:54.727505+00:00"
+        },
+        {
+          "path": "30d279687712dbc6064dd804abf0b5c2be3dd7910db5de72b6760306aea8d2d8.json",
+          "sha256": "98217287b03bfe48d44cfc492f98800cf1a58e6daa2deb6be5b3e16d1fe4afe9",
+          "body_sha256": "b0497d1a66b50bd83d2a44d8a0ba2cf63f533ed53f54d5df6205abfe9fd06094",
+          "recorded_at": "2026-10-28T08:55:11.420049+00:00"
+        },
+        {
+          "path": "3a15cff847b1d51d36acb392a8f8fd61a65168f33563bc78232a8fbeb62fee61.json",
+          "sha256": "9c21e6f2cfdc144204fd5e71c22b652b01e2204e081024fe4811fe8a1533d296",
+          "body_sha256": "32d569d26902faa151329f75544e5fd9a9681c9af7eaa75cb53ccae3b98e211e",
+          "recorded_at": "2026-10-28T08:55:10.731441+00:00"
+        },
+        {
+          "path": "3b582b5be6f82ff8bfec7db742d28485b83c5869515371a6e6a0e4d532df79c2.json",
+          "sha256": "399fc7e80006e22096024781b9baa395a2eeb687dcab253511743efc726499fd",
+          "body_sha256": "34f8f02d885495315a1b7f40019f5fbb41a782cd19a43d1f580488221e27d16b",
+          "recorded_at": "2026-10-28T08:55:10.891059+00:00"
+        },
+        {
+          "path": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "sha256": "5fed72ad320ada592025e2e65496185e71b8288c30b7fe9a6af23d69d6b045d1",
+          "body_sha256": "499efec806b1a9e4f247501ff2738dfcd4f0509f23b28400f67f07c022d4d673",
+          "recorded_at": "2026-10-28T07:54:11.091831+00:00"
+        },
+        {
+          "path": "7d83b9b748c6cf03443d678df082cbd182c3bbf13ad13c6eaec40a51b8146bba.json",
+          "sha256": "13803c2a5dae9c42515bfbd536283225edfdafec57f89a5a89cd584f673daff9",
+          "body_sha256": "d3803483a0c3b61cfc7be9110dd43b0cdd7eba7467d2e827547d5ea01d7b47fb",
+          "recorded_at": "2026-10-28T08:55:11.934071+00:00"
+        },
+        {
+          "path": "cf1eecf563d4e216c70f72e9cf3dffce6a4bfa3651c16e7c872c42aabda3a5b4.json",
+          "sha256": "9b1d6df8feaf1eeb9ebbf47c06ea1c3170fe80d00cbda7463c69f2e04df120dc",
+          "body_sha256": "d528c95e9e2feafafb75e336ab355fa263cf2858177e49c5ff800a70b17cf8cf",
+          "recorded_at": "2026-10-28T08:55:12.441679+00:00"
+        },
+        {
+          "path": "d77f2defb99a65206b0d9349e26cec542abf748c0a42f40b59988a1e625b6380.json",
+          "sha256": "97fb209cd6cb15ccf527f70b40141f53122c670217e36133f14b24603893fd5b",
+          "body_sha256": "426848836b27a783bc71fc92587aafc25c5b270aa47043c8ed489c974e1d8360",
+          "recorded_at": "2026-10-28T08:55:13.438579+00:00"
+        },
+        {
+          "path": "eda51c3f86754b2c090a72f72d64066d870427ee9aba091a313bfd16bbb427eb.json",
+          "sha256": "386dd816bf2f6648e5c3899ef1943fc41c814d6a14e0879169dcc148183cc8a5",
+          "body_sha256": "e85eb82f2c2c0c5ceee66c30a6e2d08b1919fcebf9505690bb43dd6bfab5e1d6",
+          "recorded_at": "2026-10-28T07:54:11.670648+00:00"
+        },
+        {
+          "path": "ef9fa0ad1cef29e334184551d8db0dc804b91c333262003bb049aa37f5590522.json",
+          "sha256": "aeac61a3755c31eb160ac1f7e672b6623df7f4551a000b8131f09f3e4dfe67af",
+          "body_sha256": "617aae35c4984479ad56b4a92e65ea5dc2dd97ef8d883ff00390f11e1ea169dc",
+          "recorded_at": "2026-10-28T08:55:12.097866+00:00"
+        }
+      ],
+      "verified_quotes": [
+        {
+          "from": "SVO",
+          "to": "AYT",
+          "departure_at": "2026-11-18T00:50:00+03:00",
+          "seat_price_rub": 11251,
+          "group_price_rub": 22502,
+          "cache_file": "73b7db880b19129578f5d7992162ed8f0c48a62c257266ff2328019cf8250c40.json",
+          "recorded_at": "2026-10-28T07:54:11.091831Z"
+        },
+        {
+          "from": "AYT",
+          "to": "SVO",
+          "departure_at": "2026-11-25T05:35:00+03:00",
+          "seat_price_rub": 14147,
+          "group_price_rub": 28294,
+          "cache_file": "24f6ae16a13bcf22ef10a7461622299a7e3890d32314d35849fbf7fa0cdcb354.json",
+          "recorded_at": "2026-10-28T07:54:11.485448Z"
+        }
+      ],
+      "selected_option": 1,
+      "hotel_id": "osm:node/5369319975",
+      "known_total_rub": 83234,
+      "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+      "unpriced_components": [
+        "return_transfer",
+        "visa_and_other_required_extras"
+      ],
+      "d7_evidence": {
+        "hotel_id": "osm:node/5369319975",
+        "segment": "family",
+        "profile_sha256": "6daf0de80f4413674fcc2f354e316cdc2a9a5f5471c612eaf3841a9d869bd838",
+        "corpus_sha256": "ccf16591d8c010017681fb2f0dddc2e484d267084a8883df9bcae6dfeacbb07b",
+        "literal_quotes_verified": true,
+        "live_model_run": false
+      },
+      "d8_comparison": {
+        "comparison_status": "compared",
+        "checked_dates": 6,
+        "comparable_dates": 6,
+        "suggestions": [
+          {
+            "original_departure": "2026-11-18",
+            "suggested_departure": "2026-11-16",
+            "shift_days": -2,
+            "original_total_rub": 83234,
+            "suggested_total_rub": 71086,
+            "saving_rub": 12148,
+            "saving_percent": "14.59",
+            "flight_delta_rub": -12148,
+            "hotel_delta_rub": 0,
+            "other_delta_rub": 0,
+            "hotel_id": "osm:node/5369319975",
+            "is_synthetic": true,
+            "fact_type": "date_shift_saving"
+          }
+        ],
+        "provider_quotes_verified_against_raw_d4": 12,
+        "state_preserved": true
+      },
+      "external_network_attempts": 0,
+      "private_database_deleted": true,
+      "duration_seconds": 0.178,
+      "completed_stages": [
+        "cache_provenance",
+        "search_recorded_fares",
+        "d7_profile_explanation",
+        "d8_date_comparison",
+        "select_safe_option",
+        "confirm_cart_without_payment",
+        "synthetic_traveler_data",
+        "deliberate_payment_decline",
+        "simulated_payment_approved",
+        "idempotent_payment_retry",
+        "persisted_order_after_app_restart",
+        "download_demo_voucher_and_calendar"
+      ],
+      "within_300_seconds": true,
+      "artifacts": [
+        {
+          "path": "run-05/voucher.html",
+          "sha256": "4c2f2cd8f3745c05b8e790e495837e8e8fa476346159f16369f1775d9518bcae"
+        },
+        {
+          "path": "run-05/trip.ics",
+          "sha256": "4d7f09bc343693fc10e8063e2305276d4631ff25d2ff97f8faf582a738a20a9e"
+        }
+      ],
+      "trace": {
+        "path": "run-05/trace.json",
+        "sha256": "77171e1ccc4eba3402e1193bcb54a0e7c7c5138fff5945e851e93d244c4b70e6"
+      }
+    }
+  ]
+}

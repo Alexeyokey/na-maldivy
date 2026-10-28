@@ -112,6 +112,19 @@
           ],
           "title": "Air Temperature C"
         },
+        "as_of": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "As Of"
+        },
         "country": {
           "title": "Country",
           "type": "string"
@@ -160,12 +173,30 @@
           "title": "Risks",
           "type": "array"
         },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/ReferenceSource"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
         "tags": {
           "items": {
             "type": "string"
           },
           "title": "Tags",
           "type": "array"
+        },
+        "visa": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VisaEvidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "visa_required": {
           "anyOf": [
@@ -219,6 +250,19 @@
           ],
           "default": null,
           "title": "Budget Rub"
+        },
+        "departure_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Departure Date"
         },
         "min_water_temperature_c": {
           "anyOf": [
@@ -1026,6 +1070,43 @@
       "title": "ProfileEvidence",
       "type": "object"
     },
+    "ReferenceSource": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "format": "date",
+          "title": "As Of",
+          "type": "string"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Period"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "url",
+        "as_of"
+      ],
+      "title": "ReferenceSource",
+      "type": "object"
+    },
     "Train": {
       "additionalProperties": false,
       "properties": {
@@ -1393,6 +1474,108 @@
         }
       },
       "title": "Travelers",
+      "type": "object"
+    },
+    "VisaEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "checked_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checked On"
+        },
+        "conditions": {
+          "title": "Conditions",
+          "type": "string"
+        },
+        "effective_from": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective From"
+        },
+        "effective_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective Until"
+        },
+        "max_stay_days": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Stay Days"
+        },
+        "regime": {
+          "enum": [
+            "domestic",
+            "exempt",
+            "on_arrival",
+            "evisa",
+            "required",
+            "unknown"
+          ],
+          "title": "Regime",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "verification_status": {
+          "enum": [
+            "official_verified",
+            "partial",
+            "unknown",
+            "domestic"
+          ],
+          "title": "Verification Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "regime",
+        "verification_status",
+        "conditions"
+      ],
+      "title": "VisaEvidence",
       "type": "object"
     }
   },

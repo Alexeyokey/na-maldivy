@@ -48,8 +48,8 @@ class PlanResult:
     start_date: date | None = None
 
 
-def _month_key(month: int, today: date) -> str:
-    year = today.year if month >= today.month else today.year + 1
+def _month_key(month: int, today: date, year: int | None = None) -> str:
+    year = year if year is not None else today.year if month >= today.month else today.year + 1
     return f"{year}-{month:02d}"
 
 
@@ -89,6 +89,7 @@ async def suggest(brief: TripBrief, call: ToolCaller) -> PlanResult:
         "budget_rub": brief.budget_rub,
         "min_water_temperature_c": brief.min_water_temperature_c,
         "visa_free_only": brief.visa_free_only,
+        "departure_date": brief.start_date.isoformat() if brief.start_date else None,
     }
     found: list[Destination] | None = await call("suggest_destinations", args)
     relaxed_budget = False
@@ -152,6 +153,9 @@ async def suggest(brief: TripBrief, call: ToolCaller) -> PlanResult:
                 "water_temperature_c": water,
                 "flight_minutes": flight,
                 "visa_required": d.visa_required,
+                "visa": d.visa.model_dump(mode="json") if d.visa else None,
+                "sources": [source.model_dump(mode="json") for source in d.sources],
+                "as_of": d.as_of.isoformat() if d.as_of else None,
                 "estimated_total_rub": price,
                 "why": why,
                 "tradeoffs": tradeoffs,
@@ -195,7 +199,7 @@ async def _pick_start_date(brief: TripBrief, call: ToolCaller, today: date, resu
         {
             "origin": brief.origin,
             "destination": brief.destination,
-            "month": _month_key(brief.month, today),
+            "month": _month_key(brief.month, today, brief.year),
             "travelers": brief.travelers.model_dump(),
         },
     )
@@ -262,6 +266,8 @@ def _flight_dump(f: Flight) -> dict[str, Any]:
         "to": f.destination.iata,
         "departure_at": f.departure_at.isoformat(),
         "arrival_at": f.arrival_at.isoformat(),
+        "origin_timezone": f.origin.timezone,
+        "destination_timezone": f.destination.timezone,
         "stops": f.stops,
         "price_rub": f.price_rub,
         "baggage_price_rub": f.baggage_price_rub,
@@ -331,6 +337,7 @@ def _explain(c: _Combo, brief: TripBrief) -> tuple[list[str], list[str], list[st
         why.append("авиацены основаны на котировках из поискового кэша Aviasales")
         risks.append("Котировки Aviasales не подтверждают наличие мест; цена группы и багаж рассчитаны моделью")
     if brief.pets:
+        risks.append("Перевозка питомца авиакомпанией не подтверждена; модельная доплата не означает разрешение")
         if h.pets_allowed:
             why.append("с животными можно")
         else:
@@ -395,7 +402,11 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
     if outbound is None:
         result.notes.append("Источник рейсов недоступен; поиск нужно повторить")
         return result
-    outbound = [f for f in outbound if _flight_fits(f, brief)]
+    outbound = [
+        f
+        for f in outbound
+        if _flight_fits(f, brief) and (not brief.late_departure or f.departure_at.hour >= 18 or f.departure_at.hour < 6)
+    ]
     if not outbound:
         result.notes.append(
             f"По доступным данным нет предложений {place_name(brief.origin)} → "
@@ -554,6 +565,11 @@ def _pick_packages(combos: list[_Combo], brief: TripBrief) -> list[dict[str, Any
     for i, (label, c) in enumerate(picks, 1):
         why, tradeoffs, risks = _explain(c, brief)
         h = c.hotel
+        timeline = (
+            build_timeline(c.outbound, h, c.inbound, arrival_transfer=transfer_leg(c.transfer) if c.transfer else None)
+            if c.validation_ok
+            else None
+        )
         packages.append(
             {
                 "index": i,
@@ -596,8 +612,22 @@ def _pick_packages(combos: list[_Combo], brief: TripBrief) -> list[dict[str, Any
                 "total_rub": c.total if c.transfer is not None else None,
                 "known_total_rub": c.total,
                 "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+                "party_price_scope": "whole_party",
+                "travelers": brief.travelers.model_dump(mode="json"),
+                "pet_transport_status": "unknown" if brief.pets else "not_requested",
                 "unpriced_components": ["return_transfer", "visa_and_other_required_extras"],
                 "validation_status": "checked" if c.validation_ok else "failed",
+                "timeline": timeline.model_dump(mode="json") if timeline else None,
+                "validation": {
+                    "checked_rules": [
+                        "early_arrival_vs_checkin",
+                        "airport_overnight_wait",
+                        "hotel_rules",
+                        "transfer_compatibility",
+                    ]
+                    if c.validation_ok
+                    else [],
+                },
                 "can_confirm": (
                     c.transfer is not None
                     and c.validation_ok
