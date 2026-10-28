@@ -51,7 +51,7 @@ export function createFrontendServer({root=path.join(here,'dist'),agentUrl=proce
    const allowed=new Set([`127.0.0.1:${req.socket.localPort}`,`localhost:${req.socket.localPort}`]);
    const host=req.headers.host,origin=req.headers.origin;
    if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress)||!allowed.has(host)||(origin&&origin!==`http://${host}`)||req.headers['sec-fetch-site']==='cross-site'){
-    fail(res,403,'Личный Codex доступен только с этого компьютера.');return;
+    fail(res,403,'Этот чат доступен только с этого компьютера.');return;
    }
   }
   // Match API routes before URL normalization. Encoded slashes, dot segments and query
