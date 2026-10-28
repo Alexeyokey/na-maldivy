@@ -8,10 +8,9 @@ Travel-агент для Ostrovok Hackathon 2026: из сообщения соб
   после записи нужна общедоступная ссылка, проверенная в инкогнито.
 - [Сервис владельца](https://na-maldivy.eu.cc) — необязательная личная установка
   с отдельным паролем; локальное решение ниже работает без этого доступа.
-- Полная сборка готовится в [PR #64](https://github.com/ostrovok-hackathon-2026/na-maldivy/pull/64).
-  До его слияния используйте ветку `codex/submission-readiness`: текущий `main`
-  ещё не содержит весь набор модулей и данных. Тег `submission` нужно поставить
-  на последний коммит `main` в согласованный дедлайн; сейчас тег не заявляется.
+- Полная сборка и её проверки описаны в [PR #64](https://github.com/ostrovok-hackathon-2026/na-maldivy/pull/64).
+  Стандартный запуск ниже использует основную ветку `main`.
+- Финальный тег `submission` отложен по решению владельца и сейчас не создаётся.
 
 ## Быстрый старт
 
@@ -21,7 +20,7 @@ Python, Node.js, базы данных, ключи и локальную мод�
 быть включена.
 
 ```bash
-git clone --branch codex/submission-readiness --single-branch https://github.com/ostrovok-hackathon-2026/na-maldivy.git
+git clone https://github.com/ostrovok-hackathon-2026/na-maldivy.git
 cd na-maldivy
 cp .env.example .env
 docker compose up --build
