@@ -11,7 +11,7 @@
 - ``brief``       {brief, sources, changes, rejected, needs} — бриф после разбора;
 - ``question``    {field, text, quick_replies} — уточняющий вопрос и кнопки;
 - ``tool_call``   {name, arguments} и ``tool_result`` {name, ok, count | error};
-- ``options``     {kind: destinations | packages, items, assumptions, notes} — карточки вариантов;
+- ``options``     {kind: destinations | packages | trains, items, assumptions, notes} — карточки вариантов;
 - ``diff``        {before, after} — что поменялось после пересборки;
 - ``booking``     {id, ...} — имитация оформления;
 - ``warning``     {message} — агент обошёл проблему (модель не ответила и т.п.);
@@ -34,7 +34,7 @@ from app.agent import formatting as fmt
 from app.agent.analysis import MessageAnalysis, analyze_message
 from app.agent.brief import FIELD_LABELS, ApplyResult, BriefPatch, apply_patch
 from app.agent.hidden import NEEDS
-from app.agent.planner import DEFAULT_NIGHTS, PlanResult, needs_summary, search_trip, suggest
+from app.agent.planner import DEFAULT_NIGHTS, PlanResult, needs_summary, search_train_trip, search_trip, suggest
 from app.agent.prompts import ASK_PROMPT, EXPLAIN_PROMPT, OFF_TOPIC_PROMPT, SUMMARY_PROMPT, context_message
 from app.agent.router import Action, Decision, decide
 from app.agent.session import Session, SessionStore, Stage
@@ -120,7 +120,7 @@ class TravelAgent:
             brief=s.brief,
             history=s.history_tail(),
             today=today,
-            has_options=bool(s.packages or s.destinations),
+            has_options=bool(s.packages or s.destinations or s.trains),
             awaiting_confirmation=s.stage is Stage.AWAITING_CONFIRMATION,
         )
         for warning in outcome.warnings:
@@ -156,7 +156,7 @@ class TravelAgent:
             s.brief, s.sources = applied.brief, applied.sources
             s.version += 1
             if search and applied.search_changed:
-                s.stale = bool(s.packages or s.destinations)
+                s.stale = bool(s.packages or s.destinations or s.trains)
                 s.selected = None
                 if s.stage in (Stage.AWAITING_CONFIRMATION, Stage.PACKAGES_SHOWN, Stage.BOOKED):
                     s.stage = Stage.PACKAGES_SHOWN if s.packages else Stage.COLLECTING
@@ -243,28 +243,39 @@ class TravelAgent:
         emit("status", {"stage": "suggest", "text": "Подбираю направления"})
         plan = await suggest(s.brief, self._caller(s, emit))
         s.destinations = plan.options
+        s.trains = []
         s.packages, s.stale = [], False
         s.stage = Stage.DESTINATIONS_SHOWN if plan.options else Stage.COLLECTING
         self._emit_options("destinations", plan, emit)
         return await self._summarize(s, text, plan, fmt.destinations(plan), emit)
 
     async def _search(self, s: Session, text: str, emit: Emit) -> str:
+        if s.brief.transport == "train":
+            emit("status", {"stage": "search", "text": "Ищу поезда и считаю стоимость для группы"})
+            plan = await search_train_trip(s.brief, self._caller(s, emit))
+            s.trains, s.packages, s.destinations = plan.options, [], []
+            s.stale, s.selected = False, None
+            s.stage = Stage.TRAINS_SHOWN if plan.options else Stage.COLLECTING
+            self._emit_options("trains", plan, emit)
+            return await self._summarize(s, text, plan, fmt.trains(plan), emit)
         emit("status", {"stage": "search", "text": "Собираю поездку: рейсы, отели, трансферы"})
         before = s.packages[0] if s.packages and s.stale else None
         plan = await search_trip(s.brief, self._caller(s, emit), self._today())
         self._adopt_assumptions(s, plan, emit)
         s.packages, s.stale, s.selected = plan.options, False, None
+        s.trains, s.destinations = [], []
         s.stage = Stage.PACKAGES_SHOWN if plan.options else Stage.COLLECTING
         self._emit_options("packages", plan, emit)
         diff = ""
         if before and plan.options:
             after = plan.options[0]
             emit("diff", {"before": _brief_package(before), "after": _brief_package(after)})
-            delta = after["total_rub"] - before["total_rub"]
+            delta = after["known_total_rub"] - before["known_total_rub"]
             sign = "+" if delta > 0 else "−"
             diff = (
-                f"Пересобрал план. Было: {before['hotel']['name']}, {fmt.rub(before['total_rub'])} → "
-                f"стало: {after['hotel']['name']}, {fmt.rub(after['total_rub'])} ({sign}{fmt.rub(abs(delta))})."
+                f"Пересчитал известные расходы. Было: {before['hotel']['name']}, "
+                f"{fmt.rub(before['known_total_rub'])} → "
+                f"стало: {after['hotel']['name']}, {fmt.rub(after['known_total_rub'])} ({sign}{fmt.rub(abs(delta))})."
             )
         return await self._summarize(s, text, plan, fmt.packages(plan, diff), emit, diff=diff)
 
@@ -285,10 +296,12 @@ class TravelAgent:
         self._commit_brief(s, ApplyResult(applied.brief, applied.sources, applied.changes), emit, search=False)
 
     async def _explain(self, s: Session, text: str, emit: Emit) -> str:
-        options = s.packages or s.destinations
+        options = s.packages or s.trains or s.destinations
         fallback = (
             fmt.packages(PlanResult(options=s.packages))
             if s.packages
+            else fmt.trains(PlanResult(options=s.trains))
+            if s.trains
             else fmt.destinations(PlanResult(options=s.destinations))
             if s.destinations
             else "Пока у меня нет данных, чтобы ответить точно."
@@ -311,6 +324,12 @@ class TravelAgent:
         package = s.package(d.option)
         if package is None:
             return self._say(fmt.which_option(len(s.packages)), emit)
+        if package.get("can_confirm") is False:
+            return self._say(
+                "Подтверждение недоступно: цена или обязательные условия не проверены либо есть критические проблемы. "
+                "Сначала нужно исправить вариант.",
+                emit,
+            )
         s.selected, s.stage = d.option, Stage.AWAITING_CONFIRMATION
         emit("status", {"stage": "confirm", "text": "Жду подтверждения"})
         return self._say(fmt.confirmation(package, s.brief), emit)
@@ -318,7 +337,7 @@ class TravelAgent:
     def _book(self, s: Session, emit: Emit) -> str:
         package = s.package(s.selected)
         # Двойная проверка инварианта: покупка только после явного подтверждения выбранного варианта.
-        if s.stage is not Stage.AWAITING_CONFIRMATION or package is None:
+        if s.stage is not Stage.AWAITING_CONFIRMATION or package is None or package.get("can_confirm") is False:
             return self._say("Сначала выберите вариант — я покажу состав поездки и попрошу подтверждение.", emit)
         s.booking = {
             "id": "DEMO-" + uuid.uuid4().hex[:8].upper(),
@@ -349,7 +368,10 @@ class TravelAgent:
                 return None
             except Exception as exc:  # неподдерживаемый маршрут, сбой источника — поиск продолжается
                 log.warning("Инструмент %s упал: %s", name, exc)
-                emit("tool_result", {"name": name, "ok": False, "error": str(exc)})
+                emit(
+                    "tool_result",
+                    {"name": name, "ok": False, "error": "Источник недоступен или вернул неподдерживаемые данные"},
+                )
                 return None
             emit("tool_result", {"name": name, "ok": True, "count": len(result) if isinstance(result, list) else 1})
             return result
@@ -478,6 +500,8 @@ def _brief_package(p: dict[str, Any]) -> dict[str, Any]:
         "label": p["label"],
         "hotel": p["hotel"]["name"],
         "total_rub": p["total_rub"],
+        "known_total_rub": p["known_total_rub"],
+        "price_scope": p["price_scope"],
         "check_in": p["hotel"]["check_in"],
         "check_out": p["hotel"]["check_out"],
     }

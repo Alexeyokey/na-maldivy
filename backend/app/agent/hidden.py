@@ -40,7 +40,7 @@ NEEDS: dict[str, Need] = {
     "late_arrival": Need("поздний прилёт", "отели с круглосуточной стойкой регистрации"),
     "short_transfer": Need("короткий трансфер", "отели ближе к аэропорту"),
     "quiet": Need("спокойный отдых", "небольшие и «только для взрослых» отели выше в списке"),
-    "flexible": Need("планы могут поменяться", "тарифы с бесплатной отменой"),
+    "flexible": Need("планы могут поменяться", "возвратные тарифы; сроки и удержания нужно уточнить"),
 }
 
 
@@ -169,6 +169,18 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
             data[name] = value
             inferred.append(name)
 
+    # A train query must reach D6 rather than the flight/hotel planner.
+    classes = {"купе": "coupe", "плацкарт": "platzkart", "св": "sv", "сидяч": "seated"}
+    for word, code in classes.items():
+        if re.search(rf"\b{word}\w*\b", t):
+            data.update(transport="train", seat_class=code)
+            break
+    if re.search(r"\bпоезд(?:ом|а|е|ы)?\b|железнодорож|\bжд\b", t):
+        data["transport"] = "train"
+    elif re.search(r"самолет|\bавиа|\bполетим|\bлетим", t):
+        data["transport"] = "flight"
+    rail = data.get("transport", brief.transport if brief else "flight") == "train"
+
     # Откуда и куда: «из Москвы», «в Анталью», «на Мальдивы».
     for match in re.finditer(r"\b(из|с|от)\s+([а-яa-z-]+)", t):
         code = to_iata(match.group(2))
@@ -177,19 +189,32 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
             break
     for match in re.finditer(r"\b(в|во|на)\s+([а-яa-z-]+)", t):
         code = to_iata(match.group(2))
-        if code in DESTINATIONS:
+        if code in DESTINATIONS or (rail and code in {"MOW", "LED"}):
             data["destination"] = code
             break
+    if rail:
+        cities = list(
+            dict.fromkeys(code for word in re.findall(r"[а-яa-z-]+", t) if (code := to_iata(word)) in {"MOW", "LED"})
+        )
+        if len(cities) == 2 and "origin" not in data and "destination" not in data:
+            data.update(origin=cities[0], destination=cities[1])
 
     # Когда: «18 ноября», «в ноябре».
     for stem, month in _MONTHS:
-        day_match = re.search(rf"\b(\d{{1,2}})\s+{stem}", t)
-        if day_match and (start := _future(month, int(day_match.group(1)), today)):
-            data["start_date"] = start.isoformat()
-            break
+        day_match = re.search(rf"\b(\d{{1,2}})\s+{stem}[а-я]*\s*(\d{{4}})?", t)
+        if day_match:
+            if day_match.group(2):
+                # Do not silently move a year explicitly given by the user.
+                data["start_date"] = f"{day_match.group(2)}-{month:02d}-{int(day_match.group(1)):02d}"
+                break
+            if start := _future(month, int(day_match.group(1)), today):
+                data["start_date"] = start.isoformat()
+                break
         if re.search(rf"\b{stem}", t):
             data["month"] = month
             break
+    if iso := re.search(r"\b\d{4}-\d{2}-\d{2}\b", t):
+        data["start_date"] = iso.group()
 
     # Срок: «на неделю», «на 5 ночей», «дней на десять».
     if "nights" in data:
@@ -234,7 +259,7 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
             data["adults"] = n
     elif re.search(r"втроем", t):
         infer("adults", 3)
-    elif re.search(r"вдвоем|с женой|с мужем|с девушкой|с парнем|с подругой|с другом|с супруг", t):
+    elif re.search(r"вдвоем|на двоих|нас двое|с женой|с мужем|с девушкой|с парнем|с подругой|с другом|с супруг", t):
         infer("adults", 2)
     ages = [int(a) for a in re.findall(r"\b(\d{1,2})\s*(?:лет|года|год)\b", t) if int(a) <= 17]
     ages += [int(a) for a in re.findall(r"\b(\d{1,2})-?летн", t) if int(a) <= 17]

@@ -16,23 +16,26 @@
    помечает прежние варианты устаревшими, и агент пересобирает план, а не начинает заново.
 """
 
+import re
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
-from app.agent.places import DESTINATIONS, PLACE_NAMES, to_iata
+from app.agent.places import to_iata
 from app.contracts.tools import Travelers
 
 Source = Literal["explicit", "inferred", "default"]
 
 # Человекочитаемые названия — для вопросов, плашек и сообщений об отклонённых значениях.
 FIELD_LABELS: dict[str, str] = {
-    "origin": "город вылета",
+    "transport": "вид транспорта",
+    "seat_class": "класс мест в поезде",
+    "origin": "город отправления",
     "destination": "направление",
     "month": "месяц поездки",
-    "start_date": "дата вылета",
+    "start_date": "дата отправления",
     "nights": "число ночей",
     "adults": "взрослые",
     "children_ages": "дети",
@@ -40,7 +43,7 @@ FIELD_LABELS: dict[str, str] = {
     "budget_rub": "бюджет",
     "max_flight_minutes": "максимум в пути",
     "direct_only": "только прямые рейсы",
-    "refundable_only": "только с бесплатной отменой",
+    "refundable_only": "только возвратные тарифы",
     "min_stars": "звёзды отеля",
     "min_water_temperature_c": "температура воды",
     "visa_free_only": "без визы",
@@ -56,6 +59,8 @@ class TripBrief(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
+    transport: Literal["flight", "train"] = "flight"
+    seat_class: Literal["platzkart", "coupe", "sv", "seated"] = "coupe"
     origin: str | None = None
     destination: str | None = None
     month: int | None = Field(default=None, ge=1, le=12)
@@ -89,10 +94,11 @@ class TripBrief(BaseModel):
     def _known_destination(cls, value: str | None) -> str | None:
         if value is None:
             return None
-        code = to_iata(value)
-        if code not in DESTINATIONS:
-            names = ", ".join(PLACE_NAMES[c] for c in sorted(DESTINATIONS))
-            raise ValueError(f"направления «{value}» нет в демо-каталоге. Есть: {names}")
+        # D5 returns more destinations than the three routes in the flight seed.
+        # Accept its IATA codes; actual coverage is checked by the search tool.
+        code = to_iata(value) or (value.upper() if re.fullmatch(r"[A-Za-z]{3}", value) else None)
+        if code is None:
+            raise ValueError(f"направления «{value}» нет в демо-каталоге; выберите карточку или укажите IATA-код")
         return code
 
     @field_validator("children_ages")
@@ -126,6 +132,8 @@ class BriefPatch(BaseModel):
 
     model_config = ConfigDict(extra="ignore")
 
+    transport: Literal["flight", "train"] | None = None
+    seat_class: Literal["platzkart", "coupe", "sv", "seated"] | None = None
     origin: str | None = None
     destination: str | None = None
     month: int | None = None
