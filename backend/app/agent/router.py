@@ -43,6 +43,11 @@ class Decision:
 def missing_fields(session: Session) -> list[str]:
     brief = session.brief
     missing = [name for name in REQUIRED if getattr(brief, name) is None]
+    if brief.transport == "train":
+        if brief.destination is None:
+            missing.append("destination")
+        if brief.start_date is None:
+            missing.append("start_date")
     # Возраст детей меняет цену и правила отеля, а угадать его нельзя.
     if "child" in brief.needs and not brief.children_ages:
         missing.append("children_ages")
@@ -70,7 +75,7 @@ def decide(session: Session, analysis: MessageAnalysis, *, search_changed: bool)
             return Decision(Action.ASK_WHICH, "непонятно, какой вариант выбран")
         return Decision(Action.CONFIRM, "выбран вариант, нужно подтверждение", option=option)
 
-    if intent == "question" and not search_changed and (session.packages or session.destinations):
+    if intent == "question" and not search_changed and (session.packages or session.destinations or session.trains):
         return Decision(Action.EXPLAIN, "вопрос по найденным вариантам")
 
     missing = missing_fields(session)
@@ -82,6 +87,6 @@ def decide(session: Session, analysis: MessageAnalysis, *, search_changed: bool)
             return Decision(Action.EXPLAIN, "направления уже показаны, условия не менялись")
         return Decision(Action.SUGGEST, "направление не выбрано")
 
-    if session.packages and not session.stale:
+    if (session.packages or session.trains) and not session.stale:
         return Decision(Action.EXPLAIN, "условия не менялись, комментирую текущие варианты")
     return Decision(Action.SEARCH, "условия изменились, пересобираю" if session.packages else "данных достаточно")

@@ -36,7 +36,9 @@ def question(field: str, brief: TripBrief) -> str:
     prefix = f"Понял: {known}. " if known else ""
     texts = {
         "month": "Когда хотите поехать? Достаточно месяца, точную дату подберу по ценам.",
-        "origin": "Откуда полетите?",
+        "origin": "Откуда отправитесь?" if brief.transport == "train" else "Откуда полетите?",
+        "destination": "В какой город поедете?",
+        "start_date": "На какую дату искать поезд? Укажите день, месяц и при необходимости год.",
         "children_ages": "Сколько лет ребёнку? От возраста зависят цена билета и подходящие отели.",
     }
     return prefix + texts.get(field, f"Уточните, пожалуйста: {FIELD_LABELS.get(field, field)}.")
@@ -49,7 +51,8 @@ def understood(brief: TripBrief) -> str:
     if brief.destination:
         parts.append(place_name(brief.destination))
     if brief.start_date:
-        parts.append(f"вылет {brief.start_date.strftime('%d.%m')}")
+        verb = "отправление" if brief.transport == "train" else "вылет"
+        parts.append(f"{verb} {brief.start_date.strftime('%d.%m')}")
     elif brief.month:
         parts.append(f"в {_MONTHS_IN[brief.month - 1]}")
     if brief.nights:
@@ -87,29 +90,38 @@ def rejected_line(applied: ApplyResult | None) -> str:
 def destinations(plan: PlanResult) -> str:
     if not plan.options:
         return " ".join(plan.notes) + " Попробуйте другой месяц или снимите часть ограничений."
-    lines = ["Вот куда можно поехать:"]
+    lines = ["Справочные направления; наличие и полную цену нужно проверить поиском:"]
     for o in plan.options:
-        lines.append(
-            f"{o['index']}. {o['name']} ({o['country']}) — около {rub(o['estimated_total_rub'])}, "
-            f"лететь {hours(o['flight_minutes'])}, воздух +{o['air_temperature_c']:g} °C, "
-            f"вода +{o['water_temperature_c']:g} °C."
+        price = "цена неизвестна" if o["estimated_total_rub"] is None else f"оценка {rub(o['estimated_total_rub'])}"
+        flight = (
+            "время перелёта неизвестно"
+            if o["flight_minutes"] is None
+            else f"лететь примерно {hours(o['flight_minutes'])}"
         )
-        if o["why"]:
-            lines.append("   Подходит: " + "; ".join(o["why"]) + ".")
-        if o["tradeoffs"]:
-            lines.append("   Минусы: " + "; ".join(o["tradeoffs"]) + ".")
+        air = "воздух: нет данных" if o["air_temperature_c"] is None else f"воздух {o['air_temperature_c']:+g} °C"
+        water = "вода: нет данных" if o["water_temperature_c"] is None else f"вода {o['water_temperature_c']:+g} °C"
+        lines.append(f"{o['index']}. {o['name']} ({o['country']}) — {price}, {flight}, {air}, {water}.")
+        for title, key in (("Подходит", "why"), ("Минусы", "tradeoffs"), ("Риски", "risks")):
+            if o[key]:
+                lines.append(f"   {title}: " + "; ".join(o[key]) + ".")
     lines += [*plan.notes, assumptions_line(plan.assumptions)]
-    lines.append("Данные демонстрационные. Какое направление собрать в поездку?")
+    lines.append("Цены и доступность могут быть демонстрационными. Какое направление проверить поиском?")
     return "\n".join(line for line in lines if line)
+
+
+def package_price(option: dict[str, Any]) -> str:
+    if option["total_rub"] is None:
+        return f"цена неполная; известные расходы {rub(option['known_total_rub'])}"
+    return f"{rub(option['total_rub'])} за показанные компоненты для всей группы"
 
 
 def packages(plan: PlanResult, diff: str = "") -> str:
     if not plan.options:
         return " ".join(plan.notes) + " Попробуйте другие даты или направление."
     lines = [diff] if diff else []
-    lines.append("Собрал варианты поездки целиком: перелёт туда и обратно, отель и трансфер.")
+    lines.append("Стоимость показанных компонентов: перелёты туда и обратно с багажом, отель и трансфер из аэропорта.")
     for o in plan.options:
-        lines.append(f"{o['index']}. {o['label']}: {o['hotel']['name']} — {rub(o['total_rub'])} за всех.")
+        lines.append(f"{o['index']}. {o['label']}: {o['hotel']['name']} — {package_price(o)}.")
         lines.append(
             f"   Отель {plural(o['hotel']['nights'], 'ночь', 'ночи', 'ночей')} с {day(o['hotel']['check_in'])}, "
             + flight_line(o)
@@ -118,7 +130,10 @@ def packages(plan: PlanResult, diff: str = "") -> str:
             if o[key]:
                 lines.append(f"   {title}: " + "; ".join(o[key]) + ".")
     lines += [*plan.notes, assumptions_line(plan.assumptions)]
-    lines.append("Цены и наличие демонстрационные. Какой вариант оформить? Или поменяем условия.")
+    lines.append(
+        "Цены и наличие демонстрационные. Обратный трансфер, виза и прочие доплаты не оценены. "
+        "Можно выбрать вариант или поменять условия."
+    )
     return "\n".join(line for line in lines if line)
 
 
@@ -146,7 +161,13 @@ def confirmation(o: dict[str, Any], brief: TripBrief) -> str:
         f" — {rub(o['outbound']['price_rub'])}",
         f"• Отель: {o['hotel']['name']}, {day(o['hotel']['check_in'])} — {day(o['hotel']['check_out'])}"
         f" — {rub(o['hotel']['price_rub'])}"
-        + (", бесплатная отмена" if o["hotel"]["refundable"] else ", без возврата"),
+        + (
+            ", возвратный тариф; сроки и удержания уточняются"
+            if o["hotel"]["refundable"] is True
+            else ", без возврата"
+            if o["hotel"]["refundable"] is False
+            else ", условия возврата неизвестны"
+        ),
     ]
     if o["transfer"]:
         t = o["transfer"]
@@ -154,8 +175,11 @@ def confirmation(o: dict[str, Any], brief: TripBrief) -> str:
     lines += [
         f"• Обратно: {o['inbound']['from']} → {o['inbound']['to']}, {when(o['inbound']['departure_at'])}"
         f" — {rub(o['inbound']['price_rub'])}",
-        f"Итого за всех ({group(brief)}): {rub(o['total_rub'])}.",
+        f"Стоимость показанных компонентов ({group(brief)}): {package_price(o)}.",
     ]
+    baggage = o["outbound"].get("baggage_price_rub", 0) + o["inbound"].get("baggage_price_rub", 0)
+    lines.append(f"Модельная доплата за багаж включена: {rub(baggage)}.")
+    lines.append("Обратный трансфер, виза и прочие обязательные доплаты не оценены.")
     critical = [i["message"] for i in o["issues"] if i["severity"] == "critical"]
     if critical:
         lines.append("Внимание: " + "; ".join(critical) + ".")
@@ -165,7 +189,8 @@ def confirmation(o: dict[str, Any], brief: TripBrief) -> str:
 
 def booked(booking: dict[str, Any]) -> str:
     return (
-        f"Готово! Демо-бронь {booking['id']}: {booking['hotel']}, итого {rub(booking['total_rub'])}. "
+        f"Готово! Демо-бронь {booking['id']}: {booking['hotel']}, "
+        f"показанные компоненты {rub(booking['total_rub'])}. "
         "Это имитация оплаты, реального бронирования не было."
     )
 
@@ -176,3 +201,17 @@ def cancelled() -> str:
 
 def off_topic() -> str:
     return "Я помогаю спланировать поездку. Расскажите, куда и когда хотите поехать — или что вам важно в отдыхе."
+
+
+def trains(plan: PlanResult) -> str:
+    classes = {"coupe": "купе", "platzkart": "плацкарт", "sv": "СВ", "seated": "сидячий"}
+    lines = ["Поезда: расписание и модельная стоимость за всю группу в одну сторону."] if plan.options else []
+    for row in plan.options:
+        lines.append(
+            f"{row['index']}. {row['origin']['name']} → {row['destination']['name']}, поезд {row['number']}, "
+            f"{classes[row['seat_class']]}: {when(row['departure_at'])} — {when(row['arrival_at'])}, "
+            f"{rub(row['price_rub'])}."
+        )
+    lines += plan.notes
+    lines.append("Можно уточнить дату или класс мест. Оформление железнодорожных билетов пока не подключено.")
+    return "\n".join(lines)

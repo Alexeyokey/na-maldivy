@@ -11,7 +11,7 @@
 import logging
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
-from datetime import date, timedelta
+from datetime import UTC, date, timedelta
 from typing import Any
 
 from app.agent.brief import TripBrief
@@ -19,7 +19,7 @@ from app.agent.hidden import NEEDS
 from app.agent.places import place_name
 from app.booking.timeline import AIRPORT_EXIT_MIN, build_timeline
 from app.booking.validator import Issue, Requirements, validate_trip
-from app.contracts.tools import Destination, Flight, HotelOffer, Transfer
+from app.contracts.tools import Destination, Flight, HotelOffer, Train, Transfer
 from app.tools.s4_adapter import transfer_leg
 
 log = logging.getLogger(__name__)
@@ -53,8 +53,8 @@ def _month_key(month: int, today: date) -> str:
     return f"{year}-{month:02d}"
 
 
-def rub(amount: int) -> str:
-    return f"{amount:,}".replace(",", " ") + " ₽"
+def rub(amount: int | None) -> str:
+    return "цена неизвестна" if amount is None else f"{amount:,}".replace(",", " ") + " ₽"
 
 
 def plural(n: int, one: str, few: str, many: str) -> str:
@@ -77,7 +77,7 @@ def hours(minutes: int) -> str:
 
 async def suggest(brief: TripBrief, call: ToolCaller) -> PlanResult:
     result = PlanResult()
-    assert brief.origin and brief.month  # роутер не пускает сюда без них
+    assert brief.origin and brief.month
     nights = brief.nights or DEFAULT_NIGHTS
     if brief.nights is None:
         result.assumptions.append(Assumption("nights", f"считаю на {plural(nights, 'ночь', 'ночи', 'ночей')}"))
@@ -91,68 +91,93 @@ async def suggest(brief: TripBrief, call: ToolCaller) -> PlanResult:
         "visa_free_only": brief.visa_free_only,
     }
     found: list[Destination] | None = await call("suggest_destinations", args)
-    over_budget = False
-    if not found and brief.budget_rub:
-        # В бюджет ничего не влезло: показываем ближайшее и честно говорим, на сколько дороже.
+    relaxed_budget = False
+    if found == [] and brief.budget_rub is not None:
         found = await call("suggest_destinations", {**args, "budget_rub": None})
-        over_budget = bool(found)
-    if not found:
-        result.notes.append("Под эти условия в каталоге нет направлений")
+        relaxed_budget = True
+    if found is None:
+        result.notes.append("Источник направлений недоступен; условия поездки не подтверждены")
         return result
-
     options = []
     for d in found:
+        air, water, flight, price = (
+            d.air_temperature_c,
+            d.water_temperature_c,
+            d.flight_duration_minutes,
+            d.estimated_total_price_rub,
+        )
+        # Hard requirements cannot be satisfied by an unknown value.
+        if brief.min_water_temperature_c is not None and (water is None or water < brief.min_water_temperature_c):
+            continue
+        if brief.visa_free_only and d.visa_required is not False:
+            continue
+        if brief.max_flight_minutes is not None and (flight is None or flight > brief.max_flight_minutes):
+            continue
         why, tradeoffs, risks = [], [], list(d.risks)
-        if d.water_temperature_c >= 24 and {"sea", "warm"} & set(brief.needs):
-            why.append(f"вода +{d.water_temperature_c:g} °C, воздух +{d.air_temperature_c:g} °C")
-        elif "warm" in brief.needs and d.air_temperature_c < WARM_AIR_C:
-            tradeoffs.append(f"днём только +{d.air_temperature_c:g} °C")
-        if d.flight_duration_minutes <= SHORT_FLIGHT_MIN:
-            why.append(f"лететь {hours(d.flight_duration_minutes)}")
+        if water is None:
+            risks.append("Температура воды неизвестна")
+        elif water >= 24 and {"sea", "warm"} & set(brief.needs):
+            why.append(f"вода {water:+g} °C")
+        if air is None:
+            risks.append("Температура воздуха неизвестна")
+        elif "warm" in brief.needs and air < WARM_AIR_C:
+            tradeoffs.append(f"днём только {air:+g} °C")
+        if flight is None:
+            risks.append("Время перелёта неизвестно")
+        elif flight <= SHORT_FLIGHT_MIN:
+            why.append(f"оценка перелёта {hours(flight)}")
         elif "short_flight" in brief.needs or "child" in brief.needs:
-            tradeoffs.append(f"долгий перелёт: {hours(d.flight_duration_minutes)}")
-        if brief.max_flight_minutes and d.flight_duration_minutes > brief.max_flight_minutes:
-            tradeoffs.append(f"перелёт дольше вашего лимита {hours(brief.max_flight_minutes)}")
-        if not d.visa_required:
-            why.append("виза не нужна")
-        if brief.budget_rub:
-            diff = d.estimated_total_price_rub - brief.budget_rub
+            tradeoffs.append(f"долгий перелёт по оценке: {hours(flight)}")
+        if d.visa_required is False:
+            why.append("сохранённая справка указывает безвизовый режим; условия нужно перепроверить")
+        elif d.visa_required is None:
+            risks.append("Визовый режим неизвестен")
+        if price is None:
+            risks.append("Цена неизвестна; соответствие бюджету не подтверждено")
+        elif brief.budget_rub is not None:
+            diff = price - brief.budget_rub
             (tradeoffs if diff > 0 else why).append(
-                f"дороже бюджета на {rub(diff)}" if diff > 0 else f"в бюджете, запас {rub(-diff)}"
+                f"справочная оценка дороже бюджета на {rub(diff)}"
+                if diff > 0
+                else f"справочная оценка ниже бюджета на {rub(-diff)}; полная цена требует поиска"
             )
         options.append(
             {
                 "index": 0,
                 "kind": "destination",
                 "code": d.place.iata,
-                "name": place_name(d.place.iata),
+                "name": d.place.name,
                 "country": d.country,
-                "air_temperature_c": d.air_temperature_c,
-                "water_temperature_c": d.water_temperature_c,
-                "flight_minutes": d.flight_duration_minutes,
+                "air_temperature_c": air,
+                "water_temperature_c": water,
+                "flight_minutes": flight,
                 "visa_required": d.visa_required,
-                "estimated_total_rub": d.estimated_total_price_rub,
+                "estimated_total_rub": price,
                 "why": why,
                 "tradeoffs": tradeoffs,
-                "risks": risks,
+                "risks": list(dict.fromkeys(risks)),
                 "is_synthetic": d.is_synthetic,
             }
         )
 
-    def rank(o: dict[str, Any]) -> tuple[int, int, int]:
-        too_long = int(bool(brief.max_flight_minutes and o["flight_minutes"] > brief.max_flight_minutes))
-        price = o["estimated_total_rub"]
-        flight = o["flight_minutes"]
-        if "short_flight" in brief.needs or "child" in brief.needs:
-            return (too_long, flight, price)
-        return (too_long, len(o["tradeoffs"]), price)
+    def known(value: int | None) -> tuple[bool, int]:
+        return value is None, value if value is not None else 0
 
-    options.sort(key=rank)
-    for i, o in enumerate(options[:3], 1):
-        o["index"] = i
-    result.options = options[:3]
-    if over_budget:
-        result.notes.append("В бюджет ничего не помещается, показываю ближайшие варианты дороже")
+    def rank(o: dict[str, Any]) -> tuple:
+        if "short_flight" in brief.needs or "child" in brief.needs:
+            return known(o["flight_minutes"]), known(o["estimated_total_rub"]), o["code"]
+        return len(o["tradeoffs"]), known(o["estimated_total_rub"]), o["code"]
+
+    result.options = sorted(options, key=rank)[:3]
+    for i, option in enumerate(result.options, 1):
+        option["index"] = i
+    if not result.options:
+        result.notes.append("По доступным данным нет направлений с подтверждёнными обязательными условиями")
+    elif relaxed_budget:
+        if any(o["estimated_total_rub"] is None for o in result.options):
+            result.notes.append("Показаны справочные направления без подтверждённой цены; бюджет пока не проверен")
+        elif all(o["estimated_total_rub"] > brief.budget_rub for o in result.options):
+            result.notes.append("Справочные оценки найденных направлений превышают бюджет")
     return result
 
 
@@ -174,25 +199,39 @@ async def _pick_start_date(brief: TripBrief, call: ToolCaller, today: date, resu
             "travelers": brief.travelers.model_dump(),
         },
     )
+    if days is None:
+        result.notes.append("Календарь цен недоступен; задайте конкретную дату или повторите поиск")
+        return None
     future = [d for d in days or [] if d.date > today]
     if not future:
         return None
     best = min(future, key=lambda d: (d.price_rub, d.date))
     worst = max(d.price_rub for d in future)
-    text = f"вылет {best.date.strftime('%d.%m')} — самый дешёвый день месяца по календарю цен"
+    text = f"вылет {best.date.strftime('%d.%m')} — минимальная цена в доступном календаре перелётов в одну сторону"
     if worst > best.price_rub:
-        text += f" (до {rub(worst - best.price_rub)} дешевле других дней)"
+        text += f" (разница с максимальной ценой календаря {rub(worst - best.price_rub)}; не экономия всей поездки)"
     result.assumptions.append(Assumption("start_date", text))
     return best.date
 
 
 def _hotel_fits(hotel: HotelOffer, brief: TripBrief) -> bool:
-    """Жёсткие фильтры. Неизвестное (null) не отсекаем: это риск, а не запрет."""
+    """Явные требования к тарифу/звёздам подтверждаем; неизвестные правила детей/питомцев показываем как риск."""
     if brief.pets and hotel.pets_allowed is False:
         return False
     if brief.children_ages and hotel.adults_only is True:
         return False
+    if brief.refundable_only and hotel.refundable is not True:
+        return False
+    if brief.min_stars is not None and (hotel.stars is None or hotel.stars < brief.min_stars):
+        return False
     return True
+
+
+def _flight_fits(flight: Flight, brief: TripBrief) -> bool:
+    elapsed = (flight.arrival_at.astimezone(UTC) - flight.departure_at.astimezone(UTC)).total_seconds() / 60
+    return (not brief.direct_only or flight.stops == 0) and (
+        brief.max_flight_minutes is None or elapsed <= brief.max_flight_minutes
+    )
 
 
 def _issues_dump(issues: list[Issue]) -> list[dict[str, Any]]:
@@ -201,7 +240,15 @@ def _issues_dump(issues: list[Issue]) -> list[dict[str, Any]]:
             "rule": i.rule,
             "severity": i.severity,
             "message": i.message,
-            "fixes": [{"label": f.label, "price_delta_rub": f.price_delta_rub} for f in i.fixes],
+            "fixes": [
+                {
+                    "label": f.label,
+                    "price_delta_rub": f.price_delta_rub,
+                    "price_estimated": f.price_estimated,
+                    "patch": f.patch,
+                }
+                for f in i.fixes
+            ],
         }
         for i in issues
     ]
@@ -229,12 +276,15 @@ class _Combo:
     inbound: Flight
     transfer: Transfer | None
     issues: list[Issue]
+    validation_ok: bool = True
 
     @property
     def total(self) -> int:
         return (
             self.outbound.price_rub
+            + self.outbound.baggage_price_rub
             + self.inbound.price_rub
+            + self.inbound.baggage_price_rub
             + self.hotel.price_rub
             + (self.transfer.price_rub if self.transfer else 0)
         )
@@ -267,11 +317,11 @@ def _explain(c: _Combo, brief: TripBrief) -> tuple[list[str], list[str], list[st
     if brief.budget_rub:
         diff = c.total - brief.budget_rub
         if diff <= 0:
-            why.append(f"укладывается в бюджет, запас {rub(-diff)}")
+            why.append(f"известные расходы ниже бюджета на {rub(-diff)}; прочие доплаты не оценены")
         else:
             tradeoffs.append(f"дороже бюджета на {rub(diff)}")
-    if h.refundable:
-        why.append("бесплатная отмена отеля")
+    if h.refundable is True:
+        why.append("возвратный тариф отеля; сроки и удержания нужно уточнить")
     elif h.refundable is False:
         tradeoffs.append("отель без возврата денег при отмене")
     if c.outbound.stops == 0 and c.inbound.stops == 0:
@@ -287,19 +337,28 @@ def _explain(c: _Combo, brief: TripBrief) -> tuple[list[str], list[str], list[st
         why.append("отель только для взрослых")
     if h.reception_24h:
         why.append("ресепшен круглосуточно")
+    if h.refundable is None:
+        risks.append("Условия возврата неизвестны")
+    if not c.validation_ok:
+        risks.append("Проверка стыковок не завершена; подтверждение недоступно")
+    risks.append("Обратный трансфер, виза и прочие обязательные доплаты не оценены")
     if c.transfer:
         t = c.transfer
         line = f"трансфер {hours(t.duration_minutes)} за {rub(t.price_rub)}"
+        if not t.available and t.depart_at is not None:
+            line += f", ближайшее отправление {t.depart_at:%d.%m %H:%M}"
         (why if t.duration_minutes <= 60 else tradeoffs).append(line)
     else:
-        risks.append("трансфер из аэропорта не найден — добираться самостоятельно")
+        risks.append("Цена и время трансфера из аэропорта неизвестны; показана только известная часть расходов")
     if c.outbound.is_overnight:
         tradeoffs.append("ночной перелёт туда")
     for issue in c.issues:
         if issue.severity != "info":
             risks.append(issue.message)
     if c.outbound.baggage_price_rub or c.inbound.baggage_price_rub:
-        tradeoffs.append(f"багаж отдельно: {rub(c.outbound.baggage_price_rub + c.inbound.baggage_price_rub)}")
+        why.append(
+            f"модельная доплата за багаж включена: {rub(c.outbound.baggage_price_rub + c.inbound.baggage_price_rub)}"
+        )
     return why, tradeoffs, risks
 
 
@@ -313,7 +372,8 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
         )
     start = await _pick_start_date(brief, call, today, result)
     if start is None:
-        result.notes.append("Не нашёл рейсов в этом месяце")
+        if not result.notes:
+            result.notes.append("По доступному календарю нет рейсов в этом месяце")
         return result
     result.start_date = start
     travelers = brief.travelers.model_dump()
@@ -328,14 +388,25 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
             "direct_only": brief.direct_only,
         },
     )
+    if outbound is None:
+        result.notes.append("Источник рейсов недоступен; поиск нужно повторить")
+        return result
+    outbound = [f for f in outbound if _flight_fits(f, brief)]
     if not outbound:
-        result.notes.append(f"Нет рейсов {place_name(brief.origin)} → {place_name(brief.destination)} на {start}")
+        result.notes.append(
+            f"По доступным данным нет предложений {place_name(brief.origin)} → "
+            f"{place_name(brief.destination)} на {start}"
+        )
         return result
 
     combos: list[_Combo] = []
     # Ночной рейс прилетает на следующий день: заселение и обратный рейс считаем от даты прилёта.
     for check_in in sorted({f.arrival_at.date() for f in outbound}):
-        check_out = check_in + timedelta(days=nights)
+        try:
+            check_out = check_in + timedelta(days=nights)
+        except OverflowError:
+            result.notes.append("Даты проживания выходят за поддерживаемый календарь")
+            continue
         hotels: list[HotelOffer] | None = await call(
             "search_hotels",
             {
@@ -357,32 +428,46 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
                 "direct_only": brief.direct_only,
             },
         )
+        if hotels is None or inbound is None:
+            result.notes.append("Источник отелей или обратных рейсов недоступен; условия не проверены")
+            continue
+        inbound = [f for f in inbound if _flight_fits(f, brief)]
         suitable = [h for h in hotels or [] if _hotel_fits(h, brief)]
         if hotels and not suitable:
-            result.notes.append("Все найденные отели не подходят по правилам для детей или животных")
+            result.notes.append("Найденные отели не подтверждают обязательные условия брифа")
         for out_flight in (f for f in outbound if f.arrival_at.date() == check_in):
             for hotel in suitable:
                 transfer = await _transfer(out_flight, hotel, brief, call)
                 for in_flight in inbound or []:
+                    issues = _validate(out_flight, hotel, in_flight, transfer, brief)
                     combos.append(
                         _Combo(
                             out_flight,
                             hotel,
                             in_flight,
                             transfer,
-                            _validate(out_flight, hotel, in_flight, transfer, brief),
+                            issues or [],
+                            validation_ok=issues is not None,
                         )
                     )
     if not combos:
-        result.notes.append("Не удалось собрать поездку целиком: нет отелей или обратных рейсов на эти даты")
+        if not result.notes:
+            result.notes.append("По доступным данным нет сочетания отеля и обратных рейсов с заданными условиями")
         return result
 
+    if brief.budget_rub is not None:
+        combos = [c for c in combos if c.total <= brief.budget_rub]
+        if not combos:
+            result.notes.append("Даже известные расходы превышают бюджет; подходящий вариант не подтверждён")
+            return result
     result.options = _pick_packages(combos, brief)
     return result
 
 
 async def _transfer(flight: Flight, hotel: HotelOffer, brief: TripBrief, call: ToolCaller) -> Transfer | None:
-    pickup = flight.arrival_at + timedelta(minutes=AIRPORT_EXIT_MIN)
+    pickup = (flight.arrival_at.astimezone(UTC) + timedelta(minutes=AIRPORT_EXIT_MIN)).astimezone(
+        flight.arrival_at.tzinfo
+    )
     found: list[Transfer] | None = await call(
         "get_transfer",
         {
@@ -395,13 +480,13 @@ async def _transfer(flight: Flight, hotel: HotelOffer, brief: TripBrief, call: T
     if not found:
         return None
     # Инструмент уже сортирует: доступные и без запретов — первыми.
-    usable = [t for t in found if t.available and t.depart_at is not None]
-    return usable[0] if usable else None
+    resolved = [t for t in found if t.depart_at is not None]
+    return resolved[0] if resolved else None
 
 
 def _validate(
     outbound: Flight, hotel: HotelOffer, inbound: Flight, transfer: Transfer | None, brief: TripBrief
-) -> list[Issue]:
+) -> list[Issue] | None:
     try:
         leg = transfer_leg(transfer) if transfer else None
         timeline = build_timeline(outbound, hotel, inbound, arrival_transfer=leg)
@@ -414,7 +499,7 @@ def _validate(
         )
     except Exception:  # валидатор не должен ронять подбор; проблема видна в логах
         log.exception("Проверка стыковок не удалась")
-        return []
+        return None
 
 
 def _pick_packages(combos: list[_Combo], brief: TripBrief) -> list[dict[str, Any]]:
@@ -422,8 +507,20 @@ def _pick_packages(combos: list[_Combo], brief: TripBrief) -> list[dict[str, Any
 
     Самый дешёвый из показанных помечается отдельно, чтобы метка всегда говорила правду.
     """
-    by_score = sorted(combos, key=lambda c: _score(c, brief))
-    safe = [c for c in by_score if not any(i.severity == "critical" for i in c.issues)] or by_score
+    by_score = sorted(
+        combos,
+        key=lambda c: (
+            c.transfer is None,
+            not c.validation_ok,
+            any(i.severity == "critical" for i in c.issues),
+            _score(c, brief),
+        ),
+    )
+    safe = [
+        c
+        for c in by_score
+        if c.transfer is not None and c.validation_ok and not any(i.severity == "critical" for i in c.issues)
+    ] or by_score
     picks: list[tuple[str, _Combo]] = [("Оптимальный", by_score[0])]
 
     def add(label: str, candidates: list[_Combo]) -> None:
@@ -462,6 +559,11 @@ def _pick_packages(combos: list[_Combo], brief: TripBrief) -> list[dict[str, Any
                     "refundable": h.refundable,
                     "adults_only": h.adults_only,
                     "pets_allowed": h.pets_allowed,
+                    "review_profile": (
+                        getattr(h, "review_profile", None).model_dump(mode="json")
+                        if getattr(h, "review_profile", None) is not None
+                        else None
+                    ),
                 },
                 "outbound": _flight_dump(c.outbound),
                 "inbound": _flight_dump(c.inbound),
@@ -471,11 +573,24 @@ def _pick_packages(combos: list[_Combo], brief: TripBrief) -> list[dict[str, Any
                         "mode": c.transfer.mode,
                         "duration_minutes": c.transfer.duration_minutes,
                         "price_rub": c.transfer.price_rub,
+                        "available": c.transfer.available,
+                        "depart_at": c.transfer.depart_at.isoformat() if c.transfer.depart_at else None,
                     }
                     if c.transfer
                     else None
                 ),
-                "total_rub": c.total,
+                "total_rub": c.total if c.transfer is not None else None,
+                "known_total_rub": c.total,
+                "price_scope": "round_trip_flights_baggage_hotel_arrival_transfer",
+                "unpriced_components": ["return_transfer", "visa_and_other_required_extras"],
+                "validation_status": "checked" if c.validation_ok else "failed",
+                "can_confirm": (
+                    c.transfer is not None
+                    and c.validation_ok
+                    and not any(issue.severity == "critical" for issue in c.issues)
+                    and (not brief.pets or h.pets_allowed is True)
+                    and (not brief.children_ages or h.adults_only is False)
+                ),
                 "issues": _issues_dump(c.issues),
                 "why": why,
                 "tradeoffs": tradeoffs,
@@ -489,3 +604,31 @@ def _pick_packages(combos: list[_Combo], brief: TripBrief) -> list[dict[str, Any
 def needs_summary(brief: TripBrief) -> list[str]:
     """Что агент учёл из скрытых требований — для плашек брифа и ответа пользователю."""
     return [f"{NEEDS[n].label}: {NEEDS[n].effect}" for n in brief.needs if n in NEEDS]
+
+
+async def search_train_trip(brief: TripBrief, call: ToolCaller) -> PlanResult:
+    """D6 quotes one-way rail journeys, not a flight/hotel package or a reservation."""
+    assert brief.origin and brief.destination and brief.start_date
+    result = PlanResult(start_date=brief.start_date)
+    trains: list[Train] | None = await call(
+        "search_trains",
+        {
+            "origin": brief.origin,
+            "destination": brief.destination,
+            "departure_date": brief.start_date.isoformat(),
+            "travelers": brief.travelers.model_dump(),
+            "seat_class": brief.seat_class,
+        },
+    )
+    if trains is None:
+        result.notes.append("Источник поездов недоступен; повторите поиск")
+        return result
+    matching = [t for t in trains if brief.budget_rub is None or t.price_rub <= brief.budget_rub]
+    for index, train in enumerate(sorted(matching, key=lambda t: (t.price_rub, t.departure_at))[:3], 1):
+        result.options.append({**train.model_dump(mode="json"), "index": index, "kind": "train"})
+    if not result.options:
+        result.notes.append("В доступных данных нет поездов по заданному маршруту, классу мест и бюджету")
+    result.notes.append(
+        "Цены за всю группу в одну сторону; стоимость модельная. Наличие мест и бронирование не проверены"
+    )
+    return result

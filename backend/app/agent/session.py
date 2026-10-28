@@ -19,6 +19,7 @@ class Stage(StrEnum):
     COLLECTING = "collecting"
     DESTINATIONS_SHOWN = "destinations_shown"
     PACKAGES_SHOWN = "packages_shown"
+    TRAINS_SHOWN = "trains_shown"
     AWAITING_CONFIRMATION = "awaiting_confirmation"
     BOOKED = "booked"
 
@@ -31,6 +32,7 @@ class Session:
     stage: Stage = Stage.COLLECTING
     destinations: list[dict[str, Any]] = field(default_factory=list)
     packages: list[dict[str, Any]] = field(default_factory=list)
+    trains: list[dict[str, Any]] = field(default_factory=list)
     # Условия поменялись после поиска: показанные варианты устарели и будут пересобраны.
     stale: bool = False
     selected: int | None = None
