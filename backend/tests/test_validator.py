@@ -314,6 +314,131 @@ def test_long_transfer_warning_or_critical_by_requirement(base: TransferBase) ->
     assert strict.fixes[0].patch == {"kind": "replace_hotel", "max_transfer_minutes": 60}
 
 
+def test_long_return_transfer_is_checked_even_when_arrival_transfer_is_short() -> None:
+    hotel = dubai_hotel(date(2026, 11, 19), 350_000)
+    inbound = Journey("back", DXB, SVO, datetime(2026, 11, 25, 20, tzinfo=DUBAI), datetime(2026, 11, 26, 1, tzinfo=MSK))
+    arrival = TransferLeg(
+        option_id="short-arrival",
+        mode="taxi",
+        price_rub=1000,
+        depart_at=datetime(2026, 11, 19, 6, 45, tzinfo=DUBAI),
+        arrive_at=datetime(2026, 11, 19, 7, 15, tzinfo=DUBAI),
+    )
+    departure = TransferLeg(
+        option_id="long-return",
+        mode="shuttle",
+        price_rub=1000,
+        depart_at=datetime(2026, 11, 25, 15, tzinfo=DUBAI),
+        arrive_at=datetime(2026, 11, 25, 18, tzinfo=DUBAI),
+    )
+    timeline = build_timeline(NIGHT_TO_DUBAI, hotel, inbound, arrival, departure)
+    issue = only(
+        validate_trip(
+            timeline,
+            hotel,
+            Travelers(adults=2),
+            arrival_transfer=arrival,
+            departure_transfer=departure,
+            requirements=Requirements(max_transfer_minutes=60),
+        ),
+        "long_transfer",
+    )
+    assert issue.severity == "critical"
+    assert issue.message == "Трансфер в аэропорт занимает 3 ч, а нужно не дольше 1 ч"
+
+
+def test_known_zero_hotel_price_is_not_changed_into_unknown_night_fix_price() -> None:
+    hotel = dubai_hotel(date(2026, 11, 19), 0)
+    issue = only(
+        validate_trip(build_timeline(NIGHT_TO_DUBAI, hotel), hotel, Travelers(adults=2)), "early_hotel_arrival"
+    )
+    extra_night = next(fix for fix in issue.fixes if fix.patch["kind"] == "add_night_before")
+    assert extra_night.price_delta_rub == 0
+    assert extra_night.price_estimated is True
+
+
+@pytest.mark.parametrize("max_transfer_minutes", [None, 40])
+def test_child_seat_replacement_respects_pet_and_duration_constraints(
+    base: TransferBase,
+    max_transfer_minutes: int | None,
+) -> None:
+    hotel = Hotel(
+        KAYA_BELEK, "Kaya Belek", Place("Kaya Belek", "Europe/Istanbul"), date(2026, 11, 18), date(2026, 11, 25)
+    )
+    flight = Journey(
+        "out", SVO, AYT, datetime(2026, 11, 18, 11, tzinfo=MSK), datetime(2026, 11, 18, 14, tzinfo=ANTALYA)
+    )
+    travelers = Travelers(adults=2, children_ages=[3], pets=1)
+    taxi = leg_from_quote(KAYA_BELEK, "AYT", datetime(2026, 11, 18, 14, 45, tzinfo=ANTALYA), travelers, "taxi")
+    issue = only(
+        validate_trip(
+            build_timeline(flight, hotel, arrival_transfer=taxi),
+            hotel,
+            travelers,
+            arrival_transfer=taxi,
+            requirements=Requirements(max_transfer_minutes=max_transfer_minutes),
+            airport="AYT",
+            base=base,
+        ),
+        "transfer_child_seat",
+    )
+    expected = ["private_minivan"] if max_transfer_minutes is None else [""]
+    assert [fix.patch.get("option_id", "").rsplit(":", 1)[-1] for fix in issue.fixes] == expected
+
+
+@pytest.mark.parametrize("replacement_minutes", [30, 180])
+def test_return_transfer_replacement_must_still_reach_airport_before_flight(
+    base: TransferBase,
+    replacement_minutes: int,
+) -> None:
+    original = base.get(KAYA_BELEK, "AYT")
+    options = [
+        option.model_copy(update={"duration_min": replacement_minutes}) if option.mode == "private_minivan" else option
+        for option in original.options
+        if option.mode in {"taxi", "private_minivan"}
+    ]
+    checked_base = TransferBase([original.model_copy(update={"options": options})])
+    hotel = Hotel(
+        KAYA_BELEK, "Kaya Belek", Place("Kaya Belek", "Europe/Istanbul"), date(2026, 11, 18), date(2026, 11, 25)
+    )
+    flight = Journey(
+        "out", SVO, AYT, datetime(2026, 11, 18, 11, tzinfo=MSK), datetime(2026, 11, 18, 14, tzinfo=ANTALYA)
+    )
+    inbound = Journey(
+        "back", AYT, SVO, datetime(2026, 11, 25, 10, tzinfo=ANTALYA), datetime(2026, 11, 25, 13, tzinfo=MSK)
+    )
+    travelers = Travelers(adults=2, pets=1)
+    quote = next(
+        q
+        for q in quote_transfers(
+            KAYA_BELEK, "AYT", datetime(2026, 11, 25, 7, tzinfo=ANTALYA), travelers, base=checked_base
+        )
+        if q.mode == "taxi"
+    )
+    departure = TransferLeg(
+        option_id=quote.option_id,
+        mode=quote.mode,
+        depart_at=quote.depart_at,
+        arrive_at=quote.arrive_at,
+        price_rub=quote.price_rub,
+        issues=quote.issues,
+    )
+    issue = only(
+        validate_trip(
+            build_timeline(flight, hotel, inbound, departure_transfer=departure),
+            hotel,
+            travelers,
+            departure_transfer=departure,
+            airport="AYT",
+            base=checked_base,
+        ),
+        "transfer_pets",
+    )
+    assert any(fix.patch.get("option_id", "").endswith(":private_minivan") for fix in issue.fixes) is (
+        replacement_minutes == 30
+    )
+
+
 def test_night_arrival_with_infant() -> None:
     late = Journey(
         "out", SVO, DXB, datetime(2026, 11, 18, 20, 0, tzinfo=MSK), datetime(2026, 11, 19, 2, 0, tzinfo=DUBAI)

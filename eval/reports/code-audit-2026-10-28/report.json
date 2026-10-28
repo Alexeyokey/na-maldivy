@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-28T20:34:29.986729+00:00",
+  "scope": "repository_code_audit_and_supported_demo_flows",
+  "starting_commit": "37037e6282a348c2777f757b72af49f5454b2765",
+  "branch": "codex/private-demo-access",
+  "code_sha256": "7a263e1e468fd289eb3c8e377c9279f89c347b6d6a11a480a445c6b6ee9f8960",
+  "data_unchanged": true,
+  "checks": {
+    "make_check": "passed: lint test web smoke",
+    "backend_tests": 1247,
+    "frontend_unit_tests": 119,
+    "frontend_http_integration_tests": 11,
+    "new_regression_scenarios": 47,
+    "scripts_ruff_with_E402": "passed",
+    "shell_syntax": "passed",
+    "relative_markdown_links": "passed",
+    "known_secret_scan": "passed for tracked working tree/new non-ignored files; no Git history audit"
+  },
+  "browser_acceptance": {
+    "url": "http://127.0.0.1:18820/",
+    "runtime": "isolated Docker with fake model and committed data",
+    "search_choose_confirm_demo_pay": "passed",
+    "paid_order_restored_after_reload": "passed",
+    "voucher_download_toast": "Демо-ваучер скачан.",
+    "calendar_download_toast": "Календарь скачан.",
+    "database_counts_after_reload": {
+      "carts": 1,
+      "orders": 1,
+      "payment_attempts": 1
+    },
+    "screenshots": [
+      "paid-before-reload.jpg",
+      "paid-after-reload.jpg"
+    ]
+  },
+  "data_evidence": "../data-bundle-audit-2026-10-28.json",
+  "live_evidence": "live.json",
+  "deployed_services": "4 running; no OOM or restarts"
+}

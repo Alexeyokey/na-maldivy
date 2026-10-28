@@ -50,6 +50,7 @@ def fake_codex(tmp_path: Path) -> Iterator[Callable[..., FakeCodex]]:
         hang: bool = False,
         child: bool = False,
         stubborn_child: bool = False,
+        flood: str | None = None,
         version: str = "codex-cli 0.163.0-alpha.11",
     ) -> FakeCodex:
         index = len(records)
@@ -67,6 +68,7 @@ def fake_codex(tmp_path: Path) -> Iterator[Callable[..., FakeCodex]]:
             "hang": hang,
             "child": child,
             "stubborn_child": stubborn_child,
+            "flood": flood,
             "version": version,
         }
         binary.write_text(
@@ -96,6 +98,11 @@ def fake_codex(tmp_path: Path) -> Iterator[Callable[..., FakeCodex]]:
             "        while not pathlib.Path(ready).exists():\n"
             "            time.sleep(0.01)\n"
             "pathlib.Path(scenario['record']).write_text(json.dumps(record))\n"
+            "if scenario['flood']:\n"
+            "    stream = sys.stdout if scenario['flood'] == 'stdout' else sys.stderr\n"
+            "    stream.buffer.write(b'x' * (256 * 1024))\n"
+            "    stream.buffer.flush()\n"
+            "    time.sleep(30)\n"
             "if scenario['hang']:\n"
             "    time.sleep(30)\n"
             "target = option('--output-last-message', '-o')\n"
@@ -346,6 +353,27 @@ async def test_timeout_stops_cli_and_child_process(fake_codex: Callable[..., Fak
     client = make_client(fake, timeout_s=1.5)
     with pytest.raises(LLMError):
         await client.complete(HELLO)
+    await client.aclose()
+    await assert_stopped(fake.invocation())
+    assert_workspace_removed(fake.invocation())
+
+
+@pytest.mark.parametrize("pipe", ["stdout", "stderr"])
+async def test_oversized_live_pipe_is_stopped_before_provider_timeout(
+    pipe: str, fake_codex: Callable[..., FakeCodex], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from app.llm import codex_local
+
+    monkeypatch.setattr(codex_local, "_MAX_OUTPUT_BYTES", 128 * 1024)
+    fake = fake_codex(flood=pipe, child=True)
+    client = make_client(fake, timeout_s=20)
+    # The fixture writes too much and then hangs. A post-exit length check cannot
+    # satisfy this bound: the adapter must stop reading and kill the process now.
+    async with asyncio.timeout(4):
+        with pytest.raises(LLMError) as caught:
+            await client.complete(HELLO)
+    assert PRIVATE not in str(caught.value)
+    assert client.completed_calls == 0
     await client.aclose()
     await assert_stopped(fake.invocation())
     assert_workspace_removed(fake.invocation())

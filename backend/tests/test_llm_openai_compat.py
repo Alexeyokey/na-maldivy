@@ -1,6 +1,7 @@
 """OpenAI-совместимый клиент против подставного HTTP-сервера: SDK разбирает настоящие ответы в формате API."""
 
 import json
+import traceback
 from collections.abc import Callable
 from typing import Any
 
@@ -126,7 +127,7 @@ async def test_bad_tool_arguments_raise(arguments: str) -> None:
     tool_call = {"id": "call_1", "type": "function", "function": {"name": "search", "arguments": arguments}}
     handler, _ = recorder(lambda: completion({"content": None, "tool_calls": [tool_call]}))
 
-    with pytest.raises(LLMError, match="search"):
+    with pytest.raises(LLMError, match="аргумент"):
         await make_client(handler).complete(HELLO)
 
 
@@ -165,3 +166,63 @@ async def test_provider_errors_become_llm_error(handler: Handler) -> None:
         await llm.complete(HELLO)
     with pytest.raises(LLMError, match="model-main"):
         [text async for text in llm.stream(HELLO)]
+
+
+@pytest.mark.parametrize("stream", [False, True])
+async def test_provider_error_cannot_leak_response_body_or_request_secrets(stream: bool) -> None:
+    private = "private-api-key-and-traveler-data"
+    llm = make_client(lambda _: httpx.Response(401, json={"error": {"message": private}}))
+    with pytest.raises(LLMError) as caught:
+        if stream:
+            [text async for text in llm.stream(HELLO)]
+        else:
+            await llm.complete(HELLO)
+    assert private not in str(caught.value)
+    assert private not in "".join(traceback.format_exception(caught.value))
+    await llm.aclose()
+
+
+@pytest.mark.parametrize("arguments", ['{"private": "secret', '["private-provider-value"]'])
+async def test_bad_tool_arguments_are_not_embedded_in_public_error(arguments: str) -> None:
+    call = {"id": "call_1", "type": "function", "function": {"name": "search", "arguments": arguments}}
+    llm = make_client(lambda _: completion({"content": None, "tool_calls": [call]}))
+    with pytest.raises(LLMError) as caught:
+        await llm.complete(HELLO)
+    assert "private" not in "".join(traceback.format_exception(caught.value))
+    await llm.aclose()
+
+
+@pytest.mark.parametrize("field", ["usage", "tool_id", "content", "invalid_json"])
+async def test_malformed_http_success_cannot_leak_provider_fields(field: str) -> None:
+    private = "synthetic-private-provider-diagnostic"
+    body = json.loads(completion({"content": "hello"}).content)
+    if field == "usage":
+        body["usage"]["prompt_tokens"] = private
+    elif field == "tool_id":
+        body["choices"][0]["message"]["tool_calls"] = [
+            {"id": [private], "type": "function", "function": {"name": "search", "arguments": "{}"}}
+        ]
+    elif field == "content":
+        body["choices"][0]["message"]["content"] = {"private": private}
+    llm = make_client(
+        lambda _: (
+            httpx.Response(200, content=private, headers={"content-type": "application/json"})
+            if field == "invalid_json"
+            else httpx.Response(200, json=body)
+        )
+    )
+    with pytest.raises(LLMError) as caught:
+        await llm.complete(HELLO)
+    assert private not in "".join(traceback.format_exception(caught.value))
+    await llm.aclose()
+
+
+async def test_malformed_stream_cannot_escape_llm_error_contract() -> None:
+    private = "synthetic-private-stream-diagnostic"
+    value = chunk(None)
+    value["choices"][0]["delta"]["content"] = {"private": private}
+    llm = make_client(lambda _: sse_response(value))
+    with pytest.raises(LLMError) as caught:
+        [text async for text in llm.stream(HELLO)]
+    assert private not in "".join(traceback.format_exception(caught.value))
+    await llm.aclose()

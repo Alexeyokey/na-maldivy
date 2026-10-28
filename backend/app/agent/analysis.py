@@ -122,11 +122,11 @@ async def analyze_message(
             response = await llm.complete(messages, tier="fast", json_mode=True, temperature=0)
             analysis = MessageAnalysis.model_validate(json.loads(response.text or ""))
         except LLMError as exc:
-            log.warning("Разбор моделью не удался: %s", exc)
+            log.warning("Разбор моделью не удался (%s)", type(exc).__name__)
             warnings.append("Модель не ответила, разбираю сообщение правилами")
             break
         except (json.JSONDecodeError, ValidationError) as exc:
-            log.warning("Модель вернула негодный разбор (попытка %d): %s", attempt + 1, exc)
+            log.warning("Модель вернула негодный разбор (попытка %d, %s)", attempt + 1, type(exc).__name__)
             if attempt == 0:
                 # Один повтор: показываем модели её ответ и ошибку.
                 messages += [

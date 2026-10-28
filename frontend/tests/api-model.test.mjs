@@ -86,7 +86,7 @@ test('User-visible text excludes source review identifiers and runtime access id
 });
 
 test('A new cart requires its own traveler submission even when the people are unchanged',async()=>{
- const {controller,calls}=checkoutController(({path})=>Response.json({...order,order_id:path.includes('CART-new_02')?'DEMO-new_02':order.order_id}));
+ const {controller,calls}=checkoutController(({path})=>Response.json({...order,cart_id:path.split('/').at(-2),order_id:path.includes('CART-new_02')?'DEMO-new_02':order.order_id}));
  await controller.pay(paymentArgs);
  controller.state.cart={...cart,cart_id:'CART-new_02'};controller.state.stage='checkout_pending';controller.state.order=null;
  await controller.pay(paymentArgs);

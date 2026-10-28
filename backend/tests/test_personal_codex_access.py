@@ -101,9 +101,7 @@ async def test_forwarded_headers_cannot_bypass_local_peer_boundary() -> None:
     async with httpx.AsyncClient(
         transport=httpx.ASGITransport(app=app, client=("198.51.100.1", 50000)), base_url="http://127.0.0.1"
     ) as client:
-        response = await client.get(
-            "/health", headers={"x-local-codex-token": TOKEN, "X-Forwarded-For": "127.0.0.1"}
-        )
+        response = await client.get("/health", headers={"x-local-codex-token": TOKEN, "X-Forwarded-For": "127.0.0.1"})
     assert response.status_code == 403
 
 

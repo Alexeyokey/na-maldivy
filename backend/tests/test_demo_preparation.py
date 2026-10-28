@@ -44,3 +44,32 @@ def test_missing_implementations_cannot_create_a_successful_data_report(tmp_path
     assert result.returncode == 2
     assert "requires D2/D3" in result.stderr
     assert not output.exists()
+
+
+def test_source_archive_can_finish_all_five_data_runs_without_git_metadata(tmp_path):
+    import os
+    import shutil
+
+    sandbox = tmp_path / "source-archive"
+    (sandbox / "scripts").mkdir(parents=True)
+    (sandbox / "backend").mkdir()
+    shutil.copy(ROOT / "scripts/rehearse_demo.py", sandbox / "scripts/rehearse_demo.py")
+    shutil.copytree(ROOT / "backend/app", sandbox / "backend/app", ignore=shutil.ignore_patterns("__pycache__"))
+    shutil.copytree(ROOT / "data", sandbox / "data", ignore=shutil.ignore_patterns("aviasales", "yandex", "runtime"))
+    output = tmp_path / "report.json"
+    env = {key: value for key, value in os.environ.items() if key in {"PATH", "HOME", "SYSTEMROOT", "PYTHONPATH"}}
+    result = subprocess.run(
+        [sys.executable, str(sandbox / "scripts/rehearse_demo.py"), "--output", str(output)],
+        cwd=sandbox,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert result.returncode == 0, result.stderr
+    report = json.loads(output.read_text(encoding="utf-8"))
+    assert report["code_commit"] is None
+    assert len(report["backend_source_sha256"]) == 64
+    assert len(report["runs"]) == 5
+    assert all(row["status"] == "passed" for row in report["runs"])
+    assert len({row["payload_sha256"] for row in report["runs"]}) == 1

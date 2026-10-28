@@ -185,7 +185,7 @@ class CodexLocalClient:
             try:
                 try:
                     stdout, stderr = await asyncio.wait_for(
-                        process.communicate(prompt.encode("utf-8")), timeout=self._timeout_s
+                        _communicate_bounded(process, prompt.encode("utf-8")), timeout=self._timeout_s
                     )
                 except TimeoutError:
                     raise LLMError("Codex local: превышено время ожидания ответа.") from None
@@ -219,7 +219,7 @@ class CodexLocalClient:
         self._processes.add(process)
         try:
             try:
-                stdout, _ = await asyncio.wait_for(process.communicate(), timeout=min(5.0, self._timeout_s))
+                stdout, _ = await asyncio.wait_for(_communicate_bounded(process), timeout=min(5.0, self._timeout_s))
             except TimeoutError:
                 raise LLMError("Codex local: не удалось проверить версию CLI.") from None
             if process.returncode or stdout.decode("utf-8").strip() != _SUPPORTED_VERSION or self._closed:
@@ -228,6 +228,48 @@ class CodexLocalClient:
         finally:
             await _stop(process, drain=True)
             self._processes.discard(process)
+
+
+async def _communicate_bounded(process: asyncio.subprocess.Process, data: bytes | None = None) -> tuple[bytes, bytes]:
+    """Enforce pipe limits while the CLI runs, before communicate can exhaust RAM."""
+
+    async def read(stream: asyncio.StreamReader | None) -> bytes:
+        if stream is None:
+            return b""
+        chunks: list[bytes] = []
+        size = 0
+        while chunk := await stream.read(64 * 1024):
+            size += len(chunk)
+            if size > _MAX_OUTPUT_BYTES:
+                raise LLMError(_ERROR)
+            chunks.append(chunk)
+        return b"".join(chunks)
+
+    async def feed() -> None:
+        if process.stdin is not None:
+            try:
+                if data is not None:
+                    process.stdin.write(data)
+                    await process.stdin.drain()
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+            finally:
+                process.stdin.close()
+
+    tasks = [
+        asyncio.create_task(read(process.stdout)),
+        asyncio.create_task(read(process.stderr)),
+        asyncio.create_task(feed()),
+        asyncio.create_task(process.wait()),
+    ]
+    try:
+        stdout, stderr, _, _ = await asyncio.gather(*tasks)
+        return stdout, stderr
+    finally:
+        for task in tasks:
+            if not task.done():
+                task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
 
 
 async def _stop(process: asyncio.subprocess.Process, *, drain: bool = False) -> None:

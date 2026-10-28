@@ -17,6 +17,19 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
 
+def source_commit() -> str | None:
+    # Source archives have no Git metadata. Do not inherit an enclosing repo's
+    # commit or turn an otherwise successful offline rehearsal into a failure.
+    if not (ROOT / ".git").exists():
+        return None
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
@@ -56,11 +69,19 @@ def main():
             started = time.perf_counter()
             payload = asyncio.run(demo_payload())
             duration = time.perf_counter() - started
-            if not payload["selected_quote"] or not payload["date_savings"] or len(payload["calendar"]["days"]) != 30:
-                raise AssertionError("Missing complete comparison or saving/calendar data")
+            if (
+                not payload["selected_quote"]
+                or not payload["date_savings"]
+                or len(payload["calendar"]["days"]) != 30
+            ):
+                raise AssertionError(
+                    "Missing complete comparison or saving/calendar data"
+                )
             if len(payload["trains"]) < 1 or payload["currency"]["usd_100_rub"] != 8054:
                 raise AssertionError("Train/currency rehearsal changed")
-            digest = hashlib.sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+            digest = hashlib.sha256(
+                json.dumps(payload, ensure_ascii=False, sort_keys=True).encode()
+            ).hexdigest()
             runs.append(
                 {
                     "run": number,
@@ -75,10 +96,12 @@ def main():
             )
     if len({run["payload_sha256"] for run in runs}) != 1:
         raise AssertionError("Data rehearsals are not reproducible")
-    commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    commit = source_commit()
     source_files = sorted((ROOT / "backend/app").rglob("*.py"))
     source_hash = hashlib.sha256(
-        b"".join(str(f.relative_to(ROOT)).encode() + f.read_bytes() for f in source_files)
+        b"".join(
+            str(f.relative_to(ROOT)).encode() + f.read_bytes() for f in source_files
+        )
     ).hexdigest()
     report = {
         "code_commit": commit,
@@ -90,8 +113,14 @@ def main():
         "runs": runs,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"data_runs": 5, "identical": True, "end_to_end_payment_status": "not_run"}))
+    args.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    print(
+        json.dumps(
+            {"data_runs": 5, "identical": True, "end_to_end_payment_status": "not_run"}
+        )
+    )
     return 0
 
 

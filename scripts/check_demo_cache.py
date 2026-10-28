@@ -23,6 +23,20 @@ async def check_cache(cache_dir: Path = CACHE) -> dict:
     assert manifest["is_live_availability"] is False
     entries = manifest["entries"]
     assert entries, "Portable snapshot is empty"
+    names = [record["file"] for record in entries]
+    assert len(set(names)) == len(names), (
+        "Portable snapshot manifest contains duplicate files"
+    )
+    response_files = await asyncio.to_thread(
+        lambda: {
+            path.name
+            for path in cache_dir.glob("*.json")
+            if path.name != "manifest.json"
+        }
+    )
+    assert set(names) == response_files, (
+        "Portable snapshot manifest must cover every response file exactly once"
+    )
     async with CachedHttpClient(mode="replay", cache_dir=cache_dir) as client:
         for record in entries:
             name = record["file"]
@@ -39,6 +53,20 @@ async def check_cache(cache_dir: Path = CACHE) -> dict:
             assert url.scheme == "https" and url.hostname == "api.travelpayouts.com"
             assert url.path == "/aviasales/v3/prices_for_dates"
             assert url.username is None and url.password is None
+            query = dict(parse_qsl(url.query))
+            assert request["method"] == "GET" and request["body"] == ""
+            assert record["origin"] == query.get("origin"), (
+                "Manifest origin disagrees with recorded request"
+            )
+            assert record["destination"] == query.get("destination"), (
+                "Manifest destination disagrees with recorded request"
+            )
+            assert record["departure_date"] == query.get("departure_at"), (
+                "Manifest departure date disagrees with recorded request"
+            )
+            assert record["recorded_at"] == entry["recorded_at"], (
+                "Manifest recording timestamp disagrees with response file"
+            )
             assert not any(
                 "token" in key.casefold() or "key" in key.casefold()
                 for key, _ in parse_qsl(url.query)
@@ -50,6 +78,9 @@ async def check_cache(cache_dir: Path = CACHE) -> dict:
             )
             body = base64.b64decode(entry["response"]["body_base64"], validate=True)
             assert hashlib.sha256(body).hexdigest() == entry["response"]["body_sha256"]
+            assert record["body_sha256"] == entry["response"]["body_sha256"], (
+                "Manifest body hash disagrees with response file"
+            )
             response = await client.get(
                 request["url"], headers=dict(request["headers"])
             )

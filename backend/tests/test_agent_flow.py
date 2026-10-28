@@ -8,7 +8,7 @@ import pytest
 
 from app.agent import AgentEvent, Stage, TravelAgent
 from app.agent import core as agent_core
-from app.llm import FakeLLMClient, LLMResponse, ToolCall
+from app.llm import FakeLLMClient, LLMError, LLMResponse, ToolCall
 from app.tools import TOOLS
 
 TODAY = date(2026, 10, 27)
@@ -222,3 +222,22 @@ async def test_rules_add_hidden_needs_model_missed() -> None:
     brief = t.of("brief")[0]
     assert brief["brief"]["pets"] == 1 and brief["sources"]["pets"] == "inferred"
     assert "pets" in brief["brief"]["needs"]
+
+
+async def test_tool_loop_provider_diagnostics_never_reach_chat_or_logs(caplog: pytest.LogCaptureFixture) -> None:
+    private = "private-provider-token-and-traveler-data"
+
+    class UnavailableModel(FakeLLMClient):
+        async def complete(self, *args: Any, **kwargs: Any) -> LLMResponse:
+            if kwargs.get("json_mode"):
+                return as_json(intent="question")
+            raise LLMError(private)
+
+    agent = offline_agent()
+    first = await say(agent, "из Москвы в Дубай в ноябре на неделю вдвоём")
+    agent._llm, agent._llm_writes = UnavailableModel(), True
+    result = await say(agent, "Какие есть условия перелёта?", first.last.data["session_id"])
+    assert result.last.type == "done"
+    assert result.of("warning")
+    assert private not in json.dumps([event.data for event in result.events])
+    assert private not in caplog.text

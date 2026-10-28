@@ -466,7 +466,8 @@ class TravelAgent:
             try:
                 response = await self._llm.complete(messages, tools=specs)
             except LLMError as exc:
-                emit("warning", {"message": f"Модель не ответила: {exc}"})
+                log.warning("Модель не ответила в цикле инструментов (%s)", type(exc).__name__)
+                emit("warning", {"message": "Модель не ответила; использую проверенные данные поездки."})
                 return None
             if not response.tool_calls:
                 return (response.text or "").strip() or None
@@ -530,7 +531,7 @@ class TravelAgent:
                 parts.append(chunk)
                 emit("delta", {"text": chunk})
         except LLMError as exc:
-            log.warning("Модель оборвала ответ: %s", exc)
+            log.warning("Модель оборвала ответ (%s)", type(exc).__name__)
             emit("warning", {"message": "Модель не ответила, показываю ответ по шаблону"})
             tail = ("\n\n" if parts else "") + fallback
             emit("delta", {"text": tail})
