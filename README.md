@@ -171,6 +171,7 @@ O2 проверяет фактические ответы и сохраняет 
 - [Слайды защиты, PowerPoint](docs/defense-slides.pptx), [сценарий записи видео](docs/video-recording.md).
 - [Краткий текст защиты](docs/defense-brief.md), [передача интерфейсу](docs/frontend-handoff.md).
 - [Сценарий и репетиции](docs/demo.md), [оформление и ограничения](docs/demo-checkout.md).
+- [Развёртывание публичного демо на VPS](docs/vps-deployment.md).
 - [Aviasales в чате](docs/chat-aviasales.md), [публичный демо-кэш](data/demo/aviasales/README.md).
 - [Контракты](docs/tool-contracts.md), [устройство агента](docs/agent-guide.md).
 - [Отели](docs/hotels.md), [направления](docs/destinations.md), [профили](docs/hotel-profiles.md).

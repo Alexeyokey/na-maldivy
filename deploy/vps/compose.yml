@@ -1,0 +1,110 @@
+# Standalone public demo. Build this source on the VPS architecture.
+# No .env, host source mounts, provider keys or backend host ports.
+x-logging: &demo-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  agent:
+    image: na-maldivy-public-agent:${NA_MALDIVY_RELEASE:-local}
+    build:
+      context: ../..
+      dockerfile: backend/Dockerfile.demo
+    environment:
+      DATA_DIR: /data
+      TOOLS_MODE: real
+      FLIGHTS_MODE: demo
+      TRAINS_MODE: synthetic
+      CACHE_MODE: replay
+      AVIASALES_API_TOKEN: ""
+      AVIASALES_CACHE_DIR: /data/demo/aviasales
+      YANDEX_RASP_API_KEY: ""
+      YANDEX_CACHE_DIR: /state/yandex
+      CHECKOUT_DB_PATH: /state/checkout.sqlite3
+      LLM_PROVIDER: fake
+      LLM_API_KEY: ""
+      LLM_BASE_URL: ""
+      LLM_MODEL_MAIN: ""
+      LLM_MODEL_FAST: ""
+      LOG_LEVEL: WARNING
+    # One worker owns the in-memory chat sessions. Capability URLs must not be logged.
+    command: ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]
+    volumes:
+      - agent-state:/state
+    networks:
+      - private-demo
+    mem_limit: 384m
+    cpus: 1.0
+    pids_limit: 128
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging: *demo-logging
+    restart: unless-stopped
+
+  web:
+    image: na-maldivy-public-web:${NA_MALDIVY_RELEASE:-local}
+    build:
+      context: ../../frontend
+    environment:
+      HOST: 0.0.0.0
+      PORT: "5173"
+      AGENT_URL: http://agent:8000
+      CHAT_MODE: api
+    depends_on:
+      agent:
+        condition: service_healthy
+    networks:
+      - private-demo
+    healthcheck:
+      test: ["CMD", "node", "--input-type=module", "-e", "const r=await fetch('http://127.0.0.1:5173/health'); if(!r.ok)process.exit(1)"]
+      interval: 10s
+      timeout: 3s
+      start_period: 5s
+      retries: 10
+    mem_limit: 128m
+    cpus: 0.5
+    pids_limit: 64
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging: *demo-logging
+    restart: unless-stopped
+
+  edge:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      web:
+        condition: service_healthy
+    ports:
+      - "0.0.0.0:80:80"
+    networks:
+      - private-demo
+      - default
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/health"]
+      interval: 10s
+      timeout: 3s
+      start_period: 5s
+      retries: 10
+    mem_limit: 64m
+    cpus: 0.25
+    pids_limit: 64
+    security_opt:
+      - no-new-privileges:true
+    logging: *demo-logging
+    restart: unless-stopped
+
+networks:
+  private-demo:
+    internal: true
+
+volumes:
+  agent-state:
