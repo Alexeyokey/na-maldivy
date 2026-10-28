@@ -24,7 +24,8 @@ fi
 )
 docker image load --input "$DEMO_BUNDLE/images.tar"
 docker compose --env-file /dev/null --project-directory "$DEMO_BUNDLE" \
-    --project-name na-maldivy-offline -f "$DEMO_BUNDLE/compose.yml" \
+    --project-name na-maldivy-offline-full-ui -f "$DEMO_BUNDLE/compose.yml" \
     up --detach --pull never --wait
-printf 'Offline demo API: http://localhost:%s/health\n' "${AGENT_PORT:-8000}"
-printf 'Optional HTTP check: python3 check_running_demo.py --base-url http://localhost:%s\n' "${AGENT_PORT:-8000}"
+printf 'Offline demo: http://localhost:%s\n' "${WEB_PORT:-5173}"
+printf 'Offline demo API: http://localhost:%s/health\n' "${AGENT_PORT:-18083}"
+printf 'Optional HTTP check: python3 check_running_demo.py --base-url http://localhost:%s\n' "${AGENT_PORT:-18083}"

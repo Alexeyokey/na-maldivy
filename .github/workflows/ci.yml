@@ -28,3 +28,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: bash scripts/check.sh smoke
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check frontend without external services
+        run: >-
+          docker run --rm --network none
+          -v "$GITHUB_WORKSPACE/frontend:/app:ro" -w /app node:22-alpine
+          sh -c 'npm run check && npm test && npm run test:integration'

@@ -1,12 +1,12 @@
 # Переносимый офлайн-пакет демонстрации
 
-Пакет запускает backend/API через localhost без исходников, `.env`, API-ключей, внешней LLM и скачивания образов на компьютере защиты. Внутри двух Docker-образов уже находятся зависимости, справочники и очищенные записи D4 Aviasales. Это backend-демонстрация: готовность общего пользовательского интерфейса этим пакетом не подтверждается.
+Пакет запускает веб-интерфейс и backend/API через localhost без исходников, `.env`, API-ключей, внешней LLM и скачивания образов на компьютере защиты. Внутри трёх Docker-образов находятся интерфейс, зависимости, справочники и очищенные записи D4 Aviasales. Интерфейс обращается к тому же детерминированному backend через локальный прокси; внешняя модель не используется. Наличие интерфейса в пакете само по себе не подтверждает приёмку полного D9.
 
 **Деньги не списываются, билеты не выпускаются, отель и трансферы не бронируются.** Имена в проверочном сценарии вымышленные. Авиабаза содержит сохранённые поисковые котировки, а не подтверждённое наличие; цена группы, багаж, отель и трансферы расчётные. Поезда — синтетические. Отзывы синтетические, извлечение выполняется правилами.
 
 ## Подготовить пакет на машине сборки
 
-Заранее установите и запустите Docker Engine/Desktop с Docker Compose. На этом этапе доступ к сети может потребоваться для базовых образов и Python-зависимостей. Из корня репозитория:
+Заранее установите и запустите Docker Engine/Desktop с Docker Compose. На этом этапе доступ к сети может потребоваться для базовых образов, Python-зависимостей и Node.js для интерфейса. Из корня репозитория:
 
 ```sh
 sh scripts/package_offline_demo.sh
@@ -15,43 +15,55 @@ sh scripts/package_offline_demo.sh
 Можно передать новый путь первым аргументом; пути с пробелами поддерживаются:
 
 ```sh
-sh scripts/package_offline_demo.sh "/путь/к/новому пакету/na-maldivy-offline-20261028-three-destinations"
+sh scripts/package_offline_demo.sh "/путь/к/новому пакету/na-maldivy-offline-full-ui-20261028"
 ```
 
-По умолчанию создаются `artifacts/na-maldivy-offline-20261028-three-destinations/`, архив с суффиксом `.tar.gz` и файл `.tar.gz.sha256`. Существующий каталог не переиспользуется: это исключает случайное включение оставленных в нём приватных файлов. Пакет содержит `images.tar`, `compose.yml`, `start.sh`, независимую HTTP-проверку, публичную документацию, атрибуцию, `architecture.txt` и `SHA256SUMS`. Рабочая база заказов, Docker volumes, `.env`, исходники и приватные runtime-кэши в пакет не копируются.
+По умолчанию создаются `artifacts/na-maldivy-offline-full-ui-20261028/`, архив с суффиксом `.tar.gz` и файл `.tar.gz.sha256`. Существующий каталог не переиспользуется: это исключает случайное включение оставленных в нём приватных файлов. Пакет содержит `images.tar`, `compose.yml`, `start.sh`, независимые HTTP-проверки, готовые слайды, публичную документацию, атрибуцию, `architecture.txt` и `SHA256SUMS`. Рабочая база заказов, Docker volumes, `.env`, исходники и приватные runtime-кэши в пакет не копируются.
 
-Сборка использует проект `na-maldivy-package`; теги образов: `na-maldivy-demo-agent:20261028` и `na-maldivy-demo-gateway:20261028`. Они собираются из текущих файлов, затем экспортируются через `docker image save`. Параметр `DOCKER_API_VERSION`, если пользователь его установил, сохраняется.
+Сборка использует проект `na-maldivy-package`; теги образов: `na-maldivy-demo-agent:20261028-full-ui`, `na-maldivy-demo-gateway:20261028-full-ui` и `na-maldivy-demo-web:20261028-full-ui`. Новые имя пакета и теги сохраняют прежнюю серверную сборку отдельно. Они собираются из текущих файлов, затем экспортируются через `docker image save`. Параметр `DOCKER_API_VERSION`, если пользователь его установил, сохраняется.
 
 ## Запустить на компьютере защиты
 
 На целевой машине должны быть заранее установлены и запущены Docker Engine/Desktop и Docker Compose. После копирования архива и контрольной суммы:
 
 ```sh
-shasum -a 256 -c na-maldivy-offline-20261028-three-destinations.tar.gz.sha256
-tar -xzf na-maldivy-offline-20261028-three-destinations.tar.gz
-cd na-maldivy-offline-20261028-three-destinations
+shasum -a 256 -c na-maldivy-offline-full-ui-20261028.tar.gz.sha256
+tar -xzf na-maldivy-offline-full-ui-20261028.tar.gz
+cd na-maldivy-offline-full-ui-20261028
 sh start.sh
 ```
 
-На Linux можно заменить `shasum -a 256` на `sha256sum`. `start.sh` проверяет внутренние суммы, загружает оба образа из `images.tar` и запускает Compose с `--pull never --wait`. Ни сборки, ни загрузки из registry здесь нет. API доступен на `http://localhost:8000`, здоровье — `/health`. Другой порт:
+На Linux можно заменить `shasum -a 256` на `sha256sum`. `start.sh` проверяет внутренние суммы, загружает три образа из `images.tar` и запускает Compose с `--pull never --wait`. Ни сборки, ни загрузки из registry здесь нет. Интерфейс доступен на `http://localhost:5173`, API — на `http://localhost:18083`, здоровье — `/health` на обоих портах. Другие порты:
 
 ```sh
-AGENT_PORT=18082 sh start.sh
+WEB_PORT=18085 AGENT_PORT=18086 sh start.sh
 ```
 
-Compose задаёт все настройки явно: `LLM_PROVIDER=fake`, инструменты реальные локальные, Aviasales через `replay` с явно подписанными моками в `FLIGHTS_MODE=demo`, поезда синтетические, ключи пустые. Чтение `.env` для подстановки отключено. Agent подключён только к Docker-сети с `internal: true` и не имеет опубликованных портов; gateway передаёт localhost-запросы в agent, включая SSE. Gateway не получает `.env` или ключи.
+Compose задаёт все настройки явно: `LLM_PROVIDER=fake`, инструменты реальные локальные, Aviasales через `replay` с явно подписанными моками в `FLIGHTS_MODE=demo`, поезда синтетические, ключи пустые. Чтение `.env` для подстановки отключено; офлайн-конфигурация также отменяет `env_file` базового agent при сборке из репозитория. Agent подключён только к Docker-сети с `internal: true` и не имеет опубликованных портов. Gateway передаёт localhost-запросы в agent, включая SSE. Web находится в этой сети и в сети для локального доступа, проксирует разрешённые API-маршруты, SSE и скачивание файлов; браузер работает с одним адресом. Web и gateway не получают `.env` или ключи. Оба опубликованных порта привязаны к `127.0.0.1`.
 
 Образы сохраняют архитектуру машины сборки. Текущая сборка на Apple Silicon — `linux/arm64`; фактические значения записаны в `architecture.txt`. Работа на `linux/amd64` этим не утверждается. Для другой архитектуры заранее соберите и проверьте отдельный пакет на подходящем builder с доступом к зависимостям; не рассчитывайте на скачивание или эмуляцию непосредственно на защите.
+
+## Открыть интерфейс
+
+После `start.sh` откройте `http://localhost:5173` и отправьте запрос, например:
+
+> В Анталью 18–25 ноября 2026, двое взрослых, из Москвы, с багажом.
+
+Проверьте поток ответа и карточки, выберите вариант, посмотрите объяснения,
+подтвердите корзину и выполните явно обозначенную тестовую оплату. Ваучер и
+календарь скачиваются через тот же адрес интерфейса. В режиме `CHAT_MODE=api`
+интерфейс использует backend, а не встроенный сценарий. Отсутствие подходящих
+предложений и сетевые ошибки должны быть видны пользователю.
 
 ## Проверить путь и сохранение заказа
 
 Python 3 нужен только для необязательной операторской HTTP-проверки. Docker-демо работает без Python на хосте:
 
 ```sh
-python3 check_running_demo.py --base-url http://localhost:8000 \
+python3 check_running_demo.py --base-url http://localhost:18083 \
   --output /tmp/demo-before.json --context /tmp/demo-private.json
-docker compose --env-file /dev/null --project-name na-maldivy-offline -f compose.yml restart agent
-python3 check_running_demo.py --base-url http://localhost:8000 \
+docker compose --env-file /dev/null --project-name na-maldivy-offline-full-ui -f compose.yml restart agent
+python3 check_running_demo.py --base-url http://localhost:18083 \
   --output /tmp/demo-after.json --context /tmp/demo-private.json --resume
 ```
 
@@ -59,9 +71,9 @@ python3 check_running_demo.py --base-url http://localhost:8000 \
 
 Публичный отчёт содержит этапы, время, суммы и SHA без идентификаторов доступа и данных путешественников. Файл `--context` приватный (`0600`), нужен для восстановления доступа; его не публикуйте. Ошибка этапа даёт ненулевой код завершения и не считается успешной демонстрацией.
 
-Приватные демо-заказы сохраняются в отдельном volume проекта `na-maldivy-offline`. Обычные `restart` и `down` сохраняют данные; `down -v` их удалит. Пакет не экспортирует этот volume. Не меняйте имя Compose-проекта, если хотите сохранить доступ к прежним заказам.
+Приватные демо-заказы сохраняются в отдельном volume проекта `na-maldivy-offline-full-ui`. Этот проект отделён от прежнего пакета `na-maldivy-offline`; его заказы в новую сборку не переносятся. Обычные `restart` и `down` сохраняют данные; `down -v` их удалит. Пакет не экспортирует этот volume. Не меняйте имя Compose-проекта, если хотите сохранить доступ к прежним заказам.
 
-Атрибуция источников находится в `attributions/`, ограничения компонентов и результаты подготовки — в `docs/`. Этот пакет не утверждает выполнение полного D9 через общий интерфейс.
+Атрибуция источников находится в `attributions/`, ограничения компонентов и результаты подготовки — в `docs/`. HTTP-проверки ниже проверяют backend. Приёмку D9 через браузер фиксируйте отдельно: интерфейс, пять полных пользовательских проходов, время и ограничения результата.
 
 Пакет включает отчёты трёх направлений, предложенный набор 50 сценариев и
 сценарий записи видео. Проверенный локальный экспорт слайдов
@@ -73,10 +85,10 @@ python3 check_running_demo.py --base-url http://localhost:8000 \
 После запуска пакета доступна расширенная проверка (рядом нужен `check_running_demo.py`):
 
 ```sh
-python3 check_running_three_destinations.py --base-url http://localhost:8000 \
+python3 check_running_three_destinations.py --base-url http://localhost:18083 \
   --output /tmp/three-before.json --context /tmp/three-private.json
 # Перезапустить agent и дождаться /health, затем:
-python3 check_running_three_destinations.py --base-url http://localhost:8000 \
+python3 check_running_three_destinations.py --base-url http://localhost:18083 \
   --output /tmp/three-after.json --context /tmp/three-private.json --resume
 ```
 

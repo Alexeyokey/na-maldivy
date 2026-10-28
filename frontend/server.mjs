@@ -6,29 +6,65 @@ import {fileURLToPath} from 'node:url';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.jpg':'image/jpeg','.svg':'image/svg+xml','.png':'image/png'};
+const routes=[
+ [/^\/api\/chat$/,['POST']],
+ [/^\/health$/,['GET']],
+ [/^\/api\/session\/[A-Za-z0-9_-]{1,64}$/,['GET','DELETE']],
+ [/^\/api\/checkout\/carts$/,['POST']],
+ [/^\/api\/checkout\/carts\/[A-Za-z0-9_-]{1,128}$/,['GET']],
+ [/^\/api\/checkout\/carts\/[A-Za-z0-9_-]{1,128}\/travelers$/,['PUT']],
+ [/^\/api\/checkout\/carts\/[A-Za-z0-9_-]{1,128}\/pay$/,['POST']],
+ [/^\/api\/checkout\/orders\/[A-Za-z0-9_-]{1,128}$/,['GET']],
+ [/^\/api\/checkout\/orders\/[A-Za-z0-9_-]{1,128}\/(?:voucher|calendar\.ics)$/,['GET']],
+];
+const MAX_BODY_BYTES=64*1024;
+const fail=(res,status,message)=>res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(JSON.stringify({message}));
+function readBody(req){
+ return new Promise((resolve,reject)=>{
+  let size=0,tooLarge=false;const chunks=[];
+  req.on('data',chunk=>{size+=chunk.length;if(size>MAX_BODY_BYTES){tooLarge=true;chunks.length=0;}else if(!tooLarge)chunks.push(chunk);});
+  req.on('end',()=>tooLarge?reject(Object.assign(new Error('Body limit'),{status:413})):resolve(Buffer.concat(chunks)));
+  req.on('aborted',()=>reject(Object.assign(new Error('Request aborted'),{status:400})));
+  req.on('error',()=>reject(Object.assign(new Error('Invalid body'),{status:400})));
+ });
+}
 export function createFrontendServer({root=path.join(here,'dist'),agentUrl=process.env.AGENT_URL||'http://127.0.0.1:8000',mode=process.env.CHAT_MODE||'api'}={}){
  const origin=new URL(agentUrl);
- if(!['http:','https:'].includes(origin.protocol))throw new Error('AGENT_URL must use HTTP or HTTPS');
+ if(!['http:','https:'].includes(origin.protocol)||origin.username||origin.password)throw new Error('AGENT_URL must use HTTP or HTTPS without credentials');
  return http.createServer(async(req,res)=>{
-  let pathname;try{pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{res.writeHead(400).end('Bad request');return;}
-  if(pathname==='/config.js'){
-   res.writeHead(200,{'Content-Type':types['.js'],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
-   res.end('window.NA_MALDIVY_CONFIG = Object.freeze('+JSON.stringify({mode:mode==='demo'?'demo':'api',apiEnabled:true,chatEndpoint:'/api/chat',healthEndpoint:'/health'})+');');return;
-  }
-  if(pathname==='/api/chat'||pathname==='/health'){
-   if(req.method!==(pathname==='/health'?'GET':'POST')){res.writeHead(405).end('Method not allowed');return;}
-   const headers={accept:pathname==='/api/chat'?'text/event-stream':'application/json'};
-   if(req.headers['content-type'])headers['content-type']=req.headers['content-type'];
+  // Match API routes before URL normalization. Encoded slashes, dot segments and query
+  // strings must never expand the upstream allowlist or carry private credentials.
+  const rawUrl=req.url||'';
+  if(!rawUrl.startsWith('/')||rawUrl.startsWith('//')||rawUrl.includes('\\')){fail(res,400,'Некорректный адрес запроса.');return;}
+  let url,pathname;try{url=new URL(rawUrl,'http://localhost');pathname=decodeURIComponent(url.pathname);}catch{fail(res,400,'Некорректный адрес запроса.');return;}
+  const apiRequest=rawUrl==='/api'||rawUrl.startsWith('/api/')||pathname==='/api'||pathname.startsWith('/api/')||rawUrl==='/health'||rawUrl.startsWith('/health?')||pathname==='/health';
+  const route=routes.find(([pattern])=>pattern.test(rawUrl));
+  if(apiRequest||route){
+   if(!route){fail(res,404,'Маршрут не найден.');return;}
+   if(!route[1].includes(req.method)){res.setHeader('Allow',route[1].join(', '));fail(res,405,'Метод не поддерживается.');return;}
+   if(Number(req.headers['content-length']||0)>MAX_BODY_BYTES){req.resume();fail(res,413,'Слишком большой запрос.');return;}
+   let body;try{body=await readBody(req);}catch(error){if(!res.destroyed)fail(res,error.status||400,error.status===413?'Слишком большой запрос.':'Не удалось прочитать запрос.');return;}
+   if(!['POST','PUT'].includes(req.method)&&body.length){fail(res,400,'Этот запрос не должен содержать данные.');return;}
+   const headers={accept:rawUrl==='/api/chat'?'text/event-stream':'application/json'};
+   for(const name of ['accept','content-type','x-session-id'])if(typeof req.headers[name]==='string')headers[name]=req.headers[name];
    const transport=origin.protocol==='https:'?https:http;
-   const upstream=transport.request(new URL(pathname,origin),{method:req.method,headers},incoming=>{
-    res.writeHead(incoming.statusCode||502,{'Content-Type':incoming.headers['content-type']||'application/json','Cache-Control':'no-cache, no-transform','X-Accel-Buffering':'no'});
+   const upstream=transport.request(new URL(rawUrl,origin),{method:req.method,headers},incoming=>{
+    const outgoing={'Content-Type':incoming.headers['content-type']||'application/json','Cache-Control':incoming.headers['cache-control']||'no-store','X-Accel-Buffering':'no','X-Content-Type-Options':'nosniff'};
+    if(typeof incoming.headers['content-disposition']==='string')outgoing['Content-Disposition']=incoming.headers['content-disposition'];
+    // Redirect locations are deliberately not forwarded: the session header is private.
+    res.writeHead(incoming.statusCode||502,outgoing);res.flushHeaders();
     incoming.pipe(res);incoming.on('error',()=>res.destroy());
    });
-   upstream.on('error',()=>{if(!res.headersSent)res.writeHead(502,{'Content-Type':'application/json'}).end(JSON.stringify({message:'Сервис agent недоступен. Запустите backend.'}));else res.destroy();});
+   upstream.on('error',()=>{if(!res.headersSent)fail(res,502,'Сервис агента недоступен. Повторите попытку.');else res.destroy();});
    upstream.setTimeout(90000,()=>upstream.destroy(new Error('Agent timeout')));
    res.on('close',()=>{if(!res.writableEnded)upstream.destroy();});
    req.on('aborted',()=>upstream.destroy());
-   req.pipe(upstream);return;
+   upstream.end(body);return;
+  }
+  if(pathname==='/config.js'){
+   if(!['GET','HEAD'].includes(req.method)){fail(res,405,'Метод не поддерживается.');return;}
+   res.writeHead(200,{'Content-Type':types['.js'],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
+   res.end(req.method==='HEAD'?undefined:'window.NA_MALDIVY_CONFIG = Object.freeze('+JSON.stringify({mode:mode==='demo'?'demo':'api',apiEnabled:true,chatEndpoint:'/api/chat',healthEndpoint:'/health'})+');');return;
   }
   if(req.method!=='GET'&&req.method!=='HEAD'){res.writeHead(405).end();return;}
   const file=path.resolve(root,'.'+(pathname==='/'?'/index.html':pathname));

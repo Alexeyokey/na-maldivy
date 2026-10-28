@@ -1,6 +1,7 @@
 # Подключение интерфейса к сборке без модели
 
-Backend запускается `make demo-up`, HTTP доступен через localhost:8000.
+Сборка запускается `make demo-up`: интерфейс на localhost:5173,
+HTTP API доступен через localhost:18083.
 Агент находится во внутренней сети Docker; входной nginx передаёт API/SSE без
 буферизации. Все источники в демо — replay/локальные данные и явно подписанные моки, ключи пустые.
 У каждого рейса `demo_source.kind=provider_replay|deterministic_mock`; показывайте

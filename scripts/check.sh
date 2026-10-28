@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Проверки перед PR, те же, что в CI: bash scripts/check.sh [lint] [test] [smoke]. Без аргументов — все.
+# Проверки перед PR, те же, что в CI: bash scripts/check.sh [lint] [test] [web] [smoke]. Без аргументов — все.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -12,7 +12,7 @@ export TRAINS_MODE=synthetic
 
 steps=("$@")
 if [ ${#steps[@]} -eq 0 ]; then
-  steps=(lint test smoke)
+  steps=(lint test web smoke)
 fi
 
 # Смоук идёт отдельным compose-проектом на своём порту, чтобы не трогать запущенный make up
@@ -46,9 +46,10 @@ for step in "${steps[@]}"; do
   case "$step" in
     lint) (cd backend && uv sync --locked && uv run ruff check . && uv run ruff format --check .) ;;
     test) (cd backend && uv sync --locked && uv run pytest) ;;
+    web) (cd frontend && npm run check && npm test && npm run test:integration) ;;
     smoke) smoke ;;
     *)
-      echo "Неизвестный шаг: $step. Есть lint, test, smoke." >&2
+      echo "Неизвестный шаг: $step. Есть lint, test, web, smoke." >&2
       exit 2
       ;;
   esac
