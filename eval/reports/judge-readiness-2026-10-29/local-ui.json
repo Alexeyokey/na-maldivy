@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "source_commit": "c4f6b3cc2b545c78e463bb33c0d4c253f052cef8",
+  "checked_at": "2026-10-28T22:54:31.320820+00:00",
+  "scope": "desktop_browser_local_default_demo",
+  "status": "passed",
+  "target": "http://localhost:8080/",
+  "browser": "Codex in-app browser via CUA",
+  "viewport": [
+    1280,
+    720
+  ],
+  "scenarios": {
+    "welcome_future_date": true,
+    "AYT_search_two_cards_and_matching_sidebar": true,
+    "two_card_layout_uses_available_width": true,
+    "assumptions_acknowledged_without_checkout": true,
+    "hotel_profile_button_does_not_force_family_segment": true,
+    "confirm_composition_before_checkout": true,
+    "synthetic_travelers_only": true,
+    "demo_payment_declined_then_approved": true,
+    "voucher_and_calendar_buttons_invoked": true,
+    "paid_order_and_documents_reopened_after_agent_restart": true,
+    "expired_search_offers_new_search_and_keeps_transcript": true,
+    "new_search_for_MOW_LED_trains_replaces_hotels": true,
+    "return_to_AYT_flights_replaces_trains": true,
+    "original_paid_order_still_visible_in_my_trips": true
+  },
+  "artifact_download_content_verified_by": "three-destinations.json and three-destinations-after-restart.json; browser native save completion is not independently asserted",
+  "screenshots": [
+    "ui-hotel-results.png",
+    "ui-demo-order.png",
+    "ui-session-recovery.png",
+    "ui-train-search.png",
+    "ui-order-after-route-change.png"
+  ],
+  "limits": [
+    "Browser tour covers Antalya and Moscow–Petersburg; Dubai/Maldives are covered by the HTTP scenarios.",
+    "Desktop viewport only; no full mobile-browser certification.",
+    "Provider is fake; no real model quality, supplier booking or payment certification.",
+    "Date comparison and the comparison table additionally received a preliminary browser check on 2f721cc; the final code is covered by unit/HTTP checks."
+  ],
+  "submission_tag_created": false,
+  "handoff_certified": false
+}

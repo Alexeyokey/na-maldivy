@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-10-28T22:46:29.283689+00:00",
+  "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+  "mode": "initial_run",
+  "status": "passed",
+  "integrated_ui_status": "not_run",
+  "completed_stages": [
+    "gateway_ui_entrypoint",
+    "gateway.health",
+    "AYT.search_sources",
+    "AYT.d7_evidence",
+    "AYT.d8_comparison",
+    "AYT.confirm_unpaid_cart",
+    "AYT.decline_approve_retry",
+    "AYT.private_downloads",
+    "AYT.order_capability_boundaries",
+    "AYT.criteria_change_preserves_paid_order",
+    "AYT.reverse_train_search",
+    "DXB.search_sources",
+    "DXB.d7_evidence",
+    "DXB.d8_comparison",
+    "DXB.confirm_unpaid_cart",
+    "DXB.decline_approve_retry",
+    "DXB.private_downloads",
+    "DXB.order_capability_boundaries",
+    "DXB.criteria_change_preserves_paid_order",
+    "DXB.reverse_train_search",
+    "MLE.search_sources",
+    "MLE.d7_evidence",
+    "MLE.d8_comparison",
+    "MLE.confirm_unpaid_cart",
+    "MLE.decline_approve_retry",
+    "MLE.private_downloads",
+    "MLE.order_capability_boundaries",
+    "MLE.criteria_change_preserves_paid_order",
+    "MLE.reverse_train_search",
+    "gateway.save_private_context"
+  ],
+  "stage_timings_seconds": {
+    "gateway_ui_entrypoint": 0.02,
+    "gateway.health": 0.001,
+    "AYT.search_sources": 0.139,
+    "AYT.d7_evidence": 0.009,
+    "AYT.d8_comparison": 0.283,
+    "AYT.confirm_unpaid_cart": 0.024,
+    "AYT.decline_approve_retry": 0.011,
+    "AYT.private_downloads": 0.008,
+    "AYT.order_capability_boundaries": 0.009,
+    "AYT.criteria_change_preserves_paid_order": 0.006,
+    "AYT.reverse_train_search": 0.006,
+    "DXB.search_sources": 0.088,
+    "DXB.d7_evidence": 0.008,
+    "DXB.d8_comparison": 0.356,
+    "DXB.confirm_unpaid_cart": 0.017,
+    "DXB.decline_approve_retry": 0.011,
+    "DXB.private_downloads": 0.066,
+    "DXB.order_capability_boundaries": 0.009,
+    "DXB.criteria_change_preserves_paid_order": 0.007,
+    "DXB.reverse_train_search": 0.006,
+    "MLE.search_sources": 0.083,
+    "MLE.d7_evidence": 0.007,
+    "MLE.d8_comparison": 0.292,
+    "MLE.confirm_unpaid_cart": 0.016,
+    "MLE.decline_approve_retry": 0.012,
+    "MLE.private_downloads": 0.073,
+    "MLE.order_capability_boundaries": 0.009,
+    "MLE.criteria_change_preserves_paid_order": 0.006,
+    "MLE.reverse_train_search": 0.008,
+    "gateway.save_private_context": 0.001
+  },
+  "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+  "departure_date": "2030-03-20",
+  "scenario": "future_demo",
+  "runtime_network_isolation": "not_proven_by_http_check",
+  "source_evidence_scope": "server_provenance_metadata_and_reference_fixture_prices",
+  "full_d9_acceptance_status": "not_completed_by_this_report",
+  "destinations": [
+    {
+      "destination": "AYT",
+      "status": "passed",
+      "known_total_rub": 111896,
+      "leg_sources": [
+        {
+          "kind": "deterministic_mock",
+          "provider_evidence": false
+        },
+        {
+          "kind": "deterministic_mock",
+          "provider_evidence": false
+        }
+      ],
+      "package_sha256": "8e3034b632fb9c3e1e647452de2cda7f315daec431cf8138ff5732bdbe7c603a",
+      "d7": {
+        "is_synthetic": true,
+        "live_model_run": false,
+        "facts_sha256": "d7d5640f9cc3ec172c64f28860fa4973a272e30e048ad8e57fcc2eb5fdd3bb7b"
+      },
+      "d8": {
+        "comparable_dates": 6,
+        "suggestions_count": 0,
+        "contains_mock": true,
+        "state_preserved": true,
+        "facts_sha256": "5f976ab4ed0fbda15fe9f9e06545980c2dfb2c3918b710d2a19515f00c47004c"
+      },
+      "order_sha256": "f9073fe53845870b8f65b2241048ae2cc10276477b661fc7dd7fb044531d6037",
+      "voucher_sha256": "e41cf7f39bfe3939318c354adfd4bc7f69fe04016e7f1420e724c28d37b1be3e",
+      "calendar_sha256": "1a4f66ace75dcc9a40096fd7bf87dacaf5cff0f94961913909c4f3da4dc73b52"
+    },
+    {
+      "destination": "DXB",
+      "status": "passed",
+      "known_total_rub": 150388,
+      "leg_sources": [
+        {
+          "kind": "deterministic_mock",
+          "provider_evidence": false
+        },
+        {
+          "kind": "deterministic_mock",
+          "provider_evidence": false
+        }
+      ],
+      "package_sha256": "ac2349eacaceb543847e51ca917a6c9fa94fe32c2e8c8aad33ef7d36270f19db",
+      "d7": {
+        "is_synthetic": true,
+        "live_model_run": false,
+        "facts_sha256": "1b234bd8cb5026b2449f51658720ca8d20133e0ecf0d99ed81e2ca5b8ab6deda"
+      },
+      "d8": {
+        "comparable_dates": 6,
+        "suggestions_count": 0,
+        "contains_mock": true,
+        "state_preserved": true,
+        "facts_sha256": "f1ed4211ca8534ac9d952a3eeb4d1565660eda58bac082fc1b5a086e7b80c383"
+      },
+      "order_sha256": "acb6bbbbd7b290a7c0787ea63fd43bc409d928a36d73532b6880934af1cdbe28",
+      "voucher_sha256": "f6f843890de94c57cfa2ac4737056e3216a4b0b99bf833de7d7628f0dbf6c557",
+      "calendar_sha256": "87579c44798cbc349684ad795f0c267403f0560b74698a73ddcbff585541f700"
+    },
+    {
+      "destination": "MLE",
+      "status": "passed",
+      "known_total_rub": 212203,
+      "leg_sources": [
+        {
+          "kind": "deterministic_mock",
+          "provider_evidence": false
+        },
+        {
+          "kind": "deterministic_mock",
+          "provider_evidence": false
+        }
+      ],
+      "package_sha256": "eacf88b7e6bf0d479cdefb3797d4a5e7b29f61f287676abafe76038a8c1b2efc",
+      "d7": {
+        "is_synthetic": true,
+        "live_model_run": false,
+        "facts_sha256": "78c409cb9cb137ee236007da589fc9362966c53837eed9e91067ebdb8810a8ea"
+      },
+      "d8": {
+        "comparable_dates": 6,
+        "suggestions_count": 0,
+        "contains_mock": true,
+        "state_preserved": true,
+        "facts_sha256": "1bc652f95f0f1ff20d9efb45501de65b747736b96a2b2825b69313e12fd604e6"
+      },
+      "order_sha256": "9834423fa419e1e599d1e92fd5e9bb46b413b6ca3fad4a989b4932606b34c6b4",
+      "voucher_sha256": "8cb7005a900c2be063e2454f24340bb3f7cc377c7c47cf0cc85e1d3fd4a48b3b",
+      "calendar_sha256": "fb1fc2d45a46fb5743d455af645088bb5321cfdbd3043cdafb8a020f8cea2934"
+    }
+  ],
+  "external_model_used": false,
+  "criteria_changes": {
+    "paid_order_preserved": true,
+    "train_directions_checked": 2
+  },
+  "destinations_passed": 3,
+  "duration_seconds": 1.595
+}

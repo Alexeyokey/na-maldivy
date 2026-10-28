@@ -174,6 +174,11 @@ docker compose exec -T agent python /app/scripts/check_running_three_destination
 
 Для работы с исходниками проверок нужны Python/uv и Node.js 22+: `make check`
 запускает линтер, тесты backend/frontend и отдельный Docker smoke.
+Проверенный срез 29.10.2026 — `c4f6b3c`: **1546 тестов**, чистый clone из GitHub,
+сборка публичных зависимостей, три направления, restart и отдельная проверка
+без внешней сети. [Отчёты и скриншоты](eval/reports/judge-readiness-2026-10-29/README.md)
+содержат точную область проверки и оставшиеся пункты сдачи.
+
 Read-only проверка конфигурации и уже работающих `/` и `/health` на машине
 с Python 3.11+, без сборки и запуска сервисов:
 

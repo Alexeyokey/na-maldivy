@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "source_commit": "c4f6b3cc2b545c78e463bb33c0d4c253f052cef8",
+  "created_at": "2026-10-28T22:55:51.182830+00:00",
+  "algorithm": "SHA256",
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 7002,
+      "sha256": "fe5129f88bdf20855eff3bd95cf94888621e501faddcc71550d04fe1201bc8e6"
+    },
+    {
+      "file": "automated-checks.json",
+      "bytes": 874,
+      "sha256": "f0b913df9008105a754573da1d9bed908502ab3aa9f506bed2220300f0c653d7"
+    },
+    {
+      "file": "clean-start.json",
+      "bytes": 2549,
+      "sha256": "bcfed174ad2b575631b9a94400e997086f121acad80e8257d683b88de3576629"
+    },
+    {
+      "file": "local-ui.json",
+      "bytes": 1957,
+      "sha256": "8b771ddde84a3c2f7438f7aa9b50862db8822352486c5ac51f6d8bf1b97dffcc"
+    },
+    {
+      "file": "package-http.json",
+      "bytes": 4815,
+      "sha256": "4d14f3da52e31a525c2afbc23da63999e598201b1cde964d6a2e0bed9d528d98"
+    },
+    {
+      "file": "smoke-after-restart.json",
+      "bytes": 2311,
+      "sha256": "0860b6edcb74ceab564accff437882b68ca9062945b30d13e093cc4de79819b0"
+    },
+    {
+      "file": "smoke-three-destinations.json",
+      "bytes": 6477,
+      "sha256": "f5929458f8cbc32cf2d2540995272593bd5ca901e83d940ac475e0de2bfbc2b4"
+    },
+    {
+      "file": "three-destinations-after-restart.json",
+      "bytes": 2310,
+      "sha256": "b0d8ab968768cb3a8625984dc75b0c1b117ac1559087cd9c4ed6af50a01ba976"
+    },
+    {
+      "file": "three-destinations-future.json",
+      "bytes": 6306,
+      "sha256": "a38dc6f0bdae2e235d5b77732fda5c68c63f97042192ee6a23e24a209708bf1e"
+    },
+    {
+      "file": "three-destinations-isolated-network.json",
+      "bytes": 6475,
+      "sha256": "fe64557851a7acef41856f4683c709087ec395ec0c759f7aeb7ff51f13c7bc46"
+    },
+    {
+      "file": "three-destinations.json",
+      "bytes": 6477,
+      "sha256": "31619500f3b7617b0b7bb321f6b5d4b620b19ef95952d7abdd76689aa854dcb0"
+    },
+    {
+      "file": "ui-demo-order.png",
+      "bytes": 40229,
+      "sha256": "4ccab8a76ff69afef9cbf36cdfbc46f08b924c8ba041c2c78553331e6dbb894e"
+    },
+    {
+      "file": "ui-hotel-results.png",
+      "bytes": 69069,
+      "sha256": "5958603dcd25a2291e5b5519ecc4499e229468987b2a25cc2af78e15ecfc337f"
+    },
+    {
+      "file": "ui-order-after-route-change.png",
+      "bytes": 33897,
+      "sha256": "1fedaad134eda144cee713652203826cb31e0c1c0a00b1e20081d93b98ba14e3"
+    },
+    {
+      "file": "ui-session-recovery.png",
+      "bytes": 66614,
+      "sha256": "913b4ffe9b814c9d130c472c946ec0a53b79c3dd95d42669b25c623406183dd7"
+    },
+    {
+      "file": "ui-train-search.png",
+      "bytes": 52144,
+      "sha256": "e29f7128ce9c57c10f45d00a846b3f820ab0a01cfe6144713c97991314ed7886"
+    }
+  ],
+  "private_context_included": false
+}

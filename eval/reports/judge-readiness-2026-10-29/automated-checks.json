@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "source_commit": "c4f6b3cc2b545c78e463bb33c0d4c253f052cef8",
+  "scope": "repository_make_check",
+  "status": "passed",
+  "command": "UV_OFFLINE=true make check",
+  "ruff_check": "passed",
+  "ruff_format": "passed",
+  "backend": {
+    "passed": 1354,
+    "seconds": 44.1
+  },
+  "frontend": {
+    "passed": 181
+  },
+  "frontend_http_proxy": {
+    "passed": 11
+  },
+  "tests_passed_total": 1546,
+  "docker_smoke": {
+    "status": "passed",
+    "topology": "default app + agent",
+    "host_port": 18080,
+    "source_copy": "working tracked files without ignored owner data",
+    "routes": 3,
+    "payment_and_private_documents": true,
+    "agent_restart_and_identical_documents": true,
+    "disposable_project_cleaned": true
+  },
+  "external_model_quality_verified": false,
+  "full_d9_acceptance_certified": false,
+  "submission_tag_created": false
+}
