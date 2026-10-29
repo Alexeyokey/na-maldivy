@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "scope": "expanded_data_and_planner_only",
+  "reference_today": "2026-10-29",
+  "status": "passed",
+  "credentials_used": false,
+  "network_used": false,
+  "model_calls": 0,
+  "acceptance": {
+    "chat": false,
+    "booking": false,
+    "external_model": false,
+    "supplier_availability": false
+  },
+  "failed_cases": [],
+  "failures": [],
+  "case_counts": {
+    "passed": 1782,
+    "failed": 0,
+    "total": 1782
+  },
+  "matrices": {
+    "A": {
+      "passed": 1152,
+      "total": 1152,
+      "expected_empty": 12
+    },
+    "B": {
+      "passed": 630,
+      "total": 630,
+      "expected_empty": 185
+    }
+  },
+  "inventory": {
+    "status": "passed",
+    "counts": {
+      "destinations": 48,
+      "hotels": 420,
+      "fictional_hotels": 360,
+      "reviews": 10080,
+      "profiles": 420
+    },
+    "failures": [],
+    "data_sha256": "15c5703572a9e46362be52f2a73504bf3fe6950c64f78fdac358fbb9df7589b9"
+  },
+  "network_attempts_blocked": 0,
+  "seconds": 102.046
+}
