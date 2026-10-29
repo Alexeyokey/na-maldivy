@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "checked_at": "2026-10-29T01:53:30.475813+00:00",
+  "origin": "https://na-maldivy.eu.cc",
+  "tls_verification": true,
+  "checks": [
+    {
+      "check": "anonymous_/",
+      "passed": true,
+      "status": 401
+    },
+    {
+      "check": "anonymous_/health",
+      "passed": true,
+      "status": 401
+    },
+    {
+      "check": "anonymous_/api/config",
+      "passed": true,
+      "status": 401
+    },
+    {
+      "check": "static_api.js",
+      "passed": true,
+      "sha256": "ab4878ee6d4b70a322c386af38356c346d76dc5189d32b59558fdde587a78973"
+    },
+    {
+      "check": "static_api-app.js",
+      "passed": true,
+      "sha256": "9f8df6464ed6e3cbbe9c370865aa8bfe07ff54bdfbcde2418b2f091c09158453"
+    },
+    {
+      "check": "static_api-model.js",
+      "passed": true,
+      "sha256": "6e5410b0c40a6be10d25e83fd9d4cb8f6d698c08144ca299c964beeae315635c"
+    },
+    {
+      "check": "static_api.css",
+      "passed": true,
+      "sha256": "ff1a4441901d756cee03325c8ca196fb42bcdac5fb1f10f09898b739401d2294"
+    },
+    {
+      "check": "static_favorites.js",
+      "passed": true,
+      "sha256": "3da886c73c62ce3ae28a8d9b5e4fcd304375541b86f327b146f65b26dcc41098"
+    },
+    {
+      "check": "static_preference-form.js",
+      "passed": true,
+      "sha256": "d97e6f46eb94949c38cc21c1739c57913bb443d4ccebeb794d70a002cab13a17"
+    },
+    {
+      "check": "static_trip-usability.js",
+      "passed": true,
+      "sha256": "74e198119dc415998231120d426fba433455778dec5214e37597ebd6b04d540a"
+    },
+    {
+      "check": "fast_model_healthy",
+      "passed": true
+    }
+  ],
+  "credentials_reported": false
+}

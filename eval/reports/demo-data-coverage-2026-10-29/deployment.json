@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "services": [
+    {
+      "service": "agent",
+      "health": "healthy",
+      "source_revision": "91663117928354358a86d06e4832888d90737664"
+    },
+    {
+      "service": "web",
+      "health": "healthy",
+      "source_revision": "7523fe177bc0544cfc7f1fe8820a794c784a6d51"
+    }
+  ],
+  "data_preflight": {
+    "status": "passed",
+    "public_data_files_matched": 247,
+    "adults_only_profiles_consistent": 12,
+    "network": "none",
+    "run_as_nonroot": true
+  },
+  "web_code_changed": false,
+  "edge_reloaded": true,
+  "authentication_changed": false,
+  "permanent_volume_recreated": false
+}

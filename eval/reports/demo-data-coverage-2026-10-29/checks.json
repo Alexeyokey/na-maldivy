@@ -17,5 +17,8 @@
   },
   "docker_destinations": 3,
   "docker_restart": "passed",
-  "notice": "Local tests, offline data/planner coverage and Docker HTTP rehearsal; live model and browser are separate scopes."
+  "notice": "Local tests, offline data/planner coverage and Docker HTTP rehearsal; live model and browser are separate scopes.",
+  "application_commit": "91663117928354358a86d06e4832888d90737664",
+  "production_live_monthly_cases_passed": 2,
+  "running_public_data_hashes_matched": 247
 }

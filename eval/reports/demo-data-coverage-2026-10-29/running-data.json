@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "running_service": "agent",
+  "runtime_data_dir_matches": true,
+  "public_data_files_matched": 247,
+  "exact_file_set_matched": true
+}
