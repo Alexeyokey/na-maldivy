@@ -8,6 +8,9 @@ COPY --from=codex-runtime /codex /usr/local/bin/codex
 RUN python -c "import hashlib; from pathlib import Path; p=Path('/usr/local/bin/codex'); assert hashlib.file_digest(p.open('rb'),'sha256').hexdigest() == 'ff3a6a3ed13735b8a8938c40141eb38b688efd6b02ee0fd5358187111fe9966a'; p.chmod(0o755)" \
     && codex --version
 COPY backend/app /app/app
+# Refresh the public fixture bundle together with its code; no private caches
+# or credentials are part of the repository-root build context.
+COPY data /data
 ENV HOME=/home/agent CODEX_HOME=/codex-auth CODEX_BINARY=/usr/local/bin/codex
 USER agent
 CMD ["uvicorn", "app.personal_codex:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]

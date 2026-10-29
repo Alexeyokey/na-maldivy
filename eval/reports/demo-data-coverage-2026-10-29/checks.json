@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "lint": "passed",
+  "backend_tests": 1538,
+  "frontend_tests": 274,
+  "gateway_tests": 11,
+  "total_tests": 1823,
+  "data_cases": 146,
+  "data_network_attempts": 0,
+  "data_model_calls": 0,
+  "generator_checks": {
+    "aviasales_manifest": 47,
+    "shared_hotel_catalog": 60,
+    "hotel_rules": 60,
+    "hotel_profiles": 60,
+    "destinations": 48
+  },
+  "docker_destinations": 3,
+  "docker_restart": "passed",
+  "notice": "Local tests, offline data/planner coverage and Docker HTTP rehearsal; live model and browser are separate scopes."
+}

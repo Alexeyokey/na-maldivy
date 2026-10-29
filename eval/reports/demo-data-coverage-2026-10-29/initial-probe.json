@@ -1,0 +1,2118 @@
+{
+  "scope": "data_coverage_probe_not_acceptance",
+  "source_commit": "23f4f76",
+  "seconds": 5.203,
+  "cases": [
+    {
+      "case": "date/MOW/AYT/2026-10-30",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 109575,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/AYT/2026-11-18",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 83234,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "date/MOW/AYT/2026-12-31",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 114576,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/AYT/2027-01-15",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 109594,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/AYT/2027-02-28",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 105892,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/AYT/2027-06-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 108794,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/AYT/2027-08-15",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 126214,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "solo/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 53286,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "family5/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 112932,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "infant0/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 85774,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "infant1/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 85774,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "twins/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 142630,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "mixed_children/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 198456,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "pet/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 88034,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "family_pet/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 146830,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "four_adults/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 166168,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "maximum_group/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 695421,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "refundable/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning"
+      ],
+      "minimum_known_total_rub": 92656,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "five_star/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 83234,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "direct/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 99686,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "late/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 83234,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "nights1/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 71044,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "nights60/MOW/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 267642,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "date/MOW/DXB/2026-10-30",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 148694,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/DXB/2026-11-18",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 131161,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "date/MOW/DXB/2026-12-31",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 154895,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/DXB/2027-01-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 142403,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/DXB/2027-02-28",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 151165,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/DXB/2027-06-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 143079,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/DXB/2027-08-15",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 168647,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "solo/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 80732,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "family5/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 181510,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "infant0/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 135786,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "infant1/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 135786,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "twins/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 231859,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "mixed_children/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 317216,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "pet/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 137651,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "family_pet/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 238149,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "four_adults/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 262322,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "maximum_group/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 1121199,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "refundable/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning"
+      ],
+      "minimum_known_total_rub": 149548,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "five_star/MOW/DXB",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 141395,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "direct/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 142323,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "late/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 132669,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "nights1/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 113933,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "nights60/MOW/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 371632,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/MLE/2026-10-30",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 225932,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/MLE/2026-11-18",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 216983,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "date/MOW/MLE/2026-12-31",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 235357,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/MLE/2027-01-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 223683,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/MLE/2027-02-28",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 205017,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/MLE/2027-06-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 222003,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/MOW/MLE/2027-08-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 238911,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "solo/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 134425,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "family5/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning"
+      ],
+      "minimum_known_total_rub": 299541,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "infant0/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "night_arrival_with_infant:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning"
+      ],
+      "minimum_known_total_rub": 224839,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "infant1/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "night_arrival_with_infant:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning"
+      ],
+      "minimum_known_total_rub": 224839,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "twins/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning"
+      ],
+      "minimum_known_total_rub": 382099,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "mixed_children/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "night_arrival_with_infant:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning"
+      ],
+      "minimum_known_total_rub": 524380,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "pet/MOW/MLE",
+      "option_count": 1,
+      "confirmable_count": 1,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 220983,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "family_pet/MOW/MLE",
+      "option_count": 1,
+      "confirmable_count": 1,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 386099,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "four_adults/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 432646,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "maximum_group/MOW/MLE",
+      "option_count": 1,
+      "confirmable_count": 1,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "night_arrival_with_infant:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 1823638,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "refundable/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning"
+      ],
+      "minimum_known_total_rub": 234856,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "five_star/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 230959,
+      "notes": [],
+      "source_kinds": [
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "direct/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 218895,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "late/MOW/MLE",
+      "option_count": 0,
+      "confirmable_count": 0,
+      "issues": [],
+      "minimum_known_total_rub": null,
+      "notes": [
+        "По доступным данным нет предложений Москва → Мальдивы на 2026-11-18"
+      ],
+      "source_kinds": []
+    },
+    {
+      "case": "nights1/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 158629,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "nights60/MOW/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 552328,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock",
+        "provider_replay"
+      ]
+    },
+    {
+      "case": "date/LED/AYT/2026-10-30",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 120100,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/AYT/2026-11-18",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 114478,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/AYT/2026-12-31",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 121252,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/AYT/2027-01-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 111038,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/AYT/2027-02-28",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 117452,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/AYT/2027-06-15",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 109010,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/AYT/2027-08-15",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 136044,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "solo/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 68908,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "family5/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 159798,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "infant0/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 118580,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "infant1/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 118580,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "twins/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 205118,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "mixed_children/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 278128,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "pet/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 119278,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "family_pet/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 209318,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "four_adults/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 228656,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "maximum_group/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 979742,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "refundable/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning"
+      ],
+      "minimum_known_total_rub": 123900,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "five_star/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 114478,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "direct/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 114478,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "late/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 121358,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "nights1/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 92354,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "nights60/LED/AYT",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info"
+      ],
+      "minimum_known_total_rub": 291300,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/DXB/2026-10-30",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 152014,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/DXB/2026-11-18",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 151095,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/DXB/2026-12-31",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 169089,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/DXB/2027-01-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 144783,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/DXB/2027-02-28",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 161821,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/DXB/2027-06-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 150047,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/DXB/2027-08-15",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 184823,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "solo/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 93451,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "family5/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 211411,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "infant0/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 156716,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "infant1/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 156716,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "twins/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 271727,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "mixed_children/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 368047,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "pet/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 157585,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "family_pet/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_pets:warning"
+      ],
+      "minimum_known_total_rub": 278017,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "four_adults/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 302190,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "maximum_group/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 1302599,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "refundable/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning"
+      ],
+      "minimum_known_total_rub": 169482,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "five_star/LED/DXB",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 161329,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "direct/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 151095,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "late/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 151095,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "nights1/LED/DXB",
+      "option_count": 3,
+      "confirmable_count": 3,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 123615,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "nights60/LED/DXB",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "early_hotel_arrival:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info"
+      ],
+      "minimum_known_total_rub": 376892,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/MLE/2026-10-30",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 223268,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/MLE/2026-11-18",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 244879,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/MLE/2026-12-31",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 256707,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/MLE/2027-01-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 244727,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/MLE/2027-02-28",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 230107,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/MLE/2027-06-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 234423,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "date/LED/MLE/2027-08-15",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 263943,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "solo/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 148373,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "family5/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 341385,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "infant0/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "night_arrival_with_infant:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 254130,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "infant1/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "night_arrival_with_infant:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 254130,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "twins/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 437891,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "mixed_children/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "night_arrival_with_infant:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 595515,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "pet/LED/MLE",
+      "option_count": 1,
+      "confirmable_count": 1,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_pets:warning",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 248879,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "family_pet/LED/MLE",
+      "option_count": 1,
+      "confirmable_count": 1,
+      "issues": [
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_pets:warning",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 441891,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "four_adults/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 488438,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "maximum_group/LED/MLE",
+      "option_count": 1,
+      "confirmable_count": 1,
+      "issues": [
+        "night_arrival_with_infant:warning",
+        "nonrefundable_rate:info",
+        "transfer_child_seat:warning",
+        "transfer_pets:warning",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 2077492,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "refundable/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 262752,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "five_star/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 258855,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "direct/LED/MLE",
+      "option_count": 0,
+      "confirmable_count": 0,
+      "issues": [],
+      "minimum_known_total_rub": null,
+      "notes": [
+        "По доступным данным нет предложений Санкт-Петербург → Мальдивы на 2026-11-18"
+      ],
+      "source_kinds": []
+    },
+    {
+      "case": "late/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "late_hotel_departure:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 248199,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "nights1/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info",
+        "wasted_first_night:info"
+      ],
+      "minimum_known_total_rub": 201921,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    },
+    {
+      "case": "nights60/LED/MLE",
+      "option_count": 2,
+      "confirmable_count": 2,
+      "issues": [
+        "long_transfer:warning",
+        "nonrefundable_rate:info",
+        "transfer_luggage:info",
+        "transfer_prebook:info"
+      ],
+      "minimum_known_total_rub": 582188,
+      "notes": [],
+      "source_kinds": [
+        "deterministic_mock"
+      ]
+    }
+  ]
+}

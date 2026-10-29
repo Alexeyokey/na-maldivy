@@ -5,7 +5,7 @@
   "notice": "Это профиль синтетического тестового корпуса, не характеристика реального отеля по реальным отзывам.",
   "review_count": 24,
   "corpus_generator": "codex-authored-synthetic-templates-v1",
-  "corpus_sha256": "032f1e12071839204dd35f92f748ff90204f0358697fbcc255b0d5b5a108ef44",
+  "corpus_sha256": "165df27d7bbd529ea447075e2d00f1f1914a99343e6e6a83f36514b2287e4e79",
   "extraction": {
     "method": "lexical-fixture-baseline-v1",
     "model": null,
@@ -13,15 +13,15 @@
   },
   "aspects": {
     "children": {
-      "positive_count": 1,
-      "negative_count": 0,
+      "positive_count": 0,
+      "negative_count": 1,
       "mention_count": 1,
       "review_count": 1,
       "evidence": [
         {
           "review_id": "synthetic-review/osm:node/2399000167/family/01",
-          "sentiment": "positive",
-          "quote": "В модельном сценарии детям было удобно играть."
+          "sentiment": "negative",
+          "quote": "В модельном сценарии размещение с детьми было запрещено."
         }
       ]
     },
@@ -202,15 +202,15 @@
       "review_count": 6,
       "aspects": {
         "children": {
-          "positive_count": 1,
-          "negative_count": 0,
+          "positive_count": 0,
+          "negative_count": 1,
           "mention_count": 1,
           "review_count": 1,
           "evidence": [
             {
               "review_id": "synthetic-review/osm:node/2399000167/family/01",
-              "sentiment": "positive",
-              "quote": "В модельном сценарии детям было удобно играть."
+              "sentiment": "negative",
+              "quote": "В модельном сценарии размещение с детьми было запрещено."
             }
           ]
         },
@@ -282,10 +282,6 @@
       },
       "pros": [
         {
-          "aspect": "children",
-          "count": 1
-        },
-        {
           "aspect": "cleanliness",
           "count": 1
         },
@@ -299,6 +295,10 @@
         }
       ],
       "cons": [
+        {
+          "aspect": "children",
+          "count": 1
+        },
         {
           "aspect": "noise",
           "count": 1

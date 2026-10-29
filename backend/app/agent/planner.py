@@ -8,6 +8,7 @@
 временная и простая; полноценное ранжирование с весами и Парето делает R2 (#12).
 """
 
+import calendar
 import logging
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
@@ -46,6 +47,8 @@ class PlanResult:
     assumptions: list[Assumption] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)  # что не нашлось и почему
     start_date: date | None = None
+    _monthly_candidates: list[date] = field(default_factory=list, repr=False)
+    _monthly_outbound: dict[date, list[Flight]] = field(default_factory=dict, repr=False)
 
 
 def _month_key(month: int, today: date, year: int | None = None) -> str:
@@ -194,6 +197,47 @@ async def _pick_start_date(brief: TripBrief, call: ToolCaller, today: date, resu
     if brief.start_date:
         return brief.start_date
     assert brief.month and brief.origin and brief.destination
+    if brief.direct_only or brief.late_departure or brief.max_flight_minutes is not None:
+        # D1's calendar has no flight filters. Build this turn's constrained
+        # calendar from the same source, once per future day, without weakening
+        # the requested filters or inventing a replacement for rejected quotes.
+        year, month = map(int, _month_key(brief.month, today, brief.year).split("-"))
+        ranked = []
+        for number in range(1, calendar.monthrange(year, month)[1] + 1):
+            day = date(year, month, number)
+            if day <= today:
+                continue
+            rows = await call(
+                "search_flights",
+                {
+                    "origin": brief.origin,
+                    "destination": brief.destination,
+                    "departure_date": day.isoformat(),
+                    "travelers": brief.travelers.model_dump(),
+                    "direct_only": brief.direct_only,
+                },
+            )
+            if rows is None:
+                result.notes.append("Источник рейсов недоступен; сравнение дат по вашим условиям не завершено")
+                return None
+            valid = [
+                flight
+                for flight in rows
+                if isinstance(flight, Flight)
+                and flight.origin.iata == ("SVO" if brief.origin == "MOW" else brief.origin)
+                and flight.destination.iata == brief.destination
+                and flight.departure_at.date() == day
+                and _flight_fits(flight, brief)
+                and (not brief.late_departure or flight.departure_at.hour >= 18 or flight.departure_at.hour < 6)
+            ]
+            if valid:
+                result._monthly_outbound[day] = valid
+                ranked.append((min(flight.price_rub for flight in valid), day))
+        result._monthly_candidates = [day for _, day in sorted(ranked)]
+        if not result._monthly_candidates:
+            result.notes.append("По доступным данным в этом месяце нет рейсов по заданным условиям перелёта")
+            return None
+        return result._monthly_candidates[0]
     days = await call(
         "price_calendar",
         {
@@ -398,6 +442,57 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
     if start is None:
         if not result.notes:
             result.notes.append("По доступному календарю нет рейсов в этом месяце")
+        return result
+    if result._monthly_candidates:
+        # The cheapest eligible outbound may have no compatible return or hotel.
+        # Try the ranked dates until a complete package works, reusing all
+        # outbound results above. Explicit dates never enter this branch.
+        class SourceUnavailable(Exception):
+            pass
+
+        async def cached_call(name: str, arguments: dict[str, Any]) -> Any:
+            if (
+                name == "search_flights"
+                and arguments.get("origin") == brief.origin
+                and arguments.get("destination") == brief.destination
+            ):
+                day = date.fromisoformat(arguments["departure_date"])
+                if day in result._monthly_outbound:
+                    return result._monthly_outbound[day]
+            value = await call(name, arguments)
+            if value is None:
+                raise SourceUnavailable
+            return value
+
+        last_notes = []
+        for candidate in result._monthly_candidates:
+            try:
+                attempt = await search_trip(brief.model_copy(update={"start_date": candidate}), cached_call, today)
+            except SourceUnavailable:
+                result.notes.append("Источник поездки недоступен; сравнение дат по вашим условиям не завершено")
+                return result
+            if any(option.get("can_confirm") is True for option in attempt.options):
+                result.options, result.start_date, result.notes = attempt.options, candidate, attempt.notes
+                conditions = []
+                if brief.direct_only:
+                    conditions.append("без пересадок")
+                if brief.max_flight_minutes is not None:
+                    conditions.append(f"каждый перелёт не дольше {hours(brief.max_flight_minutes)}")
+                if brief.late_departure:
+                    conditions.append("вечерний или ночной вылет туда")
+                result.assumptions.append(
+                    Assumption(
+                        "start_date",
+                        (
+                            f"вылет {candidate.strftime('%d.%m')} — найдена совместимая поездка по вашим условиям "
+                            f"({'; '.join(conditions)}). Даты проверены по возрастанию минимальной цены "
+                            "подходящего перелёта в одну сторону; минимум полной стоимости поездки не гарантируется"
+                        ),
+                    )
+                )
+                return result
+            last_notes = attempt.notes
+        result.notes = ["По доступным данным в этом месяце нет совместимой поездки по заданным условиям", *last_notes]
         return result
     result.start_date = start
     travelers = brief.travelers.model_dump()
