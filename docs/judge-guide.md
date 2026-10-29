@@ -6,7 +6,8 @@
 
 [Быстрый старт](../README.md#быстрый-старт) ·
 [Происхождение данных](data-inventory.md) ·
-[Требования и открытые пункты](submission-compliance.md)
+[Требования и открытые пункты](submission-compliance.md) ·
+[Матрица пользовательских сценариев](judge-ui-rehearsal.md)
 
 ## 1. Запуск
 

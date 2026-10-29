@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "scope": "private_trusted_https_live_search_and_same_request_retry",
+  "source_commit": "de83c11da512a929381a8a2f9af0a64349db8bf8",
+  "route": "AYT",
+  "adults": 2,
+  "options": 2,
+  "known_total_rub": 83234,
+  "leg_sources": [
+    "provider_replay",
+    "provider_replay"
+  ],
+  "model_calls_delta": 2,
+  "retry_extra_model_calls": 0,
+  "retry_same_authoritative_state": true,
+  "search_seconds": 16.515,
+  "retry_seconds": 0.643,
+  "stream_errors": 0,
+  "warnings": 0,
+  "real_booking_or_payment_performed": false
+}

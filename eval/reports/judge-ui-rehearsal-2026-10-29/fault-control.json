@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "source_commit": "de83c11da512a929381a8a2f9af0a64349db8bf8",
+  "scope": "isolated_browser_protocol_failure_rehearsal",
+  "upstream_completed_before_transport_fault": true,
+  "cut_after": "first real delta SSE event; options/done withheld",
+  "hold_seconds": 8,
+  "fault_counts": {
+    "fault_prefix_flushed": 4,
+    "fault_closed_without_done": 4
+  },
+  "full_retries": 3,
+  "cases": [
+    "F01 interrupted stream explicit retry",
+    "F03 reload before done",
+    "F03 nonempty draft across reload and retry",
+    "F04 stop and replace with another route"
+  ],
+  "personal_or_production_data_used": false,
+  "real_model_used": false,
+  "backend_cancellation_during_generation_tested": false,
+  "notice": "This checks client recovery after a completed backend request loses its transport result; it is not a test of cancelling an external model mid-generation."
+}

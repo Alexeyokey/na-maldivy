@@ -1,0 +1,220 @@
+{
+  "source_commit": "de83c11da512a929381a8a2f9af0a64349db8bf8",
+  "date_moscow": "2026-10-29",
+  "scope": "automated_browser_interactions_with_isolated_local_site_and_read_only_production_formatting_check",
+  "local_runtime": {
+    "llm": "fake",
+    "tools": "real",
+    "flights": "demo",
+    "cache": "replay",
+    "trains": "synthetic",
+    "isolated_sqlite": true,
+    "provider_credentials": false
+  },
+  "viewports": {
+    "desktop_css_width": 1280,
+    "responsive_iframe_css_widths": [
+      320,
+      375,
+      390
+    ],
+    "responsive_iframe_css_height": 640,
+    "physical_device_tested": false
+  },
+  "status_counts": {
+    "passed": 36,
+    "partial": 12,
+    "not_run": 1
+  },
+  "matrix_status": {
+    "A01": "partial",
+    "A02": "passed",
+    "A03": "passed",
+    "A04": "passed",
+    "A05": "passed",
+    "A06": "passed",
+    "A07": "passed",
+    "A08": "partial",
+    "A09": "passed",
+    "B01": "partial",
+    "B02": "passed",
+    "B03": "partial",
+    "B04": "partial",
+    "B05": "passed",
+    "B06": "passed",
+    "B07": "partial",
+    "B08": "passed",
+    "C01": "passed",
+    "C02": "passed",
+    "C03": "passed",
+    "C04": "passed",
+    "C05": "partial",
+    "C06": "passed",
+    "C07": "passed",
+    "D01": "passed",
+    "D02": "passed",
+    "D03": "passed",
+    "D04": "partial",
+    "D05": "partial",
+    "D06": "passed",
+    "D07": "passed",
+    "D08": "passed",
+    "D09": "passed",
+    "E01": "passed",
+    "E02": "passed",
+    "E03": "passed",
+    "F01": "passed",
+    "F02": "passed",
+    "F03": "passed",
+    "F04": "passed",
+    "F05": "passed",
+    "F06": "passed",
+    "F07": "passed",
+    "G01": "partial",
+    "G02": "passed",
+    "G03": "passed",
+    "G04": "partial",
+    "G05": "partial",
+    "G06": "not_run"
+  },
+  "timing": "Individual browser scenario completion times were not measured; no latency or five-consecutive-runs claim.",
+  "observed_checks": [
+    {
+      "scenario": "three_destinations",
+      "result": "AYT and MLE show replay sources on both legs for the reference dates; DXB outbound is explicitly mocked and inbound replayed."
+    },
+    {
+      "scenario": "incomplete_request",
+      "result": "Maldives in January then Moscow preserves destination; inferred day/nights/adults are marked and can be accepted without checkout."
+    },
+    {
+      "scenario": "family_infant",
+      "result": "A January trip with an infant uses an already-born date, three traveler fields and reaches a paid demo order; no future birth date."
+    },
+    {
+      "scenario": "two_children",
+      "result": "5 and 8 are separate children, caption includes both; removing children updates caption/sidebar and price. A replacement checkout after removal was not opened."
+    },
+    {
+      "scenario": "budget",
+      "result": "10000 RUB removes actionable cards; 300000 RUB restores options."
+    },
+    {
+      "scenario": "compare",
+      "result": "Add three, remove one, clear; keyboard focus stays on the replacement control. Responsive second-card comparison retains horizontal position."
+    },
+    {
+      "scenario": "profile_and_dates",
+      "result": "Second hotel Villa Nautica uses all-guests segment and 24 synthetic reviews; date comparison preserves current dates and labels mock-based estimates."
+    },
+    {
+      "scenario": "price_breakdown",
+      "result": "AYT component rows and composition dialog both total 83234 RUB; unknown extras remain separate."
+    },
+    {
+      "scenario": "unpaid_cancel",
+      "result": "Explicit cancellation closes checkout and clears its continuation button without reopening the modal; old payment revision is rejected by HTTP regression tests."
+    },
+    {
+      "scenario": "unsupported_destination",
+      "result": "Bangkok retires previous AYT cards and asks for clarification; no active comparison/checkout remains. Guard is limited to exact D5 aliases, not arbitrary world-city recognition."
+    },
+    {
+      "scenario": "checkout",
+      "result": "Unchecked consent blocks submit; decline preserves form, focus returns to submitter; approval focuses new dialog close. Double-click behavior is tested automatically, not claimed as a browser double-click rehearsal."
+    },
+    {
+      "scenario": "documents",
+      "result": "Voucher/calendar download status appears inside dialog. Browser-downloaded files were not opened manually; HTTP checker validates their contents and hashes."
+    },
+    {
+      "scenario": "restart",
+      "result": "Search loss preserves transcript and permits a new search; paid order/history/document controls survive backend restart."
+    },
+    {
+      "scenario": "new_search_keeps_orders",
+      "result": "New trip resets active search; both earlier local orders remain in My trips and the earlier calendar can be downloaded."
+    },
+    {
+      "scenario": "offline_retry",
+      "result": "Stopped only the isolated web proxy, submitted budget request, typed a draft, restarted proxy and retried. One user message, zero stale cards and the original draft remain without page reload. This was before-response failure, not a middle-of-stream browser cut."
+    },
+    {
+      "scenario": "trains",
+      "result": "Moscow-Petersburg coupe; edit form has no nights; one adult recalculates price; reverse 19 November platzkart changes stations/class/date coherently. No rail checkout is offered."
+    },
+    {
+      "scenario": "responsive_dialog",
+      "result": "At 320/375 CSS px the native parameters/edit dialog fits and scrolls to submit; Tab stays in modal, Escape closes and restores trigger. No screen keyboard or physical-phone certification."
+    },
+    {
+      "scenario": "stored_real_answer_formatting",
+      "result": "Read-only existing authorized site tab: expanded saved reply has one ordered list and three strong segments; collapsed again. No user conversation text or screenshot is published."
+    },
+    {
+      "scenario": "inspiration",
+      "result": "Vacation then sea in November asks for month/origin without a fabricated complete package price."
+    },
+    {
+      "scenario": "far_future",
+      "result": "20 December 2027 is retained, every flight source is explicitly a demo mock."
+    },
+    {
+      "scenario": "identical_child_ages",
+      "result": "Two children aged seven remain two children; caption and sidebar contain both sevens."
+    },
+    {
+      "scenario": "pets_variant",
+      "result": "DXB December 2027: sidebar has one pet, transfer unknown-pet policy remains an explicit warning, not a promise. This is a variant of B04 rather than its exact AYT reference precondition."
+    },
+    {
+      "scenario": "invalid_form_and_past_date_variant",
+      "result": "Zero adults triggers native minimum-one validation. A 2020 date is explicitly rejected; the previously valid 2026 date stays visible. The route was also changed, so B07 remains partial."
+    },
+    {
+      "scenario": "unsupported_kazan",
+      "result": "Kazan is explicitly clarified with current demo coverage and no hotel cards from another destination."
+    },
+    {
+      "scenario": "price_injection",
+      "result": "A request for a one-ruble total and immediate payment leaves three server prices (119963/118046/153918 RUB); no checkout form or payment success appears."
+    },
+    {
+      "scenario": "destination_after_profile_comparison",
+      "result": "Two AYT options compared and a profile opened; change to DXB keeps dates, shows DXB cards and clears both comparison and profile."
+    },
+    {
+      "scenario": "same_values_during_checkout",
+      "result": "Accepted default one-adult/seven-night assumptions; explicit restatement reopens the same usable checkout with JEN and unchanged 136531 RUB, without reselection or prior payment."
+    },
+    {
+      "scenario": "paid_refund_request",
+      "result": "After demo payment, refund request states no cancellation/refund was performed and no real money was charged; saved order/documents remain available."
+    },
+    {
+      "scenario": "independent_tabs",
+      "result": "The independent responsive tab has no paid-order references; the originating tab still shows all three local paid-demo orders."
+    },
+    {
+      "scenario": "midstream_retry",
+      "result": "Controlled real-SSE prefix then close without done: text remains, explicit retry completes two DXB cards, one user bubble, no recovery panel or checkout."
+    },
+    {
+      "scenario": "reload_incomplete_stream",
+      "result": "Reload while stream is held before done restores pending recovery and a nonempty draft. Retry yields two AYT cards and one user bubble; the draft remains unchanged."
+    },
+    {
+      "scenario": "stop_and_replace",
+      "result": "Stop held MLE response, start new DXB search before old connection closes; after its delayed close DXB cards remain, one new user bubble and no recovery/modal."
+    }
+  ],
+  "not_verified": [
+    "All 49 cases through the external model",
+    "Physical mobile keyboard",
+    "200% browser zoom",
+    "VoiceOver/NVDA and live-region reannouncement",
+    "Manual opening of downloaded browser files",
+    "Real bookings, real payment, live Yandex timetable, live D7 extraction"
+  ],
+  "evidence_note": "Exploratory browser checks found defects before the final freeze; affected focus, cancellation, unsupported destination, group labels and modal paths were repeated after their final changes."
+}
