@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "services": [
+    {
+      "service": "agent",
+      "health": "healthy",
+      "source_revision": "7523fe177bc0544cfc7f1fe8820a794c784a6d51"
+    },
+    {
+      "service": "web",
+      "health": "healthy",
+      "source_revision": "7523fe177bc0544cfc7f1fe8820a794c784a6d51"
+    }
+  ],
+  "edge_reloaded": true,
+  "permanent_volume_recreated": false,
+  "authentication_changed": false,
+  "initial_attempt": {
+    "status": "rolled_back",
+    "cause": "root-only modes inherited from archive extraction",
+    "prior_service_restored": true
+  },
+  "remediation": {
+    "public_code_modes": "directories 0755, files 0644, executable modes retained",
+    "secrets_or_state_permissions_changed": false,
+    "non_root_import_and_web_syntax_preflight": "passed"
+  }
+}

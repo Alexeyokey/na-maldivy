@@ -39,6 +39,8 @@ class Session:
     options_notes: list[str] = field(default_factory=list)
     # Only for the next price comparison; never exposed as current results.
     rebuild_before: dict[str, Any] | None = field(default=None, repr=False)
+    rebuild_brief: dict[str, Any] | None = field(default=None, repr=False)
+    last_diff: dict[str, Any] | None = None
     # Условия поменялись после поиска: показанные варианты устарели и будут пересобраны.
     stale: bool = False
     selected: int | None = None
@@ -72,6 +74,7 @@ class Session:
             "stale": self.stale,
             "selected": self.selected,
             "booking": self.booking,
+            "last_diff": self.last_diff,
             "needs": [
                 {"code": code, "label": NEEDS[code].label, "effect": NEEDS[code].effect}
                 for code in self.brief.needs

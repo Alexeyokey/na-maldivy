@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mountApiApp} from '../dist/api-app.js';
+import {FAVORITES_STORAGE_KEY,normalizeFavoriteIntent} from '../dist/favorites.js';
 
 const sid='durable-ui-session';
 const order={order_id:'DEMO-durable-ui',cart_id:'CART-durable-ui',session_id:sid,status:'paid_demo',is_simulated:true,package:{hotel:{name:'Durable Demo Hotel',check_in:'2026-11-18',check_out:'2026-11-25'},known_total_rub:80000}};
@@ -20,7 +21,7 @@ test('The mounted chat keeps its paid-order sidebar and document dialog after th
  const area={scrollTop:0,scrollHeight:100,clientHeight:100},sidebar={classList:{contains:()=>false}};
  const root=Object.assign(new EventTarget(),{innerHTML:'',querySelector:selector=>({'#api-chat-input':input,'.chat-scroll':area,'.sidebar':sidebar}[selector]||null)});
  const modal=Object.assign(new EventTarget(),{innerHTML:'',open:false,setAttribute(){},showModal(){this.open=true;},close(){this.open=false;}});
- const globals={document,window,sessionStorage:storage,fetch:async(path,init={})=>{
+ const globals={document,window,sessionStorage:storage,localStorage:null,fetch:async(path,init={})=>{
   calls.push({path,method:init.method||'GET'});
   if(path==='/health')return Response.json({status:'ok',llm_provider:'fake'});
   if(path==='/api/session/'+sid)return Response.json({detail:'Expired session'},{status:404});
@@ -70,17 +71,18 @@ const packageOption=index=>({
 });
 
 async function mountedSearch(t,options={}){
- const calls=[],storage={getItem:()=>null,setItem(){}};
+ const calls=[],storage=options.tabStorage||{getItem:()=>null,setItem(){}};
  const document=Object.assign(new EventTarget(),{visibilityState:'visible',activeElement:null});
  const window=new EventTarget(),input={value:'',selectionStart:0,selectionEnd:0};
  const area={scrollTop:0,scrollHeight:100,clientHeight:100},sidebar={classList:{contains:()=>false}};
  const root=Object.assign(new EventTarget(),{innerHTML:'',querySelector:selector=>({'#api-chat-input':input,'.chat-scroll':area,'.sidebar':sidebar}[selector]||null)});
  const modalStatus={textContent:'',scrollIntoView(){}},modalClose={isConnected:true,focus(){document.activeElement=this;}};
  const modal=Object.assign(new EventTarget(),{innerHTML:'',open:false,setAttribute(){},showModal(){this.open=true;},close(){this.open=false;},querySelector:selector=>selector==='#api-modal-status'?modalStatus:selector==='.close-modal'?modalClose:null});
- const {setupDom,...mountOptions}=options;setupDom?.({root,modal,document});
- const globals={document,window,sessionStorage:storage,fetch:async(path,init={})=>{
+ const {setupDom,browserStorage,request,tabStorage,hydrateOnly=false,...mountOptions}=options;setupDom?.({root,modal,document});
+ const globals={document,window,sessionStorage:storage,localStorage:browserStorage??null,fetch:async(path,init={})=>{
   calls.push({path,method:init.method||'GET',body:init.body});
   if(path==='/health')return Response.json({status:'ok',llm_provider:'fake'});
+  if(request)return request(path,init);
   throw new Error('Unexpected route in mounted presentation test: '+path);
  }};
  const original=Object.fromEntries(Object.keys(globals).map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]));
@@ -93,9 +95,9 @@ async function mountedSearch(t,options={}){
  };
  controller=mountApiApp({root,modal,icon:()=>'',config:{},...mountOptions});
  await until(()=>controller.state.connection==='online');
- Object.assign(controller.state,{sessionId:'search-ui-session',stage:'packages_shown',optionKind:'packages',version:1,brief:{origin:'MOW',destination:'MLE',month:1,year:2027,adults:1,nights:null,start_date:null},sources:{month:'explicit'},assumptions:[{field:'nights',text:'беру 7 ночей'},{field:'start_date',text:'минимальная цена календаря в одну сторону; не экономия всей поездки'}],options:[1,2,3].map(packageOption),messages:[{role:'assistant',text:'Подобрали текущие варианты.'}]});
+ if(!hydrateOnly)Object.assign(controller.state,{sessionId:'search-ui-session',stage:'packages_shown',optionKind:'packages',version:1,brief:{origin:'MOW',destination:'MLE',month:1,year:2027,adults:1,nights:null,start_date:null},sources:{month:'explicit'},assumptions:[{field:'nights',text:'беру 7 ночей'},{field:'start_date',text:'минимальная цена календаря в одну сторону; не экономия всей поездки'}],options:[1,2,3].map(packageOption),messages:[{role:'assistant',text:'Подобрали текущие варианты.'}]});
  controller.notify();
- return {root,modal,modalStatus,modalClose,controller,calls,click,document};
+ return {root,modal,modalStatus,modalClose,controller,calls,click,document,window,input};
 }
 
 test('The accessible status node survives streamed root replacements and is removed when the app is disposed',async t=>{
@@ -287,7 +289,7 @@ test('The complete preference form edits or removes children, pets and budget wi
  assert.match(modal.innerHTML,/Возраст каждого ребёнка на дату отправления/);
  assert.match(modal.innerHTML,/name="children_ages"[^>]*value="5, 5"/);assert.match(modal.innerHTML,/name="pets"[^>]*value="2"/);
  assert.match(modal.innerHTML,/name="budget_rub"[^>]*value="150000"/);
- assert.match(modal.innerHTML,/Пустое поле означает поездку без детей/);assert.match(modal.innerHTML,/0 — без питомцев/);assert.match(modal.innerHTML,/Пустое поле снимает прежний лимит/);
+ assert.match(modal.innerHTML,/Пустое поле — без детей/);assert.match(modal.innerHTML,/0 — без питомцев/);assert.match(modal.innerHTML,/Пустое поле снимает прежний лимит/);
  const keys=['adults','nights','start_date','children_ages','pets','budget_rub'];
  const inputs=Object.fromEntries(keys.map(name=>[name,{attributes:{},setAttribute(key,value){this.attributes[key]=value;},removeAttribute(key){delete this.attributes[key];},focus(){document.activeElement=this;}}]));
  const errors=Object.fromEntries(keys.map(name=>[name,{textContent:''}]));
@@ -299,13 +301,195 @@ test('The complete preference form edits or removes children, pets and budget wi
  submit();assert.equal(sent.length,0);assert.equal(modal.open,true);
  assert.equal(inputs.children_ages.attributes['aria-invalid'],'true');assert.match(errors.children_ages.textContent,/от 0 до 17 лет/);
  assert.equal(inputs.budget_rub.attributes['aria-invalid'],'true');assert.match(errors.budget_rub.textContent,/больше нуля/);
- assert.equal(document.activeElement,inputs.children_ages);assert.match(modalStatus.textContent,/от 0 до 17 лет/);
+ assert.equal(document.activeElement,inputs.budget_rub);assert.match(modalStatus.textContent,/больше нуля/);
  values.children_ages='0, 5, 5';values.budget_rub='200 000';submit();await until(()=>sent.length===1);
  assert.equal(sent[0],'Изменить условия поиска: 2 взрослых, 10 ночей, дата вылета 03.02.2027. Дети: 0 лет, 5 лет, 5 лет. Питомцев: 2. Бюджет 200000 рублей на всю поездку за всех. Заново подобрать варианты, без оформления.');
  assert.equal(inputs.children_ages.attributes['aria-invalid'],undefined);assert.equal(errors.children_ages.textContent,'');
  assert.deepEqual(controller.state.brief,before,'The form sends a request rather than assigning local traveler counts or prices');
  click('edit-preferences');values.children_ages='';values.pets='0';values.budget_rub='';submit();await until(()=>sent.length===2);
  assert.match(sent[1],/Без детей\. Питомцев: 0\. Без питомцев\. Сними бюджет\./);
+});
+
+test('An invalid child age expands compact extras before moving focus and does not submit or discard entries',async t=>{
+ const {modal,modalStatus,controller,click,document}=await mountedSearch(t,{now:()=>new Date('2026-10-29T12:00:00Z')});
+ click('edit-preferences');
+ assert.match(modal.innerHTML,/api-preferences-compact/);assert.doesNotMatch(modal.innerHTML.match(/<details\b[^>]*>/)[0],/\bopen\b/);
+ const disclosure={open:false},events=[],keys=['adults','start_date','nights','budget_rub','children_ages','pets'];
+ const values={adults:'1',nights:'7',start_date:'2027-01-29',budget_rub:'',children_ages:'5, 18',pets:'0'};
+ const inputs=Object.fromEntries(keys.map(name=>[name,{value:values[name],setAttribute(){},removeAttribute(){},closest:()=>['children_ages','pets'].includes(name)?disclosure:null,focus(){assert.equal(disclosure.open,true);events.push(name);document.activeElement=this;}}]));
+ const errors=Object.fromEntries(keys.map(name=>[name,{textContent:''}]));
+ const form={id:'api-preferences-form',dataset:{transport:'flight'},reportValidity:()=>true,querySelector:selector=>{
+  const name=selector.match(/^\[name="([^"]+)"\]$/)?.[1];return name?inputs[name]:errors[selector.match(/^#api-preferences-(.+)-error$/)?.[1]]||null;
+ }};
+ const original=globalThis.FormData;globalThis.FormData=class {get(key){return inputs[key]?.value;}};t.after(()=>{globalThis.FormData=original;});
+ const sent=[];controller.send=async text=>{sent.push(text);};
+ const submit=new Event('submit',{cancelable:true});Object.defineProperty(submit,'target',{value:form});document.dispatchEvent(submit);
+ assert.deepEqual(sent,[]);assert.equal(modal.open,true);assert.equal(disclosure.open,true);
+ assert.deepEqual(events,['children_ages']);assert.equal(document.activeElement,inputs.children_ages);
+ assert.match(modalStatus.textContent,/от 0 до 17 лет/);assert.match(errors.children_ages.textContent,/от 0 до 17 лет/);
+ assert.equal(inputs.children_ages.value,'5, 18');assert.equal(inputs.adults.value,'1');
+ assert.equal(controller.state.brief.adults,1);assert.equal(controller.state.selected,null);assert.equal(controller.state.cart,null);
+});
+
+test('Quick refinements send fixed reversible search messages, preserve a draft and never select or book',async t=>{
+ const messages=[],server={brief:null,version:1};
+ const response=events=>new Response(events.map(([type,data])=>`event: ${type}\ndata: ${JSON.stringify(data)}\n\n`).join(''),{headers:{'Content-Type':'text/event-stream'}});
+ const snapshot=()=>({session_id:'search-ui-session',version:server.version,stage:'packages_shown',brief:server.brief,sources:{},needs:[],selected:null,booking:null,stale:false,options:{kind:'packages',items:[1,2,3].map(packageOption),notes:[],assumptions:[]}});
+ const ui=await mountedSearch(t,{request:async(path,init)=>{
+  if(path==='/api/chat'){
+   const body=JSON.parse(init.body);messages.push(body);assert.equal(body.session_id,'search-ui-session');
+   if(body.message.startsWith('Только прямые'))server.brief.direct_only=true;
+   else if(body.message.startsWith('Можно с пересадками'))server.brief.direct_only=false;
+   else if(body.message.startsWith('Только возвратный'))server.brief.refundable_only=true;
+   else if(body.message.startsWith('Можно и невозвратные'))server.brief.refundable_only=false;
+   else if(body.message.startsWith('Подбери более дешёвые'))server.brief.needs=['budget_low'];
+   else if(body.message.startsWith('Сними приоритет'))server.brief.needs=[];
+   else assert.fail('A refinement cannot send free-form draft text or a selection command');
+   server.version++;const final=snapshot();return response([['brief',{brief:server.brief,search_changed:true,version:server.version}],['options',final.options],['delta',{text:'Подбор обновлён.'}],['done',final]]);
+  }
+  assert.equal(path,'/api/session/search-ui-session');return Response.json(snapshot());
+ }});
+ server.brief={...ui.controller.state.brief,direct_only:false,refundable_only:false,needs:[]};
+ const draft='Хочу ещё уточнить питание';ui.controller.setDraft(draft);ui.controller.notify();
+ for(const key of ['direct','refundable','cheaper']){
+  for(let toggle=0;toggle<2;toggle++){
+   const before=messages.length;ui.click('refine',{refineKey:key});
+   await until(()=>messages.length===before+1&&!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+   assert.equal(ui.controller.state.draft,draft);assert.equal(ui.input.value,draft);
+   assert.equal(ui.controller.state.selected,null);assert.equal(ui.controller.state.cart,null);assert.equal(ui.controller.state.order,null);
+   assert.equal(ui.modal.open,false);assert.match(ui.root.innerHTML,/data-refine-key="direct"/);
+  }
+ }
+ assert.deepEqual(messages.map(row=>row.message),[
+  'Только прямые рейсы, остальные условия сохраняем, без оформления.',
+  'Можно с пересадками, остальные условия сохраняем, без оформления.',
+  'Только возвратный отель, остальные условия сохраняем, без оформления.',
+  'Можно и невозвратные отели, остальные условия сохраняем, без оформления.',
+  'Подбери более дешёвые варианты на тех же условиях, без оформления.',
+  'Сними приоритет низкой цены, остальные условия сохраняем, без оформления.',
+ ]);
+ assert.ok(ui.calls.every(call=>call.path==='/health'||call.path==='/api/chat'||call.path.startsWith('/api/session/')));
+});
+
+test('A saved hotel survives reload and storage refresh; restoring starts one fresh search and preserves history and draft',async t=>{
+ const stored=new Map(),browserStorage={getItem:key=>stored.get(key)??null,setItem:(key,value)=>stored.set(key,value)};
+ let favorite;
+ await t.test('Save a public favorite without a chat or checkout request',async t=>{
+  const ui=await mountedSearch(t,{browserStorage,now:()=>new Date('2026-10-29T12:00:00Z')});
+  ui.controller.state.options[0].hotel.hotel_id='osm:way/123456';ui.controller.notify();
+  ui.click('toggle-favorite',{index:'1'});favorite=JSON.parse(stored.get(FAVORITES_STORAGE_KEY)).items[0];
+  assert.equal(favorite.hotel.hotel_id,'osm:way/123456');assert.equal(favorite.rememberedKnownTotalRub,66001);
+  assert.doesNotMatch(JSON.stringify(favorite),/session_id|cart_id|order_id|birth_date/);
+  assert.match(ui.root.innerHTML,/aria-label="Избранное: 1"/);
+  ui.click('favorites');assert.match(ui.modal.innerHTML,/Server Hotel 1/);assert.match(ui.modal.innerHTML,/историческая сумма/);
+  assert.equal(ui.controller.state.selected,null);assert.equal(ui.controller.state.cart,null);
+  assert.ok(ui.calls.every(call=>call.method==='GET'));
+ });
+ await t.test('Reload, synchronize another tab and explicitly recalculate into a new session',async t=>{
+  const messages=[],criteria={...favorite.criteria,start_date:'2027-02-03'},freshOption=packageOption(1);freshOption.hotel.hotel_id=favorite.hotel.hotel_id;
+  Object.assign(freshOption.hotel,{check_in:'2027-02-03',check_out:'2027-02-10',price_rub:50000});freshOption.outbound.departure_at='2027-02-03T12:00:00+03:00';freshOption.inbound.departure_at='2027-02-10T12:00:00+05:00';freshOption.known_total_rub=71000;
+  const snapshot={session_id:'fresh-favorite-session',version:1,stage:'packages_shown',brief:criteria,sources:{},needs:[],options:{kind:'packages',items:[freshOption],notes:[],assumptions:[]},selected:null,booking:null,stale:false};
+  const ui=await mountedSearch(t,{browserStorage,now:()=>new Date('2026-10-29T12:00:00Z'),request:async(path,init)=>{
+   if(path==='/api/chat'){
+    const body=JSON.parse(init.body);messages.push(body);return new Response(`event: options\ndata: ${JSON.stringify(snapshot.options)}\n\nevent: delta\ndata: ${JSON.stringify({text:'Новый расчёт готов.'})}\n\nevent: done\ndata: ${JSON.stringify(snapshot)}\n\n`,{headers:{'Content-Type':'text/event-stream'}});
+   }
+   assert.equal(path,'/api/session/fresh-favorite-session');return Response.json(snapshot);
+  }});
+  assert.match(ui.root.innerHTML,/aria-label="Избранное: 1"/);ui.click('favorites');assert.match(ui.modal.innerHTML,/Server Hotel 1/);
+  const saved=stored.get(FAVORITES_STORAGE_KEY),refresh=()=>{const event=new Event('storage');Object.defineProperty(event,'key',{value:FAVORITES_STORAGE_KEY});ui.window.dispatchEvent(event);};
+  browserStorage.setItem(FAVORITES_STORAGE_KEY,JSON.stringify({schemaVersion:1,items:[]}));refresh();assert.match(ui.modal.innerHTML,/Пока ничего не сохранено/);
+  browserStorage.setItem(FAVORITES_STORAGE_KEY,saved);refresh();assert.match(ui.modal.innerHTML,/Server Hotel 1/);
+  const retained={sessionId:sid,order:structuredClone(order)};ui.controller.state.orders=[retained];
+  ui.controller.state.cart={cart_id:'CART-unfinished',status:'awaiting_travelers',package:ui.controller.state.options[0]};ui.controller.state.selected=1;
+  const draft='Уточню детали позже';ui.controller.setDraft(draft);ui.controller.notify();
+  ui.click('restore-favorite',{favoriteId:favorite.id});
+  assert.equal(messages.length,0);assert.match(ui.modal.innerHTML,/api-favorite-form/);assert.match(ui.modal.innerHTML,/выбор и оформление автоматически не начинаются/);
+  const original=globalThis.FormData;globalThis.FormData=class {get(key){return key==='start_date'?'2027-02-03':null;}};t.after(()=>{globalThis.FormData=original;});
+  const form={id:'api-favorite-form',dataset:{favoriteId:favorite.id},reportValidity:()=>true};
+  const submit=new Event('submit',{cancelable:true});Object.defineProperty(submit,'target',{value:form});ui.document.dispatchEvent(submit);
+  await until(()=>messages.length===1&&!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+  assert.equal(messages[0].session_id,undefined,'Restoring a favorite must not mutate an old search session');
+  assert.equal(messages[0].search_only,true,'The fresh favorite search cannot choose or confirm a trip through generated text');
+  assert.match(messages[0].message,/Новый поиск:/);assert.match(messages[0].message,/03\.02\.2027/);
+  assert.match(messages[0].message,/Ничего не выбирать, не оформлять и не оплачивать/);
+  assert.doesNotMatch(messages[0].message,/Server Hotel|osm:|66001|CART-unfinished/);
+  assert.equal(ui.controller.state.sessionId,'fresh-favorite-session');assert.equal(ui.controller.state.cart,null);assert.equal(ui.controller.state.selected,null);
+  assert.deepEqual(ui.controller.state.orders,[retained]);assert.equal(ui.controller.state.draft,draft);assert.equal(ui.input.value,draft);
+  assert.equal(ui.modal.open,false);assert.match(ui.root.innerHTML,/Сохранённый отель есть в новой выдаче/);assert.match(ui.root.innerHTML,/71[\s\u00a0\u202f]?000 ₽/);
+  assert.ok(ui.calls.every(call=>!call.path.startsWith('/api/checkout/')));
+  ui.click('favorites');ui.click('remove-favorite',{favoriteId:favorite.id});
+  assert.deepEqual(JSON.parse(stored.get(FAVORITES_STORAGE_KEY)).items,[]);assert.match(ui.modal.innerHTML,/Пока ничего не сохранено/);
+  assert.match(ui.root.innerHTML,/aria-label="Избранное: 0"/);assert.equal(messages.length,1);
+ });
+});
+
+test('Untransferred favorite conditions remain guarded after informational queries, another-tab changes and a page reload',async t=>{
+ const map=new Map(),tabStorage={getItem:key=>map.get(key)??null,setItem:(key,value)=>map.set(key,value)};
+ const favorites=new Map(),browserStorage={getItem:key=>favorites.get(key)??null,setItem:(key,value)=>favorites.set(key,value)};
+ const intent=normalizeFavoriteIntent({hotel:{hotel_id:'osm:way/123456',name:'Saved Hotel'},criteria:{transport:'flight',origin:'MOW',destination:'MLE',start_date:'2027-01-29',nights:7,adults:1,children_ages:[],pets:1,budget_rub:150000,min_stars:4,needs:['pets']},rememberedKnownTotalRub:130000,priceKind:'historical_known_components',savedAt:'2026-10-29T12:00:00Z',verified:false});
+ const currentBrief={...intent.criteria,pets:0},chat=[],options=[1,2,3].map(packageOption);
+ const snapshot={session_id:'search-ui-session',version:1,stage:'packages_shown',brief:currentBrief,sources:{},needs:[],options:{kind:'packages',items:options,notes:[],assumptions:[]},selected:null,booking:null,stale:false};
+ const request=async(path,init)=>{
+  if(path==='/api/chat'){
+   chat.push(JSON.parse(init.body));return new Response(`event: delta\ndata: ${JSON.stringify({text:'Ответ на справочный вопрос.'})}\n\nevent: done\ndata: ${JSON.stringify(snapshot)}\n\n`,{headers:{'Content-Type':'text/event-stream'}});
+  }
+  assert.equal(path,'/api/session/search-ui-session');return Response.json(snapshot);
+ };
+ const chooseTag=root=>root.innerHTML.match(/<button[^>]*data-api-action="choose"[^>]*data-index="1"[^>]*>/)?.[0];
+ await t.test('Informational actions and typed confirmations cannot acknowledge a missing pet',async t=>{
+  const ui=await mountedSearch(t,{browserStorage,tabStorage,request});
+  Object.assign(ui.controller.state,{brief:currentBrief,favoriteIntent:intent,favoriteRestoreUnconfirmed:false});ui.controller.notify();
+  assert.match(ui.root.innerHTML,/Текущие условия отличаются от сохранённых/);assert.match(ui.root.innerHTML,/Питомцы: ожидалось 1, получено 0/);
+  ui.controller.setDraft('Ещё уточню пожелания');ui.controller.notify();ui.click('compare',{index:'1'});ui.click('compare',{index:'2'});
+  assert.equal(ui.controller.state.draft,'Ещё уточню пожелания');assert.match(ui.root.innerHTML,/aria-label="Сравнение вариантов"/);
+  assert.match(chooseTag(ui.root),/disabled/);ui.click('choose',{index:'1'});assert.equal(chat.length,0);
+  ui.click('profile',{index:'1'});await until(()=>chat.length===1&&!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+  assert.equal(ui.controller.state.favoriteIntent.verified,false);assert.match(chooseTag(ui.root),/disabled/);
+  assert.match(ui.root.innerHTML,/aria-label="Сравнение вариантов"/,'A profile response for the same search cannot discard a local comparison');
+  ui.click('savings');await until(()=>chat.length===2&&!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+  assert.equal(ui.controller.state.favoriteIntent.criteria.pets,1);assert.match(chooseTag(ui.root),/disabled/);
+  for(const text of ['Беру вариант 1','Подтверждаю','Оформи вариант 1']){
+   ui.input.value=text;const submit=new Event('submit',{cancelable:true});Object.defineProperty(submit,'target',{value:{id:'api-chat-form'}});ui.document.dispatchEvent(submit);
+  }
+  assert.equal(chat.length,2);assert.equal(ui.controller.state.selected,null);assert.equal(ui.controller.state.cart,null);
+  for(const text of ['Хочу второй вариант','Мне подходит второй вариант','2 вариант','Да','Окей','Подтверждаю.']){
+   const before=chat.length;ui.input.value=text;
+   const submit=new Event('submit',{cancelable:true});Object.defineProperty(submit,'target',{value:{id:'api-chat-form'}});ui.document.dispatchEvent(submit);
+   await until(()=>!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+   if(chat.length>before)assert.equal(chat.at(-1).search_only,true,'An unrecognized confirmation alias must reach the server in search-only mode');
+   assert.equal(ui.controller.state.selected,null);assert.equal(ui.controller.state.cart,null);
+  }
+  assert.ok(chat.every(row=>row.search_only===true),'Informational queries also retain the server-side booking restriction');
+  browserStorage.setItem(FAVORITES_STORAGE_KEY,JSON.stringify({schemaVersion:1,items:[]}));
+  const refreshed=new Event('storage');Object.defineProperty(refreshed,'key',{value:FAVORITES_STORAGE_KEY});ui.window.dispatchEvent(refreshed);
+  assert.equal(ui.controller.state.favoriteIntent.criteria.pets,1);assert.match(chooseTag(ui.root),/disabled/);
+ });
+ await t.test('Reload retains the warning until the user explicitly accepts the obtained conditions',async t=>{
+  const ui=await mountedSearch(t,{browserStorage,tabStorage,request,hydrateOnly:true});
+  assert.equal(ui.controller.state.favoriteIntent.criteria.pets,1);assert.match(ui.root.innerHTML,/Текущие условия отличаются от сохранённых/);
+  assert.match(chooseTag(ui.root),/disabled/);const before=chat.length;
+  ui.click('accept-favorite-results');
+  assert.equal(ui.controller.state.favoriteIntent,null);assert.equal(ui.controller.state.favoriteRestoreUnconfirmed,false);
+  assert.doesNotMatch(chooseTag(ui.root),/disabled/);assert.equal(chat.length,before,'Accepting conditions is local review, not selecting or paying');
+  ui.click('choose',{index:'1'});await until(()=>chat.length===before+1&&!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+  assert.equal(chat.at(-1).message,'Беру вариант 1');assert.equal(chat.at(-1).session_id,'search-ui-session');assert.equal(chat.at(-1).search_only,undefined);
+ });
+});
+
+test('Corrupt restored favorite context fails closed in the mounted app until explicit acceptance',async t=>{
+ const map=new Map([['na-maldivy-api-session-v1',JSON.stringify({schemaVersion:2,sessionId:'search-ui-session',version:1,stage:'packages_shown',brief:{origin:'MOW',destination:'MLE',adults:1},optionKind:'packages',options:[packageOption(1)],favoriteIntent:{secret:'invalid-favorite-payload'},favoriteRestoreUnconfirmed:false,messages:[{role:'assistant',text:'Сохранённая переписка.'}],orders:[]})]]);
+ const tabStorage={getItem:key=>map.get(key)??null,setItem:(key,value)=>map.set(key,value)};
+ const ui=await mountedSearch(t,{tabStorage,hydrateOnly:true,request:async path=>{
+  assert.equal(path,'/api/session/search-ui-session');return Response.json({session_id:'search-ui-session',version:1,stage:'packages_shown',brief:{origin:'MOW',destination:'MLE',adults:1},sources:{},needs:[],selected:null,booking:null,stale:false,options:{kind:'packages',items:[packageOption(1)]}});
+ }});
+ assert.equal(ui.controller.state.favoriteIntent,null);assert.equal(ui.controller.state.favoriteRestoreUnconfirmed,true);
+ assert.match(ui.root.innerHTML,/Не удалось восстановить пожелания избранного/);
+ assert.match(ui.root.innerHTML.match(/<button[^>]*data-api-action="choose"[^>]*>/)[0],/disabled/);
+ ui.click('choose',{index:'1'});assert.ok(ui.calls.every(row=>row.method==='GET'));
+ assert.doesNotMatch(JSON.stringify([...map.values()]),/invalid-favorite-payload/);
+ ui.click('accept-favorite-results');assert.equal(ui.controller.state.favoriteRestoreUnconfirmed,false);
+ assert.doesNotMatch(ui.root.innerHTML.match(/<button[^>]*data-api-action="choose"[^>]*>/)[0],/disabled/);
+ assert.ok(ui.calls.every(row=>row.method==='GET'));
 });
 
 test('A new judge session renders three usable future-dated quick prompts',async t=>{
@@ -377,7 +561,7 @@ test('Stale search closes its composition dialog and quick correction sends expl
  click('plan',{index:'1'});assert.equal(modal.open,true);assert.match(modal.innerHTML,/Server Hotel 1/);
  controller.state.stale=true;controller.notify();assert.equal(modal.open,false);
  click('edit-preferences');assert.equal(modal.open,true);assert.match(modal.innerHTML,/api-preferences-form/);
- assert.match(modal.innerHTML,/не начало оформления/);
+ assert.match(modal.innerHTML,/оформление не начнётся/);
  const sent=[];controller.send=async text=>{sent.push(text);};
  const original=globalThis.FormData;globalThis.FormData=class {get(key){return {adults:'2',nights:'10',start_date:'2027-02-03',children_ages:'',pets:'0',budget_rub:''}[key];}};
  t.after(()=>{globalThis.FormData=original;});

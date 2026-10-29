@@ -41,13 +41,14 @@ from app.agent.analysis import (
 from app.agent.brief import FIELD_LABELS, ApplyResult, BriefPatch, apply_patch
 from app.agent.date_savings import compare_date_savings, is_date_savings_question
 from app.agent.destination_info import destination_information, is_destination_information_question
-from app.agent.hidden import NEEDS, requests_checkout_cancellation, unrecognized_destination
+from app.agent.hidden import NEEDS, quick_refinement_requested, requests_checkout_cancellation, unrecognized_destination
 from app.agent.hidden import extract as extract_patch
 from app.agent.planner import DEFAULT_NIGHTS, PlanResult, needs_summary, search_train_trip, search_trip, suggest
 from app.agent.prompts import ASK_PROMPT, EXPLAIN_PROMPT, OFF_TOPIC_PROMPT, SUMMARY_PROMPT, context_message
 from app.agent.review_explanations import explain_hotel_reviews
 from app.agent.router import Action, Decision, decide
 from app.agent.session import Session, SessionStore, Stage
+from app.agent.trip_changes import build_diff, option_summary
 from app.booking.checkout_service import CheckoutError, CheckoutService
 from app.llm import LLMClient, LLMError, Message
 from app.tools import Tool, run_tool, tool_specs
@@ -92,7 +93,9 @@ class TravelAgent:
         self._checkout = checkout
         self._locks: dict[str, asyncio.Lock] = {}
 
-    async def run(self, message: str, session_id: str | None = None) -> AsyncIterator[AgentEvent]:
+    async def run(
+        self, message: str, session_id: str | None = None, *, search_only: bool = False
+    ) -> AsyncIterator[AgentEvent]:
         stored = self.sessions.get_or_create(session_id)
         queue: asyncio.Queue[AgentEvent | None] = asyncio.Queue()
 
@@ -104,7 +107,7 @@ class TravelAgent:
             try:
                 async with lock:
                     work = copy.deepcopy(stored)  # ход меняет копию, сохраняем только успешный
-                    await self._turn(work, message, emit)
+                    await self._turn(work, message, emit, **({"search_only": True} if search_only else {}))
                     stored.__dict__.update(work.__dict__)
                     emit("done", stored.snapshot())
             except Exception:
@@ -128,7 +131,7 @@ class TravelAgent:
     # Один ход
     # ======================================================================
 
-    async def _turn(self, s: Session, text: str, emit: Emit) -> None:
+    async def _turn(self, s: Session, text: str, emit: Emit, *, search_only: bool = False) -> None:
         today = self._today()
         emit("status", {"stage": "analyze", "text": "Разбираю запрос"})
         if requests_fabricated_offers(text):
@@ -163,6 +166,11 @@ class TravelAgent:
         for warning in outcome.warnings:
             emit("warning", {"message": warning})
         analysis = outcome.analysis
+        quick_refinement = quick_refinement_requested(text)
+        if quick_refinement:
+            # These UI actions preserve every criterion except their named filter,
+            # even when model analysis copies stale fields or suggests purchase.
+            analysis.patch, analysis.intent, analysis.option = extract_patch(text, today, s.brief), "modify", None
         destination_tool = self._tools.get("suggest_destinations")
         catalogue = getattr(destination_tool, "catalogue", None)
         data_dir = getattr(destination_tool, "data_dir", None)
@@ -188,7 +196,6 @@ class TravelAgent:
             if not applied.search_changed:
                 s.version += 1
             s.packages, s.trains, s.destinations = [], [], []
-            s.rebuild_before = None
             s.selected, s.booking, s.stale = None, None, False
             s.options_kind = "trains" if s.brief.transport == "train" else "destinations"
             s.options_assumptions, s.options_notes = [], []
@@ -204,6 +211,7 @@ class TravelAgent:
             )
             rejected = fmt.rejected_line(applied)
             question = fmt.unknown_destination(unknown_destination)
+            self._finish_rebuild(s, emit, status="awaiting_input", notes=[question])
             emit(
                 "question",
                 {"field": "destination", "text": question, "quick_replies": ["Анталья", "Дубай", "Мальдивы"]},
@@ -231,7 +239,7 @@ class TravelAgent:
             s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
             return
 
-        if is_cancellation_topic(text) and not applied.search_changed:
+        if is_cancellation_topic(text) and not applied.search_changed and not quick_refinement:
             if not (s.stage is Stage.AWAITING_CONFIRMATION and analysis.intent == "decline"):
                 reply = self._say(fmt.cancellation_status(previous_booking, s.package(s.selected)), emit)
                 s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
@@ -268,6 +276,19 @@ class TravelAgent:
             emit("delta", {"text": rejected + "\n"})
 
         decision = decide(s, analysis, search_changed=applied.search_changed)
+        if search_only and (
+            decision.action in {Action.CONFIRM, Action.BOOK, Action.ASK_WHICH}
+            or not applied.search_changed
+            and analysis.intent in {"select", "confirm"}
+        ):
+            reply = self._say(
+                "Проверьте условия нового поиска и актуальные варианты. "
+                "В режиме проверки выбор и оформление недоступны. "
+                "Можно изменить условия или задать вопрос о поездке.",
+                emit,
+            )
+            s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
+            return
         log.info("route: %s (%s)", decision.action.value, decision.reason)
         reply = await self._execute(s, decision, text, analysis, emit)
         reply = booking_notice + reply
@@ -285,6 +306,9 @@ class TravelAgent:
 
     def _commit_brief(self, s: Session, applied: ApplyResult, emit: Emit, *, search: bool = True) -> None:
         if applied.changes or applied.sources_changed:
+            if search and applied.search_changed:
+                self._begin_rebuild(s)
+                s.last_diff = None
             s.brief, s.sources = applied.brief, applied.sources
             # The revision protects the searched package and checkout snapshot.
             # Reaffirming an identical value (source default -> explicit), or
@@ -292,7 +316,6 @@ class TravelAgent:
             if applied.search_changed:
                 s.version += 1
             if search and applied.search_changed:
-                s.rebuild_before = s.packages[0] if s.packages else s.rebuild_before
                 s.stale = bool(s.packages or s.destinations or s.trains or s.rebuild_before)
                 s.selected = None
                 s.booking = None
@@ -315,6 +338,7 @@ class TravelAgent:
                     "stale": s.stale,
                     "selected": s.selected,
                     "booking": s.booking,
+                    "last_diff": s.last_diff,
                     "changes": [
                         {
                             "field": c.field,
@@ -333,6 +357,35 @@ class TravelAgent:
                     ],
                 },
             )
+
+    @staticmethod
+    def _begin_rebuild(s: Session) -> None:
+        if s.rebuild_brief is None and s.options_kind is not None:
+            rows = s.packages or s.trains or s.destinations
+            s.rebuild_before = option_summary(rows[0], s.brief) if rows else None
+            s.rebuild_brief = s.brief.model_dump(mode="json")
+
+    @staticmethod
+    def _finish_rebuild(
+        s: Session, emit: Emit, *, status: str = "updated", notes: list[str] | None = None, keep_pending: bool = False
+    ) -> dict[str, Any] | None:
+        if s.rebuild_brief is None:
+            return None
+        rows = [] if status == "awaiting_input" else (s.packages or s.trains or s.destinations)
+        s.last_diff = build_diff(
+            before_brief=s.rebuild_brief,
+            after_brief=s.brief,
+            before=s.rebuild_before,
+            after=option_summary(rows[0], s.brief) if rows else None,
+            sources=s.sources,
+            version=s.version,
+            status=status if rows or status == "awaiting_input" else "no_results",
+            notes=notes or [],
+        )
+        emit("diff", copy.deepcopy(s.last_diff))
+        if not keep_pending:
+            s.rebuild_before = s.rebuild_brief = None
+        return s.last_diff
 
     async def _execute(self, s: Session, d: Decision, text: str, analysis: MessageAnalysis, emit: Emit) -> str:
         match d.action:
@@ -368,6 +421,7 @@ class TravelAgent:
         field = d.field or ""
         today = self._today()
         fallback = fmt.question(field, s.brief)
+        self._finish_rebuild(s, emit, status="awaiting_input", notes=[fallback], keep_pending=True)
         emit("question", {"field": field, "text": fallback, "quick_replies": fmt.quick_replies(field, today)})
         messages = [
             Message(role="system", content=ASK_PROMPT),
@@ -393,8 +447,8 @@ class TravelAgent:
         s.trains = []
         s.packages, s.stale = [], False
         s.stage = Stage.DESTINATIONS_SHOWN if plan.options else Stage.COLLECTING
-        s.rebuild_before = None
         self._emit_options(s, "destinations", plan, emit)
+        self._finish_rebuild(s, emit, notes=plan.notes)
         return await self._summarize(s, text, plan, fmt.destinations(plan), emit)
 
     async def _search(self, s: Session, text: str, emit: Emit) -> str:
@@ -404,11 +458,10 @@ class TravelAgent:
             s.trains, s.packages, s.destinations = plan.options, [], []
             s.stale, s.selected = False, None
             s.stage = Stage.TRAINS_SHOWN if plan.options else Stage.COLLECTING
-            s.rebuild_before = None
             self._emit_options(s, "trains", plan, emit)
+            self._finish_rebuild(s, emit, notes=plan.notes)
             return await self._summarize(s, text, plan, fmt.trains(plan), emit)
         emit("status", {"stage": "search", "text": "Собираю поездку: рейсы, отели, трансферы"})
-        before, s.rebuild_before = s.rebuild_before, None
         plan = await search_trip(s.brief, self._caller(s, emit), self._today())
         self._adopt_assumptions(s, plan, emit)
         s.packages, s.stale, s.selected = plan.options, False, None
@@ -416,15 +469,23 @@ class TravelAgent:
         s.stage = Stage.PACKAGES_SHOWN if plan.options else Stage.COLLECTING
         self._emit_options(s, "packages", plan, emit)
         diff = ""
-        if before and plan.options:
-            after = plan.options[0]
-            emit("diff", {"before": _brief_package(before), "after": _brief_package(after)})
-            delta = after["known_total_rub"] - before["known_total_rub"]
-            sign = "+" if delta > 0 else "−"
+        change = self._finish_rebuild(s, emit, notes=plan.notes)
+        if change and change["before"] and change["after"]:
+            before, after = change["before"], change["after"]
+            delta = change["comparison"]["delta_known_total_rub"]
+            difference = (
+                "Известная сумма не изменилась."
+                if delta == 0
+                else f"Разница известных расходов: {'+' if delta > 0 else '−'}{fmt.rub(abs(delta))}."
+                if delta is not None
+                else "Разницу расходов пока нельзя посчитать."
+            )
+            old_price = fmt.rub(before["known_total_rub"]) if before["known_total_rub"] is not None else "неизвестно"
+            new_price = fmt.rub(after["known_total_rub"]) if after["known_total_rub"] is not None else "неизвестно"
             diff = (
-                f"Пересчитал известные расходы. Было: {before['hotel']['name']}, "
-                f"{fmt.rub(before['known_total_rub'])} → "
-                f"стало: {after['hotel']['name']}, {fmt.rub(after['known_total_rub'])} ({sign}{fmt.rub(abs(delta))})."
+                f"Пересчитал известные расходы. Было: {before['name']}, {old_price} → "
+                f"стало: {after['name']}, {new_price}. {difference} "
+                "Это сравнение первых вариантов; состав поездки может отличаться, экономия не гарантирована."
             )
         return await self._summarize(s, text, plan, fmt.packages(plan, diff), emit, diff=diff)
 
@@ -705,15 +766,3 @@ def _jsonable(value: Any) -> Any:
 
 def _validation_message(exc: ValidationError) -> str:
     return "; ".join(f"{'.'.join(map(str, e['loc']))}: {e['msg']}" for e in exc.errors())
-
-
-def _brief_package(p: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "label": p["label"],
-        "hotel": p["hotel"]["name"],
-        "total_rub": p["total_rub"],
-        "known_total_rub": p["known_total_rub"],
-        "price_scope": p["price_scope"],
-        "check_in": p["hotel"]["check_in"],
-        "check_out": p["hotel"]["check_out"],
-    }

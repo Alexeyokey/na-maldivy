@@ -25,7 +25,7 @@ export async function withRequestDeadline(operation,{signal,timeoutMs=CHECKOUT_R
     })]);
   }finally{clearTimeout(timer);signal?.removeEventListener('abort',onAbort);}
 }
-export async function streamChat({message,sessionId,requestId,retry=false,endpoint='/api/chat',signal,onDelta=()=>{},onEvent=()=>{},fetchImpl=globalThis.fetch}) {
+export async function streamChat({message,sessionId,requestId,retry=false,searchOnly=false,endpoint='/api/chat',signal,onDelta=()=>{},onEvent=()=>{},fetchImpl=globalThis.fetch}) {
   if(typeof message!=='string'||!message.trim()||message.length>4000)throw new ChatApiError('Напишите сообщение длиной от 1 до 4000 символов.',{code:'validation'});
   if(sessionId!==undefined&&sessionId!==null&&!isSessionId(sessionId))throw new ChatApiError('Не удалось продолжить диалог. Начните новый поиск.',{code:'validation'});
   if(requestId!==undefined&&!isSessionId(requestId))throw new ChatApiError('Не удалось повторить сообщение. Отправьте его заново.',{code:'validation'});
@@ -33,7 +33,7 @@ export async function streamChat({message,sessionId,requestId,retry=false,endpoi
   let text='',reader,finished=false,done=null;
   const events=[];let resultSessionId=sessionId||null;
   try {
-    const response=await fetchImpl(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'text/event-stream'},body:JSON.stringify({message,...(sessionId?{session_id:sessionId}:{}),...(requestId!==undefined?{request_id:requestId}:{}),...(retry?{retry:true}:{})}),signal,credentials:'same-origin',cache:'no-store',redirect:'error'});
+    const response=await fetchImpl(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'text/event-stream'},body:JSON.stringify({message,...(sessionId?{session_id:sessionId}:{}),...(requestId!==undefined?{request_id:requestId}:{}),...(retry?{retry:true}:{}),...(searchOnly===true?{search_only:true}:{})}),signal,credentials:'same-origin',cache:'no-store',redirect:'error'});
     if(!response.ok)throw chatHttpError(response.status);
     if(!response.headers.get('content-type')?.includes('text/event-stream')||!response.body)throw new ChatApiError('Сервер вернул ответ в неподдерживаемом формате.',{code:'protocol'});
     reader=response.body.getReader();const decoder=new TextDecoder();let pending='',event='message',data=[];

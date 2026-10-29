@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-29T01:07:54.194142+00:00",
+  "status": "passed",
+  "checks": {
+    "lint": "passed",
+    "backend_tests": 1509,
+    "frontend_tests": 274,
+    "gateway_tests": 11,
+    "total_tests": 1794,
+    "docker_three_destinations": "passed",
+    "docker_paid_demo_restart": "passed",
+    "production_live_model_turns_passed": 10,
+    "tracked_site_access_value_scan": "passed; current tracked files only, not Git history or all provider secrets"
+  },
+  "browser": {
+    "environment": "desktop in-app browser; responsive 320px iframe, not a physical phone",
+    "checks": [
+      "save favorite",
+      "favorite remains after reload",
+      "fresh favorite search after expired old session",
+      "no automatic selection or checkout",
+      "all three refinements enabled and disabled",
+      "draft preserved during refinement",
+      "before/after criteria and component prices",
+      "source-change label",
+      "desktop two-column form",
+      "320px single-column form",
+      "children disclosure",
+      "collapsed child error opens section and focuses invalid field"
+    ],
+    "screenshots": [
+      "desktop-changes.png",
+      "desktop-preferences.png",
+      "mobile-preferences-320.png"
+    ],
+    "console": {
+      "desktop_application_warnings_or_errors": 0,
+      "responsive_iframe_warnings_or_errors": 1,
+      "responsive_iframe_note": "One MutationObserver.observe error has no source URL; no MutationObserver is used in application source. The 320px UI remained interactive. This report does not attribute that harness/browser error to the application or claim a clean iframe console."
+    }
+  },
+  "limitations": [
+    "No physical mobile-device, native 200% zoom or screen-reader session was run.",
+    "Saved Aviasales responses remain historical snapshots; no fresh provider query.",
+    "D7 live extraction and Yandex live access are outside this UX verification."
+  ]
+}

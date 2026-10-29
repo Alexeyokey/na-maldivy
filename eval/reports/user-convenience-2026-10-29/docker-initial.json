@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-10-29T01:05:59.136181+00:00",
+  "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+  "mode": "initial_run",
+  "status": "passed",
+  "integrated_ui_status": "not_run",
+  "completed_stages": [
+    "gateway_ui_entrypoint",
+    "gateway.health",
+    "AYT.search_sources",
+    "AYT.d7_evidence",
+    "AYT.d8_comparison",
+    "AYT.confirm_unpaid_cart",
+    "AYT.decline_approve_retry",
+    "AYT.private_downloads",
+    "AYT.order_capability_boundaries",
+    "AYT.criteria_change_preserves_paid_order",
+    "AYT.reverse_train_search",
+    "DXB.search_sources",
+    "DXB.d7_evidence",
+    "DXB.d8_comparison",
+    "DXB.confirm_unpaid_cart",
+    "DXB.decline_approve_retry",
+    "DXB.private_downloads",
+    "DXB.order_capability_boundaries",
+    "DXB.criteria_change_preserves_paid_order",
+    "DXB.reverse_train_search",
+    "MLE.search_sources",
+    "MLE.d7_evidence",
+    "MLE.d8_comparison",
+    "MLE.confirm_unpaid_cart",
+    "MLE.decline_approve_retry",
+    "MLE.private_downloads",
+    "MLE.order_capability_boundaries",
+    "MLE.criteria_change_preserves_paid_order",
+    "MLE.reverse_train_search",
+    "gateway.save_private_context"
+  ],
+  "stage_timings_seconds": {
+    "gateway_ui_entrypoint": 0.029,
+    "gateway.health": 0.004,
+    "AYT.search_sources": 0.387,
+    "AYT.d7_evidence": 0.014,
+    "AYT.d8_comparison": 0.24,
+    "AYT.confirm_unpaid_cart": 0.029,
+    "AYT.decline_approve_retry": 0.018,
+    "AYT.private_downloads": 0.013,
+    "AYT.order_capability_boundaries": 0.018,
+    "AYT.criteria_change_preserves_paid_order": 0.014,
+    "AYT.reverse_train_search": 0.015,
+    "DXB.search_sources": 0.117,
+    "DXB.d7_evidence": 0.009,
+    "DXB.d8_comparison": 0.308,
+    "DXB.confirm_unpaid_cart": 0.017,
+    "DXB.decline_approve_retry": 0.011,
+    "DXB.private_downloads": 0.008,
+    "DXB.order_capability_boundaries": 0.007,
+    "DXB.criteria_change_preserves_paid_order": 0.006,
+    "DXB.reverse_train_search": 0.006,
+    "MLE.search_sources": 0.045,
+    "MLE.d7_evidence": 0.007,
+    "MLE.d8_comparison": 0.177,
+    "MLE.confirm_unpaid_cart": 0.016,
+    "MLE.decline_approve_retry": 0.011,
+    "MLE.private_downloads": 0.007,
+    "MLE.order_capability_boundaries": 0.007,
+    "MLE.criteria_change_preserves_paid_order": 0.006,
+    "MLE.reverse_train_search": 0.006,
+    "gateway.save_private_context": 0.002
+  },
+  "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+  "departure_date": "2026-11-18",
+  "scenario": "recorded_reference_fixture",
+  "runtime_network_isolation": "not_proven_by_http_check",
+  "source_evidence_scope": "server_provenance_metadata_and_reference_fixture_prices",
+  "full_d9_acceptance_status": "not_completed_by_this_report",
+  "destinations": [
+    {
+      "destination": "AYT",
+      "status": "passed",
+      "known_total_rub": 83234,
+      "leg_sources": [
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 11251
+        },
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 14147
+        }
+      ],
+      "package_sha256": "ee65483f258ee9144c6057e1881348734d6063fecff46f2106c3890491ca3805",
+      "d7": {
+        "is_synthetic": true,
+        "live_model_run": false,
+        "facts_sha256": "d7d5640f9cc3ec172c64f28860fa4973a272e30e048ad8e57fcc2eb5fdd3bb7b"
+      },
+      "d8": {
+        "comparable_dates": 6,
+        "suggestions_count": 1,
+        "contains_mock": false,
+        "state_preserved": true,
+        "facts_sha256": "e4dc6fdf938fa91e6d29fe3d027949d14a73468cfdec2080d4ee860e00d9cf70"
+      },
+      "order_sha256": "7d358f7f6ffd89421b7531885f9d73571633bad6361c55c0e157a6674acbeefe",
+      "voucher_sha256": "2ee397d351028159cc4a1332835d2b7a8aa7e33f05199005e693130d66fc9775",
+      "calendar_sha256": "e970d4bb3ce22e9a38687801eddc6774e8d7d249570b09c6be002c424cec8623"
+    },
+    {
+      "destination": "DXB",
+      "status": "passed",
+      "known_total_rub": 131161,
+      "leg_sources": [
+        {
+          "kind": "deterministic_mock",
+          "provider_evidence": false
+        },
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 19547
+        }
+      ],
+      "package_sha256": "56a5dcafa0a62ca71afc46629ffd22f110c84536433dbf0fdf5d82f74d8febf2",
+      "d7": {
+        "is_synthetic": true,
+        "live_model_run": false,
+        "facts_sha256": "c9b1ded6c12c95cb1587b7745fc4ee467dd71d1930e6fbe87ca813a9ab8f734a"
+      },
+      "d8": {
+        "comparable_dates": 6,
+        "suggestions_count": 0,
+        "contains_mock": true,
+        "state_preserved": true,
+        "facts_sha256": "3ce258609bf2fa225bd1934b6754b39feca2bc49033933c8774cd6c515243c1d"
+      },
+      "order_sha256": "b7e07d39b420075818c97ae44c611a8a3bd3e42ab77452169560473a9c6682f9",
+      "voucher_sha256": "6395576a776eb28608e351ae70684e631781900d6c6209e019f6ba6804481ea5",
+      "calendar_sha256": "8515c8807b12c4170f02df98182fffe8369b48d80a1984b05f312298a4b2886a"
+    },
+    {
+      "destination": "MLE",
+      "status": "passed",
+      "known_total_rub": 216983,
+      "leg_sources": [
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 32488
+        },
+        {
+          "kind": "provider_replay",
+          "provider_evidence": true,
+          "seat_price_rub": 46070
+        }
+      ],
+      "package_sha256": "6c64e36fe9dfdadc00e0d38d73c11f95d02f0718ecf6018fead3c525af2883d9",
+      "d7": {
+        "is_synthetic": true,
+        "live_model_run": false,
+        "facts_sha256": "78c409cb9cb137ee236007da589fc9362966c53837eed9e91067ebdb8810a8ea"
+      },
+      "d8": {
+        "comparable_dates": 6,
+        "suggestions_count": 2,
+        "contains_mock": false,
+        "state_preserved": true,
+        "facts_sha256": "0dd4ed435a8093e25a3556284aabb31cb8c35662b15aa3f8f46c310a650aa262"
+      },
+      "order_sha256": "49b023fa9a597143211bb6a2f959c8b7eaccf599c674b95326f2007d89350b05",
+      "voucher_sha256": "f766f94fec0cd4a8a5ea128bfde2d68dde6d7aa14f231229413fd2fdc11b7536",
+      "calendar_sha256": "d3a9033b94677fc7464696eda36480c5d06ed26bef3cface99782648d6bcaff3"
+    }
+  ],
+  "external_model_used": false,
+  "criteria_changes": {
+    "paid_order_preserved": true,
+    "train_directions_checked": 2
+  },
+  "destinations_passed": 3,
+  "duration_seconds": 1.558
+}

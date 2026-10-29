@@ -185,6 +185,18 @@ def requests_checkout_cancellation(text: str) -> bool:
     )
 
 
+def quick_refinement_requested(text: str) -> bool:
+    normalized = " ".join(text.casefold().replace("ё", "е").strip(" .!\n\t").split())
+    return normalized in {
+        "подбери более дешевые варианты на тех же условиях, без оформления",
+        "только прямые рейсы, остальные условия сохраняем, без оформления",
+        "только возвратный отель, остальные условия сохраняем, без оформления",
+        "можно с пересадками, остальные условия сохраняем, без оформления",
+        "можно и невозвратные отели, остальные условия сохраняем, без оформления",
+        "сними приоритет низкой цены, остальные условия сохраняем, без оформления",
+    }
+
+
 def unrecognized_destination(text: str, resolved: str | None = None, *, catalogue=None, data_path=None) -> str | None:
     """Retire an old trip only for an unambiguous geographic destination.
 
@@ -410,7 +422,7 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
         data["start_date"] = f"{dotted.group(3)}-{int(dotted.group(2)):02d}-{int(dotted.group(1)):02d}"
     elif short_date := re.search(r"(?<![\w.])(\d{1,2})\.(\d{1,2})(?![\d.])", t):
         prefix, suffix = t[: short_date.start()], t[short_date.end() :]
-        money_or_age = re.match(r"\s*(?:руб\w*|₽|тыс\w*|[кk]\b|лет\b|год\w*)", suffix) or re.search(
+        money_or_age = re.match(r"\s*(?:руб\w*|₽|тыс\w*|[кk]\b|лет\b|год\w*|градус\w*)", suffix) or re.search(
             r"\b(?:бюджет\w*|цена|до|за)\s*$", prefix
         )
         if not money_or_age and (start := _future(int(short_date.group(2)), int(short_date.group(1)), today)):
@@ -456,6 +468,11 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
     # Перелёт: «не больше 5 часов», «до 4 часов в пути».
     if m := re.search(r"(?:не больше|не дольше|до|максимум)\s*(\d+)\s*час", t):
         data["max_flight_minutes"] = int(m.group(1)) * 60
+    if not filter_question:
+        if duration := re.search(r"\bмаксимальная длительность перелета\s+(\d+)\s+минут\b", t):
+            data["max_flight_minutes"] = int(duration.group(1))
+        if water := re.search(r"\bтемпература воды не ниже\s+(\d+(?:[.,]\d+)?)\s+градус\w*", t):
+            data["min_water_temperature_c"] = float(water.group(1).replace(",", "."))
     if not filter_question and re.search(r"без пересад|прям\w* рейс|прям\w* перел", t):
         data["direct_only"] = True
     if re.search(r"поздно вечером|ночн\w* вылет|вылет.{0,25}вечер|вечерн\w* вылет", t):
@@ -484,10 +501,22 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
         data["children_ages"] = ages
 
     needs = detect_needs(text)
+    if not filter_question:
+        for phrase, need in (
+            ("предпочитаю короткий перелет", "short_flight"),
+            ("нужна круглосуточная стойка регистрации", "late_arrival"),
+            ("предпочитаю короткий трансфер", "short_transfer"),
+        ):
+            if re.search(r"(?:^|[.!]\s*)" + phrase + r"(?:[.!]|$)", t):
+                needs.append(need)
+    if not filter_question and re.search(r"\bподбери\s+более\s+дешев\w*\s+вариант\w*", t):
+        needs.append("budget_low")
     if filter_question:
         needs = [need for need in needs if need != "flexible"]
     removed: list[str] = []
     if not filter_question:
+        if re.search(r"\bсними\s+приоритет\s+низкой\s+цены\b", t):
+            removed.append("budget_low")
         if re.search(
             r"\b(?:сними|убери|отмени)\s+(?:ограничен\w*\s+(?:по\s+)?)?бюджет\w*|"
             r"\bбюджет\s+(?:не\s*важен|без\s+ограничен\w*)",

@@ -1,0 +1,906 @@
+{
+  "scope": "owner_live_convenience_search_only",
+  "source_commit": "7523fe177bc0544cfc7f1fe8820a794c784a6d51",
+  "source_commit_verification": "caller_supplied_not_http_verified",
+  "harness_sha256": "87af64afbbb4124a59cf38ae0979058522ec9db9058553241e03fd2de050cf9a",
+  "started_at": "2026-10-29T01:18:26.665770+00:00",
+  "maximum_seconds": 300,
+  "maximum_model_calls": 22,
+  "planned_turns": 10,
+  "planned_sessions": 2,
+  "checkout_requests": 0,
+  "payment_requests": 0,
+  "raw_requests_responses_ids_or_credentials_reported": false,
+  "browser_acceptance": false,
+  "status": "passed",
+  "turns": [
+    {
+      "stage": "initial",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "fresh_diff_is_null",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 19.643,
+      "option_count": 2
+    },
+    {
+      "stage": "cheaper_on",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "diff_snapshot_equals_sse",
+          "passed": true
+        },
+        {
+          "field": "diff_public_schema",
+          "passed": true
+        },
+        {
+          "field": "diff_before_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_after_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_criteria_before_after",
+          "passed": true
+        },
+        {
+          "field": "diff_delta_is_known_cost_difference",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 13.258,
+      "option_count": 2
+    },
+    {
+      "stage": "cheaper_off",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "diff_snapshot_equals_sse",
+          "passed": true
+        },
+        {
+          "field": "diff_public_schema",
+          "passed": true
+        },
+        {
+          "field": "diff_before_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_after_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_criteria_before_after",
+          "passed": true
+        },
+        {
+          "field": "diff_delta_is_known_cost_difference",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 11.038,
+      "option_count": 2
+    },
+    {
+      "stage": "direct_on",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "diff_snapshot_equals_sse",
+          "passed": true
+        },
+        {
+          "field": "diff_public_schema",
+          "passed": true
+        },
+        {
+          "field": "diff_before_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_after_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_criteria_before_after",
+          "passed": true
+        },
+        {
+          "field": "diff_delta_is_known_cost_difference",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 12.039,
+      "option_count": 2
+    },
+    {
+      "stage": "direct_off",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "diff_snapshot_equals_sse",
+          "passed": true
+        },
+        {
+          "field": "diff_public_schema",
+          "passed": true
+        },
+        {
+          "field": "diff_before_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_after_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_criteria_before_after",
+          "passed": true
+        },
+        {
+          "field": "diff_delta_is_known_cost_difference",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 11.988,
+      "option_count": 2
+    },
+    {
+      "stage": "refundable_on",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "diff_snapshot_equals_sse",
+          "passed": true
+        },
+        {
+          "field": "diff_public_schema",
+          "passed": true
+        },
+        {
+          "field": "diff_before_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_after_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_criteria_before_after",
+          "passed": true
+        },
+        {
+          "field": "diff_delta_is_known_cost_difference",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 11.209,
+      "option_count": 2
+    },
+    {
+      "stage": "refundable_off",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "diff_snapshot_equals_sse",
+          "passed": true
+        },
+        {
+          "field": "diff_public_schema",
+          "passed": true
+        },
+        {
+          "field": "diff_before_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_after_components_and_group",
+          "passed": true
+        },
+        {
+          "field": "diff_criteria_before_after",
+          "passed": true
+        },
+        {
+          "field": "diff_delta_is_known_cost_difference",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 11.723,
+      "option_count": 2
+    },
+    {
+      "stage": "favorite_restore",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "fresh_diff_is_null",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 14.731,
+      "option_count": 2
+    },
+    {
+      "stage": "guard_select",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "search_only_preserves_current_state",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 5.937,
+      "option_count": 2
+    },
+    {
+      "stage": "guard_confirm",
+      "checks": [
+        {
+          "field": "session_identity_valid",
+          "passed": true
+        },
+        {
+          "field": "done_equals_reload_snapshot",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_start_date",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "field": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "field": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "field": "brief_needs",
+          "passed": true
+        },
+        {
+          "field": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "field": "search_only_preserves_current_state",
+          "passed": true
+        },
+        {
+          "field": "model_calls_within_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "seconds": 6.804,
+      "option_count": 2
+    }
+  ],
+  "model_counter_before": 0,
+  "model_counter_after": 18,
+  "model_calls_delta": 18,
+  "model_counter_scope": "shared_private_runtime_counter_increase_not_exclusive_per_request_attribution",
+  "finished_at": "2026-10-29T01:20:25.712063+00:00",
+  "seconds": 119.046,
+  "completed_turns": 10,
+  "last_observed_model_counter": 18
+}
