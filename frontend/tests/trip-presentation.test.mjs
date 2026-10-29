@@ -86,7 +86,7 @@ test('Breakdown preserves each server amount including zero and unknown amounts 
  assert.equal(rows.length,6);assert.equal(rows.some(row=>/полная/i.test(row.label)),false);
  assert.equal(refundLabel(null),'Условия возврата не уточнены');assert.equal(refundLabel(false),'Невозвратный тариф');
  assert.equal(transferLabel(null),'Трансфер не оценён');
- assert.equal(transferLabel({mode:'seaplane',duration_minutes:97,available:false}),'Гидросамолёт · 97 мин · ожидание отправления');
+ assert.equal(transferLabel({mode:'seaplane',duration_minutes:97,available:false}),'Гидросамолёт · 1 ч 37 мин · ожидание отправления');
 });
 test('Long narratives keep the complete original and a concise factual index of warning categories',()=>{
  const warning='Риски: рейсы сгенерированы; обратный трансфер не оценён. Наличие не подтверждено.';

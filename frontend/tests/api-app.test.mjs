@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {mountApiApp} from '../dist/api-app.js';
 import {FAVORITES_STORAGE_KEY,normalizeFavoriteIntent} from '../dist/favorites.js';
 import {destinationNames} from '../dist/destination-names.generated.js';
@@ -100,6 +101,40 @@ async function mountedSearch(t,options={}){
  controller.notify();
  return {root,modal,modalStatus,modalClose,controller,calls,click,document,window,input};
 }
+
+test('All 48 destination packages render full hotel cards and the same stay rules in the trip dialog',async t=>{
+ assert.equal(Object.keys(destinationNames).length,48);
+ const hotels=['hotels/catalog.json','demo/hotels.generated.json'].flatMap(path=>JSON.parse(readFileSync(new URL('../../data/'+path,import.meta.url),'utf8')).hotels);
+ for(const [code,name] of Object.entries(destinationNames))await t.test(code,async t=>{
+  const ui=await mountedSearch(t),option=packageOption(1),hotel=hotels.find(row=>row.destination===code);assert.ok(hotel);
+  Object.assign(option,{destination:code});
+  Object.assign(option.hotel,{hotel_id:hotel.hotel_id,name:hotel.name,check_in_time:'14:00:00',check_out_time:'12:00:00',timezone:'Europe/Moscow',adults_only:false,pets_allowed:true,reception_24h:true,reception_closes_at:null,early_check_in_available:true,early_check_in_price_rub:0});
+  Object.assign(ui.controller.state,{options:[option],brief:{origin:'MOW',destination:code,transport:'flight',start_date:'2027-01-29',nights:7,adults:1},assumptions:[],sources:{}});ui.controller.notify();
+  assert.ok(ui.root.innerHTML.includes(`Вариант 1 · ${name}`));assert.ok(ui.root.innerHTML.includes(option.hotel.name));
+  assert.match(ui.root.innerHTML,/class="hotel-photo"/);assert.match(ui.root.innerHTML,/не фотография выбранного отеля/);
+  assert.match(ui.root.innerHTML,/4★ · Рейтинг 9,1 \/ 10/);assert.match(ui.root.innerHTML,/29\.01\.2027 — 05\.02\.2027 · 7 ночей/);
+  assert.match(ui.root.innerHTML,/Возвратный тариф/);assert.match(ui.root.innerHTML,/Трансфер в отель:<\/b> Катер · 34 мин/);
+  assert.match(ui.root.innerHTML,/<dt>Заезд<\/dt><dd>С 14:00<\/dd>/);assert.match(ui.root.innerHTML,/<dt>Выезд<\/dt><dd>До 12:00<\/dd>/);
+  assert.match(ui.root.innerHTML,/<dt>Стойка регистрации<\/dt><dd>Круглосуточно<\/dd>/);
+  assert.match(ui.root.innerHTML,/<dt>С детьми<\/dt><dd>Дети принимаются<\/dd>/);assert.match(ui.root.innerHTML,/<dt>С питомцами<\/dt><dd>Разрешено; условия уточняются<\/dd>/);
+  assert.match(ui.root.innerHTML,/<dt>Ранний заезд<\/dt><dd>По запросу · 0 ₽<\/dd>/);assert.match(ui.root.innerHTML,/Время местное для отеля/);
+  for(const action of ['plan','choose','profile','compare','toggle-favorite'])assert.match(ui.root.innerHTML,new RegExp(`data-api-action="${action}"`));
+  assert.match(ui.root.innerHTML,/Из чего складывается сумма/);assert.match(ui.root.innerHTML,/Есть ли даты дешевле/);
+  ui.click('plan',{index:'1'});assert.equal(ui.modal.open,true);assert.ok(ui.modal.innerHTML.includes(option.hotel.name));
+  const details=html=>html.match(/<section class="api-hotel-details"[^>]*>[\s\S]*?<\/section>/)?.[0];
+  assert.ok(details(ui.root.innerHTML));assert.equal(details(ui.modal.innerHTML),details(ui.root.innerHTML));
+  assert.equal(ui.controller.state.selected,null);assert.equal(ui.controller.state.cart,null);
+  assert.ok(ui.calls.every(call=>call.method==='GET'),'Opening hotel facts cannot select or pay for a trip');
+ });
+});
+
+test('The data explanation distinguishes original OSM hotels from fictional catalogue supplements',async t=>{
+ const ui=await mountedSearch(t);ui.click('about');
+ assert.match(ui.modal.innerHTML,/координаты исходных отелей: © участники OpenStreetMap/);
+ assert.match(ui.modal.innerHTML,/Дополнительные отели помечены как вымышленные демо-отели/);
+ assert.match(ui.modal.innerHTML,/названия и координаты синтетические/);
+ assert.doesNotMatch(ui.modal.innerHTML,/Названия и координаты отелей: ©/);
+});
 
 test('Destination cards distinguish complete demo searches from references and send stable IATA prompts',async t=>{
  for(const scenario of [
@@ -730,4 +765,38 @@ test('Rail cards distinguish synthetic or saved timetables from independently mo
  assert.match(root.innerHTML,/Наличие мест и доступность класса не подтверждены/);
  assert.match(root.innerHTML,/Актуальность расписания не подтверждена/);
  assert.doesNotMatch(root.innerHTML,/Источник расписания в карточке не указан/);
+});
+
+test('The flexible multi-destination result keeps a compact summary, actual per-card dates, favorites and indexed detail actions',async t=>{
+ const requests=[],brief={transport:'flight',origin:'MOW',destination:null,adults:2,children_ages:[],pets:0,nights:7,start_date:null,budget_rub:200000,needs:['active','sea','surfing'],departure_window_start:'2026-10-30',departure_window_end:'2027-04-29',departure_months:[]};
+ const summary={kind:'flexible_dates',window_start:'2026-10-30',window_end:'2027-04-29',checked_dates:48,checked_destinations:4,complete_quotes:24,within_budget:18,scope:'sampled_dates'};
+ const cards=[packageOption(1),packageOption(2)];
+ for(const [index,card] of cards.entries()){
+  const code=index?'CXR':'CMB',date=index?'2027-02-15':'2026-12-15';
+  card.activity_reference={requested:['active','surfing'],destination_activities:['surfing'],sources:[{title:'Официальная справка',url:'https://example.test/travel',checked_on:'2026-10-29'}],scope:'destination_only',hotel_availability_confirmed:false,included_in_price:false};
+  card.destination=code;card.hotel.hotel_id=`demo:hotel/${code}-01`;card.hotel.name=index?'Демо · Тихий берег':'Демо · Морской сад';card.travelers.adults=2;
+  card.outbound.to=code;card.outbound.departure_at=date+'T12:00:00+03:00';card.hotel.check_in=date;card.hotel.check_out=index?'2027-02-22':'2026-12-22';
+ }
+ const snapshot={session_id:'search-ui-session',version:1,stage:'packages_shown',brief,sources:{nights:'default'},needs:[],selected:null,booking:null,stale:false,options:{kind:'packages',items:cards,search_summary:summary,notes:['Школы сёрфинга не подтверждены.'],assumptions:[]}};
+ const ui=await mountedSearch(t,{browserStorage:{getItem:()=>null,setItem(){}},request:async(path,init)=>{
+  if(path==='/api/chat'){requests.push(JSON.parse(init.body));return new Response(`event: delta\ndata: ${JSON.stringify({text:'Подробности о варианте.'})}\n\nevent: done\ndata: ${JSON.stringify(snapshot)}\n\n`,{headers:{'Content-Type':'text/event-stream'}});}
+  assert.equal(path,'/api/session/search-ui-session');return Response.json(snapshot);
+ }});
+ Object.assign(ui.controller.state,{brief,sources:snapshot.sources,options:cards,searchSummary:summary,notes:snapshot.options.notes,assumptions:[],messages:[{role:'assistant',text:'Длинный исходный ответ. '.repeat(80),flexibleSearchResult:true}]});ui.controller.notify();
+ const overview=ui.root.innerHTML.match(/<div class="assistant-text api-message-overview">([\s\S]*?)<\/div>/)?.[1];assert.ok(overview);
+ assert.match(overview,/2 варианта · 2 взрослых/);assert.match(overview,/отдельные даты/);assert.match(overview,/Демо-расчёт/);assert.doesNotMatch(overview,/Длинный исходный ответ/);
+ assert.match(ui.root.innerHTML,/Подробнее — условия и источники/);assert.match(ui.root.innerHTML,/Школы сёрфинга не подтверждены/);
+ assert.match(ui.root.innerHTML,/В направлении: сёрфинг/);assert.match(ui.root.innerHTML,/Справка относится к направлению, а не к выбранному отелю/);assert.match(ui.root.innerHTML,/https:\/\/example.test\/travel/);
+ assert.match(ui.root.innerHTML,/Период поиска/);assert.match(ui.root.innerHTML,/30\.10\.2026 — 29\.04\.2027/);
+ assert.doesNotMatch(ui.root.innerHTML,/<strong>Дата вылета:/);assert.match(ui.root.innerHTML,/<details class="api-stay-details"/);
+ ui.click('toggle-favorite',{index:'2'});ui.click('favorites');
+ assert.match(ui.modal.innerHTML,/Нячанг/);assert.match(ui.modal.innerHTML,/15\.02\.2027/);assert.doesNotMatch(ui.modal.innerHTML,/Пока ничего не сохранено/);
+ ui.click('close');ui.click('compare',{index:'1'});ui.click('compare',{index:'2'});
+ const comparison=ui.root.innerHTML.match(/<section class="api-comparison"[\s\S]*?<\/section>/)?.[0];assert.ok(comparison);
+ assert.match(comparison,/Шри-Ланка/);assert.match(comparison,/Нячанг/);assert.match(comparison,/15\.12\.2026/);assert.match(comparison,/15\.02\.2027/);
+ ui.click('plan',{index:'2'});assert.match(ui.modal.innerHTML,/15\.02\.2027/);assert.match(ui.modal.innerHTML,/Демо · Тихий берег/);assert.equal(ui.controller.state.selected,null);
+ ui.click('close');ui.click('profile',{index:'2'});await until(()=>requests.length===1&&!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+ assert.match(requests[0].message,/Почему вариант 2 подходит/);assert.equal(ui.controller.state.messages.at(-1).flexibleSearchResult,undefined);assert.match(ui.root.innerHTML,/Подробности о варианте/);
+ ui.click('savings');await until(()=>requests.length===2&&!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+ assert.match(requests[1].message,/Для варианта 1/);assert.ok(ui.calls.every(call=>!call.path.includes('/checkout')));
 });

@@ -37,6 +37,7 @@ class Session:
     options_kind: str | None = None
     options_assumptions: list[dict[str, str]] = field(default_factory=list)
     options_notes: list[str] = field(default_factory=list)
+    options_search_summary: dict[str, Any] | None = None
     # Only for the next price comparison; never exposed as current results.
     rebuild_before: dict[str, Any] | None = field(default=None, repr=False)
     rebuild_brief: dict[str, Any] | None = field(default=None, repr=False)
@@ -85,6 +86,7 @@ class Session:
                 "items": [] if self.stale else items,
                 "assumptions": [] if self.stale else self.options_assumptions,
                 "notes": [] if self.stale else self.options_notes,
+                "search_summary": None if self.stale else self.options_search_summary,
             },
         }
 

@@ -57,7 +57,12 @@ def understood(brief: TripBrief) -> str:
     parts = []
     if brief.destination:
         parts.append(place_name(brief.destination))
-    if brief.start_date:
+    if brief.has_flexible_dates and brief.start_date is None:
+        if brief.departure_window_start and brief.departure_window_end:
+            parts.append(
+                f"вылет {day(brief.departure_window_start.isoformat())}–{day(brief.departure_window_end.isoformat())}"
+            )
+    elif brief.start_date:
         verb = "отправление" if brief.transport == "train" else "вылет"
         parts.append(f"{verb} {brief.start_date.strftime('%d.%m')}")
     elif brief.month:
@@ -119,6 +124,37 @@ def destinations(plan: PlanResult) -> str:
     lines += [*plan.notes, assumptions_line(plan.assumptions)]
     lines.append("Выберите подбор поездки или справку о направлении. Полная цена и наличие не подтверждены.")
     return "\n".join(line for line in lines if line)
+
+
+def flexible_packages(plan: PlanResult, brief: TripBrief) -> str:
+    """Exact, compact price-bearing response for an explicitly flexible search."""
+    if not plan.options:
+        return " ".join(plan.notes) + " Можно изменить бюджет, период или направление."
+    summary = plan.search_summary or {}
+    lines = [f"Рассчитал {len(plan.options)} поездки: {group(brief)}, из {place_name(brief.origin)}."]
+    for option in plan.options:
+        hotel = option["hotel"]
+        departure = date.fromisoformat(option["outbound"]["departure_at"][:10])
+        lines.append(
+            f"{option['index']}. **{place_name(option['destination'])} — {rub(option['known_total_rub'])} за группу.** "
+            f"Вылет {departure:%d.%m.%Y}, проживание до {date.fromisoformat(hotel['check_out']):%d.%m.%Y}, "
+            f"{plural(hotel['nights'], 'ночь', 'ночи', 'ночей')}. {hotel['name']}."
+        )
+    if brief.nights is None or any(item.field == "nights" for item in plan.assumptions):
+        lines.append("Для расчёта взял 7 ночей; длительность можно изменить.")
+    if summary:
+        lines.append(
+            f"Проверено {summary.get('checked_dates', 0)} сочетаний направления и даты "
+            f"в периоде {date.fromisoformat(summary['window_start']):%d.%m.%Y}–"
+            f"{date.fromisoformat(summary['window_end']):%d.%m.%Y}. "
+            "Это выбор из рассчитанных вариантов, а не минимум среди всех возможных дат."
+        )
+    lines.append("Сумма включает оба перелёта, багаж, отель и трансфер по прибытии.")
+    if any(option.get("activity_reference") for option in plan.options):
+        lines.append("Активности показаны по справке о направлениях. Занятия, аренда и дорога к ним не оценены.")
+    lines.append("Данные демонстрационные. Обратный трансфер, визы и другие обязательные доплаты не оценены.")
+    lines.append("Выберите поездку или измените условия.")
+    return "\n\n".join(lines)
 
 
 def package_price(option: dict[str, Any]) -> str:

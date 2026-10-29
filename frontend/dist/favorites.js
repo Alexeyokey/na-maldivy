@@ -1,5 +1,5 @@
 /** Public search bookmarks only. Historical amounts never authorize a price or booking. */
-import {isoDay,earliestSearchDate,formatDate,adultsLabel,nightsLabel,counted} from './trip-presentation.js';
+import {isoDay,earliestSearchDate,formatDate,adultsLabel,nightsLabel,counted,departurePeriod} from './trip-presentation.js';
 import {destinationCodes} from './destination-names.generated.js';
 
 export const FAVORITES_STORAGE_KEY='na-maldivy-favorites-v1';
@@ -8,7 +8,7 @@ const SCHEMA_VERSION=1,MAX_STORAGE_BYTES=65536;
 const cities={MOW:'Москвы',SVO:'Шереметьево',LED:'Петербурга'};
 const destinations={AYT:'Анталью',DXB:'Дубай',MLE:'Мале'};
 const allowedDestinations=new Set(destinationCodes);
-const needText={child:'Нужен семейный отель.',pets:'Нужны отель и трансфер с питомцами.',sea:'Нужны море и пляж.',warm:'Нужен тёплый климат.',budget_low:'Предпочитаю недорогие варианты.',short_flight:'Предпочитаю короткий перелёт.',romantic:'Нужна романтическая поездка.',late_arrival:'Нужна круглосуточная стойка регистрации.',short_transfer:'Предпочитаю короткий трансфер.',quiet:'Нужен спокойный отдых.',flexible:'Планы могут поменяться, нужен возвратный тариф.'};
+const needText={active:'Нужен активный отдых.',surfing:'Интересует сёрфинг; наличие школ и занятий нужно подтвердить.',diving:'Интересует дайвинг; наличие центров и погружений нужно подтвердить.',child:'Нужен семейный отель.',pets:'Нужны отель и трансфер с питомцами.',sea:'Нужны море и пляж.',warm:'Нужен тёплый климат.',budget_low:'Предпочитаю недорогие варианты.',short_flight:'Предпочитаю короткий перелёт.',romantic:'Нужна романтическая поездка.',late_arrival:'Нужна круглосуточная стойка регистрации.',short_transfer:'Предпочитаю короткий трансфер.',quiet:'Нужен спокойный отдых.',flexible:'Планы могут поменяться, нужен возвратный тариф.'};
 const plain=value=>!!value&&typeof value==='object'&&!Array.isArray(value)&&[Object.prototype,null].includes(Object.getPrototypeOf(value));
 const integer=(value,min,max)=>Number.isSafeInteger(value)&&value>=min&&value<=max;
 const amount=value=>typeof value==='number'&&Number.isFinite(value)&&value>=0&&value<=Number.MAX_SAFE_INTEGER?value:null;
@@ -58,9 +58,15 @@ function optionItem(input,when){
  if(!plain(input)||!plain(input.brief)||!plain(input.option)||!when)invalid();
  const {brief,option}=input,group=plain(option.travelers)?option.travelers:{};
  if(brief.transport!=null&&brief.transport!=='flight'||option.kind!=null&&option.kind!=='package')invalid();
- const start=brief.start_date==null?departureDay(option.outbound?.departure_at):exactDay(brief.start_date);
- const values={transport:'flight',origin:brief.origin??option.outbound?.from,destination:brief.destination??option.destination,start_date:start,nights:brief.nights??option.hotel?.nights,adults:brief.adults??group.adults,children_ages:brief.children_ages??group.children_ages,pets:brief.pets??group.pets};
+ const flexible=!!departurePeriod(brief);
+ const start=flexible?departureDay(option.outbound?.departure_at):brief.start_date==null?departureDay(option.outbound?.departure_at):exactDay(brief.start_date);
+ const values={transport:'flight',origin:brief.origin??option.outbound?.from,destination:flexible?option.destination:brief.destination??option.destination,start_date:start,nights:flexible?option.hotel?.nights:brief.nights??option.hotel?.nights,adults:brief.adults??group.adults,children_ages:brief.children_ages??group.children_ages,pets:brief.pets??group.pets};
  for(const field of ['budget_rub','max_flight_minutes','direct_only','late_departure','refundable_only','min_stars','min_water_temperature_c','visa_free_only','needs'])values[field]=brief[field];
+ if(flexible){
+  if(brief.destination!=null&&brief.destination!==option.destination)invalid();
+  if(exactDay(brief.departure_window_start)&&start<brief.departure_window_start||exactDay(brief.departure_window_end)&&start>brief.departure_window_end)invalid();
+  if(Array.isArray(brief.departure_months)&&brief.departure_months.length&&!brief.departure_months.includes(start?.slice(0,7)))invalid();
+ }
  const searchCriteria=criteria(values);
  const result={hotel:hotel(option.hotel,searchCriteria.destination),criteria:searchCriteria,rememberedKnownTotalRub:amount(option.known_total_rub),priceKind:'historical_known_components',savedAt:when};
  if(option.destination!=null&&option.destination!==result.criteria.destination||option.hotel?.nights!=null&&option.hotel.nights!==result.criteria.nights||departureDay(option.outbound?.departure_at)&&departureDay(option.outbound.departure_at)!==start)invalid();
