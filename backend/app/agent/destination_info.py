@@ -12,6 +12,7 @@ from datetime import date, timedelta
 from typing import Any
 
 from app.agent.brief import TripBrief
+from app.agent.places import FULL_TRIP_DESTINATIONS
 from app.tools.destinations import load_catalogue
 
 
@@ -25,7 +26,8 @@ def is_destination_information_question(text: str) -> bool:
     """Recognise factual visa/total-price questions without a request-specific rule."""
     normalized = text.casefold().replace("ё", "е")
     return bool(
-        ("?" in normalized and re.search(r"виз|въезд|паспорт|точно\s+можно", normalized))
+        re.fullmatch(r"\s*расскажи\s+о\s+направлении\s+[a-z]{3}[.!?]?\s*", normalized)
+        or ("?" in normalized and re.search(r"виз|въезд|паспорт|точно\s+можно", normalized))
         or re.search(r"(?:сколько|какова)\s+(?:всего|полная\s+стоимость)", normalized)
     )
 
@@ -117,6 +119,7 @@ def destination_information(
         "full_trip_price_rub": None,
         "availability_confirmed": False,
         "live_verified": False,
+        "full_trip_supported": record.iata in FULL_TRIP_DESTINATIONS,
     }
     text = [
         f"{record.name}: сохранённая визовая справка для обычного паспорта РФ, туризм; "
@@ -126,6 +129,27 @@ def destination_information(
         else f"{record.name}: сохранённая справка; дата проверки визового источника неизвестна.",
         f"Условия: {visa.conditions}",
     ]
+    if record.iata not in FULL_TRIP_DESTINATIONS:
+        text.insert(
+            0,
+            f"{record.name} ({record.iata}) — справочное направление. "
+            "Подбор полной поездки с отелем и трансфером для него пока недоступен. "
+            "Для полного подбора можно выбрать Анталью, Дубай или Мальдивы.",
+        )
+    if brief.month:
+        climate = record.climate.months[brief.month - 1]
+        climate_parts = []
+        if climate.air_temp_c is not None:
+            climate_parts.append(f"воздух {climate.air_temp_c:+g} °C")
+        if climate.water_temp_c is not None:
+            climate_parts.append(f"вода {climate.water_temp_c:+g} °C")
+        if climate_parts:
+            text.insert(
+                1,
+                f"Климатическая справка для месяца {brief.month}: "
+                + "; ".join(climate_parts)
+                + ". Это среднемноголетние значения, не прогноз погоды.",
+            )
     regime = {
         "exempt": "безвизовый режим",
         "domestic": "внутренняя поездка",
