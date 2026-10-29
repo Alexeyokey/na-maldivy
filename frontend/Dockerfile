@@ -9,6 +9,7 @@ RUN node --check server.mjs \
     && node --check dist/api-model.js \
     && node --check dist/message-format.js \
     && node --check dist/trip-presentation.js \
+    && node --check dist/hotel-presentation.js \
     && node --check dist/favorites.js \
     && node --check dist/preference-form.js \
     && node --check dist/trip-usability.js \

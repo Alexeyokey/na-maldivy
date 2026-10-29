@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-29",
+  "scope": "destination_only",
+  "notice": "General destination references, not hotel facilities, live availability, weather, lessons or prices. Activities and equipment are not included in the package quote.",
+  "destinations": {
+    "CMB": {
+      "activities": ["surfing", "diving"],
+      "sources": [
+        {"title": "Sri Lanka Tourism: Adventure and Special Interest Sports", "url": "https://www.srilanka.travel/adventure_and_sports", "checked_on": "2026-10-29"}
+      ]
+    },
+    "DPS": {
+      "activities": ["surfing", "diving"],
+      "sources": [
+        {"title": "Indonesia Travel: Bali's Adrenaline pumping Water Sports", "url": "https://www.indonesia.travel/us/en/travel-ideas/adventure/bali-s-adrenaline-pumping-water-sports", "checked_on": "2026-10-29"}
+      ]
+    },
+    "HKT": {
+      "activities": ["surfing", "diving"],
+      "sources": [
+        {"title": "Thailand government: Top Surfing Spots in Thailand", "url": "https://thailand.go.th/issue-focus-detail/-surfing--?hl=en", "checked_on": "2026-10-29"},
+        {"title": "Phuket provincial government: Diving", "url": "https://www.phuket.go.th/eng/diving.php", "checked_on": "2026-10-29"}
+      ]
+    }
+  }
+}

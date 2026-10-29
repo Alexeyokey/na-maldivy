@@ -43,7 +43,9 @@ class Decision:
 def missing_fields(session: Session) -> list[str]:
     brief = session.brief
     required = ("origin", "destination", "start_date") if brief.transport == "train" else REQUIRED
-    missing = [name for name in required if getattr(brief, name) is None]
+    missing = [
+        name for name in required if getattr(brief, name) is None and not (name == "month" and brief.has_flexible_dates)
+    ]
     # Возраст детей меняет цену и правила отеля, а угадать его нельзя.
     if "child" in brief.needs and not brief.children_ages:
         missing.append("children_ages")
@@ -83,6 +85,10 @@ def decide(session: Session, analysis: MessageAnalysis, *, search_changed: bool)
         return Decision(Action.ASK, f"не хватает: {', '.join(missing)}", field=missing[0])
 
     if session.brief.destination is None:
+        if session.brief.has_flexible_dates:
+            if session.packages and not session.stale:
+                return Decision(Action.EXPLAIN, "поездки по гибким датам уже рассчитаны")
+            return Decision(Action.SEARCH, "сравниваю конкретные поездки в заданном периоде")
         if session.destinations and not session.stale:
             return Decision(Action.EXPLAIN, "направления уже показаны, условия не менялись")
         return Decision(Action.SUGGEST, "направление не выбрано")

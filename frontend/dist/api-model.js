@@ -1,13 +1,14 @@
 /** Server-owned trip state. No hotel engine, generated prices or local payment success. */
 import {normalizeFavoriteIntent} from './favorites.js';
 import {normalizeTripDiff} from './trip-usability.js';
+import {normalizeSearchSummary} from './trip-presentation.js';
 import {streamChat,requestCheckout,downloadCheckout,checkAgentHealth,ChatApiError,CHECKOUT_REQUEST_TIMEOUT_MS,withRequestDeadline} from './api.js';
 
 export const visibleText=value=>String(value??'').replace(/\s*\[review_id:[^\]]*\]/g,'').replace(/\b(?:CART-[a-f0-9]{32}|DEMO-[A-F0-9]{32}|[a-f0-9]{32})\b/g,'[служебный номер скрыт]');
 const copy=value=>structuredClone(value);
 const STORAGE_KEY='na-maldivy-api-session-v1';
 const idempotency=()=>globalThis.crypto?.randomUUID?.()||'web-'+Date.now()+'-'+Math.random().toString(36).slice(2);
-export const createApiModel=()=>({sessionId:null,version:0,stage:'collecting',brief:{},sources:{},needs:[],options:[],optionKind:null,selected:null,cart:null,order:null,currentOrderId:null,orders:[],ordersSyncNeeded:false,messages:[],question:null,profile:null,savings:null,lastDiff:null,favoriteIntent:null,favoriteRestoreUnconfirmed:false,statusText:'',busy:false,error:null,stale:false,notes:[],assumptions:[],assumptionsAccepted:false,acceptedAssumptions:null,draft:'',pendingRequest:null,syncNeeded:false,sessionLost:false,connection:'connecting',health:null,storageWarning:null});
+export const createApiModel=()=>({sessionId:null,version:0,stage:'collecting',brief:{},sources:{},needs:[],options:[],optionKind:null,searchSummary:null,selected:null,cart:null,order:null,currentOrderId:null,orders:[],ordersSyncNeeded:false,messages:[],question:null,profile:null,savings:null,lastDiff:null,favoriteIntent:null,favoriteRestoreUnconfirmed:false,statusText:'',busy:false,error:null,stale:false,notes:[],assumptions:[],assumptionsAccepted:false,acceptedAssumptions:null,draft:'',pendingRequest:null,syncNeeded:false,sessionLost:false,connection:'connecting',health:null,storageWarning:null});
 
 const announcementPhases=new Map([
  ['Готовим поездку',['prepare','Готовим ответ.']],
@@ -70,8 +71,8 @@ function checkedOrder(value,sessionId,cartId=null){
  if(!value||value.status!=='paid_demo'||value.is_simulated!==true||!safeCheckoutId(value.order_id)||!safeCheckoutId(value.cart_id)||(cartId&&value.cart_id!==cartId)||value.session_id!==sessionId||!value.package?.hotel||typeof value.package.hotel.name!=='string'||typeof value.package.hotel.check_in!=='string'||typeof value.package.hotel.check_out!=='string')throw new ChatApiError('Сервер не подтвердил результат демо-оплаты.',{code:'protocol'});
  return value;
 }
-const tripKeys=['sessionId','version','stage','brief','sources','needs','options','optionKind','selected','cart','order','currentOrderId','question','profile','savings','lastDiff','favoriteIntent','favoriteRestoreUnconfirmed','stale','notes','assumptions','assumptionsAccepted','acceptedAssumptions'];
-const searchFields=['transport','seat_class','origin','destination','month','year','start_date','nights','adults','children_ages','pets','budget_rub','max_flight_minutes','direct_only','late_departure','refundable_only','min_stars','min_water_temperature_c','visa_free_only','needs'];
+const tripKeys=['sessionId','version','stage','brief','sources','needs','options','optionKind','searchSummary','selected','cart','order','currentOrderId','question','profile','savings','lastDiff','favoriteIntent','favoriteRestoreUnconfirmed','stale','notes','assumptions','assumptionsAccepted','acceptedAssumptions'];
+const searchFields=['transport','seat_class','origin','destination','month','year','start_date','departure_window_start','departure_window_end','departure_months','nights','adults','children_ages','pets','budget_rub','max_flight_minutes','direct_only','late_departure','refundable_only','min_stars','min_water_temperature_c','visa_free_only','needs'];
 const searchSignature=brief=>JSON.stringify(searchFields.map(key=>brief?.[key]??null));
 const assumptionSignature=state=>JSON.stringify([searchSignature(state.brief),searchFields.map(key=>state.sources?.[key]??null),state.assumptions,state.options.map(row=>[row.hotel?.check_in,row.hotel?.check_out])]);
 const own=(value,key)=>Object.prototype.hasOwnProperty.call(value,key);
@@ -90,7 +91,7 @@ function retainCurrentOrder(model){
 }
 function clearResults(model,{keepQuestion=false}={}){
  retainCurrentOrder(model);
- Object.assign(model,{options:[],optionKind:null,selected:null,cart:null,order:null,currentOrderId:null,...(keepQuestion?{}:{question:null}),profile:null,savings:null,lastDiff:null,notes:[],assumptions:[],assumptionsAccepted:false,acceptedAssumptions:null});
+ Object.assign(model,{options:[],optionKind:null,searchSummary:null,selected:null,cart:null,order:null,currentOrderId:null,...(keepQuestion?{}:{question:null}),profile:null,savings:null,lastDiff:null,notes:[],assumptions:[],assumptionsAccepted:false,acceptedAssumptions:null});
 }
 function refreshAssumptions(model){model.assumptionsAccepted=!!model.acceptedAssumptions&&model.acceptedAssumptions===assumptionSignature(model);}
 const tripCopy=state=>Object.fromEntries(tripKeys.map(key=>[key,copy(state[key])]));
@@ -101,7 +102,7 @@ function storedTrip(state){
 }
 function validMessages(value){
  if(!Array.isArray(value)||value.length>5000)return [];
- return value.filter(row=>row&&['user','assistant'].includes(row.role)&&typeof row.text==='string'&&row.text.length<=128000).map(row=>({role:row.role,text:row.text,...(row.error?{error:true}:{}),...(row.interrupted?{interrupted:true}:{})}));
+ return value.filter(row=>row&&['user','assistant'].includes(row.role)&&typeof row.text==='string'&&row.text.length<=128000).map(row=>({role:row.role,text:row.text,...(row.error?{error:true}:{}),...(row.interrupted?{interrupted:true}:{}),...(row.flexibleSearchResult===true?{flexibleSearchResult:true}:{})}));
 }
 function restoredTrip(value){
  const result=tripCopy(createApiModel()),record=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
@@ -124,6 +125,7 @@ function restoredTrip(value){
  if(record.profile&&Array.isArray(record.profile.evidence)&&record.profile.evidence.every(row=>row&&typeof row.quote==='string'))result.profile=copy(record.profile);
  if(record.savings&&Array.isArray(record.savings.checked_dates)&&record.savings.checked_dates.every(row=>row&&typeof row.status==='string')&&(!record.savings.suggestions||(Array.isArray(record.savings.suggestions)&&record.savings.suggestions.every(row=>row&&typeof row.suggested_departure==='string'))))result.savings=copy(record.savings);
  result.lastDiff=normalizeTripDiff(record.lastDiff,result.version);
+ result.searchSummary=normalizeSearchSummary(record.searchSummary);
  result.favoriteIntent=normalizeFavoriteIntent(record.favoriteIntent);
  result.favoriteRestoreUnconfirmed=record.favoriteRestoreUnconfirmed===true||record.favoriteIntent!=null&&!result.favoriteIntent;
  if(typeof record.acceptedAssumptions==='string'&&record.acceptedAssumptions.length<=64000)result.acceptedAssumptions=record.acceptedAssumptions;
@@ -148,7 +150,7 @@ export function applyAgentEvent(model,type,data){
  }else if(type==='options'){
   const accepted=model.acceptedAssumptions;
   clearResults(model);
-  model.options=Array.isArray(data.items)?data.items:[];model.optionKind=data.kind;model.assumptions=data.assumptions||[];model.notes=data.notes||[];model.stale=false;
+  model.options=Array.isArray(data.items)?data.items:[];model.optionKind=data.kind;model.searchSummary=normalizeSearchSummary(data.search_summary);model.assumptions=data.assumptions||[];model.notes=data.notes||[];model.stale=false;
   model.acceptedAssumptions=accepted;
   model.question=null;model.profile=null;model.savings=null;refreshAssumptions(model);
  }else if(type==='question')model.question=data;
@@ -169,7 +171,7 @@ export function applyAgentEvent(model,type,data){
   if(data.stale!==true&&data.options&&Array.isArray(data.options.items)&&(data.stage!=='collecting'||(!data.options.items.length&&data.options.notes?.length))){
    const changed=model.optionKind!==data.options.kind||JSON.stringify(model.options)!==JSON.stringify(data.options.items);
    if(changed)clearResults(model,{keepQuestion:true});
-   Object.assign(model,{options:copy(data.options.items),optionKind:data.options.kind,assumptions:copy(data.options.assumptions||[]),notes:copy(data.options.notes||[])});
+   Object.assign(model,{options:copy(data.options.items),optionKind:data.options.kind,searchSummary:normalizeSearchSummary(data.options.search_summary),assumptions:copy(data.options.assumptions||[]),notes:copy(data.options.notes||[])});
   }
   if(own(data,'stale'))model.stale=!!data.stale;
   if(own(data,'selected'))model.selected=Number.isInteger(data.selected)?data.selected:null;
@@ -332,11 +334,11 @@ export class ApiTripController{
  async transmit(retry){
   const pending=this.state.pendingRequest;if(!pending)return null;
   const generation=++this.generation;this.probeEpoch++;this.reconnectPromise=null;this.abort=new AbortController();this.state.busy=true;this.state.error=null;this.state.question=null;this.state.statusText=retry?'Восстанавливаем ответ':'Готовим поездку';
-  const reply=this.state.messages[pending.replyIndex],previousText=reply.text;reply.error=false;reply.interrupted=false;this.notify();let receivedDone=false,freshOptions=false;
+  const reply=this.state.messages[pending.replyIndex],previousText=reply.text;reply.error=false;reply.interrupted=false;delete reply.flexibleSearchResult;this.notify();let receivedDone=false,freshOptions=false;
   try{
    const result=await streamChat({message:pending.message,sessionId:pending.sessionId,requestId:pending.id,retry,searchOnly:pending.searchOnly===true,signal:this.abort.signal,fetchImpl:this.fetch,
     onDelta:(_,text)=>{if(this.generation===generation){const next=visibleText(text);reply.text=retry&&previousText.startsWith(next)?previousText:next;this.notify();}},
-    onEvent:(type,data)=>{if(this.generation===generation){if(type==='done'&&(!safeId(data.session_id)||(pending.sessionId&&data.session_id!==pending.sessionId)||!Number.isInteger(data.version)||data.version<(pending.baseTrip?.version||0)||!stages.includes(data.stage)))return;if(type==='options')freshOptions=true;applyAgentEvent(this.state,type,data);if(type==='done'){receivedDone=true;this.state.pendingRequest=null;this.state.syncNeeded=true;}this.notify();}}});
+    onEvent:(type,data)=>{if(this.generation===generation){if(type==='done'&&(!safeId(data.session_id)||(pending.sessionId&&data.session_id!==pending.sessionId)||!Number.isInteger(data.version)||data.version<(pending.baseTrip?.version||0)||!stages.includes(data.stage)))return;if(type==='options'){freshOptions=true;if(normalizeSearchSummary(data.search_summary))reply.flexibleSearchResult=true;}applyAgentEvent(this.state,type,data);if(type==='done'){receivedDone=true;this.state.pendingRequest=null;this.state.syncNeeded=true;}this.notify();}}});
    if(this.generation!==generation)return null;
    if(!receivedDone||!safeId(result.sessionId))throw new ChatApiError('Сервер не подтвердил завершение ответа. Можно повторить сообщение.',{code:'protocol'});
    this.state.sessionId=result.sessionId;this.state.pendingRequest=null;this.state.connection='online';

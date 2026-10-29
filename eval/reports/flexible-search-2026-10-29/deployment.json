@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "services": [
+    {
+      "service": "agent",
+      "health": "healthy",
+      "source_revision": "cad0b09924f2ff227081c82f9e55670ffa801e53"
+    },
+    {
+      "service": "web",
+      "health": "healthy",
+      "source_revision": "cad0b09924f2ff227081c82f9e55670ffa801e53"
+    }
+  ],
+  "data_preflight": {
+    "status": "passed",
+    "public_data_files_matched": 972,
+    "hotel_catalogue": 420,
+    "full_trip_destinations": 48,
+    "exact_flexible_request": true,
+    "priced_packages": 3,
+    "checked_dates": 60,
+    "network": "none",
+    "external_model_used": false,
+    "run_as_nonroot": true,
+    "checkout_requests": 0,
+    "payment_requests": 0
+  },
+  "web_code_changed": true,
+  "edge_reloaded": true,
+  "authentication_changed": false,
+  "permanent_volume_recreated": false,
+  "preservation": {
+    "status": "passed",
+    "mode": "post",
+    "sqlite_integrity": "ok",
+    "prior_paid_orders": 12,
+    "current_paid_orders": 12,
+    "prior_paid_rows_matched": 12,
+    "missing_or_changed_prior_paid_rows": 0,
+    "additional_order_rows": 0,
+    "documents_checked": 24,
+    "changed_documents": 0,
+    "orders_with_unavailable_documents": 0,
+    "missing_or_changed_chat_markers": 0,
+    "prior_orders_documents_and_ledger_preserved": true,
+    "model": {
+      "llm_provider": "codex_private",
+      "codex_model": "gpt-6-luna",
+      "codex_reasoning_effort": "low"
+    }
+  }
+}

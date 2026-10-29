@@ -1,0 +1,80 @@
+{
+  "scope": "owner_domain_exact_flexible_request_search_only",
+  "status": "passed",
+  "source_commit": "cad0b09924f2ff227081c82f9e55670ffa801e53",
+  "source_commit_verification": "caller_supplied_deployment_reference_not_http_verified",
+  "harness_sha256": "469c5b9f6f6ccc0454a6fe4a49b969077a84f609d96ea3bc85906beabb24a673",
+  "started_at": "2026-10-29T06:36:19.859915+00:00",
+  "maximum_seconds": 90,
+  "planned_chat_posts": 1,
+  "attempted_chat_posts": 1,
+  "checkout_requests": 0,
+  "payment_requests": 0,
+  "credential_values_reported": false,
+  "raw_bodies_or_ids_reported": false,
+  "browser_acceptance": false,
+  "fast_private_runtime_verified_before": true,
+  "search_summary": {
+    "kind": "flexible_dates",
+    "window_start": "2026-10-30",
+    "window_end": "2027-04-29",
+    "checked_dates": 60,
+    "checked_destinations": 3,
+    "complete_quotes": 121,
+    "within_budget": 121,
+    "scope": "sampled_dates"
+  },
+  "fast_private_runtime_verified_after": true,
+  "model": "gpt-6-luna",
+  "reasoning_effort": "low",
+  "model_completed_call_delta": 2,
+  "priced_packages": 3,
+  "quotes": [
+    {
+      "name": "Шри-Ланка",
+      "destination": "CMB",
+      "departure_date": "2027-01-13",
+      "check_in": "2027-01-13",
+      "check_out": "2027-01-20",
+      "known_total_rub": 120091,
+      "adults": 2,
+      "nights": 7,
+      "demonstration_quote": true,
+      "supplier_availability_confirmed": false
+    },
+    {
+      "name": "Пхукет",
+      "destination": "HKT",
+      "departure_date": "2027-02-04",
+      "check_in": "2027-02-04",
+      "check_out": "2027-02-11",
+      "known_total_rub": 130540,
+      "adults": 2,
+      "nights": 7,
+      "demonstration_quote": true,
+      "supplier_availability_confirmed": false
+    },
+    {
+      "name": "Бали",
+      "destination": "DPS",
+      "departure_date": "2027-01-04",
+      "check_in": "2027-01-05",
+      "check_out": "2027-01-12",
+      "known_total_rub": 156087,
+      "adults": 2,
+      "nights": 7,
+      "demonstration_quote": true,
+      "supplier_availability_confirmed": false
+    }
+  ],
+  "session_snapshot_matches_done": true,
+  "no_selection_or_booking": true,
+  "departure_window": {
+    "start": "2026-10-30",
+    "end": "2027-04-29"
+  },
+  "duration_default_nights": 7,
+  "budget_for_two_rub": 200000,
+  "finished_at": "2026-10-29T06:37:07.270830+00:00",
+  "seconds": 47.418
+}

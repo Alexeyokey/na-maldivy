@@ -192,13 +192,17 @@ def _baseline(session: Session, text: str) -> _Baseline | DateSavingsComparison:
         if (
             not session.brief.origin
             or not session.brief.destination
+            and not session.brief.has_flexible_dates
             or outbound["from"] != _code(session.brief.origin)
-            or outbound["to"] != _code(session.brief.destination)
+            or not session.brief.has_flexible_dates
+            and outbound["to"] != _code(session.brief.destination)
             or inbound["from"] != outbound["to"]
             or inbound["to"] != outbound["from"]
             or datetime.fromisoformat(outbound["arrival_at"]).date() != check_in
             or datetime.fromisoformat(inbound["departure_at"]).date() != check_out
-            or session.brief.start_date not in (None, departure)
+            or not session.brief.has_flexible_dates
+            and session.brief.start_date not in (None, departure)
+            or not session.brief.accepts_departure(departure)
             or session.brief.nights not in (None, nights)
             or any(issue.get("severity") == "critical" for issue in package.get("issues", []))
             or package.get("validation_status") == "failed"
@@ -406,6 +410,15 @@ async def compare_date_savings(
     if isinstance(baseline, DateSavingsComparison):
         return baseline
     brief = session.brief.model_copy(deep=True)
+    if brief.has_flexible_dates:
+        brief = brief.model_copy(
+            update={
+                "destination": baseline.quote.destination,
+                "start_date": baseline.quote.departure_date,
+                "month": baseline.quote.departure_date.month,
+                "year": baseline.quote.departure_date.year,
+            }
+        )
     rejected = check_destination_policy(
         destination_policy,
         brief,
@@ -425,6 +438,9 @@ async def compare_date_savings(
             return None
         if day <= today:
             checked.append({"departure_date": day.isoformat(), "shift_days": offset, "status": "past_date"})
+            return None
+        if not brief.accepts_departure(day):
+            checked.append({"departure_date": day.isoformat(), "shift_days": offset, "status": "outside_search_window"})
             return None
         try:
             quote, reason, flight_sources = await _quote_day(
@@ -468,7 +484,15 @@ async def compare_date_savings(
     savings = await suggest_date_shifts(baseline.quote, quote_trip)
     include_transfer = baseline.include_transfer
     scope = "round_trip_flights_baggage_hotel" + ("_arrival_transfer" if include_transfer else "")
-    unpriced = [*(_UNPRICED), *([] if include_transfer else ["arrival_transfer"])]
+    unpriced = list(
+        dict.fromkeys(
+            [
+                *_UNPRICED,
+                *(baseline.package.get("unpriced_components") or []),
+                *([] if include_transfer else ["arrival_transfer"]),
+            ]
+        )
+    )
     confirmed = sum(item["status"] == "quoted" for item in checked)
     contains_mock = _contains_mock(baseline.flight_sources) or any(item.get("contains_mock", False) for item in checked)
     suggestion_facts = []
@@ -527,6 +551,8 @@ async def compare_date_savings(
             "Ограничения по воде и визе сверены с сохранённой справкой на каждую дату: климатическая норма "
             "не является прогнозом, а правила въезда нужно перепроверить перед поездкой."
         )
+    if "activities_and_equipment" in unpriced:
+        parts.append("Занятия, инструкторы, аренда снаряжения и дорога к ним не включены в сравниваемую сумму.")
     if savings:
         parts.append("Варианты с экономией строго больше 5% по этим компонентам:")
         for item in savings[:3]:

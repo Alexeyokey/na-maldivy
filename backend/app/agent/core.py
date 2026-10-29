@@ -44,6 +44,7 @@ from app.agent.date_savings import compare_date_savings, is_date_savings_questio
 from app.agent.destination_info import destination_information, is_destination_information_question
 from app.agent.destination_policy import destination_policy_for_tools
 from app.agent.destination_selection import resolve_catalogue_destination
+from app.agent.flexible_search import search_flexible_trip
 from app.agent.hidden import NEEDS, quick_refinement_requested, requests_checkout_cancellation, unrecognized_destination
 from app.agent.hidden import extract as extract_patch
 from app.agent.places import ORIGINS
@@ -378,6 +379,7 @@ class TravelAgent:
                     "trains" if s.brief.transport == "train" else "packages" if s.brief.destination else "destinations"
                 )
                 s.options_assumptions, s.options_notes = [], []
+                s.options_search_summary = None
                 s.stage = Stage.COLLECTING
         if applied.changes or applied.sources_changed or applied.rejected:
             emit(
@@ -516,9 +518,21 @@ class TravelAgent:
             self._finish_rebuild(s, emit, notes=plan.notes)
             return await self._summarize(s, text, plan, fmt.trains(plan), emit)
         emit("status", {"stage": "search", "text": "Собираю поездку: рейсы, отели, трансферы"})
-        plan = await search_trip(
-            s.brief, self._caller(s, emit), self._today(), destination_policy=destination_policy_for_tools(self._tools)
-        )
+        if s.brief.has_flexible_dates:
+            plan = await search_flexible_trip(
+                s.brief,
+                self._caller(s, emit),
+                self._today(),
+                supported_destinations=full_trip_destinations(self._tools),
+                destination_policy=destination_policy_for_tools(self._tools),
+            )
+        else:
+            plan = await search_trip(
+                s.brief,
+                self._caller(s, emit),
+                self._today(),
+                destination_policy=destination_policy_for_tools(self._tools),
+            )
         self._adopt_assumptions(s, plan, emit)
         s.packages, s.stale, s.selected = plan.options, False, None
         s.trains, s.destinations = [], []
@@ -526,7 +540,12 @@ class TravelAgent:
         self._emit_options(s, "packages", plan, emit)
         diff = ""
         change = self._finish_rebuild(s, emit, notes=plan.notes)
-        if change and change["before"] and change["after"]:
+        if (
+            change
+            and change["before"]
+            and change["after"]
+            and any(side.get("known_total_rub") is not None for side in (change["before"], change["after"]))
+        ):
             before, after = change["before"], change["after"]
             delta = change["comparison"]["delta_known_total_rub"]
             difference = (
@@ -626,6 +645,21 @@ class TravelAgent:
                 "Сначала нужно исправить вариант.",
                 emit,
             )
+        if s.brief.has_flexible_dates:
+            departure = package["outbound"]["departure_at"][:10]
+            patch = BriefPatch(
+                destination=package["destination"], start_date=departure, nights=package["hotel"]["nights"]
+            )
+            applied = apply_patch(
+                s.brief,
+                s.sources,
+                patch,
+                today=self._today(),
+                default_fields=frozenset({"start_date", "month", "year", "nights"}),
+            )
+            if applied.rejected:
+                return self._say("Даты выбранного варианта выходят за условия поиска. Обновите подбор.", emit)
+            self._commit_brief(s, applied, emit, search=False)
         s.selected, s.stage = d.option, Stage.AWAITING_CONFIRMATION
         emit("status", {"stage": "confirm", "text": "Жду подтверждения"})
         return self._say(fmt.confirmation(package, s.brief), emit)
@@ -756,6 +790,8 @@ class TravelAgent:
     async def _summarize(
         self, s: Session, text: str, plan: PlanResult, fallback: str, emit: Emit, diff: str = ""
     ) -> str:
+        if plan.search_summary and plan.search_summary.get("kind") == "flexible_dates":
+            return self._say(fmt.flexible_packages(plan, s.brief), emit)
         if not plan.options:
             return self._say(fallback, emit)
         messages = [
@@ -802,6 +838,7 @@ class TravelAgent:
         s.options_kind = kind
         s.options_assumptions = [{"field": a.field, "text": a.text} for a in plan.assumptions]
         s.options_notes = list(plan.notes)
+        s.options_search_summary = copy.deepcopy(plan.search_summary)
         emit(
             "options",
             {
@@ -809,6 +846,7 @@ class TravelAgent:
                 "items": plan.options,
                 "assumptions": [{"field": a.field, "text": a.text} for a in plan.assumptions],
                 "notes": plan.notes,
+                "search_summary": plan.search_summary,
             },
         )
 

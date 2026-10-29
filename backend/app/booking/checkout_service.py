@@ -365,6 +365,16 @@ class CheckoutService:
         ]
         lines = "".join(f"<li>{esc(label)}: {esc(amount)} RUB</li>" for label, amount in components)
         extras = ", ".join(package["unpriced_components"])
+        if "activities_and_equipment" in package["unpriced_components"]:
+            # Keep already issued legacy vouchers byte-for-byte stable.
+            labels = {
+                "return_transfer": "обратный трансфер",
+                "visa_and_other_required_extras": "визы и прочие обязательные доплаты",
+                "activities_and_equipment": "занятия, инструкторы, аренда снаряжения и дорога к ним",
+            }
+            extras = ", ".join(
+                labels.get(key, "прочие дополнительные услуги") for key in package["unpriced_components"]
+            )
 
         def flight_source(leg: dict[str, Any]) -> str:
             demo = leg.get("demo_source") or {}

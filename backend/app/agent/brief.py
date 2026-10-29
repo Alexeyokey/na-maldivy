@@ -37,6 +37,9 @@ FIELD_LABELS: dict[str, str] = {
     "month": "месяц поездки",
     "year": "год поездки",
     "start_date": "дата отправления",
+    "departure_window_start": "начало периода вылета",
+    "departure_window_end": "конец периода вылета",
+    "departure_months": "месяцы вылета",
     "nights": "число ночей",
     "adults": "взрослые",
     "children_ages": "дети",
@@ -54,6 +57,7 @@ FIELD_LABELS: dict[str, str] = {
 }
 
 SEARCH_FIELDS: frozenset[str] = frozenset(FIELD_LABELS) - {"mood"}
+FLEXIBLE_DATE_FIELDS = frozenset({"departure_window_start", "departure_window_end", "departure_months"})
 
 
 class TripBrief(BaseModel):
@@ -68,6 +72,9 @@ class TripBrief(BaseModel):
     month: int | None = Field(default=None, ge=1, le=12)
     year: int | None = Field(default=None, ge=1900, le=9999)
     start_date: date | None = None
+    departure_window_start: date | None = None
+    departure_window_end: date | None = None
+    departure_months: list[str] = Field(default_factory=list, max_length=12)
     nights: int | None = Field(default=None, ge=1, le=60)
     adults: int = Field(default=1, ge=1, le=12)
     children_ages: list[int] = Field(default_factory=list, max_length=8)
@@ -114,6 +121,10 @@ class TripBrief(BaseModel):
 
     @model_validator(mode="after")
     def _date_sets_month(self) -> "TripBrief":
+        if (self.departure_window_start is None) != (self.departure_window_end is None):
+            raise ValueError("для периода вылета нужны обе границы")
+        if self.departure_window_start and self.departure_window_end < self.departure_window_start:
+            raise ValueError("конец периода вылета раньше его начала")
         # Конкретная дата задаёт месяц; противоречие отклоняем, а не чиним молча.
         if self.start_date is not None:
             if self.month is None:
@@ -125,6 +136,23 @@ class TripBrief(BaseModel):
             elif self.year != self.start_date.year:
                 raise ValueError(f"дата {self.start_date.isoformat()} не попадает в год {self.year}")
         return self
+
+    @field_validator("departure_months")
+    @classmethod
+    def _departure_months(cls, values: list[str]) -> list[str]:
+        if any(not re.fullmatch(r"(?:19|[2-9]\d)\d{2}-(?:0[1-9]|1[0-2])", value) for value in values):
+            raise ValueError("месяцы вылета должны быть в формате ГГГГ-ММ")
+        return sorted(set(values))
+
+    @property
+    def has_flexible_dates(self) -> bool:
+        return bool(self.departure_window_start or self.departure_months)
+
+    def accepts_departure(self, day: date) -> bool:
+        """Whether a candidate respects every original permitted date constraint."""
+        if self.departure_window_start and not self.departure_window_start <= day <= self.departure_window_end:
+            return False
+        return not self.departure_months or day.strftime("%Y-%m") in self.departure_months
 
     @property
     def travelers(self) -> Travelers:
@@ -147,6 +175,9 @@ class BriefPatch(BaseModel):
     month: int | None = None
     year: int | None = None
     start_date: str | None = Field(default=None, description="YYYY-MM-DD")
+    departure_window_start: str | None = Field(default=None, description="YYYY-MM-DD, inclusive")
+    departure_window_end: str | None = Field(default=None, description="YYYY-MM-DD, inclusive")
+    departure_months: list[str] | None = Field(default=None, description="All allowed YYYY-MM months")
     nights: int | None = None
     adults: int | None = None
     children_ages: list[int] | None = None
@@ -207,6 +238,14 @@ class ApplyResult:
 def merge_patches(primary: BriefPatch, secondary: BriefPatch) -> BriefPatch:
     """Значения primary важнее; secondary дополняет пропуски и добавляет свои требования."""
     data = secondary.model_dump()
+    # A flexible user range must not inherit a single month/date invented by
+    # another parser. Conversely, an exact new date replaces an old range.
+    if any(primary.values().get(name) for name in FLEXIBLE_DATE_FIELDS):
+        for name in ("start_date", "month", "year", *FLEXIBLE_DATE_FIELDS):
+            data[name] = None
+    elif primary.start_date is not None or primary.month is not None:
+        for name in FLEXIBLE_DATE_FIELDS:
+            data[name] = None
     for name, value in primary.model_dump(exclude_none=True).items():
         if name in ("needs_add", "needs_remove", "cleared", "inferred"):
             data[name] = list(dict.fromkeys([*data[name], *value]))
@@ -243,6 +282,40 @@ def apply_patch(
     values = patch.values()
     explicit_fields = set(values) - set(patch.inferred) - default_fields - set(patch.cleared)
     accepted_fields: set[str] = set()
+    auto_cleared: set[str] = set()
+    if set(patch.cleared) & {"departure_window_start", "departure_window_end"}:
+        candidate.update(departure_window_start=None, departure_window_end=None)
+        auto_cleared.update({"departure_window_start", "departure_window_end"})
+
+    flexible_values = {name: values.pop(name) for name in FLEXIBLE_DATE_FIELDS if name in values}
+    if flexible_values:
+        # Both endpoints form one constraint: never partially accept a range.
+        trial = {
+            **candidate,
+            "start_date": None,
+            "month": None,
+            "year": None,
+            "departure_window_start": None,
+            "departure_window_end": None,
+            "departure_months": [],
+            **flexible_values,
+        }
+        try:
+            checked = TripBrief.model_validate(trial)
+            if checked.departure_window_start and checked.departure_window_start <= today:
+                raise ValueError("начало периода вылета должно быть в будущем")
+            if any(month < today.strftime("%Y-%m") for month in checked.departure_months):
+                raise ValueError("месяц вылета уже прошёл")
+        except (ValidationError, ValueError) as exc:
+            reason = _short_error(exc) if isinstance(exc, ValidationError) else str(exc)
+            rejected += [RejectedChange(name, value, reason) for name, value in flexible_values.items()]
+        else:
+            candidate = checked.model_dump()
+            accepted_fields.update(flexible_values)
+            auto_cleared.update({"start_date", "month", "year", *FLEXIBLE_DATE_FIELDS} - set(flexible_values))
+            # A model's copied date cannot narrow an explicitly flexible range.
+            for name in ("start_date", "month", "year"):
+                values.pop(name, None)
     # Новая дата без месяца: месяц берём из даты, иначе старый месяц с ней конфликтует.
     if "start_date" in values:
         try:
@@ -256,6 +329,17 @@ def apply_patch(
                 values.setdefault("month", new_date.month)
                 values.setdefault("year", new_date.year)
                 candidate.update(start_date=None, month=None, year=None)
+                if "start_date" not in default_fields:
+                    candidate.update(departure_window_start=None, departure_window_end=None, departure_months=[])
+                    auto_cleared.update(FLEXIBLE_DATE_FIELDS)
+                elif not TripBrief.model_validate(candidate).accepts_departure(new_date):
+                    rejected.append(
+                        RejectedChange("start_date", values.pop("start_date"), "дата вне выбранного периода")
+                    )
+                    values.pop("month", None)
+                    values.pop("year", None)
+                    candidate.update(start_date=current["start_date"], month=current["month"], year=current["year"])
+    clear_flex_for_month = "month" in values and "month" not in default_fields and "start_date" not in values
     if "month" in values and "start_date" not in values and candidate["start_date"] is not None:
         if candidate["start_date"].month != values["month"]:
             candidate["start_date"] = None  # «а если в декабре?» — старая дата больше не действует
@@ -265,6 +349,8 @@ def apply_patch(
 
     for name, value in values.items():
         trial = {**candidate, name: value}
+        if name == "month" and clear_flex_for_month:
+            trial.update(departure_window_start=None, departure_window_end=None, departure_months=[])
         try:
             checked = TripBrief.model_validate(trial)
         except ValidationError as exc:
@@ -273,6 +359,8 @@ def apply_patch(
         # Валидатор мог нормализовать значение («Питер» → LED): храним нормализованное.
         candidate = checked.model_dump()
         accepted_fields.add(name)
+        if name == "month" and clear_flex_for_month:
+            auto_cleared.update(FLEXIBLE_DATE_FIELDS)
 
     if patch.needs_add or patch.needs_remove:
         removed = set(patch.needs_remove)
@@ -285,11 +373,13 @@ def apply_patch(
     new_sources = dict(sources)
     changes: list[FieldChange] = []
     for name, new_value in new_dump.items():
+        if name in auto_cleared and new_value == defaults[name]:
+            new_sources.pop(name, None)
         if new_value == current[name]:
             if name in accepted_fields & explicit_fields:
                 new_sources[name] = "explicit"
             continue
-        if name in patch.cleared and new_value == defaults[name]:
+        if name in set(patch.cleared) | auto_cleared and new_value == defaults[name]:
             new_sources.pop(name, None)
             source: Source | None = None
         elif name in default_fields:

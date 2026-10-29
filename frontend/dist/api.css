@@ -1,4 +1,13 @@
 /* API additions retain the existing typography, cards, illustrations and palette. */
+.api-hotel-details{margin:14px 0;padding:12px 0;border-top:1px solid #e4eaf3;border-bottom:1px solid #e4eaf3;font-size:12px;line-height:1.65;min-width:0}
+.api-hotel-details h4{margin:0 0 8px;font-size:12px;font-weight:650;color:#3f597c}
+.api-hotel-details dl{margin:0;display:grid;gap:7px}
+.api-hotel-details dl>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:10px;align-items:baseline}
+.api-hotel-details dt{color:#68758a;font-weight:400}
+.api-hotel-details dd{margin:0;color:#3e536f;overflow-wrap:anywhere}
+.api-hotel-details small{display:block;margin-top:10px;font-size:11px;line-height:1.65;color:#68758a}
+.api-hotel-transfer{font-size:12px;line-height:1.7;margin:10px 0;color:#53667e;overflow-wrap:anywhere}
+.api-hotel-transfer b{font-weight:600}
 .api-mode .assistant-text{white-space:pre-line}.api-mode .api-results{margin:24px 0}.api-mode .hotel-card{min-width:0}.api-mode .hotel-card .action-row{gap:7px;flex-wrap:wrap;margin-top:12px}.api-mode .hotel-card .action-button{font-size:10px}.api-mode .price-amount{display:block;margin-top:15px}.api-card-sources{font-size:10px;line-height:2;margin-top:12px}.api-source{display:inline-block;font-size:9px;line-height:1.6;padding:3px 6px;border-radius:5px;vertical-align:middle}.api-source.provider{background:#eef6e8;color:#3c6637}.api-source.mock{background:#fff2db;color:#8b591d}.api-followups{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.api-mode .sidebar-title{margin-bottom:26px}.api-mode .sidebar .side-field{margin-top:16px}.api-mode .rail-bottom{margin-top:auto}.api-flight{border-bottom:1px solid #e7ecf3;padding:14px 0;display:grid;gap:7px;font-size:12px}.api-flight b{font-size:12px}.api-flight small{display:block;color:#6d7c90;font-size:10px}.api-flight>.api-source{justify-self:start}.api-mode .hero-art svg{width:54px;height:54px;color:#1743de;margin:25px}.api-mode .plan-inline{margin-top:14px}.api-mode .api-error{padding:13px;color:#9b3838;background:#fff0ed;border-radius:8px;font-size:12px}.api-evidence{margin:18px 0;padding:15px;background:#f6f9f2;border-radius:10px;font-size:12px;line-height:1.8}.api-evidence summary{cursor:pointer;font-weight:600}.api-evidence blockquote{border-left:3px solid #b2cb92;padding-left:12px;margin:10px 0}.api-payment-buttons{display:flex;gap:12px;justify-content:space-between;margin-top:20px;flex-wrap:wrap}.api-payment-status{color:#9a5d1a;font-size:12px;line-height:1.8;margin-top:15px}.api-mode .typing-pill{font-size:11px;gap:8px}.api-mode .typing-pill svg{width:15px;height:15px}.api-mode .risk-note p+p{margin-top:8px}.api-mode button:disabled,#api-checkout-form button:disabled{opacity:.5;cursor:wait}.api-mode .hotel-grid{align-items:stretch;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}.api-mode .welcome-note{max-width:700px}.api-mode .composer-foot::before{content:none!important}
 @media(max-width:650px){.api-mode .hotel-card{flex:0 0 280px}.api-mode .hero-art{display:none}.api-mode .header-actions{gap:8px}.api-mode .text-icon{font-size:10px}.api-mode .connection-badge{font-size:9px}.api-mode .api-source{font-size:8px}.api-mode .composer-foot>span{display:block}.api-payment-buttons>*{flex:1}.api-mode .api-evidence{font-size:11px}.api-mode .hotel-card .price-total{font-size:9px}}
 
@@ -158,3 +167,18 @@
  .api-mode .close-modal{min-width:44px;min-height:44px}
  .api-mode .risk-note,.api-mode .api-card-risks,.api-mode .api-price-breakdown,.api-mode .api-assumptions,.api-mode .api-visible-warnings .assistant-text{font-size:12px;line-height:1.7}
 }
+
+/* Search changes without prices stay compact; full rules remain available per card. */
+.api-trip-changes-compact{padding:5px 16px;margin:12px 0;background:#f8faff}
+.api-trip-changes-compact>summary{padding:8px 0;min-height:40px;font-size:13px}
+.api-trip-changes-compact .api-criteria-changes{margin:4px 0 12px}
+.api-stay-details{margin:10px 0;border-top:1px solid #e9edf4;font-size:12px}
+.api-stay-details>summary{cursor:pointer;color:#536c92;font-weight:600;min-height:42px;padding:10px 0}
+.api-stay-details .api-hotel-details{margin-top:2px}
+@media(max-width:650px){.api-trip-changes-compact{padding:3px 13px}.api-trip-changes-compact>summary{font-size:12px}.api-mode .api-message-overview{line-height:1.65}.api-mode .api-message-details{margin-bottom:14px}.api-mode .api-stay-details>summary{font-size:12px}}
+
+.api-activity-caption{font-size:12px;line-height:1.6;color:#496448;margin:10px 0 5px}
+
+.api-assumptions-compact{margin:12px 0;font-size:13px;border:1px solid #dce5f1;border-radius:10px;background:#f8faff;padding:0 13px}
+.api-assumptions-compact>summary{cursor:pointer;color:#536c92;min-height:44px;padding:10px 0;line-height:1.6}
+.api-assumptions-compact>.api-assumptions{margin:2px -4px 10px;padding:12px;border:0;background:transparent}

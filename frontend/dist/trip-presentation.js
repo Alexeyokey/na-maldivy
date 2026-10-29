@@ -7,6 +7,44 @@ export function counted(value,one,few,many){
 export const adultsLabel=value=>counted(value,'взрослый','взрослых','взрослых');
 export const nightsLabel=value=>counted(value,'ночь','ночи','ночей');
 export const optionsLabel=value=>counted(value,'вариант','варианта','вариантов');
+export const monthNames=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+export function durationLabel(value){
+ if(!Number.isInteger(value)||value<0)return 'время не уточнено';
+ const hours=Math.floor(value/60),minutes=value%60;
+ return [hours?`${hours} ч`:'',minutes||!hours?`${minutes} мин`:''].filter(Boolean).join(' ');
+}
+export function temperatureLabel(value){return Number.isFinite(value)?value.toLocaleString('ru-RU',{maximumFractionDigits:1})+' °C':'температура не уточнена';}
+export function humanizeTravelText(input){
+ return String(input??'').replace(/([+-]?\d+[.,]\d{2,})\s*°C/g,(_,number)=>temperatureLabel(Number(number.replace(',','.')))).replace(/(время перел[её]та\s+)(\d+)\s+минут/gi,(_,label,minutes)=>label+durationLabel(Number(minutes)));
+}
+export function departurePeriod(brief={}){
+ const start=isoDay(brief.departure_window_start),end=isoDay(brief.departure_window_end);
+ if(start&&end&&start<=end)return `${formatDate(start)} — ${formatDate(end)}`;
+ const months=Array.isArray(brief.departure_months)?brief.departure_months.filter(value=>typeof value==='string'&&/^\d{4}-(?:0[1-9]|1[0-2])$/.test(value)):[];
+ if(months.length)return months.map(value=>`${monthNames[Number(value.slice(5))-1]} ${value.slice(0,4)}`).join(', ');
+ return null;
+}
+export function normalizeSearchSummary(value){
+ if(!value||typeof value!=='object'||Array.isArray(value)||value.kind!=='flexible_dates'||value.scope!=='sampled_dates')return null;
+ const start=isoDay(value.window_start),end=isoDay(value.window_end);
+ if(!start||!end||start>end)return null;
+ const fields=['checked_dates','checked_destinations','complete_quotes','within_budget'];
+ if(fields.some(field=>!Number.isSafeInteger(value[field])||value[field]<0||value[field]>10000000))return null;
+ return {kind:'flexible_dates',window_start:start,window_end:end,...Object.fromEntries(fields.map(field=>[field,value[field]])),scope:'sampled_dates'};
+}
+/** The search covers sampled dates, never a claim of the cheapest date in the entire window. */
+export function flexiblePackageOverview(state){
+ if(state.optionKind!=='packages'||!state.options?.length||state.stale||state.sessionLost||state.selected!=null)return null;
+ const summary=normalizeSearchSummary(state.searchSummary),period=departurePeriod(state.brief);
+ if(!summary&&!period)return null;
+ const prices=state.options.map(option=>option.known_total_rub).filter(value=>Number.isSafeInteger(value)&&value>=0);
+ const group=state.options[0]?.travelers||state.brief||{},minimum=prices.length?Math.min(...prices).toLocaleString('ru-RU')+' ₽':null;
+ const lines=[`${optionsLabel(state.options.length)}${group.adults?' · '+adultsLabel(group.adults):''}${period?' · вылеты '+period:''}.`];
+ if(minimum)lines.push(`Среди показанных — от ${minimum} за известные компоненты всей группы.`);
+ if(summary)lines.push(`Рассчитано сочетаний направления и даты: ${summary.checked_dates}. Проверены отдельные даты, а не каждый день периода.`);
+ lines.push('Демо-расчёт. Наличие услуг не подтверждено; обратный трансфер, визы и другие доплаты не оценены.');
+ return lines.join(' ');
+}
 
 /** Prefer the bundled quote scenario while future, then keep quick prompts usable. */
 export function demoDepartureDate(now=new Date()){
@@ -59,7 +97,7 @@ export function transferLabel(transfer){
  if(!transfer)return 'Трансфер не оценён';
  const modes={taxi:'Такси',minivan:'Минивэн',shuttle:'Шаттл',bus:'Автобус',metro:'Метро',boat:'Катер',seaplane:'Гидросамолёт',flight_speedboat:'Самолёт и катер'};
  const mode=modes[transfer.mode]||'Трансфер';
- const duration=Number.isInteger(transfer.duration_minutes)&&transfer.duration_minutes>0?` · ${transfer.duration_minutes} мин`:'';
+ const duration=Number.isInteger(transfer.duration_minutes)&&transfer.duration_minutes>0?` · ${durationLabel(transfer.duration_minutes)}`:'';
  return `${mode}${duration}${transfer.available===false?' · ожидание отправления':''}`;
 }
 export const isTrainTrip=state=>state.brief?.transport==='train'||state.optionKind==='trains';
@@ -126,6 +164,7 @@ export function tripAssumptions(state){
  const labels={adults:'Взрослые',nights:'Продолжительность',start_date:rail?'Дата отправления':'Дата вылета'};
  const display={adults:adultsLabel,nights:nightsLabel,start_date:formatDate};
  return (rail?['adults','start_date']:['adults','nights','start_date']).flatMap(field=>{
+  if(field==='start_date'&&departurePeriod(brief)&&state.selected==null)return [];
   if(sources[field]==='explicit'||values[field]===undefined||values[field]===null)return [];
   const source=['default','inferred'].includes(sources[field])?sources[field]:details(field)?(field==='start_date'?'inferred':'default'):field==='adults'&&values.adults===1?'default':null;
   if(!source)return [];
@@ -152,4 +191,15 @@ export function narrativeView(input){
  if(/компромисс|ограничени|бронировать заранее|только дн[её]м|предзаказ/i.test(text))warnings.push('Упомянуты компромиссы или специальные ограничения; подробности по вариантам — в полном ответе.');
  if(!warnings.length&&/риск|требует исправления/i.test(text))warnings.push('В полном ответе есть дополнительные риски и условия, которые нужно проверить перед выбором.');
  return {text,compact:true,preview,warnings};
+}
+
+/** Destination-level references never imply a service at a particular demo hotel. */
+export function activityReferenceView(value){
+ if(!value||value.scope!=='destination_only'||value.hotel_availability_confirmed!==false||value.included_in_price!==false||!Array.isArray(value.destination_activities)||!Array.isArray(value.sources))return null;
+ const names={surfing:'сёрфинг',diving:'дайвинг'},labels=[...new Set(value.destination_activities)].filter(key=>Object.hasOwn(names,key)).map(key=>names[key]);
+ const sources=value.sources.slice(0,8).flatMap(row=>{
+  if(!row||typeof row.url!=='string'||row.url.length>1200||typeof row.title!=='string'||!row.title.trim()||row.title.length>200)return [];
+  try{const url=new URL(row.url);if(url.protocol!=='https:'||url.username||url.password)return [];return [{title:row.title,url:url.href,checked_on:isoDay(row.checked_on)}];}catch{return [];}
+ });
+ return labels.length&&sources.length?{labels,sources}:null;
 }
