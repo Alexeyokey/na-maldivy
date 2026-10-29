@@ -132,12 +132,18 @@ class TransferBase:
 
 
 @lru_cache(maxsize=8)
-def _base_at(data_dir: Path) -> TransferBase:
-    return TransferBase.load(data_dir / "transfers/transfers.json")
+def _base_at(data_dir: Path, include_demo: bool = False) -> TransferBase:
+    original = TransferBase.load(data_dir / "transfers/transfers.json")
+    if not include_demo:
+        return original
+    demo = TransferBase.load(data_dir / "demo/transfers.generated.json")
+    if any(not record.hotel_id.startswith(f"demo:hotel/{record.airport}-") for record in demo):
+        raise ValueError("Supplemental transfer records must use the demo hotel namespace")
+    return TransferBase([*original, *demo])
 
 
-def default_base(data_dir: Path | None = None) -> TransferBase:
-    return _base_at(resolve_data_dir(data_dir))
+def default_base(data_dir: Path | None = None, *, include_demo: bool = False) -> TransferBase:
+    return _base_at(resolve_data_dir(data_dir), include_demo)
 
 
 def quote_transfers(

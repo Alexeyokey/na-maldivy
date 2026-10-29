@@ -18,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[2]
 @pytest.fixture
 def client(tmp_path):
     settings = mixed_demo_settings(ROOT / "data/demo/aviasales", tmp_path / "checkout.sqlite3")
+    # Strict finite synthetic mode intentionally lacks the opt-in demo expansion.
+    # The expanded demo journey is tested separately in test_expanded_chat_journey.
+    settings.flights_mode = "synthetic"
     with forbid_external_network() as network, TestClient(create_app(settings)) as connected:
         connected.app.state.agent._today = lambda: date(2026, 10, 29)
         yield connected

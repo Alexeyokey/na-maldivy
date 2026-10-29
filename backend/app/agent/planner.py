@@ -16,6 +16,7 @@ from datetime import UTC, date, timedelta
 from typing import Any
 
 from app.agent.brief import TripBrief
+from app.agent.destination_policy import DestinationPolicy, check_destination_policy, has_destination_filters
 from app.agent.hidden import NEEDS
 from app.agent.places import FULL_TRIP_DESTINATIONS, place_name
 from app.booking.timeline import AIRPORT_EXIT_MIN, build_timeline
@@ -78,7 +79,9 @@ def hours(minutes: int) -> str:
 # ---------------------------------------------------------------------------
 
 
-async def suggest(brief: TripBrief, call: ToolCaller) -> PlanResult:
+async def suggest(
+    brief: TripBrief, call: ToolCaller, *, supported_destinations: frozenset[str] = FULL_TRIP_DESTINATIONS
+) -> PlanResult:
     result = PlanResult()
     assert brief.origin and brief.month
     nights = brief.nights or DEFAULT_NIGHTS
@@ -152,7 +155,7 @@ async def suggest(brief: TripBrief, call: ToolCaller) -> PlanResult:
                 "code": d.place.iata,
                 "name": d.place.name,
                 "country": d.country,
-                "full_trip_supported": d.place.iata in FULL_TRIP_DESTINATIONS,
+                "full_trip_supported": d.place.iata in supported_destinations,
                 "air_temperature_c": air,
                 "water_temperature_c": water,
                 "flight_minutes": flight,
@@ -194,7 +197,14 @@ async def suggest(brief: TripBrief, call: ToolCaller) -> PlanResult:
 # ---------------------------------------------------------------------------
 
 
-async def _pick_start_date(brief: TripBrief, call: ToolCaller, today: date, result: PlanResult) -> date | None:
+async def _pick_start_date(
+    brief: TripBrief,
+    call: ToolCaller,
+    today: date,
+    result: PlanResult,
+    *,
+    destination_policy: DestinationPolicy | None = None,
+) -> date | None:
     if brief.start_date:
         return brief.start_date
     assert brief.month and brief.origin and brief.destination
@@ -204,9 +214,18 @@ async def _pick_start_date(brief: TripBrief, call: ToolCaller, today: date, resu
         # the requested filters or inventing a replacement for rejected quotes.
         year, month = map(int, _month_key(brief.month, today, brief.year).split("-"))
         ranked = []
+        policy_notes = []
         for number in range(1, calendar.monthrange(year, month)[1] + 1):
             day = date(year, month, number)
             if day <= today:
+                continue
+            try:
+                estimated_return = day + timedelta(days=brief.nights or DEFAULT_NIGHTS)
+            except OverflowError:
+                continue
+            rejected = check_destination_policy(destination_policy, brief, day, estimated_return)
+            if rejected:
+                policy_notes.extend(rejected)
                 continue
             rows = await call(
                 "search_flights",
@@ -237,6 +256,7 @@ async def _pick_start_date(brief: TripBrief, call: ToolCaller, today: date, resu
         result._monthly_candidates = [day for _, day in sorted(ranked)]
         if not result._monthly_candidates:
             result.notes.append("По доступным данным в этом месяце нет рейсов по заданным условиям перелёта")
+            result.notes.extend(dict.fromkeys(policy_notes))
             return None
         return result._monthly_candidates[0]
     days = await call(
@@ -252,6 +272,25 @@ async def _pick_start_date(brief: TripBrief, call: ToolCaller, today: date, resu
         result.notes.append("Календарь цен недоступен; задайте конкретную дату или повторите поиск")
         return None
     future = [d for d in days or [] if d.date > today]
+    if has_destination_filters(brief):
+        permitted, policy_notes = [], []
+        for item in future:
+            try:
+                estimated_return = item.date + timedelta(days=brief.nights or DEFAULT_NIGHTS)
+            except OverflowError:
+                continue
+            rejected = check_destination_policy(destination_policy, brief, item.date, estimated_return)
+            if rejected:
+                policy_notes.extend(rejected)
+            else:
+                permitted.append(item)
+        result._monthly_candidates = [
+            item.date for item in sorted(permitted, key=lambda item: (item.price_rub, item.date))
+        ]
+        if not result._monthly_candidates:
+            result.notes.extend(dict.fromkeys(policy_notes))
+            return None
+        return result._monthly_candidates[0]
     if not future:
         return None
     best = min(future, key=lambda d: (d.price_rub, d.date))
@@ -431,15 +470,20 @@ def _explain(c: _Combo, brief: TripBrief) -> tuple[list[str], list[str], list[st
     return why, tradeoffs, risks
 
 
-async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanResult:
+async def search_trip(
+    brief: TripBrief, call: ToolCaller, today: date, *, destination_policy: DestinationPolicy | None = None
+) -> PlanResult:
     result = PlanResult()
     assert brief.origin and brief.destination
+    if has_destination_filters(brief) and destination_policy is None:
+        result.notes.extend(check_destination_policy(None, brief, today, today))
+        return result
     nights = brief.nights or DEFAULT_NIGHTS
     if brief.nights is None:
         result.assumptions.append(
             Assumption("nights", f"беру {plural(nights, 'ночь', 'ночи', 'ночей')} — поправьте, если нужно иначе")
         )
-    start = await _pick_start_date(brief, call, today, result)
+    start = await _pick_start_date(brief, call, today, result, destination_policy=destination_policy)
     if start is None:
         if not result.notes:
             result.notes.append("По доступному календарю нет рейсов в этом месяце")
@@ -468,7 +512,12 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
         last_notes = []
         for candidate in result._monthly_candidates:
             try:
-                attempt = await search_trip(brief.model_copy(update={"start_date": candidate}), cached_call, today)
+                attempt = await search_trip(
+                    brief.model_copy(update={"start_date": candidate}),
+                    cached_call,
+                    today,
+                    destination_policy=destination_policy,
+                )
             except SourceUnavailable:
                 result.notes.append("Источник поездки недоступен; сравнение дат по вашим условиям не завершено")
                 return result
@@ -481,6 +530,10 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
                     conditions.append(f"каждый перелёт не дольше {hours(brief.max_flight_minutes)}")
                 if brief.late_departure:
                     conditions.append("вечерний или ночной вылет туда")
+                if brief.min_water_temperature_c is not None:
+                    conditions.append(f"климатическая норма воды не ниже {brief.min_water_temperature_c:g} °C")
+                if brief.visa_free_only:
+                    conditions.append("безвизовый режим по сохранённой справке на весь период поездки")
                 result.assumptions.append(
                     Assumption(
                         "start_date",
@@ -496,6 +549,15 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
         result.notes = ["По доступным данным в этом месяце нет совместимой поездки по заданным условиям", *last_notes]
         return result
     result.start_date = start
+    try:
+        estimated_return = start + timedelta(days=nights)
+    except OverflowError:
+        result.notes.append("Даты проживания выходят за поддерживаемый календарь")
+        return result
+    rejected = check_destination_policy(destination_policy, brief, start, estimated_return)
+    if rejected:
+        result.notes.extend(rejected)
+        return result
     travelers = brief.travelers.model_dump()
 
     outbound: list[Flight] | None = await call(
@@ -531,6 +593,10 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
         except OverflowError:
             result.notes.append("Даты проживания выходят за поддерживаемый календарь")
             continue
+        rejected = check_destination_policy(destination_policy, brief, start, check_out)
+        if rejected:
+            result.notes.extend(note for note in rejected if note not in result.notes)
+            continue
         hotels: list[HotelOffer] | None = await call(
             "search_hotels",
             {
@@ -563,6 +629,15 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
             for hotel in suitable:
                 transfer = await _transfer(out_flight, hotel, brief, call)
                 for in_flight in inbound or []:
+                    rejected = check_destination_policy(
+                        destination_policy,
+                        brief,
+                        out_flight.departure_at.date(),
+                        max(hotel.check_out, in_flight.departure_at.date()),
+                    )
+                    if rejected:
+                        result.notes.extend(note for note in rejected if note not in result.notes)
+                        continue
                     issues = _validate(out_flight, hotel, in_flight, transfer, brief)
                     combos.append(
                         _Combo(
@@ -585,6 +660,12 @@ async def search_trip(brief: TripBrief, call: ToolCaller, today: date) -> PlanRe
             result.notes.append("Даже известные расходы превышают бюджет; подходящий вариант не подтверждён")
             return result
     result.options = _pick_packages(combos, brief)
+    if has_destination_filters(brief):
+        for option in result.options:
+            option["risks"].append(
+                "Климатические и визовые условия сверены с сохранённой справкой: климатическая норма не является "
+                "прогнозом, а правила въезда нужно перепроверить перед поездкой."
+            )
     return result
 
 

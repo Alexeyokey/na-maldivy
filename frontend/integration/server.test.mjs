@@ -11,7 +11,7 @@ test('Browser message modules and stylesheet are static assets, never upstream r
  let calls=0;const agent=http.createServer((req,res)=>{calls++;res.writeHead(404).end('{}');});
  const upstream=await listen(agent),web=createFrontendServer({agentUrl:upstream});const base=await listen(web);
  t.after(async()=>{await close(web);await close(agent);});
- for(const route of ['/api-app.js','/api-model.js','/api.js','/message-format.js','/api.css']){
+ for(const route of ['/api-app.js','/api-model.js','/api.js','/message-format.js','/api.css','/favorites.js','/trip-usability.js','/destination-names.generated.js']){
   const response=await fetch(base+route);assert.equal(response.status,200,route);
   assert.match(response.headers.get('content-type'),route.endsWith('.css')?/text\/css/:/text\/javascript/);
   assert.ok((await response.text()).length>100);

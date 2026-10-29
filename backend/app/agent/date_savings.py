@@ -13,6 +13,7 @@ from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
 from app.agent.brief import TripBrief
+from app.agent.destination_policy import DestinationPolicy, check_destination_policy, has_destination_filters
 from app.agent.planner import ToolCaller, _flight_fits, _hotel_fits, _validate, rub
 from app.agent.session import Session
 from app.booking.timeline import AIRPORT_EXIT_MIN
@@ -262,8 +263,20 @@ def _matching_flights(
 
 
 async def _quote_day(
-    day: date, baseline: _Baseline, brief: TripBrief, call: ToolCaller
+    day: date,
+    baseline: _Baseline,
+    brief: TripBrief,
+    call: ToolCaller,
+    *,
+    destination_policy: DestinationPolicy | None = None,
 ) -> tuple[TripQuote | None, str, dict[str, Any]]:
+    try:
+        estimated_return = day + timedelta(days=baseline.quote.nights)
+    except OverflowError:
+        return None, "missing_or_incompatible_quotes", {}
+    rejected = check_destination_policy(destination_policy, brief, day, estimated_return)
+    if rejected:
+        return None, "destination_constraints_not_met", {"destination_constraint_notes": rejected}
     travelers = brief.travelers.model_dump()
     common = {"travelers": travelers, "direct_only": brief.direct_only}
     rows = await call(
@@ -275,10 +288,15 @@ async def _quote_day(
     outbound = _matching_flights(rows, brief, day, inbound=False, source=baseline.source, demo_mode=baseline.demo_mode)
     candidates: list[tuple[TripQuote, dict[str, Any]]] = []
     source_failed = False
+    policy_notes = []
     for check_in in sorted({flight.arrival_at.date() for flight in outbound}):
         try:
             check_out = check_in + timedelta(days=baseline.quote.nights)
         except OverflowError:
+            continue
+        rejected = check_destination_policy(destination_policy, brief, day, check_out)
+        if rejected:
+            policy_notes.extend(rejected)
             continue
         hotel_rows = await call(
             "search_hotels",
@@ -366,6 +384,12 @@ async def _quote_day(
                         )
     best = min(candidates, key=lambda candidate: candidate[0].total_rub, default=None)
     reason = "source_unavailable" if source_failed and not candidates else "missing_or_incompatible_quotes"
+    if not best and policy_notes and not source_failed:
+        return (
+            None,
+            "destination_constraints_not_met",
+            {"destination_constraint_notes": list(dict.fromkeys(policy_notes))},
+        )
     return (best[0], reason, best[1]) if best else (None, reason, {})
 
 
@@ -375,16 +399,25 @@ async def compare_date_savings(
     *,
     today: date,
     text: str = "Есть ли даты дешевле при сдвиге на 1–3 дня?",
+    destination_policy: DestinationPolicy | None = None,
 ) -> DateSavingsComparison:
     """Compare the current option without adopting dates or touching confirmation."""
     baseline = _baseline(session, text)
     if isinstance(baseline, DateSavingsComparison):
         return baseline
+    brief = session.brief.model_copy(deep=True)
+    rejected = check_destination_policy(
+        destination_policy,
+        brief,
+        baseline.quote.departure_date,
+        date.fromisoformat(baseline.package["hotel"]["check_out"]),
+    )
+    if rejected:
+        return _unavailable("destination_constraints_not_met", " ".join(rejected) + " Экономию подтвердить нельзя.")
     offsets = _offsets(text)
     if offsets is None:
         return _unavailable("unsupported_shift", "Сейчас могу сравнить сдвиг на 1–3 дня раньше или позже.")
     checked: list[dict[str, Any]] = []
-    brief = session.brief.model_copy(deep=True)
 
     async def quote_trip(day: date) -> TripQuote | None:
         offset = (day - baseline.quote.departure_date).days
@@ -394,7 +427,9 @@ async def compare_date_savings(
             checked.append({"departure_date": day.isoformat(), "shift_days": offset, "status": "past_date"})
             return None
         try:
-            quote, reason, flight_sources = await _quote_day(day, baseline, brief, call)
+            quote, reason, flight_sources = await _quote_day(
+                day, baseline, brief, call, destination_policy=destination_policy
+            )
         except Exception as exc:
             # Provider exceptions can contain request headers; never expose their text.
             checked.append(
@@ -411,6 +446,11 @@ async def compare_date_savings(
                 "departure_date": day.isoformat(),
                 "shift_days": offset,
                 "status": "quoted" if quote else reason,
+                **(
+                    {"notes": flight_sources["destination_constraint_notes"]}
+                    if not quote and "destination_constraint_notes" in flight_sources
+                    else {}
+                ),
                 **(
                     {
                         "quote": quote.model_dump(mode="json"),
@@ -482,6 +522,11 @@ async def compare_date_savings(
             "ДЕМО-МОК: сравнение включает сгенерированные рейсы. Разница — расчётная оценка явного демо, "
             "а не подтверждённая экономия по настоящим предложениям Aviasales."
         )
+    if has_destination_filters(brief):
+        parts.append(
+            "Ограничения по воде и визе сверены с сохранённой справкой на каждую дату: климатическая норма "
+            "не является прогнозом, а правила въезда нужно перепроверить перед поездкой."
+        )
     if savings:
         parts.append("Варианты с экономией строго больше 5% по этим компонентам:")
         for item in savings[:3]:
@@ -502,7 +547,17 @@ async def compare_date_savings(
         parts.append("Для выбранного сдвига нет полного набора сопоставимых котировок. Экономию подтвердить нельзя.")
     missing = len(checked) - confirmed
     if missing and confirmed:
-        parts.append(f"Для {missing} дат сравнение не завершено: часть котировок отсутствует или источник недоступен.")
+        if any(row["status"] == "destination_constraints_not_met" for row in checked):
+            parts.append(
+                f"Для {missing} дат сравнение не завершено: условия не подтверждены, котировки отсутствуют "
+                "или источник недоступен."
+            )
+        else:
+            parts.append(
+                f"Для {missing} дат сравнение не завершено: часть котировок отсутствует или источник недоступен."
+            )
+    rejected_notes = list(dict.fromkeys(note for row in checked for note in row.get("notes", [])))
+    parts.extend(rejected_notes[:3])
     extras = "обратный трансфер, виза и прочие обязательные доплаты"
     if not include_transfer:
         extras = "оба трансфера, виза и прочие обязательные доплаты"

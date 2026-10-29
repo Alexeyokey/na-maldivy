@@ -2,6 +2,7 @@
 
 import json
 from datetime import date
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
@@ -10,6 +11,7 @@ from app.agent import AgentEvent, Stage, TravelAgent
 from app.agent import core as agent_core
 from app.llm import FakeLLMClient, LLMError, LLMResponse, ToolCall
 from app.tools import TOOLS
+from app.tools.destinations import load_catalogue
 
 TODAY = date(2026, 10, 27)
 
@@ -52,7 +54,18 @@ def text(value: str) -> LLMResponse:
 
 
 async def test_vague_request_to_simulated_purchase() -> None:
-    agent = offline_agent()
+    # Transport remains the finite D1 stub, but a hard climate constraint needs
+    # an explicit reference source. Stub DTOs alone cannot establish that fact.
+    tool = TOOLS["suggest_destinations"]
+    sourced = SimpleNamespace(
+        name=tool.name,
+        description=tool.description,
+        input_model=tool.input_model,
+        output_adapter=tool.output_adapter,
+        run=tool.run,
+        catalogue=load_catalogue(),
+    )
+    agent = TravelAgent(FakeLLMClient(), {**TOOLS, tool.name: sourced}, llm_writes_text=False, today=lambda: TODAY)
 
     t = await say(agent, "хочу куда-нибудь к тёплому морю в ноябре, недорого, с ребёнком, без долгих перелётов")
     sid = t.last.data["session_id"]

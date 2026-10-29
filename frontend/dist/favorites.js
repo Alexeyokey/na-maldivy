@@ -1,11 +1,13 @@
 /** Public search bookmarks only. Historical amounts never authorize a price or booking. */
 import {isoDay,earliestSearchDate,formatDate,adultsLabel,nightsLabel,counted} from './trip-presentation.js';
+import {destinationCodes} from './destination-names.generated.js';
 
 export const FAVORITES_STORAGE_KEY='na-maldivy-favorites-v1';
 export const FAVORITES_LIMIT=20;
 const SCHEMA_VERSION=1,MAX_STORAGE_BYTES=65536;
 const cities={MOW:'Москвы',SVO:'Шереметьево',LED:'Петербурга'};
 const destinations={AYT:'Анталью',DXB:'Дубай',MLE:'Мале'};
+const allowedDestinations=new Set(destinationCodes);
 const needText={child:'Нужен семейный отель.',pets:'Нужны отель и трансфер с питомцами.',sea:'Нужны море и пляж.',warm:'Нужен тёплый климат.',budget_low:'Предпочитаю недорогие варианты.',short_flight:'Предпочитаю короткий перелёт.',romantic:'Нужна романтическая поездка.',late_arrival:'Нужна круглосуточная стойка регистрации.',short_transfer:'Предпочитаю короткий трансфер.',quiet:'Нужен спокойный отдых.',flexible:'Планы могут поменяться, нужен возвратный тариф.'};
 const plain=value=>!!value&&typeof value==='object'&&!Array.isArray(value)&&[Object.prototype,null].includes(Object.getPrototypeOf(value));
 const integer=(value,min,max)=>Number.isSafeInteger(value)&&value>=min&&value<=max;
@@ -14,14 +16,16 @@ const clone=value=>JSON.parse(JSON.stringify(value));
 const invalid=()=>{throw new TypeError('Invalid public favorite');};
 const exactDay=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&isoDay(value)===value?value:null;
 const departureDay=value=>typeof value==='string'&&/^(?:\d{4}-\d{2}-\d{2})(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:\d{2}))?$/.test(value)&&Number.isFinite(Date.parse(value))?isoDay(value):null;
-function hotel(value){
+function hotel(value,destination){
  if(!plain(value))invalid();
- const match=typeof value.hotel_id==='string'&&/^osm:(node|way|relation)[/:]([1-9][0-9]{0,19})$/.exec(value.hotel_id),name=value.name;
- if(!match||typeof name!=='string'||name!==name.trim()||name.length<1||name.length>160||!/[\p{L}]/u.test(name)||/[<>\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/u.test(name)||/(?:https?:|www\.|@|(?:CART|DEMO)-|session[_-]?id|request[_-]?id|order[_-]?id|cart[_-]?id|\b[0-9a-f]{32}\b)/i.test(name)||/(?:^|[^\p{L}])(?:ignore|instructions?|system|assistant|pay|book|confirm|оплати\p{L}*|оформи\p{L}*|забронируй|подтверждаю|выбери|беру|игнорируй|инструкци\p{L}*)(?=$|[^\p{L}])/iu.test(name))invalid();
- return {hotel_id:`osm:${match[1]}/${match[2]}`,name};
+ const id=value.hotel_id,name=value.name;
+ const match=typeof id==='string'&&/^osm:(node|way|relation)[/:]([1-9][0-9]{0,19})$/.exec(id);
+ const demo=typeof id==='string'&&/^demo:hotel\/([A-Z]{3})-(?:0[1-9]|[1-9][0-9])$/.exec(id);
+ if(!(match&&match[0]===id||demo&&demo[0]===id&&demo[1]===destination)||typeof name!=='string'||name!==name.trim()||name.length<1||name.length>160||!/[\p{L}]/u.test(name)||/[<>\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/u.test(name)||/(?:https?:|www\.|@|(?:CART|DEMO)-|session[_-]?id|request[_-]?id|order[_-]?id|cart[_-]?id|\b[0-9a-f]{32}\b)/i.test(name)||/(?:^|[^\p{L}])(?:ignore|instructions?|system|assistant|pay|book|confirm|оплати\p{L}*|оформи\p{L}*|забронируй|подтверждаю|выбери|беру|игнорируй|инструкци\p{L}*)(?=$|[^\p{L}])/iu.test(name))invalid();
+ return {hotel_id:match?`osm:${match[1]}/${match[2]}`:id,name};
 }
 function criteria(value){
- if(!plain(value)||value.transport!==undefined&&value.transport!=='flight'||!Object.hasOwn(cities,value.origin)||!Object.hasOwn(destinations,value.destination)||!exactDay(value.start_date)||!integer(value.nights,1,60)||!integer(value.adults,1,12)||!Array.isArray(value.children_ages)||value.children_ages.length>8||value.children_ages.some(age=>!integer(age,0,17))||!integer(value.pets,0,3))invalid();
+ if(!plain(value)||value.transport!==undefined&&value.transport!=='flight'||!Object.hasOwn(cities,value.origin)||!allowedDestinations.has(value.destination)||!exactDay(value.start_date)||!integer(value.nights,1,60)||!integer(value.adults,1,12)||!Array.isArray(value.children_ages)||value.children_ages.length>8||value.children_ages.some(age=>!integer(age,0,17))||!integer(value.pets,0,3))invalid();
  const result={transport:'flight',origin:value.origin,destination:value.destination,start_date:value.start_date,nights:value.nights,adults:value.adults,children_ages:[...value.children_ages].sort((a,b)=>a-b),pets:value.pets};
  for(const [field,min,max] of [['budget_rub',1,Number.MAX_SAFE_INTEGER],['max_flight_minutes',1,1440],['min_stars',1,5]]){
   const number=value[field];if(number!=null&&!integer(number,min,max))invalid();result[field]=number??null;
@@ -41,7 +45,8 @@ function identifier(value){
 }
 function savedItem(value){
  if(!plain(value)||value.priceKind!=='historical_known_components'||typeof value.savedAt!=='string'||!/^\d{4}-\d{2}-\d{2}T/.test(value.savedAt)||!isoDay(value.savedAt)||!Number.isFinite(Date.parse(value.savedAt)))invalid();
- const result={hotel:hotel(value.hotel),criteria:criteria(value.criteria),rememberedKnownTotalRub:amount(value.rememberedKnownTotalRub),priceKind:'historical_known_components',savedAt:new Date(value.savedAt).toISOString()};
+ const searchCriteria=criteria(value.criteria);
+ const result={hotel:hotel(value.hotel,searchCriteria.destination),criteria:searchCriteria,rememberedKnownTotalRub:amount(value.rememberedKnownTotalRub),priceKind:'historical_known_components',savedAt:new Date(value.savedAt).toISOString()};
  return {id:identifier(result),...result};
 }
 
@@ -56,14 +61,16 @@ function optionItem(input,when){
  const start=brief.start_date==null?departureDay(option.outbound?.departure_at):exactDay(brief.start_date);
  const values={transport:'flight',origin:brief.origin??option.outbound?.from,destination:brief.destination??option.destination,start_date:start,nights:brief.nights??option.hotel?.nights,adults:brief.adults??group.adults,children_ages:brief.children_ages??group.children_ages,pets:brief.pets??group.pets};
  for(const field of ['budget_rub','max_flight_minutes','direct_only','late_departure','refundable_only','min_stars','min_water_temperature_c','visa_free_only','needs'])values[field]=brief[field];
- const result={hotel:hotel(option.hotel),criteria:criteria(values),rememberedKnownTotalRub:amount(option.known_total_rub),priceKind:'historical_known_components',savedAt:when};
+ const searchCriteria=criteria(values);
+ const result={hotel:hotel(option.hotel,searchCriteria.destination),criteria:searchCriteria,rememberedKnownTotalRub:amount(option.known_total_rub),priceKind:'historical_known_components',savedAt:when};
  if(option.destination!=null&&option.destination!==result.criteria.destination||option.hotel?.nights!=null&&option.hotel.nights!==result.criteria.nights||departureDay(option.outbound?.departure_at)&&departureDay(option.outbound.departure_at)!==start)invalid();
  for(const field of ['adults','pets'])if(group[field]!=null&&group[field]!==result.criteria[field])invalid();
  if(group.children_ages!=null&&(!Array.isArray(group.children_ages)||JSON.stringify([...group.children_ages].sort((a,b)=>a-b))!==JSON.stringify(result.criteria.children_ages)))invalid();
  return {id:identifier(result),...result};
 }
 function searchMessage(value){
- const c=value.criteria,parts=[`Новый поиск: из ${cities[c.origin]} в ${destinations[c.destination]}, дата вылета ${formatDate(c.start_date)}, ${nightsLabel(c.nights)}, ${adultsLabel(c.adults)}.`];
+ const c=value.criteria,parts=[`Новый поиск: из ${cities[c.origin]} в ${destinations[c.destination]||c.destination}, дата вылета ${formatDate(c.start_date)}, ${nightsLabel(c.nights)}, ${adultsLabel(c.adults)}.`];
+ if(c.destination==='LED')parts.push('Самолётом.');
  parts.push(c.children_ages.length?'Дети: '+c.children_ages.map(age=>counted(age,'год','года','лет')).join(', ')+'.':'Без детей.');
  parts.push(`Питомцев: ${c.pets}.`+(c.pets===0?' Без питомцев.':''));
  parts.push(c.budget_rub===null?'Без ограничения бюджета.':`Бюджет ${c.budget_rub} рублей на всю поездку за всех.`);

@@ -39,12 +39,14 @@ from app.agent.analysis import (
     requests_fabricated_offers,
 )
 from app.agent.brief import FIELD_LABELS, ApplyResult, BriefPatch, apply_patch
+from app.agent.coverage import full_trip_destinations
 from app.agent.date_savings import compare_date_savings, is_date_savings_question
 from app.agent.destination_info import destination_information, is_destination_information_question
+from app.agent.destination_policy import destination_policy_for_tools
 from app.agent.destination_selection import resolve_catalogue_destination
 from app.agent.hidden import NEEDS, quick_refinement_requested, requests_checkout_cancellation, unrecognized_destination
 from app.agent.hidden import extract as extract_patch
-from app.agent.places import FULL_TRIP_DESTINATIONS, ORIGINS
+from app.agent.places import ORIGINS
 from app.agent.planner import DEFAULT_NIGHTS, PlanResult, needs_summary, search_train_trip, search_trip, suggest
 from app.agent.prompts import ASK_PROMPT, EXPLAIN_PROMPT, OFF_TOPIC_PROMPT, SUMMARY_PROMPT, context_message
 from app.agent.review_explanations import explain_hotel_reviews
@@ -290,7 +292,7 @@ class TravelAgent:
             )
             emit("delta", {"text": booking_notice})
 
-        reference_only = s.brief.transport != "train" and s.brief.destination not in FULL_TRIP_DESTINATIONS
+        reference_only = s.brief.transport != "train" and s.brief.destination not in full_trip_destinations(self._tools)
         if reference_only or is_destination_information_question(text) and not s.packages:
             try:
                 information = destination_information(s.brief, self._tools, today=today)
@@ -494,7 +496,7 @@ class TravelAgent:
 
     async def _suggest(self, s: Session, text: str, emit: Emit) -> str:
         emit("status", {"stage": "suggest", "text": "Подбираю направления"})
-        plan = await suggest(s.brief, self._caller(s, emit))
+        plan = await suggest(s.brief, self._caller(s, emit), supported_destinations=full_trip_destinations(self._tools))
         s.destinations = plan.options
         s.trains = []
         s.packages, s.stale = [], False
@@ -514,7 +516,9 @@ class TravelAgent:
             self._finish_rebuild(s, emit, notes=plan.notes)
             return await self._summarize(s, text, plan, fmt.trains(plan), emit)
         emit("status", {"stage": "search", "text": "Собираю поездку: рейсы, отели, трансферы"})
-        plan = await search_trip(s.brief, self._caller(s, emit), self._today())
+        plan = await search_trip(
+            s.brief, self._caller(s, emit), self._today(), destination_policy=destination_policy_for_tools(self._tools)
+        )
         self._adopt_assumptions(s, plan, emit)
         s.packages, s.stale, s.selected = plan.options, False, None
         s.trains, s.destinations = [], []
@@ -559,7 +563,13 @@ class TravelAgent:
 
     async def _explain(self, s: Session, text: str, emit: Emit) -> str:
         if s.packages and is_date_savings_question(text):
-            comparison = await compare_date_savings(s, self._caller(s, emit), today=self._today(), text=text)
+            comparison = await compare_date_savings(
+                s,
+                self._caller(s, emit),
+                today=self._today(),
+                text=text,
+                destination_policy=destination_policy_for_tools(self._tools),
+            )
             emit("date_savings", comparison.facts)
             return self._say(comparison.text, emit)
         options = s.packages or s.trains or s.destinations

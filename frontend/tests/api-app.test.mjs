@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mountApiApp} from '../dist/api-app.js';
 import {FAVORITES_STORAGE_KEY,normalizeFavoriteIntent} from '../dist/favorites.js';
+import {destinationNames} from '../dist/destination-names.generated.js';
 
 const sid='durable-ui-session';
 const order={order_id:'DEMO-durable-ui',cart_id:'CART-durable-ui',session_id:sid,status:'paid_demo',is_simulated:true,package:{hotel:{name:'Durable Demo Hotel',check_in:'2026-11-18',check_out:'2026-11-25'},known_total_rub:80000}};
@@ -103,8 +104,10 @@ async function mountedSearch(t,options={}){
 test('Destination cards distinguish complete demo searches from references and send stable IATA prompts',async t=>{
  for(const scenario of [
   {code:'CMB',name:'Шри-Ланка',supported:false,label:'О направлении',prompt:'Расскажи о направлении CMB'},
+  {code:'CMB',name:'Шри-Ланка',supported:true,label:'Подобрать поездку',prompt:'Хочу в CMB'},
   {code:'AYT',name:'Анталья',supported:true,label:'Подобрать поездку',prompt:'Хочу в AYT'},
- ])await t.test(scenario.name,async t=>{
+  {code:'LED',name:'Санкт-Петербург',supported:true,label:'Подобрать поездку',prompt:'Хочу в LED, самолётом'},
+ ])await t.test(scenario.name+(scenario.supported?' · подбор':' · справка'),async t=>{
   const messages=[],brief={origin:'MOW',destination:null,month:1,year:2027,adults:2,children_ages:[5,5],pets:0,nights:7};
   const snapshot={session_id:'search-ui-session',version:2,stage:'collecting',brief:{...brief,destination:scenario.code},sources:{},needs:[],options:{kind:null,items:[],notes:[],assumptions:[]},selected:null,booking:null,stale:false};
   const ui=await mountedSearch(t,{request:async(path,init)=>{
@@ -471,6 +474,62 @@ test('A saved hotel survives reload and storage refresh; restoring starts one fr
   ui.click('favorites');ui.click('remove-favorite',{favoriteId:favorite.id});
   assert.deepEqual(JSON.parse(stored.get(FAVORITES_STORAGE_KEY)).items,[]);assert.match(ui.modal.innerHTML,/Пока ничего не сохранено/);
   assert.match(ui.root.innerHTML,/aria-label="Избранное: 0"/);assert.equal(messages.length,1);
+ });
+});
+
+test('Fictional hotels in CMB, LED and PKC show canonical labels and survive save-reload-fresh-restore without automatic selection',async t=>{
+ for(const code of ['CMB','LED','PKC'])await t.test(code,async t=>{
+  const saved=new Map(),browserStorage={getItem:key=>saved.get(key)??null,setItem:(key,value)=>saved.set(key,value)};
+  const option=packageOption(1);option.destination=code;option.outbound.to=code;option.inbound.from=code;
+  Object.assign(option.hotel,{hotel_id:`demo:hotel/${code}-01`,name:`Демо · ${destinationNames[code]} · Семейный бюджетный 01`});
+  const brief={transport:'flight',origin:'MOW',destination:code,start_date:'2027-01-29',nights:7,adults:1,children_ages:[],pets:0,needs:[]};
+  let favorite;
+  await t.test('Save a labelled public fictional hotel',async t=>{
+   const ui=await mountedSearch(t,{browserStorage,now:()=>new Date('2026-10-29T12:00:00Z')});
+   Object.assign(ui.controller.state,{brief,options:[option],assumptions:[],sources:{}});ui.controller.notify();
+   assert.ok(ui.root.innerHTML.includes(`Вариант 1 · ${destinationNames[code]}`));
+   assert.ok(ui.root.innerHTML.includes(`Москва → ${destinationNames[code]}`));
+   assert.match(ui.root.innerHTML,/Вымышленный демо-отель/);
+   ui.click('plan',{index:'1'});assert.match(ui.modal.innerHTML,/Вымышленный демо-отель/);
+   ui.click('toggle-favorite',{index:'1'});
+   favorite=JSON.parse(saved.get(FAVORITES_STORAGE_KEY)).items[0];
+   assert.equal(favorite.hotel.hotel_id,`demo:hotel/${code}-01`);assert.equal(favorite.criteria.destination,code);
+   assert.equal(favorite.priceKind,'historical_known_components');
+   assert.doesNotMatch(JSON.stringify(favorite),/session_id|cart_id|order_id|birth_date|offer_id/);
+   ui.click('favorites');assert.match(ui.modal.innerHTML,/Вымышленный демо-отель/);
+   assert.ok(ui.modal.innerHTML.includes(destinationNames[code]));assert.match(ui.modal.innerHTML,/историческая сумма/);
+   assert.ok(ui.calls.every(call=>call.method==='GET'));
+  });
+  await t.test('Reload and explicitly recalculate using a stable flight destination',async t=>{
+   const messages=[],criteria={...favorite.criteria,start_date:'2027-02-03'},freshOption=structuredClone(option);
+   Object.assign(freshOption.hotel,{check_in:'2027-02-03',check_out:'2027-02-10'});
+   freshOption.outbound.departure_at='2027-02-03T12:00:00+03:00';freshOption.inbound.departure_at='2027-02-10T12:00:00+03:00';
+   freshOption.known_total_rub=71000;
+   const final={session_id:`fresh-demo-${code}`,version:1,stage:'packages_shown',brief:criteria,sources:{},needs:[],options:{kind:'packages',items:[freshOption],notes:[],assumptions:[]},selected:null,booking:null,stale:false};
+   const ui=await mountedSearch(t,{browserStorage,now:()=>new Date('2026-10-29T12:00:00Z'),request:async(path,init)=>{
+    if(path==='/api/chat'){
+     messages.push(JSON.parse(init.body));return new Response(`event: options\ndata: ${JSON.stringify(final.options)}\n\nevent: delta\ndata: ${JSON.stringify({text:'Новый демонстрационный расчёт готов.'})}\n\nevent: done\ndata: ${JSON.stringify(final)}\n\n`,{headers:{'Content-Type':'text/event-stream'}});
+    }
+    assert.equal(path,`/api/session/fresh-demo-${code}`);return Response.json(final);
+   }});
+   ui.controller.setDraft('Позже уточню питание');const retained={sessionId:sid,order:structuredClone(order)};ui.controller.state.orders=[retained];
+   ui.click('favorites');assert.ok(ui.modal.innerHTML.includes(destinationNames[code]));
+   ui.click('restore-favorite',{favoriteId:favorite.id});assert.equal(messages.length,0);
+   assert.match(ui.modal.innerHTML,/Вымышленный демо-отель/);assert.match(ui.modal.innerHTML,/выбор и оформление автоматически не начинаются/);
+   const original=globalThis.FormData;globalThis.FormData=class {get(key){return key==='start_date'?'2027-02-03':null;}};t.after(()=>{globalThis.FormData=original;});
+   const submit=new Event('submit',{cancelable:true});Object.defineProperty(submit,'target',{value:{id:'api-favorite-form',dataset:{favoriteId:favorite.id},reportValidity:()=>true}});ui.document.dispatchEvent(submit);
+   await until(()=>messages.length===1&&!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+   assert.equal(messages[0].session_id,undefined);assert.equal(messages[0].search_only,true);
+   assert.ok(messages[0].message.includes(`в ${code}, дата вылета 03.02.2027`));
+   if(code==='LED')assert.match(messages[0].message,/Самолётом\./);
+   assert.doesNotMatch(messages[0].message,/demo:hotel|Демо ·|66001|Беру|Подтверждаю/);
+   assert.equal(ui.controller.state.brief.transport,'flight');assert.equal(ui.controller.state.brief.destination,code);
+   assert.equal(ui.controller.state.selected,null);assert.equal(ui.controller.state.cart,null);assert.equal(ui.controller.state.order,null);
+   assert.deepEqual(ui.controller.state.orders,[retained]);assert.equal(ui.controller.state.draft,'Позже уточню питание');
+   assert.match(ui.root.innerHTML,/Сохранённый отель есть в новой выдаче/);assert.match(ui.root.innerHTML,/Вымышленный демо-отель/);
+   assert.equal(ui.controller.state.favoriteIntent.rememberedKnownTotalRub,null);
+   assert.ok(ui.calls.every(call=>!call.path.startsWith('/api/checkout/')));
+  });
  });
 });
 

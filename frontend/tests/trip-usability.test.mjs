@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {componentChanges,criterionValue,favoriteMismatches,normalizeTripDiff,refinementActions,renderTripChanges} from '../dist/trip-usability.js';
+import {destinationNames,destinationCodes} from '../dist/destination-names.generated.js';
 
 const comparison=()=>({
  schema_version:1,version:2,status:'updated',
@@ -101,6 +102,19 @@ test('Criterion labels preserve removal, infant and false semantics',()=>{
  assert.equal(criterionValue('children_ages',[0,5,5]),'0 лет, 5 лет, 5 лет');
  assert.equal(criterionValue('direct_only',false),'Нет');assert.equal(criterionValue('pets',0),'0');
  assert.equal(criterionValue('origin','SVO'),'Москва · Шереметьево');assert.equal(criterionValue('start_date','invalid'),'дата не уточнена');
+});
+
+test('Every D5 destination has its canonical Russian name in criteria and before-after comparisons without changing origin labels',()=>{
+ assert.equal(destinationCodes.length,48);
+ for(const code of destinationCodes){
+  assert.equal(criterionValue('destination',code),destinationNames[code]);
+  const diff=comparison();diff.criteria_changes=[{field:'destination',before:'AYT',after:code,source:'explicit'}];
+  assert.ok(view(diff).includes(destinationNames[code]));
+ }
+ assert.equal(criterionValue('origin','MOW'),'Москва');assert.equal(criterionValue('origin','SVO'),'Москва · Шереметьево');
+ assert.equal(criterionValue('destination','ZZZ'),'ZZZ');assert.equal(criterionValue('destination','constructor'),'constructor');
+ const mismatches=favoriteMismatches({destination:'CMB'},{destination:'PKC'});
+ assert.deepEqual(mismatches,[{field:'destination',label:'Направление',expected:destinationNames.CMB,actual:destinationNames.PKC}]);
 });
 
 test('Favorite checks accept a Moscow-airport refinement and reordered ages but preserve exact airports, child multiplicity and removals',()=>{
