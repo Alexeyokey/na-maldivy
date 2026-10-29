@@ -1,0 +1,67 @@
+{
+  "scope": "D5_card_selection_and_reference_coverage",
+  "source_commit": "7cefd7ea1d338782953324befdd207e814820cca",
+  "status": "passed",
+  "catalogue": {
+    "destinations": 48,
+    "stored_aliases": 217,
+    "full_trip_destinations": [
+      "AYT",
+      "DXB",
+      "MLE"
+    ],
+    "support_is_inventory_confirmation": false
+  },
+  "checks": {
+    "backend_tests": 1978,
+    "frontend_tests": 278,
+    "gateway_integration_tests": 11,
+    "lint": "passed",
+    "docker_standard_package": "passed",
+    "docker_three_destination_checkout_and_restart": "passed",
+    "browser": "local_fake_provider_mobile_card_click_to_CMB_reference_passed",
+    "https_served_ui_sha256": "b3026912fd843b1ba5279ae308c15bf501166b2aba1fc70948e197d9d9c1f844",
+    "production_agent_and_web_revision_matched": true
+  },
+  "production_preservation": {
+    "prior_paid_demo_orders": 8,
+    "preserved_paid_demo_orders": 8,
+    "unchanged_documents": 16,
+    "changed_documents": 0,
+    "missing_chat_markers": 0,
+    "authentication_changed": false,
+    "permanent_volume_recreated": false
+  },
+  "owner_https_reference_smoke": {
+    "scope": "owner_https_destination_reference",
+    "source_revision": "7cefd7ea1d338782953324befdd207e814820cca",
+    "raw_requests_or_credentials_reported": false,
+    "checkout_requests": 0,
+    "payment_requests": 0,
+    "turns": [
+      {
+        "case": "legacy_label",
+        "status": "passed",
+        "destination": "CMB",
+        "full_trip_supported": false,
+        "search_tool_calls": 0
+      },
+      {
+        "case": "stable_iata",
+        "status": "passed",
+        "destination": "CMB",
+        "full_trip_supported": false,
+        "search_tool_calls": 0
+      }
+    ],
+    "model_calls": 2,
+    "status": "passed",
+    "duration_seconds": 15.793
+  },
+  "limitations": [
+    "Only AYT, DXB and MLE support full demo trip assembly; other catalogue entries provide reference facts.",
+    "No new supplier availability, real payment, tickets or booking was claimed or tested.",
+    "The browser run used a separate local instance; owner-site behavior was verified through HTTPS API and served UI bytes.",
+    "The submission tag is not created."
+  ]
+}
