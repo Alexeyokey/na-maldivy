@@ -98,10 +98,11 @@ class ChatRequestLedger:
         return None
 
 
-def payload_fingerprint(message: str, session_id: str | None) -> str:
-    canonical = json.dumps(
-        {"message": message, "session_id": session_id}, ensure_ascii=False, sort_keys=True, separators=(",", ":")
-    )
+def payload_fingerprint(message: str, session_id: str | None, *, search_only: bool = False) -> str:
+    payload = {"message": message, "session_id": session_id}
+    if search_only:
+        payload["search_only"] = True
+    canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
@@ -123,6 +124,7 @@ class ChatTurn:
     task: asyncio.Task[None] | None = None
     completed_at: float | None = None
     size: int = 0
+    search_only: bool = False
 
     def append(self, event: bytes) -> None:
         self.events.append(event)
@@ -187,6 +189,7 @@ class ChatRecovery:
         *,
         retry: bool = False,
         session_exists: bool = True,
+        search_only: bool = False,
     ) -> ChatTurn:
         """Accept synchronously, before response headers and without an await race."""
         self._prune()
@@ -194,10 +197,10 @@ class ChatRecovery:
             raise ChatRecoveryError(503, "Сервер перезапускается. Повторите подключение позже.")
         existing = self._turns.get(request_id)
         if existing is not None:
-            if (existing.message, existing.session_id) != (message, session_id):
+            if (existing.message, existing.session_id, existing.search_only) != (message, session_id, search_only):
                 raise ChatRecoveryError(409, "Это сообщение уже принято с другим содержимым.")
             return existing
-        fingerprint = payload_fingerprint(message, session_id)
+        fingerprint = payload_fingerprint(message, session_id, search_only=search_only)
         if self._ledger is not None:
             try:
                 seen = self._ledger.lookup(request_id)
@@ -221,7 +224,7 @@ class ChatRecovery:
                 raise self._ledger_unavailable() from None
             if seen is not None:  # Another process may have accepted it after lookup.
                 self._reject_seen(seen, fingerprint)
-        turn = ChatTurn(message=message, session_id=session_id)
+        turn = ChatTurn(message=message, session_id=session_id, search_only=search_only)
         self._turns[request_id] = turn
         turn.task = asyncio.create_task(self._produce(turn, run), name="chat-recovery-turn")
         return turn

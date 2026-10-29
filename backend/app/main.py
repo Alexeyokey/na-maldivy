@@ -28,6 +28,8 @@ class ChatRequest(BaseModel):
     request_id: str | None = Field(default=None, pattern=r"^[A-Za-z0-9_-]{1,64}$")
     # A durable acceptance marker distinguishes a lost response from an unsent request.
     retry: bool = False
+    # Favorites may search/review freely but must never advance checkout implicitly.
+    search_only: bool = Field(default=False, strict=True)
 
 
 def create_app(settings: Settings | None = None, llm: LLMClient | None = None) -> FastAPI:
@@ -102,10 +104,14 @@ def create_app(settings: Settings | None = None, llm: LLMClient | None = None) -
     async def chat(body: ChatRequest, request: Request) -> StreamingResponse:
         """Поток SSE: события хода агента (см. app/agent/core.py), в конце done или error."""
         agent: TravelAgent = request.app.state.agent
+
+        def run_agent() -> AsyncIterator[Any]:
+            return agent.run(body.message, body.session_id, **({"search_only": True} if body.search_only else {}))
+
         if body.request_id is None:
             if body.retry:
                 raise HTTPException(status_code=422, detail="Для повтора сообщения нужен request_id.")
-            stream = legacy_stream(agent.run(body.message, body.session_id))
+            stream = legacy_stream(run_agent())
         else:
             recovery: ChatRecovery = request.app.state.chat_recovery
             try:
@@ -113,8 +119,9 @@ def create_app(settings: Settings | None = None, llm: LLMClient | None = None) -
                     body.request_id,
                     body.message,
                     body.session_id,
-                    lambda: agent.run(body.message, body.session_id),
+                    run_agent,
                     retry=body.retry,
+                    search_only=body.search_only,
                     session_exists=body.session_id is None or agent.sessions.get(body.session_id) is not None,
                 )
             except ChatRecoveryError as exc:
