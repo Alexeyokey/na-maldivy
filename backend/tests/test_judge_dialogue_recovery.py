@@ -142,7 +142,7 @@ def test_paid_order_cannot_be_cancelled_or_refunded_by_a_chat_imperative(dialogu
 
 
 @pytest.mark.parametrize("stage", ["results", "selected", "pending", "paid"])
-def test_reference_destination_retires_old_cards_but_retains_other_criteria_and_paid_order(dialogue, stage):
+def test_new_demo_destination_rebuilds_cards_but_retains_other_criteria_and_paid_order(dialogue, stage):
     dialogue.setup(stage)
     documents = dialogue.durable_order() if stage == "paid" else None
     events = dialogue.say("Хочу в Бангкок 20 ноября 2026 на 5 ночей, трое взрослых, бюджет 300 тысяч")
@@ -155,27 +155,29 @@ def test_reference_destination_retires_old_cards_but_retains_other_criteria_and_
         "adults": 3,
         "budget_rub": 300_000,
     }
-    assert after["stage"] == "destinations_shown" and after["options"]["items"] == []
-    assert after["stale"] is False and after["last_diff"] is None
+    assert after["stage"] == "packages_shown" and after["options"]["items"]
+    assert after["stale"] is False and after["last_diff"]["status"] == "updated"
     assert after["selected"] is after["booking"] is None
-    question = next(row["data"] for row in events if row["type"] == "question")
-    assert question["field"] == "destination" and "полного подбора" in question["text"]
-    information = next(row["data"] for row in events if row["type"] == "destination_info")
-    assert information["destination"] == "BKK" and not information["full_trip_supported"]
-    assert not any(row["type"] == "tool_call" for row in events), "Do not silently search a different destination"
+    assert all(row["destination"] == "BKK" for row in after["options"]["items"])
+    assert not any(row["type"] == "destination_info" for row in events)
+    assert any(row["type"] == "tool_call" for row in events)
     if documents:
         assert dialogue.durable_order() == documents
 
 
 @pytest.mark.parametrize("destination", ["BKK", "NRT", "CMB", "GOI"])
-def test_explicit_d5_iata_outside_full_demo_coverage_is_retained_without_inventing_trips(dialogue, destination):
+def test_catalogue_iata_is_searched_in_demo_without_inventing_supplier_quotes(dialogue, destination):
     dialogue.say(f"Из Москвы в {destination} 18 ноября 2026 на неделю вдвоём")
     state = dialogue.state()
     assert state["brief"]["destination"] == destination
     # GOI is not in this D5 catalogue; don't invent reference facts just because
     # an arbitrary IATA was accepted.
-    assert state["options"]["kind"] == ("packages" if destination == "GOI" else "destinations")
-    assert state["options"]["items"] == []
+    assert state["options"]["kind"] == "packages"
+    if destination == "GOI":
+        assert state["options"]["items"] == []
+    else:
+        assert state["options"]["items"]
+        assert all(row["outbound"]["demo_source"]["kind"] == "deterministic_mock" for row in state["options"]["items"])
     assert state["selected"] is state["booking"] is None
 
 
@@ -276,7 +278,14 @@ def test_ordinary_trip_followups_do_not_erase_the_destination(dialogue, message,
     state = dialogue.state()
     assert state["brief"]["destination"] == destination
     assert state["brief"]["budget_rub"] == budget
-    assert state["options"]["kind"] == "packages" and state["options"]["items"]
+    assert state["options"]["kind"] == "packages"
+    if state["brief"]["min_water_temperature_c"] is not None:
+        # The route remains Antalya, but November's saved water norm cannot
+        # satisfy the inferred >=24°C sea requirement. Don't ignore that field.
+        assert state["options"]["items"] == []
+        assert any("воды" in note for note in state["options"]["notes"])
+    else:
+        assert state["options"]["items"]
     assert not any(row["type"] == "question" and row["data"]["field"] == "destination" for row in events)
 
 

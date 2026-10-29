@@ -84,9 +84,9 @@ def create_tools(settings: Settings, *, flight_http=None, train_http=None) -> To
         trains = TrainTool(data_dir=settings.data_dir)
     tools = (
         flights,
-        HotelSearchTool(data_dir=settings.data_dir),
+        HotelSearchTool(data_dir=settings.data_dir, include_demo=settings.flights_mode == "demo"),
         DestinationTool(data_dir=settings.data_dir),
-        S4TransferTool(data_dir=settings.data_dir),
+        S4TransferTool(data_dir=settings.data_dir, include_demo=settings.flights_mode == "demo"),
         trains,
         PriceCalendarTool(flights=flights),
     )

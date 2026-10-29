@@ -61,14 +61,21 @@ def _network(path: Path = ROUTES_PATH) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _airport(code: str, path: Path = ROUTES_PATH) -> Place:
+def _airport(code: str, path: Path = ROUTES_PATH, *, demo_routes_path: Path | None = None) -> Place:
     try:
-        return Place.model_validate(_network(path)["airports"][code])
+        raw = _network(path)["airports"].get(code)
+        if raw is None and demo_routes_path is not None:
+            raw = _network(demo_routes_path)["airports"].get(code)
+        if raw is None:
+            raise KeyError(code)
+        return Place.model_validate(raw)
     except KeyError as exc:
         raise ProviderResponseError(f"Unsupported airport in transport snapshot: {code}") from exc
 
 
-def _route(origin: str, destination: str, path: Path = ROUTES_PATH) -> dict[str, Any] | None:
+def _route(
+    origin: str, destination: str, path: Path = ROUTES_PATH, *, demo_routes_path: Path | None = None
+) -> dict[str, Any] | None:
     origin = "SVO" if origin == "MOW" else origin
     destination = "SVO" if destination == "MOW" else destination
     for route in _network(path)["routes"]:
@@ -76,16 +83,23 @@ def _route(origin: str, destination: str, path: Path = ROUTES_PATH) -> dict[str,
             return dict(route)
         if route["origin"] == destination and route["destination"] == origin:
             return {**route, "origin": origin, "destination": destination, "via": list(reversed(route["via"]))}
+    if demo_routes_path is not None:
+        return _route(origin, destination, demo_routes_path)
     return None
 
 
-def generate_flights(query: FlightSearch, *, seed: int = 42, routes_path: Path | None = None) -> list[Flight]:
+def generate_flights(
+    query: FlightSearch, *, seed: int = 42, routes_path: Path | None = None, demo_routes_path: Path | None = None
+) -> list[Flight]:
     """Pure reproducible demo shared with D8: same day/group/seed => same fares."""
     routes_path = routes_path or resolve_data_dir() / "routes/network.json"
-    route = _route(query.origin, query.destination, routes_path)
+    route = _route(query.origin, query.destination, routes_path, demo_routes_path=demo_routes_path)
     if route is None or (query.direct_only and route["stops"]):
         return []
-    origin, destination = _airport(route["origin"], routes_path), _airport(route["destination"], routes_path)
+    origin, destination = (
+        _airport(route["origin"], routes_path, demo_routes_path=demo_routes_path),
+        _airport(route["destination"], routes_path, demo_routes_path=demo_routes_path),
+    )
     season = 1200 if query.departure_date.month in (7, 8, 12) else 1000
     flights = []
     for variant, departure_time in enumerate((time(9), time(23, 30))):
@@ -235,17 +249,30 @@ class FlightTool:
         http: FlightHttpClient | None = None,
         token: str | None = None,
         data_dir: Path | None = None,
+        demo_routes_path: Path | None = None,
     ):
         if mode not in ("synthetic", "provider"):
             raise ValueError("Unknown flight mode")
         self.mode, self.seed = mode, seed
         self.routes_path = resolve_data_dir(data_dir) / "routes/network.json"
+        if mode != "synthetic" and demo_routes_path is not None:
+            raise ValueError("Supplemental demo routes cannot be used by a provider flight tool")
+        self.demo_routes_path = demo_routes_path
         self.provider = AviasalesDataClient(http, token, routes_path=self.routes_path) if http is not None else None
+
+    @property
+    def supported_destinations(self) -> frozenset[str]:
+        routes = list(_network(self.routes_path)["routes"])
+        if self.demo_routes_path is not None:
+            routes += _network(self.demo_routes_path)["routes"]
+        return frozenset(route["destination"] for route in routes)
 
     async def search_with_provenance(self, query: FlightSearch) -> FlightSearchResult:
         if self.mode == "synthetic":
-            flights = generate_flights(query, seed=self.seed, routes_path=self.routes_path)
-            route = _route(query.origin, query.destination, self.routes_path)
+            flights = generate_flights(
+                query, seed=self.seed, routes_path=self.routes_path, demo_routes_path=self.demo_routes_path
+            )
+            route = _route(query.origin, query.destination, self.routes_path, demo_routes_path=self.demo_routes_path)
             return FlightSearchResult(
                 tuple(flights),
                 (),

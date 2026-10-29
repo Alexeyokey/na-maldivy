@@ -8,6 +8,8 @@
 
 import re
 
+from app.agent.destination_names import DESTINATION_NAMES
+
 # Код → человекочитаемое название для ответов пользователю.
 PLACE_NAMES: dict[str, str] = {
     "MOW": "Москва",
@@ -48,12 +50,12 @@ _ALIASES: tuple[tuple[str, str], ...] = (
     ("nha trang", "CXR"),
 )
 
-PLACE_NAMES["CXR"] = "Нячанг"
+PLACE_NAMES.update(DESTINATION_NAMES)
 
 ORIGINS = frozenset({"MOW", "SVO", "LED"})
 DESTINATIONS = frozenset({"AYT", "DXB", "MLE", "CXR"})
-# Finite demo bundle coverage, not a claim that any particular offer is available.
-# Other D5 destinations provide reference information, not hotel/transfer packages.
+# Baseline used by original stub/injected tools without capability metadata.
+# Configured tools expose actual coverage through agent.coverage.
 FULL_TRIP_DESTINATIONS = frozenset({"AYT", "DXB", "MLE"})
 
 

@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "source_revision": "a2a1ed4385fc0453644e527cf80b2d0267f1d88b",
+  "services": [
+    {
+      "name": "agent",
+      "health": "healthy",
+      "source_revision": "a2a1ed4385fc0453644e527cf80b2d0267f1d88b"
+    },
+    {
+      "name": "web",
+      "health": "healthy",
+      "source_revision": "a2a1ed4385fc0453644e527cf80b2d0267f1d88b"
+    }
+  ],
+  "image_preflight": {
+    "status": "passed",
+    "public_data_files_matched": 971,
+    "hotels": 420,
+    "full_trip_destinations": 48,
+    "complete_family_pet_refund_plans": 3,
+    "network": "none",
+    "external_model_used": false,
+    "run_as_nonroot": true
+  },
+  "preservation": {
+    "prior_paid_orders": 8,
+    "current_paid_orders": 8,
+    "prior_paid_rows_matched": 8,
+    "missing_or_changed_prior_paid_rows": 0,
+    "additional_order_rows": 0,
+    "documents_checked": 16,
+    "changed_documents": 0,
+    "orders_with_unavailable_documents": 0,
+    "missing_or_changed_chat_markers": 0,
+    "prior_orders_documents_and_ledger_preserved": true
+  },
+  "authentication_changed": false,
+  "permanent_volume_recreated": false,
+  "checkout_requests_on_domain": 0,
+  "payment_requests_on_domain": 0,
+  "browser": {
+    "scope": "isolated_local_committed_release_fake_model",
+    "source_revision": "a2a1ed4385fc0453644e527cf80b2d0267f1d88b",
+    "scenario": "suggestion_CMB_to_complete_packages",
+    "status": "passed",
+    "screenshot_sha256": "cc7d70ac6e2192272b2a3421e7c7392de082b0bdde023bd6c2730ac58b7190ab"
+  }
+}

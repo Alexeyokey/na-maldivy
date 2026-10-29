@@ -57,3 +57,13 @@ judge-check:
 # Сначала перезапустите agent и дождитесь healthy; контекст остаётся в томе.
 judge-resume:
 	docker compose exec -T agent python /app/scripts/check_running_three_destinations.py --base-url http://app:8080 --context /state/judge-three-private.json --output /state/judge-three-resume.json --resume
+
+.PHONY: demo-generated-check expanded-demo-check
+# These only validate committed public fixtures; no credentials or live model.
+demo-generated-check:
+	cd backend && uv run python ../scripts/build_destination_names.py --check
+	cd backend && uv run python ../scripts/build_demo_hotels.py --check
+	cd backend && uv run python ../scripts/build_demo_transport.py --check
+
+expanded-demo-check: demo-generated-check
+	cd backend && uv run python ../scripts/check_expanded_demo.py

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createFavoritesStore,FAVORITES_STORAGE_KEY,FAVORITES_LIMIT,normalizeFavoriteIntent} from '../dist/favorites.js';
+import {destinationNames,destinationCodes} from '../dist/destination-names.generated.js';
 
 const now=()=>new Date('2026-10-29T12:00:00Z');
 function memory(){const map=new Map();return {getItem:key=>map.get(key)??null,setItem:(key,value)=>map.set(key,value),removeItem:key=>map.delete(key),map};}
@@ -104,6 +105,66 @@ test('All sixty actual public catalog names and identities remain valid display-
  const catalog=JSON.parse(readFileSync(new URL('../../data/hotels/catalog.json',import.meta.url),'utf8')).hotels;
  assert.equal(catalog.length,60);
  for(const row of catalog){const raw=input();raw.option.hotel={...raw.option.hotel,hotel_id:row.hotel_id,name:row.name};assert.equal(store().add(raw).saved,true,row.hotel_id);}
+});
+
+test('Every D5 destination and all 360 fictional hotel identities remain saveable public metadata without claiming a current price',()=>{
+ const originals=JSON.parse(readFileSync(new URL('../../data/hotels/catalog.json',import.meta.url),'utf8')).hotels;
+ const generated=JSON.parse(readFileSync(new URL('../../data/demo/hotels.generated.json',import.meta.url),'utf8')).hotels;
+ assert.equal(destinationCodes.length,48);assert.equal(generated.length,360);
+ assert.deepEqual(new Set([...originals,...generated].map(row=>row.destination)),new Set(destinationCodes));
+ for(const row of generated){
+  const raw=input();raw.brief.destination=row.destination;raw.option.destination=row.destination;
+  Object.assign(raw.option.hotel,{hotel_id:row.hotel_id,name:row.name});
+  const storage=memory(),favorites=store(storage),added=favorites.add(raw);
+  assert.equal(added.saved,true,row.hotel_id);const reloaded=store(storage).load().items[0];
+  assert.equal(reloaded.hotel.hotel_id,row.hotel_id);assert.equal(reloaded.hotel.name,row.name);
+  assert.equal(reloaded.criteria.destination,row.destination);assert.equal(reloaded.priceKind,'historical_known_components');
+  const restored=store(storage).restore(reloaded.id);assert.equal(restored.code,'ready');
+  assert.ok(restored.message.includes(`в ${row.destination},`),row.destination);
+  assert.doesNotMatch(restored.message,/demo:hotel|Вымышленный|Демо ·|osm:/);
+  assert.match(restored.message,/Ничего не выбирать, не оформлять и не оплачивать/);
+ }
+ assert.equal(destinationNames.CMB,'Шри-Ланка');assert.equal(destinationNames.LED,'Санкт-Петербург');
+});
+
+test('CMB, LED and PKC favorites survive reload and restore only a fresh flight search, with an explicit new date',()=>{
+ const storage=memory(),favorites=store(storage),saved=[];
+ for(const code of ['CMB','LED','PKC']){
+  const raw=input();Object.assign(raw.brief,{destination:code,transport:'flight'});raw.option.destination=code;
+  Object.assign(raw.option.hotel,{hotel_id:`demo:hotel/${code}-01`,name:`Демо · ${destinationNames[code]} · Семейный бюджетный 01`});
+  const added=favorites.add(raw);assert.equal(added.saved,true);saved.push(added.items.find(row=>row.id===added.id));
+ }
+ const reloaded=store(storage);assert.equal(reloaded.load().items.length,3);
+ for(const item of saved){
+  const result=reloaded.restore(item.id,{startDate:'2027-02-03'});
+  assert.equal(result.freshSearch,true);assert.equal(result.favorite.criteria.transport,'flight');
+  assert.equal(result.favorite.criteria.destination,item.criteria.destination);assert.equal(result.favorite.criteria.start_date,'2027-02-03');
+  assert.equal(result.favorite.rememberedKnownTotalRub,null,'A different departure cannot reuse the historical amount');
+  assert.ok(result.message.includes(`в ${item.criteria.destination}, дата вылета 03.02.2027`));
+  if(item.criteria.destination==='LED')assert.match(result.message,/Самолётом\./);
+  assert.match(result.message,/Дети: 5 лет, 8 лет/);assert.match(result.message,/Питомцев: 1/);
+  assert.doesNotMatch(result.message,/demo:hotel|Семейный бюджетный|123456|private|Беру|Подтверждаю/);
+  assert.match(result.message,/Ничего не выбирать, не оформлять и не оплачивать/);
+ }
+ assert.deepEqual([...reloaded.load().items].sort((a,b)=>a.id.localeCompare(b.id)),[...saved].sort((a,b)=>a.id.localeCompare(b.id)));
+});
+
+test('Cross-destination demo identities and opaque or unbounded identifiers fail both save and persisted favorite restoration',()=>{
+ const raw=input();raw.brief.destination='CMB';raw.option.destination='CMB';raw.option.hotel.hotel_id='demo:hotel/CMB-01';
+ const saved=store().add(raw).items[0];assert.ok(saved);
+ for(const id of ['demo:hotel/PKC-01','demo:hotel/cmb-01','demo:hotel/CMB-00','demo:hotel/CMB-100','demo:hotel/CMB-001','demo:hotel/CMB-01\n','demo:hotel/CMB-01/extra','demo:hotel/../CMB-01','demo:hotel%2FCMB-01','demo:hotel:CMB-01','provider-hotel-CMB-01','CMB-01']){
+  const bad=structuredClone(raw);bad.option.hotel.hotel_id=id;assert.equal(store().add(bad).saved,false,id);
+  const persisted={...structuredClone(saved),hotel:{...saved.hotel,hotel_id:id}};
+  assert.equal(normalizeFavoriteIntent(persisted),null,id);
+  const storage=memory();storage.setItem(FAVORITES_STORAGE_KEY,JSON.stringify({schemaVersion:1,items:[persisted]}));
+  const result=store(storage).load();assert.equal(result.code,'partial_corrupt');assert.deepEqual(result.items,[]);
+ }
+ const wrongCriteria={...structuredClone(saved),criteria:{...saved.criteria,destination:'PKC'}};
+ assert.equal(normalizeFavoriteIntent(wrongCriteria),null);
+ const unknown=structuredClone(raw);unknown.brief.destination='ZZZ';unknown.option.destination='ZZZ';unknown.option.hotel.hotel_id='demo:hotel/ZZZ-01';
+ assert.equal(store().add(unknown).saved,false);
+ const boundary=structuredClone(raw);boundary.option.hotel.hotel_id='demo:hotel/CMB-99';
+ assert.equal(store().add(boundary).saved,true,'The bounded identity contract permits01..99, while server catalogue membership is checked during a fresh search');
 });
 
 test('Rare public constraints and all existing needs remain explicit; airport origins stay distinct',()=>{

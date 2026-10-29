@@ -1,0 +1,1057 @@
+{
+  "schema_version": 1,
+  "scope": "data_and_planner_only",
+  "reference_today": "2026-10-29",
+  "status": "passed",
+  "credentials_used": false,
+  "network_used": false,
+  "model_calls": 0,
+  "acceptance": {
+    "chat": false,
+    "booking": false,
+    "external_model": false,
+    "supplier_availability": false
+  },
+  "cases": [
+    {
+      "case": "date/MOW/AYT/2026-10-30",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/AYT/2026-11-18",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/AYT/2026-12-31",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/AYT/2027-01-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/AYT/2027-02-28",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/AYT/2027-06-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/AYT/2027-08-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "solo/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family5/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant0/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant1/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "twins/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "mixed_children/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "pet/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family_pet/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "four_adults/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "maximum_group/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "refundable/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "five_star/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "direct/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "late/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights1/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights60/MOW/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/DXB/2026-10-30",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/DXB/2026-11-18",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/DXB/2026-12-31",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/DXB/2027-01-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/DXB/2027-02-28",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/DXB/2027-06-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/DXB/2027-08-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "solo/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family5/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant0/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant1/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "twins/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "mixed_children/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "pet/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family_pet/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "four_adults/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "maximum_group/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "refundable/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "five_star/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "direct/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "late/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights1/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights60/MOW/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/MLE/2026-10-30",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/MLE/2026-11-18",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/MLE/2026-12-31",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/MLE/2027-01-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/MLE/2027-02-28",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/MLE/2027-06-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/MOW/MLE/2027-08-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "solo/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family5/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant0/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant1/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "twins/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "mixed_children/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "pet/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 1,
+      "failures": []
+    },
+    {
+      "case": "family_pet/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 1,
+      "failures": []
+    },
+    {
+      "case": "four_adults/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "maximum_group/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 1,
+      "failures": []
+    },
+    {
+      "case": "refundable/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "five_star/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "direct/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "late/MOW/MLE",
+      "expected": "empty",
+      "status": "passed",
+      "option_count": 0,
+      "failures": []
+    },
+    {
+      "case": "nights1/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights60/MOW/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/AYT/2026-10-30",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/LED/AYT/2026-11-18",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/AYT/2026-12-31",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/LED/AYT/2027-01-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/AYT/2027-02-28",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/LED/AYT/2027-06-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/LED/AYT/2027-08-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "solo/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family5/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant0/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant1/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "twins/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "mixed_children/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "pet/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family_pet/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "four_adults/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "maximum_group/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "refundable/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "five_star/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "direct/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "late/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights1/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights60/LED/AYT",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/DXB/2026-10-30",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "date/LED/DXB/2026-11-18",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/DXB/2026-12-31",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/DXB/2027-01-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/DXB/2027-02-28",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/DXB/2027-06-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/DXB/2027-08-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "solo/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family5/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant0/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant1/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "twins/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "mixed_children/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "pet/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family_pet/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "four_adults/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "maximum_group/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "refundable/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "five_star/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "direct/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "late/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights1/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 3,
+      "failures": []
+    },
+    {
+      "case": "nights60/LED/DXB",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/MLE/2026-10-30",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/MLE/2026-11-18",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/MLE/2026-12-31",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/MLE/2027-01-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/MLE/2027-02-28",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/MLE/2027-06-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "date/LED/MLE/2027-08-15",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "solo/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "family5/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant0/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "infant1/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "twins/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "mixed_children/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "pet/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 1,
+      "failures": []
+    },
+    {
+      "case": "family_pet/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 1,
+      "failures": []
+    },
+    {
+      "case": "four_adults/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "maximum_group/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 1,
+      "failures": []
+    },
+    {
+      "case": "refundable/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "five_star/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "direct/LED/MLE",
+      "expected": "empty",
+      "status": "passed",
+      "option_count": 0,
+      "failures": []
+    },
+    {
+      "case": "late/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights1/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "nights60/LED/MLE",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "monthly/DXB/limit395",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "monthly/AYT/limit305",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "budget/AYT/1000",
+      "expected": "empty",
+      "status": "passed",
+      "option_count": 0,
+      "failures": []
+    },
+    {
+      "case": "budget/MLE/10000",
+      "expected": "empty",
+      "status": "passed",
+      "option_count": 0,
+      "failures": []
+    },
+    {
+      "case": "train/MOW/LED/seated",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 2,
+      "failures": []
+    },
+    {
+      "case": "train/LED/MOW/coupe",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 1,
+      "failures": []
+    },
+    {
+      "case": "train/MOW/LED/sv",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 1,
+      "failures": []
+    },
+    {
+      "case": "train/LED/MOW/platzkart",
+      "expected": "nonempty",
+      "status": "passed",
+      "option_count": 1,
+      "failures": []
+    }
+  ],
+  "failures": [],
+  "inventory": {
+    "status": "passed",
+    "counts": {
+      "hotels": 60,
+      "reviews": 1440,
+      "profiles": 60,
+      "cache_entries": 47
+    },
+    "failures": [],
+    "data_sha256": "ea38092aaf516ea7f3f9104a3610fb97e60108f197cfe060e3d4bce811ce7e53"
+  },
+  "network_attempts_blocked": 0,
+  "case_counts": {
+    "passed": 146,
+    "total": 146
+  },
+  "seconds": 6.137
+}

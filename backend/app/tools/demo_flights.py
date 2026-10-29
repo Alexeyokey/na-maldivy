@@ -8,11 +8,14 @@ provider responses. A generated DXB route is a mock, not a renamed DWC quote.
 from pathlib import Path
 
 from app.contracts.tools import Flight, FlightDemoSource, FlightSearch
+from app.data_paths import resolve_data_dir
 from app.tools.flights import FlightHttpClient, FlightSearchResult, FlightTool
 from app.tools.http_cache import CacheMiss
 
 PROVIDER_NOTICE = "Aviasales Data API: сохранённая котировка; наличие мест и цена покупки не подтверждены."
-MOCK_NOTICE = "ДЕМО-МОК: расписание и цена сгенерированы; это не котировка Aviasales и не наличие мест."
+MOCK_NOTICE = (
+    "ДЕМО-МОК: маршрут, прямота, расписание и цена сгенерированы; это не котировка Aviasales и не наличие мест."
+)
 
 
 class DemoFlightTool:
@@ -30,8 +33,17 @@ class DemoFlightTool:
             raise ValueError("Demo flights require an offline replay client")
         self.http = http
         self.provider = FlightTool(mode="provider", http=http, token=None, data_dir=data_dir)
-        self.synthetic = FlightTool(mode="synthetic", seed=seed, data_dir=data_dir)
+        self.synthetic = FlightTool(
+            mode="synthetic",
+            seed=seed,
+            data_dir=data_dir,
+            demo_routes_path=resolve_data_dir(data_dir) / "demo/routes.generated.json",
+        )
         self.routes_path = self.synthetic.routes_path
+
+    @property
+    def supported_destinations(self) -> frozenset[str]:
+        return self.synthetic.supported_destinations
 
     async def search_with_provenance(self, query: FlightSearch) -> FlightSearchResult:
         if self.http.mode != "replay":

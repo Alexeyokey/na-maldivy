@@ -1,8 +1,9 @@
 """S4 airport → hotel quotes exposed through the public D1 tool contract.
 
-Place facts come from the checked-in OSM catalogues on the server. S4 prices,
-hours and commercial restrictions are synthetic, so every quote stays marked
-is_synthetic even when its route was measured by OSRM.
+Place facts come from the checked-in OSM catalogues, or explicitly opted-in
+fictional D5 demo hotels. S4 prices, hours and commercial restrictions are
+synthetic, so every quote stays marked is_synthetic. Generated supplements never
+claim OSRM or real service availability.
 """
 
 import json
@@ -25,15 +26,38 @@ class S4TransferTool:
     input_model = TransferRequest
     output_adapter = TypeAdapter(list[Transfer])
 
-    def __init__(self, *, base: TransferBase | None = None, data_dir: Path | None = None) -> None:
+    def __init__(
+        self, *, base: TransferBase | None = None, data_dir: Path | None = None, include_demo: bool = False
+    ) -> None:
         self.base = base
         self.data_dir = resolve_data_dir(data_dir)
+        self.include_demo = include_demo
+
+    @property
+    def supported_destinations(self) -> frozenset[str]:
+        base = self.base if self.base is not None else default_base(self.data_dir, include_demo=self.include_demo)
+        return frozenset(record.airport for record in base)
 
     async def run(self, input: TransferRequest) -> list[Transfer]:
-        base = self.base if self.base is not None else default_base(self.data_dir)
+        base = self.base if self.base is not None else default_base(self.data_dir, include_demo=self.include_demo)
         record = base.get(input.hotel_id, input.airport)
-        airports = json.loads((self.data_dir / "transfers/airports.json").read_text(encoding="utf-8"))["airports"]
-        hotels = json.loads((self.data_dir / "hotels/osm_hotels.json").read_text(encoding="utf-8"))["hotels"]
+        if self.include_demo and input.hotel_id.startswith("demo:hotel/"):
+            network = json.loads((self.data_dir / "demo/routes.generated.json").read_text(encoding="utf-8"))
+            airports = [
+                {
+                    "iata": code,
+                    "name": point["name"],
+                    "lat": point["latitude"],
+                    "lon": point["longitude"],
+                    "tz": point["timezone"],
+                }
+                for code, point in network["airports"].items()
+            ]
+            generated = json.loads((self.data_dir / "demo/hotels.generated.json").read_text(encoding="utf-8"))["hotels"]
+            hotels = [{**point, "lat": point["latitude"], "lon": point["longitude"]} for point in generated]
+        else:
+            airports = json.loads((self.data_dir / "transfers/airports.json").read_text(encoding="utf-8"))["airports"]
+            hotels = json.loads((self.data_dir / "hotels/osm_hotels.json").read_text(encoding="utf-8"))["hotels"]
         airport = next((point for point in airports if point["iata"] == input.airport), None)
         hotel = next((point for point in hotels if point["hotel_id"] == input.hotel_id), None)
         if airport is None or hotel is None or hotel["destination"] != input.airport:

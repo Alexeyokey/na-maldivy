@@ -1,8 +1,9 @@
 import {formatDate,counted} from './trip-presentation.js';
+import {destinationNames} from './destination-names.generated.js';
 
 export const criterionLabels={transport:'Транспорт',origin:'Отправление',destination:'Направление',month:'Месяц',year:'Год',start_date:'Дата отправления',nights:'Продолжительность',adults:'Взрослые',children_ages:'Дети',pets:'Питомцы',budget_rub:'Бюджет за всех',max_flight_minutes:'Максимальный перелёт',direct_only:'Без пересадок',late_departure:'Вечерний вылет',refundable_only:'Возвратный отель',min_stars:'Звёзды отеля',min_water_temperature_c:'Температура воды',visa_free_only:'Без визы',needs:'Пожелания'};
 const needLabels={child:'с детьми',pets:'с питомцем',sea:'море и пляж',warm:'тепло',budget_low:'сначала недорогие',short_flight:'короткий перелёт',romantic:'романтическая поездка',late_arrival:'поздний прилёт',short_transfer:'короткий трансфер',quiet:'спокойный отдых',flexible:'возвратные тарифы'};
-const places={MOW:'Москва',SVO:'Москва · Шереметьево',LED:'Санкт-Петербург',AYT:'Анталья',DXB:'Дубай',MLE:'Мальдивы'};
+const places={...destinationNames,MOW:'Москва',SVO:'Москва · Шереметьево'};
 const own=(value,key)=>Object.prototype.hasOwnProperty.call(value,key);
 const obj=value=>!!value&&typeof value==='object'&&!Array.isArray(value);
 const text=value=>typeof value==='string'?value.slice(0,600):'';
@@ -38,7 +39,7 @@ export function normalizeTripDiff(value,version){
 export function criterionValue(field,value){
  if(value===null||value===undefined)return ['budget_rub','max_flight_minutes','min_stars','min_water_temperature_c'].includes(field)?'Без ограничения':'Не уточнено';
  if(field==='start_date')return formatDate(value);
- if(['origin','destination'].includes(field))return places[value]||String(value);
+ if(['origin','destination'].includes(field))return own(places,value)?places[value]:String(value);
  if(field==='transport')return value==='train'?'Поезд':value==='flight'?'Самолёт':'Не уточнено';
  if(field==='children_ages')return !Array.isArray(value)?'Не уточнено':value.length?value.map(age=>counted(age,'год','года','лет')).join(', '):'Без детей';
  if(field==='needs')return !Array.isArray(value)?'Не уточнено':value.length?value.map(need=>needLabels[need]).filter(Boolean).join(', ')||'Другие пожелания':'Без дополнительных пожеланий';

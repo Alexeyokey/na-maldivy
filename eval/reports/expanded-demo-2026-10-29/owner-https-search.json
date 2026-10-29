@@ -1,0 +1,144 @@
+{
+  "scope": "owner_https_expanded_catalogue_search_only",
+  "source_revision": "a2a1ed4385fc0453644e527cf80b2d0267f1d88b",
+  "checkout_requests": 0,
+  "payment_requests": 0,
+  "raw_requests_credentials_or_ids_reported": false,
+  "checks": [
+    {
+      "check": "fast_private_runtime",
+      "passed": true
+    },
+    {
+      "check": "asset_http_api-app.js",
+      "passed": true
+    },
+    {
+      "check": "deployed_asset_matches_commit_api-app.js",
+      "passed": true
+    },
+    {
+      "check": "asset_http_destination-names.generated.js",
+      "passed": true
+    },
+    {
+      "check": "deployed_asset_matches_commit_destination-names.generated.js",
+      "passed": true
+    },
+    {
+      "check": "no_selection_or_order_0",
+      "passed": true
+    },
+    {
+      "check": "restored_state_matches_0",
+      "passed": true
+    },
+    {
+      "check": "trip_conditions_preserved_0",
+      "passed": true
+    },
+    {
+      "check": "destination_suggestions",
+      "passed": true
+    },
+    {
+      "check": "suggested_sri_lanka_has_full_demo_path",
+      "passed": true
+    },
+    {
+      "check": "same_conversation",
+      "passed": true
+    },
+    {
+      "check": "no_selection_or_order_1",
+      "passed": true
+    },
+    {
+      "check": "restored_state_matches_1",
+      "passed": true
+    },
+    {
+      "check": "trip_conditions_preserved_1",
+      "passed": true
+    },
+    {
+      "check": "sri_lanka_complete_search",
+      "passed": true
+    },
+    {
+      "check": "confirmable_packages",
+      "passed": true
+    },
+    {
+      "check": "generated_hotel_identity",
+      "passed": true
+    },
+    {
+      "check": "reviews_share_hotel_identity",
+      "passed": true
+    },
+    {
+      "check": "transfer_available",
+      "passed": true
+    },
+    {
+      "check": "flight_provenance_outbound",
+      "passed": true
+    },
+    {
+      "check": "flight_provenance_inbound",
+      "passed": true
+    },
+    {
+      "check": "generated_hotel_identity",
+      "passed": true
+    },
+    {
+      "check": "reviews_share_hotel_identity",
+      "passed": true
+    },
+    {
+      "check": "transfer_available",
+      "passed": true
+    },
+    {
+      "check": "flight_provenance_outbound",
+      "passed": true
+    },
+    {
+      "check": "flight_provenance_inbound",
+      "passed": true
+    },
+    {
+      "check": "bounded_model_calls",
+      "passed": true
+    }
+  ],
+  "turns": [
+    {
+      "case": "warm_destination_suggestions",
+      "status": "passed",
+      "option_count": 3
+    },
+    {
+      "case": "suggested_sri_lanka_full_package",
+      "status": "passed",
+      "option_count": 2
+    }
+  ],
+  "asset_checks": [
+    {
+      "asset": "api-app.js",
+      "sha256": "77bf7c18410f779d70d55efc6b85dddfacaaee048fbe2ae63c3a019456bc77a2",
+      "passed": true
+    },
+    {
+      "asset": "destination-names.generated.js",
+      "sha256": "6e975f3b4e5d760bc985a58320b2d97c12cb4f16d94c924f78b652ba6bc13854",
+      "passed": true
+    }
+  ],
+  "model_calls": 4,
+  "status": "passed",
+  "duration_seconds": 29.919
+}

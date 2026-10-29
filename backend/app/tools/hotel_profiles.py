@@ -276,7 +276,14 @@ def _profile_at(path: Path) -> HotelReviewProfile | None:
 def load_hotel_profile(hotel_id: str, *, data_dir: Path | None = None) -> HotelReviewProfile | None:
     canonical = canonical_hotel_id(hotel_id)
     filename = canonical.replace(":", "-").replace("/", "-") + ".json"
-    profile = _profile_at(resolve_data_dir(data_dir) / "hotel_profiles" / filename)
+    root = resolve_data_dir(data_dir)
+    if canonical.startswith("demo:hotel/"):
+        from app.tools.expanded_hotels import expanded_hotel_rules
+
+        if canonical not in expanded_hotel_rules(root):
+            return None
+        root = root / "demo"
+    profile = _profile_at(root / "hotel_profiles" / filename)
     if profile is not None and profile.hotel_id != canonical:
         raise ValueError("Profile belongs to a different hotel")
     return profile.model_copy(deep=True) if profile is not None else None

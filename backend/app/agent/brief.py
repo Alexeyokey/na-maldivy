@@ -23,7 +23,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
-from app.agent.places import to_iata
+from app.agent.places import ORIGINS, to_iata
 from app.contracts.tools import Travelers
 
 Source = Literal["explicit", "inferred", "default"]
@@ -89,7 +89,7 @@ class TripBrief(BaseModel):
         if value is None:
             return None
         code = to_iata(value)
-        if code is None:
+        if code not in ORIGINS:
             raise ValueError(f"не знаю такого города вылета: {value}. Пока летаем из Москвы и Петербурга")
         return code
 

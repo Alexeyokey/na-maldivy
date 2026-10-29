@@ -12,7 +12,7 @@ from datetime import date, timedelta
 from typing import Any
 
 from app.agent.brief import TripBrief
-from app.agent.places import FULL_TRIP_DESTINATIONS
+from app.agent.coverage import full_trip_destinations
 from app.tools.destinations import load_catalogue
 
 
@@ -54,6 +54,7 @@ def destination_information(
     if record is None:
         return None
     visa = record.visa
+    supported = record.iata in full_trip_destinations(tools)
     year = getattr(brief, "year", None)
     nights = brief.nights
     start, end = None, None
@@ -119,7 +120,7 @@ def destination_information(
         "full_trip_price_rub": None,
         "availability_confirmed": False,
         "live_verified": False,
-        "full_trip_supported": record.iata in FULL_TRIP_DESTINATIONS,
+        "full_trip_supported": supported,
     }
     text = [
         f"{record.name}: сохранённая визовая справка для обычного паспорта РФ, туризм; "
@@ -129,7 +130,7 @@ def destination_information(
         else f"{record.name}: сохранённая справка; дата проверки визового источника неизвестна.",
         f"Условия: {visa.conditions}",
     ]
-    if record.iata not in FULL_TRIP_DESTINATIONS:
+    if not supported:
         text.insert(
             0,
             f"{record.name} ({record.iata}) — справочное направление. "
