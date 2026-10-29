@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "baseline": {
+    "status": "passed",
+    "mode": "baseline",
+    "private_permissions": true,
+    "sqlite_backups": 2,
+    "sqlite_integrity": "ok",
+    "paid_orders": 8,
+    "documents_hashed": 16,
+    "accepted_chat_markers": 44,
+    "model": {
+      "llm_provider": "codex_private",
+      "codex_model": "gpt-6-luna",
+      "codex_reasoning_effort": "low"
+    },
+    "notice": "Backups and context are private. New orders after this snapshot are allowed."
+  },
+  "after_deployment": {
+    "status": "passed",
+    "mode": "post",
+    "sqlite_integrity": "ok",
+    "prior_paid_orders": 8,
+    "current_paid_orders": 8,
+    "prior_paid_rows_matched": 8,
+    "missing_or_changed_prior_paid_rows": 0,
+    "additional_order_rows": 0,
+    "documents_checked": 16,
+    "changed_documents": 0,
+    "orders_with_unavailable_documents": 0,
+    "missing_or_changed_chat_markers": 0,
+    "prior_orders_documents_and_ledger_preserved": true,
+    "model": {
+      "llm_provider": "codex_private",
+      "codex_model": "gpt-6-luna",
+      "codex_reasoning_effort": "low"
+    }
+  },
+  "backup_location_published": false
+}

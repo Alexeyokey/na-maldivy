@@ -1,0 +1,298 @@
+{
+  "scope": "owner_live_monthly_constraints_search_only",
+  "source_commit": "91663117928354358a86d06e4832888d90737664",
+  "source_commit_verification": "caller_supplied_not_http_verified",
+  "harness_sha256": "fd9014fbd043953742ee19aad042f43e87f78066e8979cac71b53c261ef42983",
+  "started_at": "2026-10-29T01:52:51.788097+00:00",
+  "maximum_seconds": 90,
+  "maximum_model_calls": 6,
+  "planned_turns": 2,
+  "planned_sessions": 2,
+  "checkout_requests": 0,
+  "payment_requests": 0,
+  "raw_requests_responses_ids_or_credentials_reported": false,
+  "browser_acceptance": false,
+  "status": "passed",
+  "turns": [
+    {
+      "stage": "DXB_january",
+      "checks": [
+        {
+          "field": "new_session_identity",
+          "passed": true
+        },
+        {
+          "field": "sse_equals_reload",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_year",
+          "passed": true
+        },
+        {
+          "field": "brief_month",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_max_flight_minutes",
+          "passed": true
+        },
+        {
+          "field": "brief_transport",
+          "passed": true
+        },
+        {
+          "field": "chosen_date_in_requested_month",
+          "passed": true
+        },
+        {
+          "field": "month_date_selected_by_server",
+          "passed": true
+        },
+        {
+          "field": "confirmable_packages",
+          "passed": true
+        },
+        {
+          "field": "honest_constrained_date_assumption",
+          "passed": true
+        },
+        {
+          "field": "package_group",
+          "passed": true
+        },
+        {
+          "field": "package_route",
+          "passed": true
+        },
+        {
+          "field": "package_dates",
+          "passed": true
+        },
+        {
+          "field": "duration_outbound",
+          "passed": true
+        },
+        {
+          "field": "explicit_mock_outbound",
+          "passed": true
+        },
+        {
+          "field": "duration_inbound",
+          "passed": true
+        },
+        {
+          "field": "explicit_mock_inbound",
+          "passed": true
+        },
+        {
+          "field": "package_group",
+          "passed": true
+        },
+        {
+          "field": "package_route",
+          "passed": true
+        },
+        {
+          "field": "package_dates",
+          "passed": true
+        },
+        {
+          "field": "duration_outbound",
+          "passed": true
+        },
+        {
+          "field": "explicit_mock_outbound",
+          "passed": true
+        },
+        {
+          "field": "duration_inbound",
+          "passed": true
+        },
+        {
+          "field": "explicit_mock_inbound",
+          "passed": true
+        },
+        {
+          "field": "model_counter_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "option_count": 2,
+      "seconds": 16.867
+    },
+    {
+      "stage": "AYT_march",
+      "checks": [
+        {
+          "field": "new_session_identity",
+          "passed": true
+        },
+        {
+          "field": "sse_equals_reload",
+          "passed": true
+        },
+        {
+          "field": "no_selection_cart_order",
+          "passed": true
+        },
+        {
+          "field": "brief_origin",
+          "passed": true
+        },
+        {
+          "field": "brief_destination",
+          "passed": true
+        },
+        {
+          "field": "brief_year",
+          "passed": true
+        },
+        {
+          "field": "brief_month",
+          "passed": true
+        },
+        {
+          "field": "brief_adults",
+          "passed": true
+        },
+        {
+          "field": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "field": "brief_pets",
+          "passed": true
+        },
+        {
+          "field": "brief_nights",
+          "passed": true
+        },
+        {
+          "field": "brief_max_flight_minutes",
+          "passed": true
+        },
+        {
+          "field": "brief_transport",
+          "passed": true
+        },
+        {
+          "field": "chosen_date_in_requested_month",
+          "passed": true
+        },
+        {
+          "field": "month_date_selected_by_server",
+          "passed": true
+        },
+        {
+          "field": "confirmable_packages",
+          "passed": true
+        },
+        {
+          "field": "honest_constrained_date_assumption",
+          "passed": true
+        },
+        {
+          "field": "package_group",
+          "passed": true
+        },
+        {
+          "field": "package_route",
+          "passed": true
+        },
+        {
+          "field": "package_dates",
+          "passed": true
+        },
+        {
+          "field": "duration_outbound",
+          "passed": true
+        },
+        {
+          "field": "explicit_mock_outbound",
+          "passed": true
+        },
+        {
+          "field": "duration_inbound",
+          "passed": true
+        },
+        {
+          "field": "explicit_mock_inbound",
+          "passed": true
+        },
+        {
+          "field": "package_group",
+          "passed": true
+        },
+        {
+          "field": "package_route",
+          "passed": true
+        },
+        {
+          "field": "package_dates",
+          "passed": true
+        },
+        {
+          "field": "duration_outbound",
+          "passed": true
+        },
+        {
+          "field": "explicit_mock_outbound",
+          "passed": true
+        },
+        {
+          "field": "duration_inbound",
+          "passed": true
+        },
+        {
+          "field": "explicit_mock_inbound",
+          "passed": true
+        },
+        {
+          "field": "model_counter_budget",
+          "passed": true
+        }
+      ],
+      "status": "passed",
+      "option_count": 2,
+      "seconds": 14.208
+    }
+  ],
+  "model_counter_before": 0,
+  "model_counter_after": 4,
+  "model_calls_delta": 4,
+  "model_counter_scope": "shared_private_runtime_increase_not_exclusive_per_request_attribution",
+  "finished_at": "2026-10-29T01:53:23.907336+00:00",
+  "seconds": 32.119,
+  "completed_turns": 2,
+  "last_observed_model_counter": 4
+}

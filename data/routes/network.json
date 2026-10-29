@@ -172,6 +172,6 @@
       "09:00",
       "23:30"
     ],
-    "pricing": "One seat per adult/child; all ages use the same synthetic fare. Pets 1500 RUB each, baggage 2000 RUB per person separately. Month, date, variant and seed affect synthetic prices. No real fares or timetable are copied from source pages."
+    "pricing": "Synthetic model infant-v2: adults and children aged 2+ each occupy one seat at the full synthetic fare; children under 2 are modelled as lap infants at 10% of a seat fare, without a seat or separate standard baggage. The combined group fare is rounded half up once; pets add 1500 RUB each, and baggage is 2000 RUB per seated passenger separately. Month, date, variant and seed affect synthetic prices. These are demonstration assumptions, not airline carriage rules, real fares or a copied timetable."
   }
 }

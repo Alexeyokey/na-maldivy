@@ -1,0 +1,22 @@
+{
+  "scope": "S4_public_DTO_data_coverage_only",
+  "status": "passed",
+  "hotel_count": 60,
+  "option_count": 136,
+  "cases": 5040,
+  "quotes_checked": 11424,
+  "modes": {
+    "shuttle": 1680,
+    "taxi": 3780,
+    "minivan": 3360,
+    "metro": 1344,
+    "boat": 420,
+    "seaplane": 420,
+    "flight_speedboat": 420
+  },
+  "failures": [],
+  "network_used": false,
+  "model_calls": 0,
+  "supplier_availability_confirmed": false,
+  "seconds": 1.025
+}

@@ -34,6 +34,23 @@ def encoded(value: dict) -> str:
     return json.dumps(value, ensure_ascii=False, indent=2) + "\n"
 
 
+def corpus_document(hotel_id: str, reviews: list[SyntheticReview]) -> dict:
+    return {
+        "schema_version": 1,
+        "hotel_id": hotel_id,
+        "is_synthetic": True,
+        "generator": GENERATOR,
+        "real_guest_reviews_used": False,
+        "reviews": [review.model_dump(mode="json") for review in reviews],
+    }
+
+
+def write_generated(path: Path, document: dict) -> None:
+    expected = encoded(document).encode("utf-8")
+    if not path.exists() or path.read_bytes() != expected:
+        path.write_bytes(expected)
+
+
 async def run(args: argparse.Namespace) -> dict:
     if args.check and (args.generate_reviews or args.mode != "lexical"):
         raise ValueError("--check is offline/read-only; use lexical mode without --generate-reviews")
@@ -58,15 +75,7 @@ async def run(args: argparse.Namespace) -> dict:
             if selected is not None and hotel_id != selected:
                 continue
             reviews = make_synthetic_reviews(hotel_id, by_id[hotel_id])
-            document = {
-                "schema_version": 1,
-                "hotel_id": hotel_id,
-                "is_synthetic": True,
-                "generator": GENERATOR,
-                "real_guest_reviews_used": False,
-                "reviews": [review.model_dump(mode="json") for review in reviews],
-            }
-            (reviews_dir / filename(hotel_id)).write_text(encoded(document), encoding="utf-8")
+            write_generated(reviews_dir / filename(hotel_id), corpus_document(hotel_id, reviews))
     if args.check:
         for directory in (reviews_dir, profiles_dir):
             if {file.name for file in directory.glob("*.json")} != expected_names:
@@ -83,8 +92,11 @@ async def run(args: argparse.Namespace) -> dict:
         reviews = [SyntheticReview.model_validate(row) for row in document["reviews"]]
         if not 20 <= len(reviews) <= 50 or any(row.hotel_id != hotel_id for row in reviews):
             raise ValueError("Expected 20..50 synthetic reviews for the selected hotel")
-        if args.check and reviews != make_synthetic_reviews(hotel_id, by_id[hotel_id]):
-            raise ValueError("Saved corpus differs from its deterministic generator")
+        if args.check:
+            expected_reviews = make_synthetic_reviews(hotel_id, by_id[hotel_id])
+            expected = encoded(corpus_document(hotel_id, expected_reviews)).encode("utf-8")
+            if (reviews_dir / filename(hotel_id)).read_bytes() != expected:
+                raise ValueError("Saved corpus bytes differ from its deterministic generator")
         corpora.append((hotel_id, reviews))
     client = None
     if args.mode == "llm":
@@ -111,11 +123,11 @@ async def run(args: argparse.Namespace) -> dict:
             HotelReviewProfile.model_validate(profile)
             output = profiles_dir / filename(hotel_id)
             if args.check:
-                if json.loads(output.read_text(encoding="utf-8")) != profile:
-                    raise ValueError("Saved profile differs from reproducible output")
+                if output.read_bytes() != encoded(profile).encode("utf-8"):
+                    raise ValueError("Saved profile bytes differ from reproducible output")
             else:
                 profiles_dir.mkdir(parents=True, exist_ok=True)
-                output.write_text(encoded(profile), encoding="utf-8")
+                write_generated(output, profile)
             count += 1
     finally:
         if client is not None:

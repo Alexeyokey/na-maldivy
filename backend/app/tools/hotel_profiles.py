@@ -29,6 +29,7 @@ SEGMENTS: tuple[Segment, ...] = ("family", "couple", "business", "pets")
 # These phrases are fixtures, never reviews copied from a travel service.
 PHRASES: dict[str, tuple[Aspect, Sentiment, str]] = {
     "children_good": ("children", "positive", "В модельном сценарии детям было удобно играть."),
+    "children_blocked": ("children", "negative", "В модельном сценарии размещение с детьми было запрещено."),
     "noise_bad": ("noise", "negative", "В модельном сценарии ночной шум мешал спать."),
     "noise_good": ("noise", "positive", "В модельном сценарии в номере было тихо."),
     "clean_good": ("cleanliness", "positive", "В модельном сценарии номер был чистым."),
@@ -75,8 +76,9 @@ def make_synthetic_reviews(hotel_id: str, rules: dict) -> list[SyntheticReview]:
     """24 annotated fixture reviews per hotel, six for each guest segment."""
     beach = "beach_bad" if rules["synthetic_beach_distance_m"] > 2000 else "beach_good"
     pet = "pets_good" if rules["pets_allowed"] else "pets_bad"
+    children = "children_blocked" if rules["adults_only"] else "children_good"
     plans = {
-        "family": ["children_good", "noise_bad", "clean_good", "breakfast_good", beach, "wifi_bad"],
+        "family": [children, "noise_bad", "clean_good", "breakfast_good", beach, "wifi_bad"],
         "couple": ["staff_good", "clean_good", beach, "breakfast_good", "staff_bad", "noise_good"],
         "business": ["wifi_good", "wifi_good", "noise_bad", "breakfast_good", "clean_good", beach],
         "pets": [pet, pet, "noise_bad", "clean_good", "breakfast_good", beach],
