@@ -7,7 +7,8 @@
 [Быстрый старт](../README.md#быстрый-старт) ·
 [Происхождение данных](data-inventory.md) ·
 [Требования и открытые пункты](submission-compliance.md) ·
-[Матрица пользовательских сценариев](judge-ui-rehearsal.md)
+[Матрица пользовательских сценариев](judge-ui-rehearsal.md) ·
+[Последняя полировка и проверки](../eval/reports/judge-final-polish-2026-10-29/README.md)
 
 ## 1. Запуск
 

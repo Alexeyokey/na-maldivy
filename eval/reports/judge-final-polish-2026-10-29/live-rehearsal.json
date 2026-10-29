@@ -1,0 +1,956 @@
+{
+  "scope": "owner_domain_live_model_http_search_only",
+  "source_commit": "29fa6d16c79fbdbf4d6dd5b242629f0c028443f3",
+  "source_commit_verification": "caller_supplied_deployment_reference_not_http_verified",
+  "harness_sha256": "6db4b01a8d8d08b957b97edbe1d2528a1645142e5ba5809890ec6c759350faa2",
+  "started_at": "2026-10-29T00:25:36.585607+00:00",
+  "max_seconds": 300,
+  "planned_sessions": 4,
+  "planned_turns": 18,
+  "checkout_requests": 0,
+  "payment_requests": 0,
+  "credential_values_reported": false,
+  "raw_bodies_or_ids_reported": false,
+  "browser_or_screen_reader_acceptance": false,
+  "status": "passed",
+  "turns": [
+    {
+      "scenario": "AYT",
+      "turn": "initial",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_adults",
+          "passed": true
+        },
+        {
+          "check": "brief_nights",
+          "passed": true
+        },
+        {
+          "check": "brief_start_date",
+          "passed": true
+        },
+        {
+          "check": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "provider_replay": 4
+      },
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 23,
+        "tool_result": 23,
+        "options": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 16.283,
+      "status": "passed"
+    },
+    {
+      "scenario": "AYT",
+      "turn": "reviews",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "event_hotel_profile",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "provider_replay": 4
+      },
+      "event_counts": {
+        "status": 1,
+        "hotel_profile": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 1.012,
+      "status": "passed"
+    },
+    {
+      "scenario": "AYT",
+      "turn": "calendar",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "event_date_savings",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "provider_replay": 4
+      },
+      "event_counts": {
+        "status": 1,
+        "tool_call": 24,
+        "tool_result": 24,
+        "date_savings": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 2.022,
+      "status": "passed"
+    },
+    {
+      "scenario": "AYT",
+      "turn": "date_change",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_start_date",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "provider_replay": 4
+      },
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 22,
+        "tool_result": 22,
+        "options": 1,
+        "diff": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 13.375,
+      "status": "passed"
+    },
+    {
+      "scenario": "AYT",
+      "turn": "budget",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "provider_replay": 4
+      },
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 22,
+        "tool_result": 22,
+        "options": 1,
+        "diff": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 12.474,
+      "status": "passed"
+    },
+    {
+      "scenario": "AYT",
+      "turn": "cancel",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "provider_replay": 4
+      },
+      "event_counts": {
+        "status": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 6.183,
+      "status": "passed"
+    },
+    {
+      "scenario": "DXB_family",
+      "turn": "incomplete",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 0,
+      "flight_sources": {},
+      "event_counts": {
+        "status": 1,
+        "brief": 1,
+        "question": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "collecting",
+      "seconds": 10.763,
+      "status": "passed"
+    },
+    {
+      "scenario": "DXB_family",
+      "turn": "origin",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_origin",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 0,
+      "flight_sources": {},
+      "event_counts": {
+        "status": 1,
+        "brief": 1,
+        "question": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "collecting",
+      "seconds": 9.913,
+      "status": "passed"
+    },
+    {
+      "scenario": "DXB_family",
+      "turn": "children",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_children_ages",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 0,
+      "flight_sources": {},
+      "event_counts": {
+        "status": 1,
+        "brief": 1,
+        "question": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "collecting",
+      "seconds": 11.095,
+      "status": "passed"
+    },
+    {
+      "scenario": "DXB_family",
+      "turn": "dates",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_start_date",
+          "passed": true
+        },
+        {
+          "check": "brief_nights",
+          "passed": true
+        },
+        {
+          "check": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "deterministic_mock": 2,
+        "provider_replay": 2
+      },
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 36,
+        "tool_result": 36,
+        "options": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 14.7,
+      "status": "passed"
+    },
+    {
+      "scenario": "DXB_family",
+      "turn": "pet_budget",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_children_ages",
+          "passed": true
+        },
+        {
+          "check": "brief_pets",
+          "passed": true
+        },
+        {
+          "check": "brief_budget_rub",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "deterministic_mock": 2,
+        "provider_replay": 2
+      },
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 28,
+        "tool_result": 28,
+        "options": 1,
+        "diff": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 13.551,
+      "status": "passed"
+    },
+    {
+      "scenario": "MLE",
+      "turn": "initial",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_adults",
+          "passed": true
+        },
+        {
+          "check": "brief_nights",
+          "passed": true
+        },
+        {
+          "check": "brief_start_date",
+          "passed": true
+        },
+        {
+          "check": "nonempty_packages",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "provider_replay": 4
+      },
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 20,
+        "tool_result": 20,
+        "options": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 14.06,
+      "status": "passed"
+    },
+    {
+      "scenario": "MLE",
+      "turn": "hotel",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_refundable_only",
+          "passed": true
+        },
+        {
+          "check": "brief_min_stars",
+          "passed": true
+        },
+        {
+          "check": "brief_direct_only",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "deterministic_mock": 4
+      },
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 25,
+        "tool_result": 25,
+        "options": 1,
+        "diff": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 14.553,
+      "status": "passed"
+    },
+    {
+      "scenario": "MLE",
+      "turn": "sources",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_outbound",
+          "passed": true
+        },
+        {
+          "check": "flight_source_explicit_inbound",
+          "passed": true
+        }
+      ],
+      "option_kind": "packages",
+      "option_count": 2,
+      "flight_sources": {
+        "deterministic_mock": 4
+      },
+      "event_counts": {
+        "status": 2,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "packages_shown",
+      "seconds": 11.598,
+      "status": "passed"
+    },
+    {
+      "scenario": "train",
+      "turn": "initial",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_transport",
+          "passed": true
+        },
+        {
+          "check": "brief_origin",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_adults",
+          "passed": true
+        },
+        {
+          "check": "brief_seat_class",
+          "passed": true
+        },
+        {
+          "check": "brief_start_date",
+          "passed": true
+        },
+        {
+          "check": "nonempty_trains",
+          "passed": true
+        }
+      ],
+      "option_kind": "trains",
+      "option_count": 1,
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 1,
+        "tool_result": 1,
+        "options": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "trains_shown",
+      "seconds": 16.676,
+      "status": "passed"
+    },
+    {
+      "scenario": "train",
+      "turn": "date_change",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_transport",
+          "passed": true
+        },
+        {
+          "check": "brief_origin",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_start_date",
+          "passed": true
+        },
+        {
+          "check": "nonempty_trains",
+          "passed": true
+        }
+      ],
+      "option_kind": "trains",
+      "option_count": 1,
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 1,
+        "tool_result": 1,
+        "options": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "trains_shown",
+      "seconds": 11.521,
+      "status": "passed"
+    },
+    {
+      "scenario": "train",
+      "turn": "reverse",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_transport",
+          "passed": true
+        },
+        {
+          "check": "brief_origin",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        },
+        {
+          "check": "brief_adults",
+          "passed": true
+        },
+        {
+          "check": "brief_seat_class",
+          "passed": true
+        },
+        {
+          "check": "brief_start_date",
+          "passed": true
+        },
+        {
+          "check": "nonempty_trains",
+          "passed": true
+        }
+      ],
+      "option_kind": "trains",
+      "option_count": 1,
+      "event_counts": {
+        "status": 2,
+        "brief": 1,
+        "tool_call": 1,
+        "tool_result": 1,
+        "options": 1,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "trains_shown",
+      "seconds": 10.888,
+      "status": "passed"
+    },
+    {
+      "scenario": "train",
+      "turn": "clarify",
+      "checks": [
+        {
+          "check": "no_selection_cart_order_or_payment",
+          "passed": true
+        },
+        {
+          "check": "done_snapshot_identity",
+          "passed": true
+        },
+        {
+          "check": "brief_transport",
+          "passed": true
+        },
+        {
+          "check": "brief_origin",
+          "passed": true
+        },
+        {
+          "check": "brief_destination",
+          "passed": true
+        }
+      ],
+      "option_kind": "trains",
+      "option_count": 1,
+      "event_counts": {
+        "status": 2,
+        "delta": 1,
+        "done": 1
+      },
+      "stage": "trains_shown",
+      "seconds": 10.362,
+      "status": "passed"
+    }
+  ],
+  "fast_runtime_verified": true,
+  "finished_at": "2026-10-29T00:28:58.278117+00:00",
+  "seconds": 201.692,
+  "completed_turns": 18,
+  "warning_events": 0,
+  "error_events": 0
+}

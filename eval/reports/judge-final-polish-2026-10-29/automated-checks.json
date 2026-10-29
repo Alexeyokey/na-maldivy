@@ -1,0 +1,18 @@
+{
+  "source_commit": "29fa6d16c79fbdbf4d6dd5b242629f0c028443f3",
+  "status": "passed",
+  "backend_tests": 1418,
+  "frontend_tests": 215,
+  "proxy_integration_tests": 11,
+  "total_tests": 1644,
+  "ruff_checked_files": 138,
+  "docker_separate_project": true,
+  "docker_build_cache": "reused",
+  "cold_build_timing_claimed": false,
+  "external_model_in_unit_or_docker_checks": false,
+  "initial_failures_fixed": [
+    "train_record_replay_source_mode_expectation",
+    "generated_schema_refresh",
+    "generated_examples_refresh"
+  ]
+}
