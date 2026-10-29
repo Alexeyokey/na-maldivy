@@ -97,7 +97,7 @@ def rejected_line(applied: ApplyResult | None) -> str:
 def destinations(plan: PlanResult) -> str:
     if not plan.options:
         return " ".join(plan.notes) + " Попробуйте другой месяц или снимите часть ограничений."
-    lines = ["Справочные направления; наличие и полную цену нужно проверить поиском:"]
+    lines = ["Справочные направления; полная цена и наличие не подтверждены:"]
     for o in plan.options:
         price = "цена неизвестна" if o["estimated_total_rub"] is None else f"оценка {rub(o['estimated_total_rub'])}"
         flight = (
@@ -108,11 +108,16 @@ def destinations(plan: PlanResult) -> str:
         air = "воздух: нет данных" if o["air_temperature_c"] is None else f"воздух {o['air_temperature_c']:+g} °C"
         water = "вода: нет данных" if o["water_temperature_c"] is None else f"вода {o['water_temperature_c']:+g} °C"
         lines.append(f"{o['index']}. {o['name']} ({o['country']}) — {price}, {flight}, {air}, {water}.")
+        lines.append(
+            "   Доступен подбор поездки; наличие и состав нужно проверить."
+            if o.get("full_trip_supported") is True
+            else "   Только справка: подбор отеля и трансфера для этого направления пока недоступен."
+        )
         for title, key in (("Подходит", "why"), ("Минусы", "tradeoffs"), ("Риски", "risks")):
             if o[key]:
                 lines.append(f"   {title}: " + "; ".join(o[key]) + ".")
     lines += [*plan.notes, assumptions_line(plan.assumptions)]
-    lines.append("Цены и доступность могут быть демонстрационными. Какое направление проверить поиском?")
+    lines.append("Выберите подбор поездки или справку о направлении. Полная цена и наличие не подтверждены.")
     return "\n".join(line for line in lines if line)
 
 

@@ -159,11 +159,12 @@ def test_http_real_registry_search_selection_confirmation_and_simulated_purchase
         assert client.get(f"/api/session/{sid}").json()["stage"] == "checkout_pending"
 
 
-def test_http_real_registry_failure_does_not_fall_back_to_stub(settings, tmp_path):
+@pytest.mark.parametrize("destination", ["Дубай", "CMB"])
+def test_http_real_registry_failure_does_not_fall_back_to_stub(settings, tmp_path, destination):
     settings.data_dir = tmp_path
     with TestClient(create_app(settings)) as client:
         client.app.state.agent._today = lambda: TODAY
-        events = sse(client.post("/api/chat", json={"message": "из Москвы в Дубай 18 ноября 2026 на неделю"}))
+        events = sse(client.post("/api/chat", json={"message": f"из Москвы в {destination} 18 ноября 2026 на неделю"}))
         assert events[-1][0] == "done"
         assert not next(data["items"] for kind, data in events if kind == "options")
         assert any(kind == "tool_result" and data["ok"] is False for kind, data in events)
@@ -178,4 +179,5 @@ async def test_d5_card_outside_seed_can_be_selected_without_rejecting_its_code(s
     events = await chat(agent, "давай первый", sid)
     assert agent.sessions.get(sid).brief.destination == "HKT"
     assert not any(e.type == "brief" and e.data["rejected"] for e in events)
-    assert not options(events, "packages")  # no invented flights beyond the seed routes
+    assert not options(events, "destinations")  # a reference lookup, no invented packages beyond the seed routes
+    assert any(e.type == "destination_info" and e.data["destination"] == "HKT" for e in events)

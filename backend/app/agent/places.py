@@ -52,6 +52,9 @@ PLACE_NAMES["CXR"] = "Нячанг"
 
 ORIGINS = frozenset({"MOW", "SVO", "LED"})
 DESTINATIONS = frozenset({"AYT", "DXB", "MLE", "CXR"})
+# Finite demo bundle coverage, not a claim that any particular offer is available.
+# Other D5 destinations provide reference information, not hotel/transfer packages.
+FULL_TRIP_DESTINATIONS = frozenset({"AYT", "DXB", "MLE"})
 
 
 def to_iata(value: str | None) -> str | None:

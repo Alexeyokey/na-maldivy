@@ -41,8 +41,10 @@ from app.agent.analysis import (
 from app.agent.brief import FIELD_LABELS, ApplyResult, BriefPatch, apply_patch
 from app.agent.date_savings import compare_date_savings, is_date_savings_question
 from app.agent.destination_info import destination_information, is_destination_information_question
+from app.agent.destination_selection import resolve_catalogue_destination
 from app.agent.hidden import NEEDS, quick_refinement_requested, requests_checkout_cancellation, unrecognized_destination
 from app.agent.hidden import extract as extract_patch
+from app.agent.places import FULL_TRIP_DESTINATIONS, ORIGINS
 from app.agent.planner import DEFAULT_NIGHTS, PlanResult, needs_summary, search_train_trip, search_trip, suggest
 from app.agent.prompts import ASK_PROMPT, EXPLAIN_PROMPT, OFF_TOPIC_PROMPT, SUMMARY_PROMPT, context_message
 from app.agent.review_explanations import explain_hotel_reviews
@@ -174,11 +176,37 @@ class TravelAgent:
         destination_tool = self._tools.get("suggest_destinations")
         catalogue = getattr(destination_tool, "catalogue", None)
         data_dir = getattr(destination_tool, "data_dir", None)
-        unknown_destination = unrecognized_destination(
-            text,
-            analysis.patch.destination,
-            catalogue=catalogue,
-            data_path=data_dir / "destinations.yaml" if data_dir is not None and catalogue is None else None,
+        catalogue_path = data_dir / "destinations.yaml" if data_dir is not None and catalogue is None else None
+        try:
+            named_destination = resolve_catalogue_destination(text, catalogue=catalogue, data_path=catalogue_path)
+        except (OSError, ValueError):
+            # A broken configured catalogue stays a data-source failure. Do not
+            # fall back to another directory or stop the entire chat turn.
+            named_destination = None
+        if (
+            s.brief.origin is None
+            and named_destination in ORIGINS
+            and extract_patch(text, today, s.brief).origin == named_destination
+        ):
+            named_destination = None  # A bare city answers the outstanding origin question.
+        if named_destination:
+            # Card labels and free text resolve through the same finite D5 catalogue.
+            # A model cannot turn «Sri Lanka» into the first three letters «SRI».
+            analysis.patch.destination = named_destination
+            analysis.patch.cleared = [field for field in analysis.patch.cleared if field != "destination"]
+            analysis.intent, analysis.option = "plan", None
+            if named_destination not in {"MOW", "LED", "SVO"} and s.brief.transport == "train":
+                analysis.patch.transport = "flight"
+                analysis.patch.inferred = list(dict.fromkeys([*analysis.patch.inferred, "transport"]))
+        unknown_destination = (
+            None
+            if named_destination
+            else unrecognized_destination(
+                text,
+                analysis.patch.destination,
+                catalogue=catalogue,
+                data_path=catalogue_path,
+            )
         )
         if unknown_destination:
             analysis.patch.destination = None
@@ -262,9 +290,33 @@ class TravelAgent:
             )
             emit("delta", {"text": booking_notice})
 
-        if is_destination_information_question(text) and not s.packages:
-            information = destination_information(s.brief, self._tools, today=today)
+        reference_only = s.brief.transport != "train" and s.brief.destination not in FULL_TRIP_DESTINATIONS
+        if reference_only or is_destination_information_question(text) and not s.packages:
+            try:
+                information = destination_information(s.brief, self._tools, today=today)
+            except (OSError, ValueError):
+                information = None
+                emit("warning", {"message": "Справочник направления недоступен; справочные сведения не подтверждены."})
             if information is not None:
+                rejected = fmt.rejected_line(applied)
+                if rejected:
+                    emit("delta", {"text": rejected + "\n"})
+                if reference_only:
+                    # A catalogue selection is a successful reference lookup, not a
+                    # failed package search. Retire the old checkout and stale cards.
+                    s.packages, s.trains, s.destinations = [], [], []
+                    s.selected, s.booking, s.stale = None, None, False
+                    s.stage = Stage.DESTINATIONS_SHOWN
+                    s.rebuild_before = s.rebuild_brief = s.last_diff = None
+                    self._emit_options(s, "destinations", PlanResult(), emit)
+                    emit(
+                        "question",
+                        {
+                            "field": "destination",
+                            "text": "Для полного подбора поездки выберите доступное направление.",
+                            "quick_replies": ["Анталья", "Дубай", "Мальдивы"],
+                        },
+                    )
                 emit("destination_info", information.facts)
                 reply = self._say(information.text, emit)
                 s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]

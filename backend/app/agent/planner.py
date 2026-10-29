@@ -17,7 +17,7 @@ from typing import Any
 
 from app.agent.brief import TripBrief
 from app.agent.hidden import NEEDS
-from app.agent.places import place_name
+from app.agent.places import FULL_TRIP_DESTINATIONS, place_name
 from app.booking.timeline import AIRPORT_EXIT_MIN, build_timeline
 from app.booking.validator import Issue, Requirements, validate_trip
 from app.contracts.tools import Destination, Flight, HotelOffer, Train, Transfer
@@ -152,6 +152,7 @@ async def suggest(brief: TripBrief, call: ToolCaller) -> PlanResult:
                 "code": d.place.iata,
                 "name": d.place.name,
                 "country": d.country,
+                "full_trip_supported": d.place.iata in FULL_TRIP_DESTINATIONS,
                 "air_temperature_c": air,
                 "water_temperature_c": water,
                 "flight_minutes": flight,

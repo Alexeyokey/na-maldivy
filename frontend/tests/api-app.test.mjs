@@ -100,6 +100,57 @@ async function mountedSearch(t,options={}){
  return {root,modal,modalStatus,modalClose,controller,calls,click,document,window,input};
 }
 
+test('Destination cards distinguish complete demo searches from references and send stable IATA prompts',async t=>{
+ for(const scenario of [
+  {code:'CMB',name:'Шри-Ланка',supported:false,label:'О направлении',prompt:'Расскажи о направлении CMB'},
+  {code:'AYT',name:'Анталья',supported:true,label:'Подобрать поездку',prompt:'Хочу в AYT'},
+ ])await t.test(scenario.name,async t=>{
+  const messages=[],brief={origin:'MOW',destination:null,month:1,year:2027,adults:2,children_ages:[5,5],pets:0,nights:7};
+  const snapshot={session_id:'search-ui-session',version:2,stage:'collecting',brief:{...brief,destination:scenario.code},sources:{},needs:[],options:{kind:null,items:[],notes:[],assumptions:[]},selected:null,booking:null,stale:false};
+  const ui=await mountedSearch(t,{request:async(path,init)=>{
+   if(path==='/api/chat'){
+    messages.push(JSON.parse(init.body));
+    return new Response(`event: delta\ndata: ${JSON.stringify({text:scenario.supported?'Уточняем условия подбора.':'Сохранённая справка о направлении. Полная стоимость неизвестна.'})}\n\nevent: done\ndata: ${JSON.stringify(snapshot)}\n\n`,{headers:{'Content-Type':'text/event-stream'}});
+   }
+   assert.equal(path,'/api/session/search-ui-session');return Response.json(snapshot);
+  }});
+  Object.assign(ui.controller.state,{stage:'destinations_shown',brief,optionKind:'destinations',options:[{index:1,kind:'destination',code:scenario.code,name:scenario.name,full_trip_supported:scenario.supported,why:['Тёплое море'],estimated_total_rub:120000}],assumptions:[]});ui.controller.notify();
+  const card=ui.root.innerHTML.match(/<article class="direction-card">[\s\S]*?<\/article>/)?.[0];assert.ok(card);
+  const action=card.match(/<button\b[^>]*data-api-prompt="([^"]+)"[^>]*>([^<]+)<\/button>/);
+  assert.ok(action);assert.equal(action[1],scenario.prompt);assert.equal(action[2],scenario.label);
+  assert.doesNotMatch(card,/Хочу в Шри-Ланка|Хочу в Анталья|Выбрать направление/);
+  if(scenario.supported)assert.match(card,/В демо доступен подбор перелёта, отеля и трансфера\. Наличие услуг не подтверждено/);
+  else assert.match(card,/Только справка: подбор отеля и трансфера пока недоступен/);
+  assert.match(card,/Справочная оценка:.*Полная стоимость не подтверждена/);
+  ui.click('',{apiPrompt:action[1]});await until(()=>messages.length===1&&!ui.controller.state.busy&&!ui.controller.state.syncNeeded);
+  assert.equal(messages[0].message,scenario.prompt);assert.equal(messages[0].session_id,'search-ui-session');
+  assert.deepEqual(ui.controller.state.brief,snapshot.brief,'A card does not reset the existing origin, period or group');
+  assert.equal(ui.controller.state.selected,null);assert.equal(ui.controller.state.cart,null);assert.equal(ui.controller.state.order,null);
+  assert.ok(ui.calls.every(call=>call.path==='/health'||call.path==='/api/chat'||call.path==='/api/session/search-ui-session'),'A destination action cannot start checkout');
+ });
+});
+
+test('Legacy destination cards default to references, invalid IATA has no action and pending actions are disabled',async t=>{
+ const ui=await mountedSearch(t);
+ const valid=[{code:'DXB',name:'Дубай'},{code:'CMB',name:'Шри-Ланка',full_trip_supported:'true'}];
+ const invalid=[undefined,null,'cmb','CM','CMB extra','CMB" onclick="bad','CMB\n'].map((code,index)=>({code,name:'Неизвестное направление '+index,full_trip_supported:true}));
+ Object.assign(ui.controller.state,{stage:'destinations_shown',optionKind:'destinations',options:[...valid,...invalid].map((option,index)=>({index:index+1,kind:'destination',why:[],estimated_total_rub:null,...option}))});ui.controller.notify();
+ const cards=[...ui.root.innerHTML.matchAll(/<article class="direction-card">[\s\S]*?<\/article>/g)].map(match=>match[0]);
+ assert.equal(cards.length,valid.length+invalid.length);
+ for(let index=0;index<valid.length;index++){
+  assert.match(cards[index],new RegExp(`data-api-prompt="Расскажи о направлении ${valid[index].code}"`));
+  assert.match(cards[index],/Только справка: подбор отеля и трансфера пока недоступен/);
+  assert.match(cards[index],/>О направлении<\/button>/);assert.doesNotMatch(cards[index],/Подобрать поездку/);
+ }
+ for(const card of cards.slice(valid.length)){
+  assert.doesNotMatch(card,/data-api-prompt|<button/);assert.match(card,/Не удалось определить код направления/);
+ }
+ Object.assign(ui.controller.state,{pendingRequest:{id:'in-flight-destination',message:'Уточнение'}});ui.controller.notify();
+ const pendingCards=[...ui.root.innerHTML.matchAll(/<article class="direction-card">[\s\S]*?<\/article>/g)].map(match=>match[0]);
+ for(const card of pendingCards.slice(0,valid.length))assert.match(card,/<button\b[^>]*data-api-prompt="[^"]+"[^>]*\bdisabled/);
+ assert.ok(ui.calls.every(call=>call.method==='GET'));
+});
+
 test('The accessible status node survives streamed root replacements and is removed when the app is disposed',async t=>{
  const siblings=[],created=[],writes=[];
  const {controller}=await mountedSearch(t,{setupDom:({root,document})=>{

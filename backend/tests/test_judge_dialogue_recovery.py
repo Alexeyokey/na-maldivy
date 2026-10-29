@@ -142,12 +142,12 @@ def test_paid_order_cannot_be_cancelled_or_refunded_by_a_chat_imperative(dialogu
 
 
 @pytest.mark.parametrize("stage", ["results", "selected", "pending", "paid"])
-def test_unrecognized_new_city_clears_old_cards_but_retains_other_criteria_and_paid_order(dialogue, stage):
+def test_reference_destination_retires_old_cards_but_retains_other_criteria_and_paid_order(dialogue, stage):
     dialogue.setup(stage)
     documents = dialogue.durable_order() if stage == "paid" else None
     events = dialogue.say("Хочу в Бангкок 20 ноября 2026 на 5 ночей, трое взрослых, бюджет 300 тысяч")
     after = dialogue.state()
-    assert after["brief"]["destination"] is None
+    assert after["brief"]["destination"] == "BKK"
     assert {key: after["brief"][key] for key in ("origin", "start_date", "nights", "adults", "budget_rub")} == {
         "origin": "MOW",
         "start_date": "2026-11-20",
@@ -155,21 +155,27 @@ def test_unrecognized_new_city_clears_old_cards_but_retains_other_criteria_and_p
         "adults": 3,
         "budget_rub": 300_000,
     }
-    assert after["stage"] == "collecting" and after["options"]["items"] == []
+    assert after["stage"] == "destinations_shown" and after["options"]["items"] == []
+    assert after["stale"] is False and after["last_diff"] is None
     assert after["selected"] is after["booking"] is None
     question = next(row["data"] for row in events if row["type"] == "question")
-    assert question["field"] == "destination" and "Бангкок" in question["text"]
+    assert question["field"] == "destination" and "полного подбора" in question["text"]
+    information = next(row["data"] for row in events if row["type"] == "destination_info")
+    assert information["destination"] == "BKK" and not information["full_trip_supported"]
     assert not any(row["type"] == "tool_call" for row in events), "Do not silently search a different destination"
     if documents:
         assert dialogue.durable_order() == documents
 
 
-@pytest.mark.parametrize("destination", ["BKK", "NRT", "GOI"])
+@pytest.mark.parametrize("destination", ["BKK", "NRT", "CMB", "GOI"])
 def test_explicit_d5_iata_outside_full_demo_coverage_is_retained_without_inventing_trips(dialogue, destination):
     dialogue.say(f"Из Москвы в {destination} 18 ноября 2026 на неделю вдвоём")
     state = dialogue.state()
     assert state["brief"]["destination"] == destination
-    assert state["options"]["kind"] == "packages" and state["options"]["items"] == []
+    # GOI is not in this D5 catalogue; don't invent reference facts just because
+    # an arbitrary IATA was accepted.
+    assert state["options"]["kind"] == ("packages" if destination == "GOI" else "destinations")
+    assert state["options"]["items"] == []
     assert state["selected"] is state["booking"] is None
 
 
