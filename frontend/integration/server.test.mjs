@@ -7,11 +7,11 @@ import {streamChat} from '../dist/api.js';
 const listen=async server=>{server.listen(0,'127.0.0.1');await once(server,'listening');return 'http://127.0.0.1:'+server.address().port;};
 const close=server=>new Promise(resolve=>{server.closeAllConnections();server.close(resolve);});
 
-test('API-named browser modules and stylesheet are static assets, never upstream routes',async t=>{
+test('Browser message modules and stylesheet are static assets, never upstream routes',async t=>{
  let calls=0;const agent=http.createServer((req,res)=>{calls++;res.writeHead(404).end('{}');});
  const upstream=await listen(agent),web=createFrontendServer({agentUrl:upstream});const base=await listen(web);
  t.after(async()=>{await close(web);await close(agent);});
- for(const route of ['/api-app.js','/api-model.js','/api.js','/api.css']){
+ for(const route of ['/api-app.js','/api-model.js','/api.js','/message-format.js','/api.css']){
   const response=await fetch(base+route);assert.equal(response.status,200,route);
   assert.match(response.headers.get('content-type'),route.endsWith('.css')?/text\/css/:/text\/javascript/);
   assert.ok((await response.text()).length>100);

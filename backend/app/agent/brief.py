@@ -197,6 +197,7 @@ class ApplyResult:
     sources: dict[str, Source]
     changes: list[FieldChange] = field(default_factory=list)
     rejected: list[RejectedChange] = field(default_factory=list)
+    sources_changed: bool = False
 
     @property
     def search_changed(self) -> bool:
@@ -240,6 +241,8 @@ def apply_patch(
             candidate[name] = defaults[name]
 
     values = patch.values()
+    explicit_fields = set(values) - set(patch.inferred) - default_fields - set(patch.cleared)
+    accepted_fields: set[str] = set()
     # Новая дата без месяца: месяц берём из даты, иначе старый месяц с ней конфликтует.
     if "start_date" in values:
         try:
@@ -269,6 +272,7 @@ def apply_patch(
             continue
         # Валидатор мог нормализовать значение («Питер» → LED): храним нормализованное.
         candidate = checked.model_dump()
+        accepted_fields.add(name)
 
     if patch.needs_add or patch.needs_remove:
         removed = set(patch.needs_remove)
@@ -282,6 +286,8 @@ def apply_patch(
     changes: list[FieldChange] = []
     for name, new_value in new_dump.items():
         if new_value == current[name]:
+            if name in accepted_fields & explicit_fields:
+                new_sources[name] = "explicit"
             continue
         if name in patch.cleared and new_value == defaults[name]:
             new_sources.pop(name, None)
@@ -300,4 +306,10 @@ def apply_patch(
             new_sources[name] = source
         changes.append(FieldChange(name, current[name], new_value, source))
 
-    return ApplyResult(brief=new_brief, sources=new_sources, changes=changes, rejected=rejected)
+    return ApplyResult(
+        brief=new_brief,
+        sources=new_sources,
+        changes=changes,
+        rejected=rejected,
+        sources_changed=new_sources != sources,
+    )

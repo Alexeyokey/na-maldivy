@@ -31,11 +31,18 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, ValidationError
 
 from app.agent import formatting as fmt
-from app.agent.analysis import MessageAnalysis, analyze_message, requests_fabricated_offers
+from app.agent.analysis import (
+    MessageAnalysis,
+    analyze_message,
+    explicit_change_requested,
+    is_cancellation_topic,
+    requests_fabricated_offers,
+)
 from app.agent.brief import FIELD_LABELS, ApplyResult, BriefPatch, apply_patch
 from app.agent.date_savings import compare_date_savings, is_date_savings_question
 from app.agent.destination_info import destination_information, is_destination_information_question
 from app.agent.hidden import NEEDS
+from app.agent.hidden import extract as extract_patch
 from app.agent.planner import DEFAULT_NIGHTS, PlanResult, needs_summary, search_train_trip, search_trip, suggest
 from app.agent.prompts import ASK_PROMPT, EXPLAIN_PROMPT, OFF_TOPIC_PROMPT, SUMMARY_PROMPT, context_message
 from app.agent.review_explanations import explain_hotel_reviews
@@ -99,7 +106,7 @@ class TravelAgent:
                     work = copy.deepcopy(stored)  # ход меняет копию, сохраняем только успешный
                     await self._turn(work, message, emit)
                     stored.__dict__.update(work.__dict__)
-                    emit("done", {"session_id": stored.id, "stage": stored.stage.value, "version": stored.version})
+                    emit("done", stored.snapshot())
             except Exception:
                 log.exception("Ход агента упал")
                 emit("error", {"message": "Что-то пошло не так, условия поездки не изменились. Попробуйте ещё раз."})
@@ -133,11 +140,12 @@ class TravelAgent:
             )
             s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
             return
-        if s.packages and is_date_savings_question(text):
+        explicit_change = explicit_change_requested(text, extract_patch(text, today, s.brief))
+        if s.packages and is_date_savings_question(text) and not explicit_change:
             reply = await self._explain(s, text, emit)
             s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
             return
-        profile = explain_hotel_reviews(s, text) if s.packages else None
+        profile = explain_hotel_reviews(s, text) if s.packages and not explicit_change else None
         if profile is not None:
             emit("hotel_profile", profile.facts)
             reply = self._say(profile.text, emit)
@@ -157,8 +165,32 @@ class TravelAgent:
         analysis = outcome.analysis
         self._select_destination(s, analysis)
 
+        previous_booking = self._current_booking(s)
         applied = apply_patch(s.brief, s.sources, analysis.patch, today=today)
         self._commit_brief(s, applied, emit)
+
+        if is_cancellation_topic(text) and not applied.search_changed:
+            if not (s.stage is Stage.AWAITING_CONFIRMATION and analysis.intent == "decline"):
+                reply = self._say(fmt.cancellation_status(previous_booking, s.package(s.selected)), emit)
+                s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
+                return
+        if (
+            previous_booking
+            and not applied.search_changed
+            and any(word in text.casefold() for word in ("оплат", "оплач", "статус заказ", "оформлен ли"))
+        ):
+            reply = self._say(fmt.booking_status(previous_booking) + "В демо реальные деньги не списываются.", emit)
+            s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
+            return
+
+        booking_notice = ""
+        if applied.search_changed and previous_booking:
+            booking_notice = (
+                "Предыдущий демо-заказ и документы сохранены; отмена и возврат не выполнялись. "
+                if previous_booking.get("status") == "paid_demo"
+                else "Начал новый подбор. Предыдущее оформление не было завершено. "
+            )
+            emit("delta", {"text": booking_notice})
 
         if is_destination_information_question(text) and not s.packages:
             information = destination_information(s.brief, self._tools, today=today)
@@ -176,6 +208,7 @@ class TravelAgent:
         decision = decide(s, analysis, search_changed=applied.search_changed)
         log.info("route: %s (%s)", decision.action.value, decision.reason)
         reply = await self._execute(s, decision, text, analysis, emit)
+        reply = booking_notice + reply
         if rejected:
             reply = f"{rejected}\n{reply}"
         s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
@@ -189,22 +222,33 @@ class TravelAgent:
             analysis.intent = "plan"
 
     def _commit_brief(self, s: Session, applied: ApplyResult, emit: Emit, *, search: bool = True) -> None:
-        if applied.changes:
+        if applied.changes or applied.sources_changed:
             s.brief, s.sources = applied.brief, applied.sources
             s.version += 1
             if search and applied.search_changed:
-                s.stale = bool(s.packages or s.destinations or s.trains)
+                s.rebuild_before = s.packages[0] if s.packages else s.rebuild_before
+                s.stale = bool(s.packages or s.destinations or s.trains or s.rebuild_before)
                 s.selected = None
-                if s.stage in (Stage.AWAITING_CONFIRMATION, Stage.PACKAGES_SHOWN, Stage.BOOKED, Stage.CHECKOUT_PENDING):
-                    s.stage = Stage.PACKAGES_SHOWN if s.packages else Stage.COLLECTING
-                if any(c.field in ("origin", "month") for c in applied.changes) and not s.brief.destination:
-                    s.destinations = []
-        if applied.changes or applied.rejected:
+                s.booking = None
+                s.packages, s.trains, s.destinations = [], [], []
+                s.options_kind = (
+                    "trains" if s.brief.transport == "train" else "packages" if s.brief.destination else "destinations"
+                )
+                s.options_assumptions, s.options_notes = [], []
+                s.stage = Stage.COLLECTING
+        if applied.changes or applied.sources_changed or applied.rejected:
             emit(
                 "brief",
                 {
                     "brief": s.brief.model_dump(mode="json"),
-                    "sources": s.sources,
+                    "sources": s.snapshot()["sources"],
+                    "search_changed": search and applied.search_changed,
+                    "invalidate_options": search and applied.search_changed,
+                    "version": s.version,
+                    "stage": s.stage.value,
+                    "stale": s.stale,
+                    "selected": s.selected,
+                    "booking": s.booking,
                     "changes": [
                         {
                             "field": c.field,
@@ -283,7 +327,8 @@ class TravelAgent:
         s.trains = []
         s.packages, s.stale = [], False
         s.stage = Stage.DESTINATIONS_SHOWN if plan.options else Stage.COLLECTING
-        self._emit_options("destinations", plan, emit)
+        s.rebuild_before = None
+        self._emit_options(s, "destinations", plan, emit)
         return await self._summarize(s, text, plan, fmt.destinations(plan), emit)
 
     async def _search(self, s: Session, text: str, emit: Emit) -> str:
@@ -293,16 +338,17 @@ class TravelAgent:
             s.trains, s.packages, s.destinations = plan.options, [], []
             s.stale, s.selected = False, None
             s.stage = Stage.TRAINS_SHOWN if plan.options else Stage.COLLECTING
-            self._emit_options("trains", plan, emit)
+            s.rebuild_before = None
+            self._emit_options(s, "trains", plan, emit)
             return await self._summarize(s, text, plan, fmt.trains(plan), emit)
         emit("status", {"stage": "search", "text": "Собираю поездку: рейсы, отели, трансферы"})
-        before = s.packages[0] if s.packages and s.stale else None
+        before, s.rebuild_before = s.rebuild_before, None
         plan = await search_trip(s.brief, self._caller(s, emit), self._today())
         self._adopt_assumptions(s, plan, emit)
         s.packages, s.stale, s.selected = plan.options, False, None
         s.trains, s.destinations = [], []
         s.stage = Stage.PACKAGES_SHOWN if plan.options else Stage.COLLECTING
-        self._emit_options("packages", plan, emit)
+        self._emit_options(s, "packages", plan, emit)
         diff = ""
         if before and plan.options:
             after = plan.options[0]
@@ -353,13 +399,33 @@ class TravelAgent:
         messages = [
             Message(role="system", content=EXPLAIN_PROMPT),
             context_message(
-                "explain", self._today(), brief=s.brief.model_dump(mode="json"), options=options, results_stale=s.stale
+                "explain",
+                self._today(),
+                brief=s.brief.model_dump(mode="json"),
+                options=options,
+                results_stale=s.stale,
+                stage=s.stage.value,
+                booking=self._current_booking(s),
             ),
             *s.history_tail(),
             Message(role="user", content=text),
         ]
         answer = await self._tool_loop(s, messages, emit)
         return self._say(answer or fallback, emit)
+
+    def _current_booking(self, s: Session) -> dict[str, Any] | None:
+        if not s.booking:
+            return None
+        current = dict(s.booking)
+        if self._checkout is not None and current.get("cart_id"):
+            try:
+                cart = self._checkout.get_cart(current["cart_id"], s.id)
+            except CheckoutError:
+                pass
+            else:
+                current["status"] = cart["status"]
+        s.booking = current
+        return current
 
     def _request_confirmation(self, s: Session, d: Decision, emit: Emit) -> str:
         package = s.package(d.option)
@@ -467,7 +533,7 @@ class TravelAgent:
                 response = await self._llm.complete(messages, tools=specs)
             except LLMError as exc:
                 log.warning("Модель не ответила в цикле инструментов (%s)", type(exc).__name__)
-                emit("warning", {"message": "Модель не ответила; использую проверенные данные поездки."})
+                emit("warning", {"message": "Не удалось завершить ответ; использую проверенные данные поездки."})
                 return None
             if not response.tool_calls:
                 return (response.text or "").strip() or None
@@ -532,7 +598,7 @@ class TravelAgent:
                 emit("delta", {"text": chunk})
         except LLMError as exc:
             log.warning("Модель оборвала ответ (%s)", type(exc).__name__)
-            emit("warning", {"message": "Модель не ответила, показываю ответ по шаблону"})
+            emit("warning", {"message": "Не удалось завершить ответ; показываю доступные данные поездки."})
             tail = ("\n\n" if parts else "") + fallback
             emit("delta", {"text": tail})
             parts.append(tail)
@@ -543,7 +609,10 @@ class TravelAgent:
         emit("delta", {"text": text})
         return text
 
-    def _emit_options(self, kind: str, plan: PlanResult, emit: Emit) -> None:
+    def _emit_options(self, s: Session, kind: str, plan: PlanResult, emit: Emit) -> None:
+        s.options_kind = kind
+        s.options_assumptions = [{"field": a.field, "text": a.text} for a in plan.assumptions]
+        s.options_notes = list(plan.notes)
         emit(
             "options",
             {

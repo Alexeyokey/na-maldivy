@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {ApiTripController,createApiModel,applyAgentEvent,visibleText} from '../dist/api-model.js';
 
 const sid='private-session_01';
-const packageOption={label:'Вариант 1',can_confirm:true,total_rub:83234,known_total_rub:83234,price_scope:'listed_components',hotel:{hotel_id:'osm:way/123',name:'Sky Business Hotel',check_in:'2026-11-18',check_out:'2026-11-25',total_price_rub:23338},flights:[{price_rub:22502,price_source:{provider:'aviasales_data_api',seat_price_rub:11251,cache_hit:true}}],why:['Запись Aviasales'],risks:['Наличие мест не подтверждено']};
+const packageOption={index:1,label:'Вариант 1',can_confirm:true,total_rub:83234,known_total_rub:83234,price_scope:'listed_components',hotel:{hotel_id:'osm:way/123',name:'Sky Business Hotel',check_in:'2026-11-18',check_out:'2026-11-25',total_price_rub:23338},outbound:{departure_at:'2026-11-18T10:00:00+03:00'},inbound:{departure_at:'2026-11-25T10:00:00+03:00'},flights:[{price_rub:22502,price_source:{provider:'aviasales_data_api',seat_price_rub:11251,cache_hit:true}}],why:['Запись Aviasales'],risks:['Наличие мест не подтверждено']};
 const cart={cart_id:'CART-private_01',session_id:sid,status:'awaiting_travelers',version:2,option:1,package:packageOption,expected_travelers:{adults:2,children:0,infants:0},travelers:[],is_simulated:true};
 const travelers=[{full_name:'DEMO ONE',birth_date:'1990-01-01'},{full_name:'DEMO TWO',birth_date:'1991-01-01'}];
 const order={order_id:'DEMO-private_01',cart_id:cart.cart_id,session_id:sid,status:'paid_demo',is_simulated:true,package:packageOption,travelers,created_at:'2026-10-28T12:00:00Z',voucher_path:'/api/checkout/orders/DEMO-private_01/voucher',calendar_path:'/api/checkout/orders/DEMO-private_01/calendar.ics'};

@@ -1,4 +1,5 @@
 import {mountApiApp} from './api-app.js';
+import {formatAssistantText} from './message-format.js';
 import {cancelDemoBooking,isBookingCancelled} from './bookings.js';
 import {streamChat,checkAgentHealth,fetchSessionCanvas} from './api.js';
 import {CANVAS_FIELDS,CANVAS_PLACES,emptyCanvas,restoreCanvas,applyCanvasEvent,canvasFields,canvasEditMessage} from './trip-canvas.js';
@@ -119,7 +120,7 @@ function stream(){
   const classes=`message ${m.role} ${entering?'message-enter':''} ${m.kind==='error'?'error':''} ${busy&&CHAT_MODE==='api'&&latest&&m.kind==='api'?'is-streaming':''}`;
   if(m.role==='user')return `<div class="${classes}" data-message-id="${m.id}" ${entering?`style="animation-delay:-${Math.round(age)}ms"`:''}><div class="user-bubble">${esc(m.text)}</div></div>`;
   const text=CHAT_MODE==='demo'&&latest&&!recommendationsReady(state)&&m.kind!=='error'?requiredCriteriaQuestion(state):m.text;
-  return `<div class="${classes}" data-message-id="${m.id}" ${entering?`style="animation-delay:-${Math.round(age)}ms"`:''}><div class="assistant-label"><span class="assistant-mini">${icon('arch')}</span>${CHAT_MODE==='api'?'О!дин запрос':'Островок · рядом'}</div><div class="assistant-text">${esc(text)}</div>${m.kind==='error'?`<div class="message-error-note">${m.text&&m.errorText?esc(m.errorText):''}<button class="retry-action" data-action="retry" data-id="${m.id}">${icon('refresh')}Повторить</button></div>`:''}${m.changes?.length?`<div class="change-tags">${m.changes.map(c=>`<span>${icon('check')}${esc(c)}</span>`).join('')}</div>`:''}<div class="${fresh?'results-enter':''}">${messageExtras(m,latest)}</div></div>`;
+  return `<div class="${classes}" data-message-id="${m.id}" ${entering?`style="animation-delay:-${Math.round(age)}ms"`:''}><div class="assistant-label"><span class="assistant-mini">${icon('arch')}</span>${CHAT_MODE==='api'?'О!дин запрос':'Островок · рядом'}</div><div class="assistant-text">${formatAssistantText(text)}</div>${m.kind==='error'?`<div class="message-error-note">${m.text&&m.errorText?esc(m.errorText):''}<button class="retry-action" data-action="retry" data-id="${m.id}">${icon('refresh')}Повторить</button></div>`:''}${m.changes?.length?`<div class="change-tags">${m.changes.map(c=>`<span>${icon('check')}${esc(c)}</span>`).join('')}</div>`:''}<div class="${fresh?'results-enter':''}">${messageExtras(m,latest)}</div></div>`;
  }).join('');
  const loading=busy&&!(CHAT_MODE==='api'&&messages.at(-1)?.kind==='api'&&messages.at(-1)?.text);
  return `<div class="chat-stream">${content}${loading?`<div class="typing-pill" role="status"><span class="assistant-mini">${icon('arch')}</span><span>${CHAT_MODE==='api'?'Готовим ответ':'Сверяем пожелания'}</span><span class="typing" aria-hidden="true"><i></i><i></i><i></i></span></div>`:''}</div>`;
@@ -288,7 +289,7 @@ async function send(text,{retryId=null,preserveDraft=false}={}){
    },onDelta:(_,all)=>{
     if(generation!==requestGeneration)return;
     if(!live){live={id:messageId(),role:'assistant',kind:'api',text:all};messages.push(live);render({scroll:true});}
-    else{live.text=all;const area=root.querySelector('.chat-scroll'),near=area.scrollHeight-area.scrollTop-area.clientHeight<100;root.querySelector(`[data-message-id="${live.id}"] .assistant-text`).textContent=all;if(near)area.scrollTop=area.scrollHeight;else{unread=true;root.querySelector('.scroll-latest').classList.remove('hidden');}}
+    else{live.text=all;const area=root.querySelector('.chat-scroll'),near=area.scrollHeight-area.scrollTop-area.clientHeight<100;root.querySelector(`[data-message-id="${live.id}"] .assistant-text`).innerHTML=formatAssistantText(all);if(near)area.scrollTop=area.scrollHeight;else{unread=true;root.querySelector('.scroll-latest').classList.remove('hidden');}}
    }});
    if(generation!==requestGeneration)return;
    agentCanvas=nextCanvas;canvasPreview=null;

@@ -5,7 +5,10 @@ COPY package.json server.mjs ./
 COPY dist ./dist
 RUN node --check server.mjs \
     && node --check dist/api.js \
-    && node --check dist/api-app.js
+    && node --check dist/api-app.js \
+    && node --check dist/api-model.js \
+    && node --check dist/message-format.js \
+    && node --check dist/trip-presentation.js
 
 FROM node:22.23.4-alpine3.24@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 AS runtime
 WORKDIR /app

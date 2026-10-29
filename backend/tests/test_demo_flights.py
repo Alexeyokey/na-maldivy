@@ -289,7 +289,7 @@ async def test_http_chat_keeps_provider_and_mock_leg_sources_separate(tmp_path):
         assert inbound["demo_source"]["kind"] == "deterministic_mock"
         assert inbound["demo_source"]["reason"] == "cache_miss" and inbound["price_source"] is None
     visible = "".join(body["text"] for kind, body in events if kind == "delta")
-    assert "Aviasales" in visible
+    assert "сохранённые котировки" in visible and "Aviasales" not in visible
     assert any(label in visible.casefold() for label in ("демонстрацион", "mock", "демо-рейс", "демо-мок"))
 
 

@@ -118,14 +118,14 @@ def package_price(option: dict[str, Any]) -> str:
 def flight_source_line(label: str, leg: dict[str, Any]) -> str | None:
     demo = leg.get("demo_source") or {}
     if demo.get("kind") == "deterministic_mock":
-        return (
-            f"{label}: ДЕМО-МОК — расписание и цена сгенерированы; "
-            "это не котировка Aviasales и не подтверждение наличия мест."
-        )
+        return f"{label}: демонстрационные расписание и цена; наличие мест не подтверждено."
     source = leg.get("price_source")
     if source:
         snapshot = f", запись {source['recorded_at'][:10]}" if source.get("recorded_at") else ""
-        return f"{label}: котировка Aviasales {rub(source['seat_price_rub'])} за одно место{snapshot}."
+        return (
+            f"{label}: сохранённая котировка {rub(source['seat_price_rub'])} за одно место{snapshot}; "
+            "наличие не подтверждено."
+        )
     return None
 
 
@@ -133,45 +133,48 @@ def packages(plan: PlanResult, diff: str = "") -> str:
     if not plan.options:
         return " ".join(plan.notes) + " Попробуйте другие даты или направление."
     lines = [diff] if diff else []
-    lines.append("Стоимость показанных компонентов: перелёты туда и обратно с багажом, отель и трансфер из аэропорта.")
-    for o in plan.options:
-        lines.append(f"{o['index']}. {o['label']}: {o['hotel']['name']} — {package_price(o)}.")
-        lines.append(
-            f"   Отель {plural(o['hotel']['nights'], 'ночь', 'ночи', 'ночей')} с {day(o['hotel']['check_in'])}, "
-            + flight_line(o)
+    lines.append("Известные расходы: перелёты туда и обратно с багажом, отель и трансфер из аэропорта.")
+    for option in plan.options:
+        lines.append(f"{option['index']}. {option['label']}: {option['hotel']['name']} — {package_price(option)}.")
+        why = "; ".join(option.get("why", [])[:1])
+        timeline = option.get("timeline") or {}
+        arrival = (
+            f" Приезд в отель {when(timeline['hotel_arrival_at'])}; местное время."
+            if timeline.get("hotel_arrival_at")
+            else ""
         )
-        timeline = o.get("timeline")
-        if timeline:
-            zone = o["outbound"].get("destination_timezone", "часовой пояс отеля")
-            arrival = when(timeline["hotel_arrival_at"])
-            check_in = when(timeline["booked_check_in"]) if timeline.get("booked_check_in") else "время неизвестно"
-            lines.append(f"   Приезд в отель {arrival}, заселение {check_in}; местное время ({zone}).")
-        for label, leg in (("Туда", "outbound"), ("Обратно", "inbound")):
-            source_line = flight_source_line(label, o[leg])
-            if source_line:
-                lines.append("   " + source_line)
-        for title, key in (("Почему", "why"), ("Чем жертвуем", "tradeoffs"), ("Риски", "risks")):
-            if o[key]:
-                lines.append(f"   {title}: " + "; ".join(o[key]) + ".")
-    lines += [*plan.notes, assumptions_line(plan.assumptions)]
-    provider = any(o[leg].get("price_source") for o in plan.options for leg in ("outbound", "inbound"))
-    mock = any(
-        (o[leg].get("demo_source") or {}).get("kind") == "deterministic_mock"
-        for o in plan.options
-        for leg in ("outbound", "inbound")
-    )
-    notice = (
-        "Котировки Aviasales взяты из кэша поисков. Цена группы, багаж, отель и трансфер — расчётные. "
-        "Наличие мест и окончательная стоимость покупки не проверены. "
-        if provider
-        else "Цены и наличие демонстрационные. "
-    )
-    lines.append(
-        ("Явное офлайн-демо: помеченные рейсы МОК сгенерированы и не получены от Aviasales. " if mock else "")
-        + notice
-        + "Обратный трансфер, виза и прочие доплаты не оценены. Можно выбрать вариант или поменять условия."
-    )
-    return "\n".join(line for line in lines if line)
+        lines.append(
+            f"   {plural(option['hotel']['nights'], 'ночь', 'ночи', 'ночей')} с {day(option['hotel']['check_in'])}; "
+            + flight_line(option)
+            + arrival
+            + (" " + why + "." if why else "")
+        )
+        limitations = [issue["message"] for issue in option.get("issues", []) if issue.get("severity") == "critical"]
+        travelers = option.get("travelers") or {}
+        if travelers.get("pets") and option["hotel"].get("pets_allowed") is not True:
+            limitations.append("Отель не подтвердил размещение с питомцем — нужно уточнить до оплаты")
+        if travelers.get("children_ages") and option["hotel"].get("adults_only") is not False:
+            limitations.append("неизвестно, принимает ли отель детей — нужно уточнить до оплаты")
+        limitations += [issue["message"] for issue in option.get("issues", []) if issue.get("severity") == "warning"]
+        limitations += option.get("tradeoffs", []) + option.get("risks", [])
+        limitations = list(dict.fromkeys(limitations))[:2]
+        lines.append(
+            "   Ограничения: "
+            + ("; ".join(limitations) if limitations else "наличие и окончательная цена покупки не подтверждены")
+            + "."
+        )
+    lines.append("Обратный трансфер, виза и прочие обязательные доплаты не оценены.")
+    if any(option[leg].get("price_source") for option in plan.options for leg in ("outbound", "inbound")):
+        lines.append("В перелётах есть сохранённые котировки; цена группы, багаж, отель и трансфер — расчётные.")
+    if any(option.get("is_synthetic") for option in plan.options):
+        lines.append("Данные демонстрационные; наличие и окончательная цена покупки не подтверждены.")
+    else:
+        lines.append("Наличие и окончательная цена покупки не подтверждены.")
+    assumption = assumptions_line(plan.assumptions)
+    if assumption:
+        lines.append(assumption)
+    lines.append("Выберите вариант или измените условия поездки.")
+    return "\n".join(lines)
 
 
 def when(iso: str) -> str:
@@ -215,7 +218,7 @@ def confirmation(o: dict[str, Any], brief: TripBrief) -> str:
         f"Стоимость показанных компонентов ({group(brief)}): {package_price(o)}.",
     ]
     baggage = o["outbound"].get("baggage_price_rub", 0) + o["inbound"].get("baggage_price_rub", 0)
-    lines.append(f"Модельная доплата за багаж включена: {rub(baggage)}.")
+    lines.append(f"Расчётная доплата за багаж включена: {rub(baggage)}.")
     for label, leg in (("Туда", "outbound"), ("Обратно", "inbound")):
         source_line = flight_source_line(label, o[leg])
         if source_line:
@@ -240,13 +243,41 @@ def cancelled() -> str:
     return "Хорошо, не оформляю. Можно выбрать другой вариант или поменять условия."
 
 
+def booking_status(booking: dict[str, Any] | None) -> str:
+    status = (booking or {}).get("status")
+    if status == "paid_demo":
+        state = "Демо-заказ отмечен как оплаченный; заказ и документы сохранены. "
+    elif status in {"awaiting_travelers", "ready_for_demo_payment", "payment_declined"}:
+        state = "Демо-оплата не завершена; сохранена только корзина поездки. "
+    elif booking:
+        state = "Создана демонстрационная бронь; реальное бронирование не выполнялось. "
+    else:
+        state = "Реальное бронирование не выполнялось. "
+    return state
+
+
+def cancellation_status(booking: dict[str, Any] | None, option: dict[str, Any] | None = None) -> str:
+    """Explain the observed state; this chat never cancels an order or grants a refund."""
+    refundable = (option or {}).get("hotel", {}).get("refundable")
+    conditions = (
+        "Тариф отеля возвратный, но сроки, удержания и бесплатная отмена не подтверждены. "
+        if refundable is True
+        else "Тариф отеля невозвратный. "
+        if refundable is False
+        else "Условия возврата нужно уточнить у отеля до оформления. "
+    )
+    return (
+        booking_status(booking) + conditions + "Отмена и возврат не выполнялись. В демо реальные деньги не списываются."
+    )
+
+
 def off_topic() -> str:
     return "Я помогаю спланировать поездку. Расскажите, куда и когда хотите поехать — или что вам важно в отдыхе."
 
 
 def trains(plan: PlanResult) -> str:
     classes = {"coupe": "купе", "platzkart": "плацкарт", "sv": "СВ", "seated": "сидячий"}
-    lines = ["Поезда: расписание и модельная стоимость за всю группу в одну сторону."] if plan.options else []
+    lines = ["Поезда: расписание и расчётная стоимость за всю группу в одну сторону."] if plan.options else []
     for row in plan.options:
         lines.append(
             f"{row['index']}. {row['origin']['name']} → {row['destination']['name']}, поезд {row['number']}, "

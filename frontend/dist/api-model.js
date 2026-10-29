@@ -5,7 +5,7 @@ export const visibleText=value=>String(value??'').replace(/\s*\[review_id:[^\]]*
 const copy=value=>structuredClone(value);
 const STORAGE_KEY='na-maldivy-api-session-v1';
 const idempotency=()=>globalThis.crypto?.randomUUID?.()||'web-'+Date.now()+'-'+Math.random().toString(36).slice(2);
-export const createApiModel=()=>({sessionId:null,version:0,stage:'collecting',brief:{},sources:{},needs:[],options:[],optionKind:null,selected:null,cart:null,order:null,currentOrderId:null,orders:[],messages:[],question:null,profile:null,savings:null,statusText:'',busy:false,error:null,stale:false,notes:[],assumptions:[],draft:'',pendingRequest:null,syncNeeded:false,sessionLost:false,connection:'connecting',health:null,storageWarning:null});
+export const createApiModel=()=>({sessionId:null,version:0,stage:'collecting',brief:{},sources:{},needs:[],options:[],optionKind:null,selected:null,cart:null,order:null,currentOrderId:null,orders:[],messages:[],question:null,profile:null,savings:null,statusText:'',busy:false,error:null,stale:false,notes:[],assumptions:[],assumptionsAccepted:false,acceptedAssumptions:null,draft:'',pendingRequest:null,syncNeeded:false,sessionLost:false,connection:'connecting',health:null,storageWarning:null});
 const safeId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(value);
 const safeCheckoutId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(value);
 const stages=['collecting','destinations_shown','packages_shown','trains_shown','awaiting_confirmation','checkout_pending','booked'];
@@ -13,7 +13,29 @@ function checkedOrder(value,sessionId,cartId=null){
  if(!value||value.status!=='paid_demo'||value.is_simulated!==true||!safeCheckoutId(value.order_id)||!safeCheckoutId(value.cart_id)||(cartId&&value.cart_id!==cartId)||value.session_id!==sessionId||!value.package?.hotel||typeof value.package.hotel.name!=='string'||typeof value.package.hotel.check_in!=='string'||typeof value.package.hotel.check_out!=='string')throw new ChatApiError('Сервер не подтвердил результат демо-оплаты.',{code:'protocol'});
  return value;
 }
-const tripKeys=['sessionId','version','stage','brief','sources','needs','options','optionKind','selected','cart','order','currentOrderId','question','profile','savings','stale','notes','assumptions'];
+const tripKeys=['sessionId','version','stage','brief','sources','needs','options','optionKind','selected','cart','order','currentOrderId','question','profile','savings','stale','notes','assumptions','assumptionsAccepted','acceptedAssumptions'];
+const searchFields=['transport','seat_class','origin','destination','month','year','start_date','nights','adults','children_ages','pets','budget_rub','max_flight_minutes','direct_only','late_departure','refundable_only','min_stars','min_water_temperature_c','visa_free_only','needs'];
+const searchSignature=brief=>JSON.stringify(searchFields.map(key=>brief?.[key]??null));
+const assumptionSignature=state=>JSON.stringify([searchSignature(state.brief),searchFields.map(key=>state.sources?.[key]??null),state.assumptions,state.options.map(row=>[row.hotel?.check_in,row.hotel?.check_out])]);
+const own=(value,key)=>Object.prototype.hasOwnProperty.call(value,key);
+const record=value=>!!value&&typeof value==='object'&&!Array.isArray(value);
+const textRows=value=>Array.isArray(value)&&value.every(row=>typeof row==='string');
+function validOption(row,kind){
+ if(!record(row))return false;
+ if(kind==='packages')return Number.isInteger(row.index)&&row.index>0&&record(row.hotel)&&['name','check_in','check_out'].every(key=>typeof row.hotel[key]==='string')&&['outbound','inbound'].every(key=>record(row[key])&&typeof row[key].departure_at==='string'&&(row[key].arrival_at===undefined||typeof row[key].arrival_at==='string'))&&(row.issues===undefined||(Array.isArray(row.issues)&&row.issues.every(issue=>record(issue)&&typeof issue.message==='string')))&&(row.risks===undefined||textRows(row.risks))&&(row.unpriced_components===undefined||textRows(row.unpriced_components));
+ if(kind==='destinations')return typeof row.name==='string'&&(row.why===undefined||textRows(row.why));
+ return kind==='trains'&&['departure_at','arrival_at'].every(key=>row[key]===undefined||typeof row[key]==='string');
+}
+const validEnvelope=value=>record(value)&&['packages','destinations','trains',null].includes(value.kind)&&Array.isArray(value.items)&&value.items.every(row=>validOption(row,value.kind))&&(value.kind!==null||value.items.length===0)&&(value.notes===undefined||textRows(value.notes))&&(value.assumptions===undefined||(Array.isArray(value.assumptions)&&value.assumptions.every(row=>record(row)&&typeof row.text==='string')));
+const validNeeds=value=>Array.isArray(value)&&value.every(row=>record(row)&&typeof row.label==='string');
+function retainCurrentOrder(model){
+ if(model.order&&model.sessionId&&!model.orders.some(row=>row.sessionId===model.sessionId&&row.order.order_id===model.order.order_id))model.orders.push({sessionId:model.sessionId,order:copy(model.order)});
+}
+function clearResults(model,{keepQuestion=false}={}){
+ retainCurrentOrder(model);
+ Object.assign(model,{options:[],optionKind:null,selected:null,cart:null,order:null,currentOrderId:null,...(keepQuestion?{}:{question:null}),profile:null,savings:null,notes:[],assumptions:[],assumptionsAccepted:false,acceptedAssumptions:null});
+}
+function refreshAssumptions(model){model.assumptionsAccepted=!!model.acceptedAssumptions&&model.acceptedAssumptions===assumptionSignature(model);}
 const tripCopy=state=>Object.fromEntries(tripKeys.map(key=>[key,copy(state[key])]));
 function storedTrip(state){
  const result=tripCopy(state);result.currentOrderId=state.order?.order_id||state.currentOrderId||null;result.order=null;
@@ -38,17 +60,14 @@ function restoredTrip(value){
  result.assumptions=Array.isArray(record.assumptions)?record.assumptions.filter(row=>row&&typeof row.text==='string'):[];
  result.optionKind=['packages','destinations','trains'].includes(record.optionKind)?record.optionKind:null;
  const options=Array.isArray(record.options)?record.options:[];
- result.options=options.filter(row=>{
-  if(!row||typeof row!=='object')return false;
-  if(result.optionKind==='packages')return Number.isInteger(row.index)&&row.hotel&&typeof row.hotel.name==='string'&&typeof row.hotel.check_in==='string'&&typeof row.hotel.check_out==='string'&&row.outbound&&row.inbound&&typeof row.outbound.departure_at==='string'&&typeof row.inbound.departure_at==='string'&&(!row.issues||(Array.isArray(row.issues)&&row.issues.every(issue=>issue&&typeof issue.message==='string')))&&(!row.unpriced_components||Array.isArray(row.unpriced_components));
-  if(result.optionKind==='destinations')return typeof row.name==='string'&&(!row.why||Array.isArray(row.why));
-  return result.optionKind==='trains';
- });
+ result.options=options.filter(row=>validOption(row,result.optionKind));
  result.selected=Number.isInteger(record.selected)?record.selected:null;result.stale=!!record.stale;
  if(record.cart&&typeof record.cart.cart_id==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(record.cart.cart_id)){const {cart_id,status,version,option,is_simulated,expected_travelers}=record.cart;result.cart={cart_id,status,version,option,is_simulated,expected_travelers};}
  if(record.question&&typeof record.question==='object')result.question={...record.question,quick_replies:Array.isArray(record.question.quick_replies)?record.question.quick_replies.filter(row=>typeof row==='string'):[]};
  if(record.profile&&Array.isArray(record.profile.evidence)&&record.profile.evidence.every(row=>row&&typeof row.quote==='string'))result.profile=copy(record.profile);
  if(record.savings&&Array.isArray(record.savings.checked_dates)&&record.savings.checked_dates.every(row=>row&&typeof row.status==='string')&&(!record.savings.suggestions||(Array.isArray(record.savings.suggestions)&&record.savings.suggestions.every(row=>row&&typeof row.suggested_departure==='string'))))result.savings=copy(record.savings);
+ if(typeof record.acceptedAssumptions==='string'&&record.acceptedAssumptions.length<=64000)result.acceptedAssumptions=record.acceptedAssumptions;
+ refreshAssumptions(result);
  return result;
 }
 function pendingFrom(value,messages){
@@ -58,27 +77,51 @@ function pendingFrom(value,messages){
 }
 
 export function applyAgentEvent(model,type,data){
+ if((type==='options'&&!validEnvelope(data))||(type==='done'&&data.options!==undefined&&!validEnvelope(data.options)))throw new ChatApiError('Не удалось проверить варианты поездки на сервере.',{code:'protocol'});
  if(type==='brief'){
+  const changed=data.invalidate_options??data.search_changed??(data.changes?.some(row=>searchFields.includes(typeof row==='string'?row:row.field))||searchSignature(model.brief)!==searchSignature(data.brief));
+  if(changed){clearResults(model);model.stale=true;}
   model.brief=data.brief||{};model.sources=data.sources||{};model.needs=data.needs||[];
-  if(data.changes?.length){model.selected=null;model.cart=null;model.order=null;model.currentOrderId=null;model.stale=true;model.options=[];model.savings=null;model.profile=null;}
+  if(Number.isInteger(data.version))model.version=data.version;
+  if(stages.includes(data.stage))model.stage=data.stage;
+  refreshAssumptions(model);
  }else if(type==='options'){
+  const accepted=model.acceptedAssumptions;
+  clearResults(model);
   model.options=Array.isArray(data.items)?data.items:[];model.optionKind=data.kind;model.assumptions=data.assumptions||[];model.notes=data.notes||[];model.stale=false;
+  model.acceptedAssumptions=accepted;
+  model.question=null;model.profile=null;model.savings=null;refreshAssumptions(model);
  }else if(type==='question')model.question=data;
  else if(type==='hotel_profile')model.profile=data;
  else if(type==='date_savings')model.savings=data;
  else if(type==='status')model.statusText=data.text||'';
  else if(type==='booking'&&data.cart_id){model.cart=copy(data);model.order=null;model.currentOrderId=null;}
  else if(type==='done'){
+  if(data.brief){
+   if(searchSignature(model.brief)!==searchSignature(data.brief))clearResults(model,{keepQuestion:true});
+   model.brief=data.brief;model.sources=data.sources||{};model.needs=data.needs||[];
+  }
   if(data.session_id)model.sessionId=data.session_id;
   if(data.stage)model.stage=data.stage;
   if(Number.isInteger(data.version))model.version=data.version;
+  if(data.stale===true||data.stage==='collecting')clearResults(model,{keepQuestion:true});
+  if(data.stale!==true&&data.options&&Array.isArray(data.options.items)&&(data.stage!=='collecting'||(!data.options.items.length&&data.options.notes?.length))){
+   const changed=model.optionKind!==data.options.kind||JSON.stringify(model.options)!==JSON.stringify(data.options.items);
+   if(changed)clearResults(model,{keepQuestion:true});
+   Object.assign(model,{options:copy(data.options.items),optionKind:data.options.kind,assumptions:copy(data.options.assumptions||[]),notes:copy(data.options.notes||[])});
+  }
+  if(own(data,'stale'))model.stale=!!data.stale;
+  if(own(data,'selected'))model.selected=Number.isInteger(data.selected)?data.selected:null;
+  if(own(data,'booking')&&!data.booking){retainCurrentOrder(model);model.cart=null;model.order=null;model.currentOrderId=null;}
+  else if(data.booking&&((model.cart&&model.cart.cart_id!==data.booking.cart_id)||(model.order&&model.order.order_id!==data.booking.order_id))){retainCurrentOrder(model);model.cart=null;model.order=null;model.currentOrderId=null;}
+  refreshAssumptions(model);
  }
  return model;
 }
 
 export class ApiTripController{
  constructor({fetchImpl=globalThis.fetch,onChange=()=>{},storage=null}={}){
-  this.fetch=fetchImpl.bind(globalThis);this.onChange=onChange;this.storage=storage;this.state=createApiModel();this.abort=null;this.generation=0;this.pendingPayment=null;this.savedTravelers=null;this.orderRefs=[];this.reconnectPromise=null;this.probeEpoch=0;
+  this.fetch=fetchImpl.bind(globalThis);this.onChange=onChange;this.storage=storage;this.state=createApiModel();this.abort=null;this.generation=0;this.pendingPayment=null;this.savedTravelers=null;this.orderRefs=[];this.reconnectPromise=null;this.probeEpoch=0;this.restoring=false;
  }
  notify(){this.remember();this.onChange(this.state);}
  remember(){
@@ -93,11 +136,12 @@ export class ApiTripController{
   }catch{this.state.storageWarning='Не удалось сохранить переписку в браузере. Пока вкладка открыта, сообщения остаются на странице.';}
  }
  setDraft(value){this.state.draft=String(value||'').slice(0,4000);this.remember();}
+ acceptAssumptions(){if(this.state.busy||this.state.stale||!this.state.options.length||this.state.pendingRequest||this.state.syncNeeded||this.state.sessionLost)return false;this.state.acceptedAssumptions=assumptionSignature(this.state);this.state.assumptionsAccepted=true;this.notify();return true;}
  keepOrder(order,sessionId,prepend=true){
   const entry=this.state.orders.find(row=>row.sessionId===sessionId&&row.order.order_id===order.order_id);
   if(entry)entry.order=order;else this.state.orders[prepend?'unshift':'push']({sessionId,order});
  }
- async sessionSnapshot(){
+ async sessionSnapshot({freshOptions=false}={}){
   const generation=this.generation,sessionId=this.state.sessionId;
   const current=()=>this.generation===generation&&this.state.sessionId===sessionId;
   if(!safeId(sessionId))return null;
@@ -105,7 +149,7 @@ export class ApiTripController{
   if(!current())return null;
   if(!response.ok)throw new ChatApiError(response.status===404?'Сервер перезапустился. Переписка сохранена; начните новый поиск.':'Не удалось обновить состояние поездки. Проверьте связь.',{code:'session',status:response.status});
   const value=await response.json();if(!current())return null;
-  if(!value||typeof value!=='object'||Array.isArray(value)||(value.session_id!==undefined&&value.session_id!==sessionId)||!Number.isInteger(value.version)||value.version<this.state.version||!stages.includes(value.stage)||(value.brief!==undefined&&(!value.brief||typeof value.brief!=='object'||Array.isArray(value.brief))))throw new ChatApiError('Не удалось проверить состояние поездки на сервере.',{code:'protocol'});
+  if(!record(value)||(value.session_id!==undefined&&value.session_id!==sessionId)||!Number.isInteger(value.version)||value.version<this.state.version||!stages.includes(value.stage)||(value.brief!==undefined&&!record(value.brief))||(value.sources!==undefined&&!record(value.sources))||(value.needs!==undefined&&!validNeeds(value.needs))||(value.options!==undefined&&!validEnvelope(value.options)))throw new ChatApiError('Не удалось проверить состояние поездки на сервере.',{code:'protocol'});
   let cart=null,order=null;
   if(value.booking?.cart_id&&value.stage==='checkout_pending'){
    cart=await requestCheckout({path:'/api/checkout/carts/'+encodeURIComponent(value.booking.cart_id),sessionId,fetchImpl:this.fetch});
@@ -120,8 +164,18 @@ export class ApiTripController{
    if(order.order_id!==orderId)throw new ChatApiError('Сервер вернул другой демо-заказ.',{code:'protocol'});
   }
   if(!current())return null;
-  if(value.stale||value.version!==this.state.version)this.state.options=[];
-  Object.assign(this.state,{brief:value.brief||{},sources:value.sources||{},version:value.version,stage:value.stage,selected:value.selected,stale:!!value.stale,cart,order,currentOrderId:order?.order_id||null});
+  const envelope=value.options;
+  const changed=searchSignature(value.brief)!==searchSignature(this.state.brief);
+  const kindChanged=(value.stage==='trains_shown'&&this.state.optionKind!=='trains')||(value.stage==='packages_shown'&&this.state.optionKind!=='packages')||(value.stage==='destinations_shown'&&this.state.optionKind!=='destinations');
+  if(value.stale||value.stage==='collecting'||(changed&&(envelope||!freshOptions))||(!envelope&&!freshOptions&&kindChanged))clearResults(this.state,{keepQuestion:!changed});
+  if(envelope&&!value.stale&&(value.stage!=='collecting'||(!envelope.items.length&&envelope.notes?.length))){
+   const different=JSON.stringify(this.state.options)!==JSON.stringify(envelope.items)||this.state.optionKind!==envelope.kind;
+   if(different){this.state.profile=null;this.state.savings=null;}
+   Object.assign(this.state,{options:copy(envelope.items),optionKind:envelope.kind,notes:copy(envelope.notes||[]),assumptions:copy(envelope.assumptions||[])});
+  }
+  retainCurrentOrder(this.state);
+  Object.assign(this.state,{brief:value.brief||{},sources:value.sources||{},needs:Array.isArray(value.needs)?value.needs:changed?[]:this.state.needs,version:value.version,stage:value.stage,selected:Number.isInteger(value.selected)?value.selected:null,stale:!!value.stale,cart,order,currentOrderId:order?.order_id||null});
+  refreshAssumptions(this.state);
   if(order)this.keepOrder(order,sessionId);
   return value;
  }
@@ -135,7 +189,7 @@ export class ApiTripController{
    try{
     const health=await checkAgentHealth({fetchImpl:this.fetch,signal:AbortSignal.timeout(5000)});
     if(!current())return null;this.state.health=health;this.state.connection='online';
-    if(this.state.syncNeeded&&!this.state.pendingRequest&&!this.state.busy&&this.state.sessionId){
+    if(this.state.syncNeeded&&!this.state.pendingRequest&&!this.state.busy&&!this.restoring&&this.state.sessionId){
      try{await this.sessionSnapshot();if(!current())return null;this.state.syncNeeded=false;this.state.error=null;}
      catch(error){if(!current())return null;if(error.status===404)this.markSessionLost();else this.state.error='Ответ сохранён. Пока не удалось обновить состояние поездки; проверьте связь ещё раз.';}
     }
@@ -147,6 +201,8 @@ export class ApiTripController{
  }
  async restore(){
   const generation=this.generation;
+  this.restoring=true;
+  try{
   let saved;try{const raw=this.storage?.getItem(STORAGE_KEY)||'null';if(raw.length>4000000)return;saved=JSON.parse(raw);}catch{return;}
   if(!saved||typeof saved!=='object')return;
   if(saved.schemaVersion===2){
@@ -157,6 +213,7 @@ export class ApiTripController{
    if(this.state.pendingRequest){this.state.messages[this.state.pendingRequest.replyIndex].interrupted=true;this.state.error='Ответ прервался. Переписка сохранена; можно повторить сообщение.';}
   }else{this.state.sessionId=safeId(saved.sessionId)?saved.sessionId:null;this.state.options=Array.isArray(saved.options)?saved.options:[];this.state.optionKind=saved.optionKind;}
   this.orderRefs=Array.isArray(saved.orders)?saved.orders.filter(row=>safeId(row?.sessionId)&&typeof row.orderId==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(row.orderId)).slice(0,1000):[];
+  if(this.state.sessionId&&!this.state.pendingRequest&&!this.state.sessionLost)this.state.syncNeeded=true;
   this.notify();
   for(const row of this.orderRefs){
    if(this.generation!==generation)return;
@@ -168,9 +225,10 @@ export class ApiTripController{
   if(paid){this.state.order=paid.order;this.state.currentOrderId=paid.order.order_id;}
   if(this.state.sessionLost)this.markSessionLost();
   if(!this.state.sessionId||this.state.pendingRequest||this.state.sessionLost){this.notify();return;}
-  try{const snapshot=await this.sessionSnapshot();if(this.generation!==generation||!snapshot)return;if(snapshot.version!==saved.version)this.state.options=[];this.state.syncNeeded=false;if(!this.state.messages.length)this.state.messages.push({role:'assistant',text:'Параметры поездки восстановлены с сервера. Можно продолжить разговор.'});}
+  try{const snapshot=await this.sessionSnapshot();if(this.generation!==generation||!snapshot)return;this.state.syncNeeded=false;if(!this.state.messages.length)this.state.messages.push({role:'assistant',text:'Параметры поездки восстановлены с сервера. Можно продолжить разговор.'});}
   catch(error){if(this.generation!==generation)return;if(error.status===404)this.markSessionLost();else{this.state.syncNeeded=true;this.state.connection='offline';this.state.error='Переписка сохранена. Связь с сервером временно недоступна.';}}
   this.notify();
+  }finally{this.restoring=false;}
  }
  async send(message){
   message=String(message||'').trim();if(!message||this.state.busy)return null;
@@ -185,16 +243,16 @@ export class ApiTripController{
  async transmit(retry){
   const pending=this.state.pendingRequest;if(!pending)return null;
   const generation=++this.generation;this.probeEpoch++;this.reconnectPromise=null;this.abort=new AbortController();this.state.busy=true;this.state.error=null;this.state.question=null;this.state.statusText=retry?'Восстанавливаем ответ':'Готовим поездку';
-  const reply=this.state.messages[pending.replyIndex],previousText=reply.text;reply.error=false;reply.interrupted=false;this.notify();let receivedDone=false;
+  const reply=this.state.messages[pending.replyIndex],previousText=reply.text;reply.error=false;reply.interrupted=false;this.notify();let receivedDone=false,freshOptions=false;
   try{
    const result=await streamChat({message:pending.message,sessionId:pending.sessionId,requestId:pending.id,retry,signal:this.abort.signal,fetchImpl:this.fetch,
     onDelta:(_,text)=>{if(this.generation===generation){const next=visibleText(text);reply.text=retry&&previousText.startsWith(next)?previousText:next;this.notify();}},
-    onEvent:(type,data)=>{if(this.generation===generation){if(type==='done'&&(!safeId(data.session_id)||(pending.sessionId&&data.session_id!==pending.sessionId)||!Number.isInteger(data.version)||data.version<(pending.baseTrip?.version||0)||!stages.includes(data.stage)))return;applyAgentEvent(this.state,type,data);if(type==='done'){receivedDone=true;this.state.pendingRequest=null;this.state.syncNeeded=true;}this.notify();}}});
+    onEvent:(type,data)=>{if(this.generation===generation){if(type==='done'&&(!safeId(data.session_id)||(pending.sessionId&&data.session_id!==pending.sessionId)||!Number.isInteger(data.version)||data.version<(pending.baseTrip?.version||0)||!stages.includes(data.stage)))return;if(type==='options')freshOptions=true;applyAgentEvent(this.state,type,data);if(type==='done'){receivedDone=true;this.state.pendingRequest=null;this.state.syncNeeded=true;}this.notify();}}});
    if(this.generation!==generation)return null;
    if(!receivedDone||!safeId(result.sessionId))throw new ChatApiError('Сервер не подтвердил завершение ответа. Можно повторить сообщение.',{code:'protocol'});
    this.state.sessionId=result.sessionId;this.state.pendingRequest=null;this.state.connection='online';
    if(!reply.text)reply.text='Сервер завершил обработку. Результат показан ниже.';
-   try{await this.sessionSnapshot();if(this.generation!==generation)return null;this.state.syncNeeded=false;}
+   try{await this.sessionSnapshot({freshOptions});if(this.generation!==generation)return null;this.state.syncNeeded=false;}
    catch(error){if(this.generation!==generation)return null;if(error.status===404)this.markSessionLost();else this.state.error='Ответ сохранён. Не удалось обновить состояние поездки; проверьте связь.';}
    this.remember();return result;
   }catch(error){

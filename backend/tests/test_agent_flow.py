@@ -160,7 +160,7 @@ async def test_model_parses_and_writes_summary() -> None:
 async def test_invalid_model_json_falls_back_to_rules() -> None:
     agent, _ = model_agent(text("не json"), text('{"intent": "nonsense"}'))
     t = await say(agent, "хочу на море в ноябре из Москвы")
-    assert any("правилами" in w["message"] for w in t.of("warning"))
+    assert t.of("warning") and all("модель" not in w["message"].casefold() for w in t.of("warning"))
     assert t.of("brief")[0]["brief"]["month"] == 11
     assert t.last.type == "done"
 

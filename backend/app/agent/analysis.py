@@ -57,6 +57,38 @@ _ORDINALS = {"перв": 1, "втор": 2, "трет": 3, "1": 1, "2": 2, "3": 3
 _TRAVEL_WORDS = r"поезд|поездк|отдых|отпуск|лет\w*|отел|мор|билет|куда|тур|виз|рейс|перел|трансфер|ночей|недел"
 
 
+def is_cancellation_topic(text: str) -> bool:
+    return bool(re.search(r"отмен|возврат|вернут.{0,15}деньг|деньг.{0,15}вернут", text.casefold()))
+
+
+def explicit_change_requested(text: str, patch: BriefPatch) -> bool:
+    """A mixed question can still contain an explicit new trip request.
+
+    Availability/conditions questions alone remain read-only: mentioning a date
+    while asking whether tickets exist is not an instruction to move the trip.
+    """
+    if patch.is_empty():
+        return False
+    normalized = text.casefold().replace("ё", "е")
+    if re.search(
+        r"\b(?:хочу|хотим|давай|давайте|теперь|вместо|поменя\w*|измени\w*|замени\w*|"
+        r"перенеси\w*|сдвинь\w*|поедем|поеду|едем|еду|полетим|полечу|летим|лечу)\b",
+        normalized,
+    ):
+        return True
+    if re.search(r"раньше|позже|сдвиг|перенос|дат\w*", normalized) and re.search(
+        r"дешев|эконом|выгодн|сравн|\b(?:а|что)\s+если\b|сколько\s+(?:будет|стоит)", normalized
+    ):
+        return False
+    if re.search(
+        r"\b(?:есть|бывают|доступны)\b.{0,25}\b(?:рейс|билет|поезд)|\b(?:какие|какая|какой|как|что)\b", normalized
+    ):
+        return False
+    if is_cancellation_topic(normalized) and re.search(r"\b(?:если|можно|возможна|условия)\b|\?", normalized):
+        return False
+    return bool(patch.values() or patch.cleared or patch.needs_remove or patch.needs_add)
+
+
 def requests_fabricated_offers(text: str) -> bool:
     normalized = text.casefold().replace("ё", "е")
     return bool(
@@ -73,9 +105,18 @@ def rules_intent(text: str, patch: BriefPatch, has_options: bool, awaiting_confi
     if m := re.search(r"\b(перв|втор|трет|[123])\w*\s*(вариант)?", t):
         if has_options and (m.group(2) or re.search(r"бер[уе]|выбира|давай|хочу", t)):
             option = _ORDINALS[m.group(1)]
+    if not patch.is_empty() and explicit_change_requested(text, patch):
+        return MessageAnalysis(intent="modify" if has_options else "plan", patch=patch)
+    if not explicit_change_requested(text, patch) and (
+        "?" in t
+        or is_cancellation_topic(t)
+        and re.search(r"\b(?:если|можно|возможна|условия)\b", t)
+        or re.search(r"^(?:почему|а почему|зачем|сколько|что|как|какие)\b", t)
+    ):
+        return MessageAnalysis(intent="question", patch=BriefPatch())
     if awaiting_confirmation and re.search(_CONFIRM, t):
         return MessageAnalysis(intent="confirm", patch=patch)
-    if awaiting_confirmation and re.search(_DECLINE, t):
+    if awaiting_confirmation and re.search(_DECLINE, t) and not (is_cancellation_topic(t) and "?" in t):
         return MessageAnalysis(intent="decline", patch=patch)
     if option is not None:
         return MessageAnalysis(intent="select", patch=patch, option=option)
@@ -123,7 +164,7 @@ async def analyze_message(
             analysis = MessageAnalysis.model_validate(json.loads(response.text or ""))
         except LLMError as exc:
             log.warning("Разбор моделью не удался (%s)", type(exc).__name__)
-            warnings.append("Модель не ответила, разбираю сообщение правилами")
+            warnings.append("Не удалось уточнить все условия сразу; учитываю явно указанные пожелания.")
             break
         except (json.JSONDecodeError, ValidationError) as exc:
             log.warning("Модель вернула негодный разбор (попытка %d, %s)", attempt + 1, type(exc).__name__)
@@ -134,9 +175,16 @@ async def analyze_message(
                     Message(role="user", content=f"Ответ не прошёл проверку: {exc}. Верни исправленный JSON."),
                 ]
                 continue
-            warnings.append("Модель дважды вернула негодный разбор, разбираю сообщение правилами")
+            warnings.append("Не удалось уточнить все условия сразу; учитываю явно указанные пожелания.")
             break
-        if analysis.intent not in ("question", "other"):
+        if explicit_change_requested(text, rules_patch):
+            # Explicit new values win over copied/stale values in an analysis.
+            analysis.patch = merge_patches(rules_patch, analysis.patch)
+            if analysis.intent in {"question", "other", "decline", "confirm", "select"}:
+                analysis.intent, analysis.option = ("modify" if has_options else "plan"), None
+        elif is_cancellation_topic(text) and re.search(r"\b(?:если|можно|возможна|условия)\b|\?", text.casefold()):
+            analysis.intent, analysis.option, analysis.patch = "question", None, BriefPatch()
+        elif analysis.intent not in ("question", "other"):
             analysis.patch = merge_patches(analysis.patch, hidden_only(rules_patch))
         return AnalysisOutcome(analysis, "llm", warnings)
 
