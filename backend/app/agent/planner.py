@@ -48,6 +48,7 @@ class PlanResult:
     assumptions: list[Assumption] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)  # что не нашлось и почему
     start_date: date | None = None
+    search_summary: dict[str, Any] | None = None
     _monthly_candidates: list[date] = field(default_factory=list, repr=False)
     _monthly_outbound: dict[date, list[Flight]] = field(default_factory=dict, repr=False)
 
@@ -779,6 +780,15 @@ def _pick_packages(combos: list[_Combo], brief: TripBrief) -> list[dict[str, Any
                     "refundable": h.refundable,
                     "adults_only": h.adults_only,
                     "pets_allowed": h.pets_allowed,
+                    "check_in_time": h.check_in_time.isoformat() if h.check_in_time is not None else None,
+                    "check_out_time": h.check_out_time.isoformat() if h.check_out_time is not None else None,
+                    "timezone": h.place.timezone,
+                    "reception_24h": h.reception_24h,
+                    "reception_closes_at": (
+                        h.reception_closes_at.isoformat() if h.reception_closes_at is not None else None
+                    ),
+                    "early_check_in_available": h.early_check_in_available,
+                    "early_check_in_price_rub": h.early_check_in_price_rub,
                     "review_profile": (
                         getattr(h, "review_profile", None).model_dump(mode="json")
                         if getattr(h, "review_profile", None) is not None

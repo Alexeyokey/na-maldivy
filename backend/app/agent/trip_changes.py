@@ -58,6 +58,12 @@ def option_summary(option: dict[str, Any] | None, brief: TripBrief) -> dict[str,
             "components": [],
             "unpriced_components": ["complete_trip"],
         }
+    # Flexible search cards have independent destinations and dates.
+    common.update(
+        origin=(option.get("outbound") or {}).get("from") or brief.origin,
+        destination=option.get("destination") or brief.destination,
+        start_date=((option.get("outbound") or {}).get("departure_at") or "")[:10] or common["start_date"],
+    )
     components = []
     for key, label in (("outbound", "Перелёт туда"), ("inbound", "Перелёт обратно")):
         flight = option.get(key) or {}

@@ -27,6 +27,8 @@ ANALYZE_PROMPT = f"""Ты модуль понимания сообщений tra
     "transport": "flight" | "train" | null, "seat_class": "seated" | "platzkart" | "coupe" | "sv" | null,
     "origin": IATA или null, "destination": IATA или null,
     "month": 1-12 или null, "start_date": "YYYY-MM-DD" или null, "nights": число или null,
+    "departure_window_start": "YYYY-MM-DD" или null, "departure_window_end": "YYYY-MM-DD" или null,
+    "departure_months": ["YYYY-MM", ...] или null,
     "adults": число или null, "children_ages": [возрасты] или null, "pets": число или null,
     "budget_rub": число или null, "max_flight_minutes": число или null,
     "direct_only": true/false/null, "refundable_only": true/false/null, "min_stars": 1-5 или null,
@@ -47,7 +49,13 @@ ANALYZE_PROMPT = f"""Ты модуль понимания сообщений tra
 5. «с женой», «вдвоём» → adults = 2 и "adults" в inferred. Возраст детей — только если назван.
 6. Относительные изменения («на два дня позже», «бюджет на 20 тысяч меньше») пересчитай от брифа в контексте.
 7. start_date — конкретная дата. Явно указанный год сохраняй; без года — ближайшая будущая относительно today.
-   Иначе month. Для поезда transport=train; классы: купе=coupe, плацкарт=platzkart, СВ=sv, сидячий=seated.
+   Один месяц — month. Несколько допустимых месяцев — ВСЕ в departure_months с ближайшими будущими годами,
+   а month, year и start_date оставь null. Не выбирай самостоятельно январь из списка месяцев.
+   «Любые даты в ближайшие полгода» — departure_window_start=завтра и departure_window_end=today+6 календарных
+   месяцев. Не спрашивай конкретный месяц: пользователь уже разрешил выбирать даты. «Любой месяц» без
+   горизонта — те же границы и оба поля в inferred; это явное допущение, не просьба снова спросить месяц.
+   Конкретная дата пользователя заменяет гибкое окно. Для поезда transport=train; классы:
+   купе=coupe, плацкарт=platzkart, СВ=sv, сидячий=seated.
 8. «на неделю» → nights = 7. «на 5 дней» → nights = 4 и "nights" в inferred.
 9. Снятие ограничения («бюджет не важен», «можно с пересадками») — имя поля в cleared.
 10. needs_add — скрытые требования, только коды из словаря:

@@ -13,6 +13,7 @@
 """
 
 import re
+from calendar import monthrange
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 from typing import Any
@@ -41,6 +42,9 @@ NEEDS: dict[str, Need] = {
     "short_transfer": Need("короткий трансфер", "отели ближе к аэропорту"),
     "quiet": Need("спокойный отдых", "небольшие и «только для взрослых» отели выше в списке"),
     "flexible": Need("планы могут поменяться", "возвратные тарифы; сроки и удержания нужно уточнить"),
+    "surfing": Need("сёрфинг", "учитываем пожелание; наличие спотов, школ и условия занятий не подтверждены"),
+    "diving": Need("дайвинг", "учитываем пожелание; доступность погружений и снаряжения нужно уточнить"),
+    "active": Need("активный отдых", "сохраняем при подборе; конкретные активности и их стоимость не подтверждены"),
 }
 
 
@@ -63,6 +67,9 @@ RULES: tuple[Rule, ...] = (
     Rule("late_arrival", r"прил[её]т\w* ночью|поздно прил[её]т|ночн\w* рейс"),
     Rule("short_transfer", r"с бабушк|с дедушк|пожил|с родителями|без долг\w* трансфер"),
     Rule("quiet", r"\bтих|\bтиш|спокойн|без тусов|без вечерин|без аниматор"),
+    Rule("surfing", r"\bс[её]рф|\bsurf"),
+    Rule("diving", r"\bдайв|\bdiving"),
+    Rule("active", r"активн\w*\s+отдых|отдых\w*\s+активн"),
     Rule(
         "flexible",
         r"бесплатн\w* отмен|с возвратом|\bвозвратн|деньги.{0,30}верн\w*.{0,20}отмен|"
@@ -106,6 +113,49 @@ def _future(month: int, day: int, today: date) -> date | None:
         if candidate > today:
             return candidate
     return None
+
+
+def _add_months(day: date, months: int) -> date:
+    offset = day.year * 12 + day.month - 1 + months
+    year, month = divmod(offset, 12)
+    month += 1
+    return date(year, month, min(day.day, monthrange(year, month)[1]))
+
+
+def _flexible_dates(text: str, today: date) -> tuple[dict[str, Any], list[str]]:
+    """Keep every stated month and bound an explicitly open-ended date choice.
+
+    A month without a year means its next future occurrence, not the first
+    month in the dictionary. A generic «любой месяц» uses a disclosed six-month
+    assumption; an explicit half-year is exactly six calendar months.
+    """
+    months: list[str] = []
+    for stem, month in _MONTHS:
+        for match in re.finditer(rf"\b{stem}[а-я]*(?:\s+(\d{{4}})\b)?", text):
+            year = int(match.group(1)) if match.group(1) else today.year + (month < today.month)
+            months.append(f"{year:04d}-{month:02d}")
+    values: dict[str, Any] = {}
+    if len(set(months)) > 1:
+        values["departure_months"] = sorted(set(months))
+
+    explicit_half_year = bool(
+        re.search(
+            r"(?:ближайш\w*|следующ\w*|предстоящ\w*|течение)\s+(?:полгода|полугод\w*|6\s+месяц\w*|шест\w*\s+месяц\w*)",
+            text,
+        )
+    )
+    any_dates = bool(re.search(r"\bлюб\w*\s+(?:дат\w*|месяц\w*|время)|\bдат\w*\s+не\s+важн", text))
+    if explicit_half_year or any_dates and not months:
+        values.update(
+            departure_window_start=(today + timedelta(days=1)).isoformat(),
+            departure_window_end=_add_months(today, 6).isoformat(),
+        )
+    inferred = (
+        ["departure_window_start", "departure_window_end"]
+        if any_dates and not explicit_half_year and not months
+        else []
+    )
+    return values, inferred
 
 
 def _money(amount: str, unit: str | None) -> int:
@@ -443,6 +493,14 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
             except ValueError:
                 pass  # malformed dates are handled by normal field validation
             break
+
+    if "start_date" not in data:
+        flexible, flexible_inferred = _flexible_dates(t, today)
+        if flexible:
+            data.pop("month", None)
+            data.pop("year", None)
+            data.update(flexible)
+            inferred += flexible_inferred
 
     # Срок: «на неделю», «на 5 ночей», «дней на десять».
     if "nights" in data:

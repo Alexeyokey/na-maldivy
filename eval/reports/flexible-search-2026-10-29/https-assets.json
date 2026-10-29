@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "source_commit": "cad0b09924f2ff227081c82f9e55670ffa801e53",
+  "scope": "owner_https_static_files",
+  "files": [
+    {
+      "file": "api-app.js",
+      "expected_bytes": 70310,
+      "received_bytes": 70310,
+      "matches_commit": true
+    },
+    {
+      "file": "api-model.js",
+      "expected_bytes": 41383,
+      "received_bytes": 41383,
+      "matches_commit": true
+    },
+    {
+      "file": "api.css",
+      "expected_bytes": 21012,
+      "received_bytes": 21012,
+      "matches_commit": true
+    },
+    {
+      "file": "trip-presentation.js",
+      "expected_bytes": 18327,
+      "received_bytes": 18327,
+      "matches_commit": true
+    },
+    {
+      "file": "trip-usability.js",
+      "expected_bytes": 13627,
+      "received_bytes": 13627,
+      "matches_commit": true
+    },
+    {
+      "file": "favorites.js",
+      "expected_bytes": 16669,
+      "received_bytes": 16669,
+      "matches_commit": true
+    },
+    {
+      "file": "hotel-presentation.js",
+      "expected_bytes": 1763,
+      "received_bytes": 1763,
+      "matches_commit": true
+    }
+  ]
+}

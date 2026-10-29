@@ -1,8 +1,8 @@
-import {formatDate,counted} from './trip-presentation.js';
+import {formatDate,counted,monthNames,durationLabel,temperatureLabel} from './trip-presentation.js';
 import {destinationNames} from './destination-names.generated.js';
 
-export const criterionLabels={transport:'Транспорт',origin:'Отправление',destination:'Направление',month:'Месяц',year:'Год',start_date:'Дата отправления',nights:'Продолжительность',adults:'Взрослые',children_ages:'Дети',pets:'Питомцы',budget_rub:'Бюджет за всех',max_flight_minutes:'Максимальный перелёт',direct_only:'Без пересадок',late_departure:'Вечерний вылет',refundable_only:'Возвратный отель',min_stars:'Звёзды отеля',min_water_temperature_c:'Температура воды',visa_free_only:'Без визы',needs:'Пожелания'};
-const needLabels={child:'с детьми',pets:'с питомцем',sea:'море и пляж',warm:'тепло',budget_low:'сначала недорогие',short_flight:'короткий перелёт',romantic:'романтическая поездка',late_arrival:'поздний прилёт',short_transfer:'короткий трансфер',quiet:'спокойный отдых',flexible:'возвратные тарифы'};
+export const criterionLabels={transport:'Транспорт',origin:'Отправление',destination:'Направление',month:'Месяц',year:'Год',departure_window_start:'Вылеты с',departure_window_end:'Вылеты до',departure_months:'Месяцы вылета',start_date:'Дата отправления',nights:'Продолжительность',adults:'Взрослые',children_ages:'Дети',pets:'Питомцы',budget_rub:'Бюджет за всех',max_flight_minutes:'Максимальный перелёт',direct_only:'Без пересадок',late_departure:'Вечерний вылет',refundable_only:'Возвратный отель',min_stars:'Звёзды отеля',min_water_temperature_c:'Температура воды',visa_free_only:'Без визы',needs:'Пожелания'};
+const needLabels={active:'активный отдых',surfing:'сёрфинг',diving:'дайвинг',child:'с детьми',pets:'с питомцем',sea:'море и пляж',warm:'тепло',budget_low:'сначала недорогие',short_flight:'короткий перелёт',romantic:'романтическая поездка',late_arrival:'поздний прилёт',short_transfer:'короткий трансфер',quiet:'спокойный отдых',flexible:'возвратные тарифы'};
 const places={...destinationNames,MOW:'Москва',SVO:'Москва · Шереметьево'};
 const own=(value,key)=>Object.prototype.hasOwnProperty.call(value,key);
 const obj=value=>!!value&&typeof value==='object'&&!Array.isArray(value);
@@ -38,7 +38,9 @@ export function normalizeTripDiff(value,version){
 
 export function criterionValue(field,value){
  if(value===null||value===undefined)return ['budget_rub','max_flight_minutes','min_stars','min_water_temperature_c'].includes(field)?'Без ограничения':'Не уточнено';
- if(field==='start_date')return formatDate(value);
+ if(['start_date','departure_window_start','departure_window_end'].includes(field))return formatDate(value);
+ if(field==='month')return Number.isInteger(value)&&value>=1&&value<=12?monthNames[value-1]:'Не уточнено';
+ if(field==='departure_months')return Array.isArray(value)?value.filter(row=>typeof row==='string'&&/^\d{4}-(?:0[1-9]|1[0-2])$/.test(row)).map(row=>monthNames[Number(row.slice(5))-1]+' '+row.slice(0,4)).join(', ')||'Не уточнено':'Не уточнено';
  if(['origin','destination'].includes(field))return own(places,value)?places[value]:String(value);
  if(field==='transport')return value==='train'?'Поезд':value==='flight'?'Самолёт':'Не уточнено';
  if(field==='children_ages')return !Array.isArray(value)?'Не уточнено':value.length?value.map(age=>counted(age,'год','года','лет')).join(', '):'Без детей';
@@ -46,8 +48,8 @@ export function criterionValue(field,value){
  if(typeof value==='boolean')return value?'Да':'Нет';
  if(field==='budget_rub')return value.toLocaleString('ru-RU')+' ₽';
  if(field==='nights')return counted(value,'ночь','ночи','ночей');
- if(field==='max_flight_minutes')return value+' мин';
- if(field==='min_water_temperature_c')return value+' °C';
+ if(field==='max_flight_minutes')return durationLabel(value);
+ if(field==='min_water_temperature_c')return temperatureLabel(value);
  return String(value);
 }
 
@@ -63,6 +65,13 @@ export function renderTripChanges(state){
  const diff=normalizeTripDiff(state.lastDiff,state.version);
  if(!diff||state.busy||state.stale||state.sessionLost)return '';
  const delta=diff.comparison.delta_known_total_rub,rows=componentChanges(diff);
+ const hasAmounts=diff.before?.known_total_rub!=null||diff.after?.known_total_rub!=null;
+ if(!hasAmounts){
+  if(!diff.criteria_changes.length&&diff.status==='updated')return '';
+  const status=diff.status==='no_results'?'Подходящих поездок по новым условиям пока нет.':diff.status==='awaiting_input'?'Нужно уточнить условия поиска.':'';
+  return `<details class="api-trip-changes api-trip-changes-compact" aria-label="Изменения условий поиска"><summary>Условия поиска обновлены</summary>${diff.criteria_changes.length?`<dl class="api-criteria-changes">${diff.criteria_changes.map(row=>`<div><dt>${escape(row.label)}</dt><dd>${escape(criterionValue(row.field,row.after))}${row.source&&row.source!=='explicit'?'<small>Предположение для поиска</small>':''}</dd></div>`).join('')}</dl>`:''}${status?`<p>${escape(status)}</p>`:''}${diff.notes.map(note=>`<p class="demo-data-note">${escape(note)}</p>`).join('')}</details>`;
+ }
+
  const result=diff.status==='no_results'?'Подходящих вариантов по новым условиям пока нет.':diff.status==='awaiting_input'?'Нужно уточнить условия, чтобы завершить пересчёт.':'';
  const change=delta===null?'Разницу стоимости пока нельзя оценить.':delta===0?'Известная сумма не изменилась.':`Изменение известной суммы: ${delta>0?'+':'−'}${rubles(Math.abs(delta))}.`;
  return `<section class="api-trip-changes" aria-label="Последний пересчёт"><h2>Что изменилось</h2>${diff.criteria_changes.length?`<dl class="api-criteria-changes">${diff.criteria_changes.map(row=>`<div><dt>${escape(row.label)}</dt><dd><span>${escape(criterionValue(row.field,row.before))}</span><span aria-hidden="true"> → </span><strong>${escape(criterionValue(row.field,row.after))}</strong>${row.source&&row.source!=='explicit'?'<small>Предположение для поиска</small>':''}</dd></div>`).join('')}</dl>`:''}${result?`<p>${escape(result)}</p>`:''}<div class="api-change-totals"><div><span>Было · ${escape(diff.before?.name||'предыдущий подбор')}</span><strong>${rubles(diff.before?.known_total_rub)}</strong></div><div><span>Стало · ${escape(diff.after?.name||'нового варианта пока нет')}</span><strong>${rubles(diff.after?.known_total_rub)}</strong></div></div><p class="api-change-delta">${change}</p>${diff.comparison.notice?`<p>${escape(diff.comparison.notice)}</p>`:''}${!diff.comparison.same_basis?'<p class="api-change-caution">Условия или состав вариантов различаются. Разница сумм не означает экономию на той же поездке.</p>':''}${rows.length?`<details><summary>Изменения по компонентам</summary><div class="api-change-table" role="region" tabindex="0" aria-label="Стоимость компонентов до и после пересчёта"><table><thead><tr><th scope="col">Компонент</th><th scope="col">Было</th><th scope="col">Стало</th></tr></thead><tbody>${rows.map(row=>`<tr><th scope="row">${escape(row.label)}${row.sourceChanged?'<small>Источник данных изменился</small>':''}</th><td>${rubles(row.before)}</td><td>${rubles(row.after)}</td></tr>`).join('')}</tbody></table></div></details>`:''}<p class="demo-data-note">Сравниваем известные расходы за всю группу. Прочие доплаты и наличие услуг не подтверждены.</p>${diff.notes.map(note=>`<p class="demo-data-note">${escape(note)}</p>`).join('')}</section>`;
