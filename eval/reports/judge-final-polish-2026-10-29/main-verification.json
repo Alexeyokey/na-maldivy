@@ -1,0 +1,29 @@
+{
+  "main_commit": "6c1e7a6be81e9f5d8534beeeec3c72bc79dd1362",
+  "app_code_equals_tested_commit": "29fa6d16c79fbdbf4d6dd5b242629f0c028443f3",
+  "clone_source": "github_main",
+  "owner_environment_or_auth_not_used": true,
+  "build_cache": "reused",
+  "browser_url": "http://localhost:8080/",
+  "browser_welcome_search_preferences": "passed",
+  "package_status": "passed",
+  "docker_checks": [
+    {
+      "mode": "initial_run",
+      "status": "passed",
+      "destinations_passed": 3,
+      "departure_date": "2026-11-18",
+      "external_model_used": false
+    },
+    {
+      "mode": "resume_after_restart",
+      "status": "passed",
+      "destinations_passed": 3,
+      "departure_date": "2026-11-18",
+      "external_model_used": false
+    }
+  ],
+  "submission_tag_created": false,
+  "prod_successful_model_calls_since_deploy": 32,
+  "prod_counter_scope": "process_total_since_deploy_not_exclusive_harness_attribution"
+}
