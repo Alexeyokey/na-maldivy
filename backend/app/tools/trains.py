@@ -14,7 +14,7 @@ from typing import Any, Literal, Protocol
 from zoneinfo import ZoneInfo
 
 import httpx
-from pydantic import TypeAdapter
+from pydantic import AwareDatetime, TypeAdapter, ValidationError
 
 from app.contracts.tools import Place, Train, TrainSearch
 from app.data_paths import resolve_data_dir
@@ -107,6 +107,7 @@ def generate_trains(query: TrainSearch, *, seed: int = 42, model_path: Path | No
                 number=f"DEMO-{label}",
                 seat_class=query.seat_class,
                 is_synthetic=True,
+                schedule_source="synthetic",
             )
         )
     return trains
@@ -119,6 +120,13 @@ class TrainHttpClient(Protocol):
     async def get(self, url: str, **kwargs: Any) -> httpx.Response: ...
 
 
+@dataclass(frozen=True)
+class TimetableSegment:
+    payload: dict[str, Any]
+    cache_mode: Literal["record", "replay", "live"]
+    recorded_at: datetime | None
+
+
 class YandexTimetableClient:
     def __init__(
         self, http: TrainHttpClient, key: str | None = None, *, max_pages: int = 20, model_path: Path | None = None
@@ -129,6 +137,11 @@ class YandexTimetableClient:
         self.model_path = model_path or resolve_data_dir() / "trains/model.json"
 
     async def segments(self, query: TrainSearch) -> list[dict[str, Any]]:
+        """Keep the existing provider-record API for callers that only need data."""
+        return [record.payload for record in await self.segment_records(query)]
+
+    async def segment_records(self, query: TrainSearch) -> list[TimetableSegment]:
+        """Attach each response's public cache evidence without shared mutable state."""
         origin_code, destination_code = _city(query.origin), _city(query.destination)
         if {origin_code, destination_code} != {"MOW", "LED"}:
             return []
@@ -165,7 +178,18 @@ class YandexTimetableClient:
             page = payload["segments"]
             if any(not isinstance(item, dict) for item in page):
                 raise ProviderResponseError("Malformed Yandex segment")
-            segments.extend(page)
+            cache_mode = response.extensions.get("cache_mode", self.http.mode)
+            if cache_mode not in ("record", "replay", "live") or cache_mode != self.http.mode:
+                raise ProviderResponseError("Inconsistent Yandex timetable cache mode")
+            try:
+                recorded_at = (
+                    TypeAdapter(AwareDatetime).validate_python(response.extensions["recorded_at"])
+                    if response.extensions.get("recorded_at") is not None
+                    else None
+                )
+            except ValidationError:
+                raise ProviderResponseError("Invalid Yandex timetable recording timestamp") from None
+            segments.extend(TimetableSegment(item, cache_mode, recorded_at) for item in page)
             pagination = payload.get("pagination", {})
             if not isinstance(pagination, dict):
                 raise ProviderResponseError("Malformed Yandex pagination")
@@ -229,7 +253,7 @@ class TrainTool:
             )
         if self.provider is None:
             raise ProviderNotConfigured("An injected HTTP client is required for provider trains")
-        segments = await self.provider.segments(query)
+        segments = await self.provider.segment_records(query)
         if not segments:
             return TrainSearchResult((), ())
         origin, destination = _point(query.origin, self.model_path), _point(query.destination, self.model_path)
@@ -238,7 +262,8 @@ class TrainTool:
         destination_station = records[_city(query.destination)]["station_code"]
         trains, provenance = [], []
         seen = set()
-        for segment in segments:
+        for record in segments:
+            segment = record.payload
             if any(not isinstance(segment.get(key), dict) for key in ("thread", "from", "to")):
                 raise ProviderResponseError("Malformed Yandex train segment")
             if segment.get("has_transfers") or segment.get("thread", {}).get("transport_type") != "train":
@@ -288,6 +313,9 @@ class TrainTool:
                 price_rub=train_price(query, seed=self.seed, train_type=train_type, model_path=self.model_path),
                 seat_class=query.seat_class,
                 is_synthetic=True,
+                schedule_source="yandex",
+                schedule_cache_mode=record.cache_mode,
+                schedule_recorded_at=record.recorded_at,
             )
             trains.append(train)
             provenance.append(

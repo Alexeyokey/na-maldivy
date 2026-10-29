@@ -65,7 +65,7 @@ RULES: tuple[Rule, ...] = (
     Rule("quiet", r"\bтих|\bтиш|спокойн|без тусов|без вечерин|без аниматор"),
     Rule(
         "flexible",
-        r"бесплатн\w* отмен|с возвратом|возвратн|деньги.{0,30}верн\w*.{0,20}отмен|"
+        r"бесплатн\w* отмен|с возвратом|\bвозвратн|деньги.{0,30}верн\w*.{0,20}отмен|"
         r"планы могут|могут поменяться|не уверен\w* в дат",
         {"refundable_only": True},
     ),
@@ -156,6 +156,73 @@ def detect_needs(text: str) -> list[str]:
     return [rule.need for rule in RULES if re.search(rule.pattern, lowered)]
 
 
+def requests_checkout_cancellation(text: str) -> bool:
+    """Close only an explicitly stopped whole checkout, never a question or extra."""
+    t = text.casefold().replace("ё", "е").strip()
+    if "?" in t or re.search(r"\b(?:если|можно ли|что будет|как отменить)\b", t):
+        return False
+    if re.search(
+        r"\bне\s+(?:отменя\w*|отменить|останавлива\w*)|"
+        r"\b(?:отменить|отменя\w*|останавливать)\s+не\s+(?:надо|нужно|хочу)|"
+        r"\b(?:платить|оплат\w*)\s+за\b",
+        t,
+    ):
+        return False
+    t = re.sub(r"^пожалуйста[,\s]+", "", t)
+    command = re.split(r"[,.!;]", t, maxsplit=1)[0].strip()
+    if re.fullmatch(r"(?:я\s+)?не буду платить|стоп|не (?:оформляй|бронируй)", command):
+        return True
+    target = r"(?:оформлен\w*|корзин\w*|оплат\w*|брон\w*|заказ\w*|поездк\w*)"
+    return bool(
+        re.fullmatch(r"(?:отмени|отменить|отменяй|отмените)(?:\s+пожалуйста)?", command)
+        or re.fullmatch(
+            r"(?:(?:хочу|прошу)\s+)?(?:отмени\w*|отменить|прекрати\w*|останови\w*)\s+"
+            r"(?:(?:это|этот|эту|текущее|текущую|незавершенное|мое|мою)\s+)?"
+            + target
+            + r"(?:\s+(?:пожалуйста|сейчас))?",
+            command,
+        )
+    )
+
+
+def unrecognized_destination(text: str, resolved: str | None = None, *, catalogue=None, data_path=None) -> str | None:
+    """Retire an old trip only for an unambiguous geographic destination.
+
+    The existing finite D5 catalogue identifies actual city aliases. Other words
+    after «в/на» can describe a date, budget, room or meal and must not erase the
+    route. A city/country label alone is not evidence of a named destination.
+    """
+    t = text.casefold().replace("ё", "е")
+    if "?" in t or re.match(r"^\s*(?:почему|зачем|расскажи|объясни|хочу узнать)\b", t):
+        return None
+    origin_given = any(to_iata(match.group(1)) in ORIGINS for match in re.finditer(r"\bиз\s+([а-яa-z-]+)", t))
+    if not origin_given and not re.search(
+        r"\b(?:хочу|хотим|давай\w*|поед\w*|едем|еду|полет\w*|полечу|летим|лечу|вместо|поменяй|смени)\b", t
+    ):
+        return None
+    from app.tools.destinations import resolve_iata
+
+    for match in re.finditer(r"\b(?:в|во|на)\s+([а-яa-z-]+)", t):
+        target = match.group(1)
+        start, end = match.span(1)
+        if target in {"город", "страну", "курорт"}:
+            named = re.match(r"\s+([а-яa-z-]+)", t[match.end() :])
+            if not named:
+                continue
+            target = named.group(1)
+            start, end = match.end() + named.start(1), match.end() + named.end(1)
+        if to_iata(target) or re.fullmatch(r"[a-z]{3}", target):
+            continue
+        try:
+            matches = resolve_iata(target, catalogue=catalogue, data_path=data_path)
+        except (OSError, ValueError):
+            continue  # An ambiguous/ordinary word cannot invalidate the old trip.
+        if resolved and resolved.upper() in matches:
+            continue
+        return text[start:end][:64]
+    return None
+
+
 def relative(text: str, brief: TripBrief) -> dict[str, Any]:
     """Изменения относительно брифа: «на два дня позже», «на 3 дня дольше», «бюджет меньше на 50 тысяч»."""
     t = text.lower().replace("ё", "е")
@@ -244,6 +311,8 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
     t = text.lower().replace("ё", "е").replace("\u00a0", " ")
     data: dict[str, Any] = relative(text, brief) if brief else {}
     inferred: list[str] = []
+    cleared: list[str] = []
+    filter_question = "?" in t or bool(re.match(r"^\s*(?:а\s+)?(?:почему|зачем|нужн\w*\s+ли|можно\s+ли)\b", t))
 
     def infer(name: str, value: Any) -> None:
         if name not in data:
@@ -290,10 +359,13 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
             data["origin"] = code
             break
     for match in re.finditer(r"\b(в|во|на)\s+([а-яa-z-]+)", t):
-        code = to_iata(match.group(2))
-        if code in DESTINATIONS or code in {"MOW", "LED"}:
+        explicit_iata = bool(re.fullmatch(r"[a-z]{3}", match.group(2)))
+        code = to_iata(match.group(2)) or (match.group(2).upper() if explicit_iata else None)
+        if code in DESTINATIONS or code in {"MOW", "LED"} or explicit_iata:
             data["destination"] = code
             break
+    if "destination" not in data and "origin" not in data and re.fullmatch(r"[A-Z]{3}", text.strip()):
+        data["destination"] = text.strip()
     mentioned_cities = list(
         dict.fromkeys(code for word in re.findall(r"[а-яa-z-]+", t) if (code := to_iata(word)) in {"MOW", "LED"})
     )
@@ -336,9 +408,16 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
         data["start_date"] = iso.group()
     elif dotted := re.search(r"\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b", t):
         data["start_date"] = f"{dotted.group(3)}-{int(dotted.group(2)):02d}-{int(dotted.group(1)):02d}"
+    elif short_date := re.search(r"(?<![\w.])(\d{1,2})\.(\d{1,2})(?![\d.])", t):
+        prefix, suffix = t[: short_date.start()], t[short_date.end() :]
+        money_or_age = re.match(r"\s*(?:руб\w*|₽|тыс\w*|[кk]\b|лет\b|год\w*)", suffix) or re.search(
+            r"\b(?:бюджет\w*|цена|до|за)\s*$", prefix
+        )
+        if not money_or_age and (start := _future(int(short_date.group(2)), int(short_date.group(1)), today)):
+            data["start_date"] = start.isoformat()
     # Explicit same-month ranges, including Unicode dash, retain both dates.
     for stem, month in _MONTHS:
-        span = re.search(rf"\b(\d{{1,2}})\s*[–—-]\s*(\d{{1,2}})\s+{stem}[а-я]*(?:\s+(\d{{4}}))?", t)
+        span = re.search(rf"\b(?:с\s+)?(\d{{1,2}})\s*(?:[–—-]|по)\s*(\d{{1,2}})\s+{stem}[а-я]*(?:\s+(\d{{4}}))?", t)
         if span:
             try:
                 first = (
@@ -377,7 +456,7 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
     # Перелёт: «не больше 5 часов», «до 4 часов в пути».
     if m := re.search(r"(?:не больше|не дольше|до|максимум)\s*(\d+)\s*час", t):
         data["max_flight_minutes"] = int(m.group(1)) * 60
-    if re.search(r"без пересад|прям\w* рейс|прям\w* перел", t):
+    if not filter_question and re.search(r"без пересад|прям\w* рейс|прям\w* перел", t):
         data["direct_only"] = True
     if re.search(r"поздно вечером|ночн\w* вылет|вылет.{0,25}вечер|вечерн\w* вылет", t):
         data["late_departure"] = True
@@ -405,13 +484,34 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
         data["children_ages"] = ages
 
     needs = detect_needs(text)
+    if filter_question:
+        needs = [need for need in needs if need != "flexible"]
     removed: list[str] = []
+    if not filter_question:
+        if re.search(
+            r"\b(?:сними|убери|отмени)\s+(?:ограничен\w*\s+(?:по\s+)?)?бюджет\w*|"
+            r"\bбюджет\s+(?:не\s*важен|без\s+ограничен\w*)",
+            t,
+        ):
+            data.pop("budget_rub", None)
+            cleared.append("budget_rub")
+        if re.search(r"\bможно\s+(?:и\s+)?с\s+пересад\w*", t):
+            data["direct_only"] = False
+        if re.search(r"\bможно\s+(?:и\s+)?невозвратн\w*", t):
+            data["refundable_only"] = False
+            removed.append("flexible")
     if re.search(r"без\s+дет(?:ей|ьми)|реб[её]нок\s+не\s+едет|дети\s+не\s+едут", t):
         data["children_ages"] = []
         removed.append("child")
     if re.search(r"без\s+(?:собак\w*|кошк\w*|питомц\w*|животн\w*)|(?:собак\w*|кошк\w*|питомц\w*)\s+не\s+едет", t):
         data["pets"] = 0
         removed.append("pets")
+    elif not filter_question and (pets_count := re.search(r"\bпитомцев\s*:\s*(\d+)\b", t)):
+        data["pets"] = int(pets_count.group(1))
+        if data["pets"] == 0:
+            removed.append("pets")
+        elif "pets" not in needs:
+            needs.append("pets")
     needs = [need for need in needs if need not in removed]
     for rule in RULES:
         if rule.need in needs:
@@ -423,4 +523,6 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
         # «С ребёнком» чаще всего значит двое взрослых; допущение видно в брифе и правится одним нажатием.
         infer("adults", 1 if re.search(r"\b(одна|один|сама|сам)\b", t) else 2)
 
-    return BriefPatch(**data, needs_add=needs, needs_remove=removed, inferred=list(dict.fromkeys(inferred)))
+    return BriefPatch(
+        **data, needs_add=needs, needs_remove=removed, cleared=cleared, inferred=list(dict.fromkeys(inferred))
+    )

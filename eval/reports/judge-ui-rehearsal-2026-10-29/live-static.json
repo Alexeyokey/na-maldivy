@@ -1,0 +1,16 @@
+{
+  "scope": "trusted_https_auth_health_static_assets",
+  "checks": {
+    "anonymous_requires_auth": true,
+    "healthy": true,
+    "fast_model_preserved": true,
+    "model_calls": 0,
+    "api-app.js_matches_commit": true,
+    "api-model.js_matches_commit": true,
+    "api.js_matches_commit": true,
+    "trip-presentation.js_matches_commit": true,
+    "api.css_matches_commit": true
+  },
+  "status": "passed",
+  "source_commit": "de83c11da512a929381a8a2f9af0a64349db8bf8"
+}

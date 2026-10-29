@@ -1,0 +1,61 @@
+{
+  "source_commit": "29fa6d16c79fbdbf4d6dd5b242629f0c028443f3",
+  "date": "2026-10-29",
+  "local_mode": {
+    "llm": "fake",
+    "tools": "real",
+    "flights": "demo",
+    "cache": "replay",
+    "trains": "synthetic"
+  },
+  "checks": [
+    {
+      "id": "PREF-01",
+      "status": "passed",
+      "observed": "Age18 rejected inline, aria-invalid=true, focus returned to children field; 5,8 accepted with group budget300000."
+    },
+    {
+      "id": "FAMILY-01",
+      "status": "passed",
+      "observed": "2adults+ages5,8 =>4traveler fields and142630RUB; explicit confirmations, keyboard simulated decline then success; no actual charge."
+    },
+    {
+      "id": "FAMILY-02",
+      "status": "passed",
+      "observed": "Empty children+budget removes both; 2adults and83234RUB; new checkout has2traveler fields, old paid-demo order retained."
+    },
+    {
+      "id": "KEY-01",
+      "status": "passed",
+      "observed": "Shift+Enter adds newline without sending; Enter sends; Tab traversed all4travelers, Space checks acknowledgements, Enter submits decline then success."
+    },
+    {
+      "id": "TRAIN-01",
+      "status": "passed",
+      "observed": "Synthetic timetable and model group one-way price have separate visible labels; no booking buttons."
+    },
+    {
+      "id": "TRAIN-02",
+      "status": "passed",
+      "observed": "Train preferences show date/passengers/pets/one-way budget, no nights field."
+    },
+    {
+      "id": "MOBILE-01",
+      "status": "passed",
+      "observed": "Actual app in320x640CSSpx iframe: full preferences open, Tab auto-scrolls to budget and apply, entered300000 and applied. Physical keyboard not emulated."
+    },
+    {
+      "id": "ARIA-01",
+      "status": "partial",
+      "observed": "DOM has1persistent status sibling, transcript has no aria-live. Mounted test proves node identity and single phase/completion during3delta renders; actual screen reader not run."
+    }
+  ],
+  "not_run": [
+    "physical_phone_and_screen_keyboard",
+    "actual_200_percent_browser_zoom",
+    "VoiceOver_or_NVDA_audio_acceptance",
+    "system_reduced_motion_toggle"
+  ],
+  "native_check_blocker": "Native macOS control unavailable while Mac was locked; browser UI tests remained available.",
+  "sensitive_data_in_public_evidence": false
+}

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {adultsLabel,nightsLabel,optionsLabel,formatDate,formatRating,refundLabel,transferLabel,priceRows,tripAssumptions,narrativeView,trainPresentation,demoDepartureDate} from '../dist/trip-presentation.js';
+import {adultsLabel,nightsLabel,optionsLabel,formatDate,formatRating,refundLabel,transferLabel,priceRows,tripAssumptions,narrativeView,trainPresentation,demoDepartureDate,demoTravelerBirthDate,earliestSearchDate,preferenceRequest} from '../dist/trip-presentation.js';
 
 test('Russian counts keep teens and large values grammatical',()=>{
  assert.deepEqual([1,2,5,11,21].map(adultsLabel),['1 взрослый','2 взрослых','5 взрослых','11 взрослых','21 взрослый']);
@@ -14,6 +14,62 @@ test('Dates and ratings have one safe consistent display',()=>{
  assert.equal(formatDate('<img src=x>'),'дата не уточнена');
  assert.equal(formatRating(9.1),'9,1');assert.equal(formatRating(9),'9,0');
  assert.equal(formatRating(null),'нет оценки');assert.equal(formatRating(11),'нет оценки');
+});
+test('Demo birth dates match departure-day ages without placing an infant in the future',()=>{
+ const today='2026-10-29T12:00:00Z';
+ assert.deepEqual(demoTravelerBirthDate(0,'2027-01-18',today),{value:'2026-10-29',min:'2026-01-19',max:'2026-10-29',note:''});
+ assert.equal(demoTravelerBirthDate(5,'2027-01-18',today).value,'2022-01-18');
+ assert.equal(demoTravelerBirthDate(0,'2028-02-29','2028-02-28').value,'2028-02-28');
+ assert.equal(demoTravelerBirthDate(2,'2027-02-28',today).min,'2024-02-29');
+ assert.equal(demoTravelerBirthDate(1,'2027-01-01','2026-12-31').value,'2026-01-01');
+ const impossible=demoTravelerBirthDate(0,'2028-01-18',today);
+ assert.equal(impossible.value,'');assert.equal(impossible.max,'2026-10-29');assert.match(impossible.note,/Уже родившийся ребёнок не может/);
+ for(const departure of ['2026-11-18','2027-01-01','2027-02-28','2028-02-29','2028-03-01']){
+  for(let age=0;age<18;age++){
+   const result=demoTravelerBirthDate(age,departure,today);if(!result.value)continue;
+   const calculated=Number(departure.slice(0,4))-Number(result.value.slice(0,4))-(departure.slice(5)<result.value.slice(5)?1:0);
+   assert.equal(calculated,age,`${departure}: ${result.value} must have age ${age}`);
+   assert.ok(result.value<='2026-10-29');assert.ok(result.value>=result.min&&result.value<=result.max);
+  }
+ }
+ assert.equal(demoTravelerBirthDate(35,'2027-01-18',today).max,'2009-01-18');
+ assert.equal(demoTravelerBirthDate(0,'2027-02-30',today).value,'');
+});
+test('Search forms require tomorrow in UTC across year and leap-day boundaries',()=>{
+ assert.equal(earliestSearchDate('2026-10-29T23:59:59Z'),'2026-10-30');
+ assert.equal(earliestSearchDate('2026-12-31T12:00:00Z'),'2027-01-01');
+ assert.equal(earliestSearchDate('2028-02-28T12:00:00Z'),'2028-02-29');
+ assert.equal(earliestSearchDate('2028-02-29T12:00:00Z'),'2028-03-01');
+ assert.throws(()=>earliestSearchDate('invalid'),TypeError);
+});
+test('Full preference edits keep child multiplicity and explicit adult, pet and budget semantics',()=>{
+ const values={adults:'2',nights:'10',start_date:'2027-02-03',children_ages:'0, 5, 5',pets:'2',budget_rub:'200 000'};
+ const options={now:'2026-10-29T12:00:00Z'},result=preferenceRequest(values,options);
+ assert.deepEqual(result.errors,{});
+ assert.equal(result.message,'Изменить условия поиска: 2 взрослых, 10 ночей, дата вылета 03.02.2027. Дети: 0 лет, 5 лет, 5 лет. Питомцев: 2. Бюджет 200000 рублей на всю поездку за всех. Заново подобрать варианты, без оформления.');
+ const removed=preferenceRequest({...values,children_ages:'',pets:'0',budget_rub:''},options);
+ assert.match(removed.message,/Без детей\. Питомцев: 0\. Без питомцев\. Сними бюджет\./);
+ const rail=preferenceRequest({...values,nights:'not a hotel stay'},{...options,train:true});
+ assert.deepEqual(rail.errors,{});assert.doesNotMatch(rail.message,/ноч|отел|вылета/);
+ assert.match(rail.message,/дата отправления 03\.02\.2027/);assert.match(rail.message,/на билеты за всех в одну сторону/);
+ assert.match(rail.message,/2 взрослых/);assert.match(rail.message,/0 лет, 5 лет, 5 лет/);
+ for(const [field,value] of [['adults','0'],['children_ages','5 и 8'],['children_ages','18'],['children_ages','1,2,3,4,5,6,7,8,9'],['pets','4'],['budget_rub','-100'],['budget_rub','1.5'],['start_date','2026-10-29']]){
+  const invalid=preferenceRequest({...values,[field]:value},options);
+  assert.equal(invalid.message,'');assert.ok(invalid.errors[field],field+' must have a user-facing error');
+ }
+});
+
+test('Train schedule provenance is distinct from its modeled price and never promises availability',()=>{
+ const base={is_synthetic:true,number:'DEMO-NIGHT'};
+ const demo=trainPresentation({...base,schedule_source:'synthetic'});
+ assert.equal(demo.scheduleLabel,'Демонстрационное расписание');assert.equal(demo.priceLabel,'Модельная демо-цена');
+ const saved=trainPresentation({...base,schedule_source:'yandex',schedule_cache_mode:'replay',schedule_recorded_at:'2026-10-29T08:00:00+03:00'});
+ assert.equal(saved.scheduleLabel,'Сохранённое расписание Яндекс Расписаний');assert.equal(saved.scheduleDetail,'Снимок: 29.10.2026');
+ assert.equal(saved.priceLabel,'Модельная демо-цена');assert.match(saved.limitation,/Наличие мест и доступность класса не подтверждены/);
+ for(const mode of ['live','record'])assert.equal(trainPresentation({...base,schedule_source:'yandex',schedule_cache_mode:mode}).scheduleLabel,'Ответ API Яндекс Расписаний');
+ for(const recorded of [null,'2026-02-30T08:00:00Z','2026-10-29','2026-10-29T08:00:00'])assert.equal(trainPresentation({...base,schedule_source:'yandex',schedule_cache_mode:'replay',schedule_recorded_at:recorded}).scheduleDetail,'Дата снимка не указана');
+ assert.equal(trainPresentation(base).scheduleLabel,'Источник расписания не указан');
+ assert.match(trainPresentation(base).limitation,/Источник расписания в карточке не указан/);
 });
 test('Only unconfirmed assumptions are presented; explicit input wins over old plan assumptions',()=>{
  const state={brief:{adults:1,month:1,nights:null,start_date:null},sources:{month:'explicit'},assumptions:[{field:'nights',text:'беру 7 ночей'},{field:'start_date',text:'минимальная цена в календаре в одну сторону'}],options:[{outbound:{departure_at:'2027-01-29T12:00:00Z'},hotel:{nights:7}}]};

@@ -1,0 +1,20 @@
+{
+  "source_commit": "de83c11da512a929381a8a2f9af0a64349db8bf8",
+  "date_moscow": "2026-10-29",
+  "status": "passed",
+  "backend_tests": 1408,
+  "frontend_tests": 203,
+  "proxy_tests": 11,
+  "total_tests": 1622,
+  "ruff_check": "passed",
+  "ruff_format": "138 files unchanged",
+  "docker_build_and_three_destination_smoke": "passed",
+  "docker_restart_and_prior_documents": "passed",
+  "cold_build_claim": false,
+  "notes": [
+    "An initial complete run caught origin-IATA regressions; they were corrected and all 1408 backend tests passed in the final run.",
+    "A subprocess-start timeout failed once during the first run; its focused retry and the final complete backend run passed.",
+    "The anonymous Docker client config required an explicit Docker Desktop socket on this Mac; smoke passed after correcting that local environment.",
+    "Docker checks use an isolated temporary project, synthetic travelers, no provider credentials and no owner database."
+  ]
+}

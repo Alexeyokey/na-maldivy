@@ -243,6 +243,7 @@ def _trains(query: TrainSearch) -> list[Train]:
             seat_class=query.seat_class,
             price_rub=_group_price(fares[query.seat_class], query.travelers, pet_fee=500),
             is_synthetic=True,
+            schedule_source="synthetic",
         )
     ]
 

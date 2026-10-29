@@ -1,0 +1,29 @@
+{
+  "source_commit": "29fa6d16c79fbdbf4d6dd5b242629f0c028443f3",
+  "files": {
+    "api-app.js": {
+      "sha256": "7053c11554d8fc3bea62f3c1352a1c297679135ffdcc29b59bca403e620d9d82",
+      "matches_repository": true
+    },
+    "api-model.js": {
+      "sha256": "2932e1bbb2e683e217c3ccbbd42917998e4f85fcd29953118f8997ecd13440c8",
+      "matches_repository": true
+    },
+    "api.css": {
+      "sha256": "aebf80acfa414eb91d5b3cfd2d543b3556fce51c856fd9b1a6690bd4c6eecfd4",
+      "matches_repository": true
+    },
+    "trip-presentation.js": {
+      "sha256": "424b06588933b8341956fd81adaaab2c94c9c1935bfdc2e6b7bf679265685bf1",
+      "matches_repository": true
+    },
+    "api.js": {
+      "sha256": "04731ab46afb841bcd8516afd1b8d802a439bedce110ad5a1b03ba9d8f74fd78",
+      "matches_repository": true
+    }
+  },
+  "anonymous_status": 401,
+  "health_status": 200,
+  "fast_runtime_verified": true,
+  "status": "passed"
+}

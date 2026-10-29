@@ -234,6 +234,19 @@ class TrainSearch(Contract):
 class Train(Journey):
     number: str
     seat_class: Literal["platzkart", "coupe", "sv", "seated"]
+    schedule_source: Literal["synthetic", "yandex"] | None = None
+    schedule_cache_mode: Literal["record", "replay", "live"] | None = None
+    schedule_recorded_at: AwareDatetime | None = None
+
+    @model_validator(mode="after")
+    def truthful_schedule_source(self) -> "Train":
+        if self.schedule_source != "yandex" and (
+            self.schedule_cache_mode is not None or self.schedule_recorded_at is not None
+        ):
+            raise ValueError("Only a Yandex timetable can have provider cache metadata")
+        if self.schedule_cache_mode == "live" and self.schedule_recorded_at is not None:
+            raise ValueError("An unrecorded live timetable cannot claim a recording timestamp")
+        return self
 
 
 class TransferRequest(Contract):

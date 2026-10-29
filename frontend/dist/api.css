@@ -29,3 +29,41 @@
 .api-full-answer-link{font-size:11px;line-height:1.6;text-decoration:underline;text-underline-offset:3px;color:#7c653f;padding:7px 0 2px;text-align:left;min-height:32px}
 .api-trains{margin:22px 0}.api-train-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;margin-top:14px}.api-train-card{border:1px solid #dfe7f3;border-radius:12px;padding:17px;background:#fff;min-width:0}.api-train-card h3{margin:8px 0 5px;color:#344e74;font-size:14px}.api-train-class{font-size:12px;font-weight:600;color:#55784b}.api-train-stations{display:grid;gap:13px;margin:15px 0}.api-train-stations>div{display:grid;gap:4px}.api-train-stations span{font-size:10px;color:#8c9bb0}.api-train-stations b{font-size:12px;line-height:1.6;font-weight:550;color:#526b8c}.api-train-stations small{font-size:10px;line-height:1.7;color:#71839b}.api-train-card .api-source{margin-top:9px}.api-train-limitation{font-size:10px;line-height:1.8;color:#8b6f4e;margin-top:10px}.api-train-card .price-total{margin:6px 0}
 @media(max-width:650px){.api-assumptions,.api-search-update{padding:14px;font-size:11px}.api-assumptions h2,.api-comparison h2{font-size:13px}.api-assumptions .action-row>*{flex:1;min-width:130px}.api-price-breakdown,.api-card-risks,.api-refund{font-size:11px}.api-hotel-rating{font-size:12px}.api-price-breakdown summary,.api-card-risks summary,.api-message-details summary{min-height:37px}.api-comparison-title{padding:12px}.api-comparison table{font-size:11px;min-width:560px}.api-visible-warnings{padding:9px 11px}.api-visible-warnings .assistant-text{font-size:11px}.api-mode .search-caption{line-height:1.7}}
+
+/* Price qualifications and supporting details stay readable at desktop width too. */
+.api-mode .hotel-card .action-button,.api-mode .action-button{font-size:12px;min-height:40px}
+.api-mode .hotel-topline,.api-mode .hotel-location,.api-mode .api-refund,.api-mode .api-card-sources,.api-mode .hotel-card .price-total,.api-mode .hotel-card .risk-note,.api-mode .api-price-breakdown,.api-mode .api-card-risks,.api-mode .demo-data-note,.api-mode .api-train-limitation,.api-mode .api-flight small,.api-mode .api-train-stations small,.api-mode .api-train-stations span{font-size:12px;line-height:1.7}
+.api-mode .hotel-location{white-space:normal}
+.api-mode .hotel-card .price-total,.api-mode .demo-data-note{color:#59677a}
+.api-mode .api-source,.api-mode .api-side-source,.api-mode .api-assumption-source{font-size:11px}
+.api-mode .search-caption,.api-mode .api-comparison table,.api-mode .api-comparison caption,.api-mode .api-visible-warnings .assistant-text{font-size:12px;line-height:1.7}
+.api-mode .sidebar .side-note,.api-mode .composer-foot,.api-mode .composer-foot button{font-size:11px;line-height:1.7;color:#59677a}
+#modal .demo-note,#modal .demo-data-note,#modal .api-flight small,#modal .risk-note,#modal .api-preferences-form small{font-size:12px;line-height:1.7}
+#modal .primary-button,#modal .secondary-button,#modal .action-button{font-size:12px;min-height:44px}
+#modal .close-modal{min-width:44px;min-height:44px}
+#modal .api-preferences-form [aria-invalid="true"]{border-color:#a43131;outline-color:#a43131}
+#modal .api-preferences-form .api-field-error{color:#a43131;font-size:12px;line-height:1.6}
+.api-sr-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* Keep prices, provenance and actions readable on a narrow screen. */
+@media(max-width:650px){
+ .api-mode .hero-copy{font-size:14px;line-height:1.7;max-width:32ch;color:#536176}
+ .api-mode .prompt{min-height:68px}
+ .api-mode .prompt b{font-size:13px}
+ .api-mode .prompt small{font-size:11px;line-height:1.55;max-width:145px;color:#59677a}
+ .api-mode .welcome-note{display:block;font-size:12px;line-height:1.7;color:#59677a}
+ .api-mode .topbar .text-icon{min-width:44px;min-height:44px;justify-content:center}
+ .api-mode .action-button,.api-mode .primary-button,.api-mode .secondary-button{font-size:12px;min-height:44px;padding:10px 12px}
+ .api-mode .search-caption{font-size:12px;line-height:1.6;flex-wrap:wrap;align-items:flex-start;color:#59677a}
+ .api-mode .hotel-topline,.api-mode .hotel-location,.api-mode .api-refund{font-size:12px;line-height:1.6;color:#59677a}
+ .api-mode .hotel-location{white-space:normal}
+ .api-mode .api-card-sources{font-size:12px}
+ .api-mode .api-source{font-size:11px}
+ .api-mode .hotel-card .price-total,.api-mode .demo-data-note{font-size:12px;line-height:1.65;color:#59677a}
+ .api-mode .card-photo-label{font-size:11px}
+ .api-mode .api-flight small,.api-mode .api-train-card small{font-size:12px;line-height:1.65}
+ .api-mode .composer-foot,.api-mode .composer-foot button{font-size:11px;line-height:1.6;color:#59677a}
+ .api-mode .composer-foot button{min-height:30px}
+ .api-mode .close-modal{min-width:44px;min-height:44px}
+ .api-mode .risk-note,.api-mode .api-card-risks,.api-mode .api-price-breakdown,.api-mode .api-assumptions,.api-mode .api-visible-warnings .assistant-text{font-size:12px;line-height:1.7}
+}

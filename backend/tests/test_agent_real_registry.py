@@ -126,6 +126,8 @@ async def test_real_d6_via_orchestrator(settings, origin, destination):
     events = await chat(agent, f"из {origin} в {destination} поездом 18 ноября 2026 плацкарт на двоих")
     rows = options(events, "trains")
     assert rows and all(row["seat_class"] == "platzkart" for row in rows)
+    assert all(row["schedule_source"] == "synthetic" and row["schedule_cache_mode"] is None for row in rows)
+    assert "Демонстрационное расписание" in "".join(e.data["text"] for e in events if e.type == "delta")
     assert {e.data["name"] for e in events if e.type == "tool_call"} == {"search_trains"}
 
 

@@ -186,3 +186,69 @@ test('A malformed terminal event cannot discard the pending recovery record for 
   assert.equal(controller.state.messages[1].interrupted,true);assert.equal(controller.state.syncNeeded,false);
  }
 });
+
+const durableOrder={order_id:'DEMO-recovery-order',cart_id:'CART-recovery-cart',session_id:sid,status:'paid_demo',is_simulated:true,package:{hotel:{name:'Recovery demo hotel',check_in:'2026-11-18',check_out:'2026-11-25'}}};
+function paidRecoveryStorage({lost=false,extraOrder=null}={}){
+ const storage=memoryStorage(),first=new ApiTripController({storage});
+ Object.assign(first.state,{sessionId:sid,version:2,stage:'booked',brief:{destination:'AYT'},sessionLost:lost,order:structuredClone(durableOrder),currentOrderId:durableOrder.order_id,messages:[{role:'user',text:'Сохранённая поездка'},{role:'assistant',text:'Демо-заказ сохранён.'}]});
+ first.keepOrder(durableOrder,sid);if(extraOrder)first.keepOrder(extraOrder,sid);first.remember();return storage;
+}
+const bookedSnapshot={session_id:sid,version:2,stage:'booked',brief:{destination:'AYT'},sources:{},selected:1,stale:false,booking:{cart_id:durableOrder.cart_id,order_id:durableOrder.order_id}};
+
+test('A stalled paid-reference restore settles, keeps its refs and recovers through GET reconnect without another payment',async()=>{
+ for(const phase of ['headers','body']){
+  const storage=paidRecoveryStorage(),started=deferred(),calls=[];let available=false;
+  const controller=new ApiTripController({storage,checkoutTimeoutMs:20,fetchImpl:async(path,init={})=>{
+   calls.push({path,method:init.method||'GET'});
+   if(path==='/health')return Response.json({status:'ok',llm_provider:'fake'});
+   if(path.startsWith('/api/checkout/orders/')){
+    if(available)return Response.json(durableOrder);
+    const never=new Promise(()=>{});
+    if(phase==='headers'){started.resolve();return never;}
+    return {ok:true,headers:new Headers({'Content-Type':'application/json'}),json:()=>{started.resolve();return never;}};
+   }
+   if(path==='/api/chat')return eventResponse([['delta',{text:'Можно продолжить разговор'}],['done',{session_id:sid,version:2,stage:'booked'}]]);
+   return Response.json(bookedSnapshot);
+  }});
+  const restoring=controller.restore();await started.promise;
+  await controller.reconnect();assert.equal(controller.state.connection,'online','Reachability alone must not claim a restored checkout');
+  await restoring;
+  assert.equal(controller.restoring,false);assert.equal(controller.state.busy,false);assert.equal(controller.state.syncNeeded,true);assert.equal(controller.state.ordersSyncNeeded,true);
+  assert.match(controller.state.error,/вовремя/);assert.equal(controller.state.order,null);
+  assert.equal(storage.value().currentOrderId,durableOrder.order_id);assert.deepEqual(storage.value().orders,[{sessionId:sid,orderId:durableOrder.order_id}]);
+  assert.deepEqual(controller.state.messages.map(row=>row.text),['Сохранённая поездка','Демо-заказ сохранён.']);
+  available=true;await controller.reconnect();
+  assert.equal(controller.state.order.order_id,durableOrder.order_id);assert.equal(controller.state.orders.length,1);
+  assert.equal(controller.state.ordersSyncNeeded,false);assert.equal(controller.state.syncNeeded,false);assert.equal(controller.state.error,null);
+  assert.ok(calls.every(row=>row.method==='GET'),'Restoring a payment result cannot resubmit it');
+  await controller.send('Почему этот вариант?');assert.equal(calls.filter(row=>row.method==='POST').length,1);
+ }
+});
+
+test('Missing paid history can recover after a lost session while already loaded orders remain usable',async()=>{
+ const extra={...durableOrder,order_id:'DEMO-recovery-older',cart_id:'CART-recovery-older'};
+ const storage=paidRecoveryStorage({lost:true,extraOrder:extra});let available=false;
+ const controller=new ApiTripController({storage,checkoutTimeoutMs:20,fetchImpl:async(path)=>{
+  if(path==='/health')return Response.json({status:'ok',llm_provider:'fake'});
+  if(path.endsWith('/voucher'))return new Response('DEMO voucher',{headers:{'Content-Type':'text/html'}});
+  if(path.endsWith(extra.order_id))return available?Response.json(extra):new Promise(()=>{});
+  if(path.endsWith(durableOrder.order_id))return Response.json(durableOrder);
+  throw new Error('The expired chat session must not be fetched to restore its durable orders');
+ }});
+ await controller.restore();
+ assert.equal(controller.restoring,false);assert.equal(controller.state.sessionLost,true);assert.equal(controller.state.ordersSyncNeeded,true);
+ assert.equal(controller.state.order.order_id,durableOrder.order_id);assert.equal(controller.state.orders.length,1);
+ assert.equal((await controller.download('voucher')).filename,'demo-voucher.html');
+ available=true;await controller.reconnect();
+ assert.equal(controller.state.ordersSyncNeeded,false);assert.equal(controller.state.sessionLost,true);assert.equal(controller.state.orders.length,2);assert.equal(controller.state.order.order_id,durableOrder.order_id);
+ controller.restartSession();assert.equal(controller.state.sessionLost,false);assert.equal(controller.state.syncNeeded,false);assert.equal(controller.state.orders.length,2);
+});
+
+test('A failed paid-history read after a new search does not block the new chat or discard its reference',async()=>{
+ const storage=paidRecoveryStorage();
+ const controller=new ApiTripController({storage,checkoutTimeoutMs:15,fetchImpl:async path=>path==='/api/chat'?complete():path.startsWith('/api/session/')?Response.json(snapshot):new Promise(()=>{})});
+ await controller.restore();assert.equal(controller.state.ordersSyncNeeded,true);
+ controller.restartSession();assert.equal(controller.state.ordersSyncNeeded,true);assert.equal(controller.state.syncNeeded,false);
+ await controller.send('Новый поиск');assert.equal(controller.state.messages.at(-1).text,'Полный ответ');
+ assert.deepEqual(storage.value().orders,[{sessionId:sid,orderId:durableOrder.order_id}]);
+});

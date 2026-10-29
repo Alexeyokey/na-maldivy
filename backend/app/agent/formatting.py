@@ -39,7 +39,14 @@ def question(field: str, brief: TripBrief) -> str:
         "origin": "Откуда отправитесь?" if brief.transport == "train" else "Откуда полетите?",
         "destination": "В какой город поедете?",
         "start_date": "На какую дату искать поезд? Укажите день, месяц и при необходимости год.",
-        "children_ages": "Сколько лет ребёнку? От возраста зависят цена билета и подходящие отели.",
+        "children_ages": (
+            "Укажите возраст каждого ребёнка, например: 5 и 8 лет. "
+            + (
+                "От возраста зависят цена билета и условия поездки."
+                if brief.transport == "train"
+                else "От возраста зависят цена билета и подходящие отели."
+            )
+        ),
     }
     return prefix + texts.get(field, f"Уточните, пожалуйста: {FIELD_LABELS.get(field, field)}.")
 
@@ -70,7 +77,7 @@ def group(brief: TripBrief) -> str:
     elif "child" in brief.needs:
         text += " + ребёнок"
     if brief.pets:
-        text += " + питомец"
+        text += " + " + plural(brief.pets, "питомец", "питомца", "питомцев")
     return text
 
 
@@ -243,6 +250,22 @@ def cancelled() -> str:
     return "Хорошо, не оформляю. Можно выбрать другой вариант или поменять условия."
 
 
+def checkout_cancelled() -> str:
+    return (
+        "Остановил незавершённое оформление и снял выбор поездки. "
+        "Демо-оплата не завершена; реальные бронирование, списание и возврат денег не выполнялись. "
+        "Можно выбрать другой вариант или поменять условия."
+    )
+
+
+def unknown_destination(name: str) -> str:
+    return (
+        f"Не смог распознать направление «{name}» для нового подбора. Уточните название или IATA-код. "
+        "В демо полный подбор перелёта, отеля и трансфера доступен для Антальи, Дубая и Мальдив; "
+        "справочник направлений шире. Поезда доступны между Москвой и Петербургом."
+    )
+
+
 def booking_status(booking: dict[str, Any] | None) -> str:
     status = (booking or {}).get("status")
     if status == "paid_demo":
@@ -279,10 +302,21 @@ def trains(plan: PlanResult) -> str:
     classes = {"coupe": "купе", "platzkart": "плацкарт", "sv": "СВ", "seated": "сидячий"}
     lines = ["Поезда: расписание и расчётная стоимость за всю группу в одну сторону."] if plan.options else []
     for row in plan.options:
+        source = row.get("schedule_source")
+        if source == "synthetic":
+            schedule = "Демонстрационное расписание"
+        elif source == "yandex":
+            schedule = (
+                "Сохранённое расписание Яндекс Расписаний; актуальность не подтверждена"
+                if row.get("schedule_cache_mode") == "replay"
+                else "Расписание Яндекс Расписаний; актуальность не подтверждена"
+            )
+        else:
+            schedule = "Источник расписания не указан"
         lines.append(
             f"{row['index']}. {row['origin']['name']} → {row['destination']['name']}, поезд {row['number']}, "
             f"{classes[row['seat_class']]}: {when(row['departure_at'])} — {when(row['arrival_at'])}, "
-            f"{rub(row['price_rub'])}."
+            f"{rub(row['price_rub'])}. {schedule}."
         )
     lines += plan.notes
     lines.append("Можно уточнить дату или класс мест. Оформление железнодорожных билетов пока не подключено.")

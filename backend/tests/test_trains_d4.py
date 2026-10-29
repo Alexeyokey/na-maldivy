@@ -7,6 +7,8 @@ import httpx
 import pytest
 from test_trains import cache_contents, train_query, yandex_fixture
 
+from app.agent import formatting
+from app.agent.planner import PlanResult
 from app.tools.trains import TrainTool, train_price
 from app.tools.transport import ProviderNotConfigured
 
@@ -37,10 +39,21 @@ async def test_actual_provider_shape_night_normalization_record_and_replay(tmp_p
     assert train.number == "DEMO002" and train.is_synthetic
     assert train.arrival_at.date() == date(2030, 11, 19)
     assert train.price_rub == train_price(train_query())
+    assert train.schedule_source == "yandex" and train.schedule_cache_mode == "record"
+    assert train.schedule_recorded_at is not None
     assert result.provenance[0]["schedule"] == "provider timetable"
     assert "unknown" in result.provenance[0]["class_availability"]
     async with CachedHttpClient(mode="replay", cache_dir=tmp_path) as replay:
-        assert await TrainTool(mode="provider", http=replay).search_with_provenance(train_query()) == result
+        restored = await TrainTool(mode="provider", http=replay).search_with_provenance(train_query())
+    assert restored.provenance == result.provenance
+    assert restored.trains[0].model_dump(exclude={"schedule_cache_mode"}) == train.model_dump(
+        exclude={"schedule_cache_mode"}
+    )
+    assert restored.trains[0].schedule_cache_mode == "replay"
+    row = restored.trains[0].model_dump(mode="json") | {"index": 1}
+    text = formatting.trains(PlanResult(options=[row]))
+    assert "Сохранённое расписание Яндекс Расписаний; актуальность не подтверждена" in text
+    assert "живое" not in text.casefold()
     assert all("TEST-NOT-A-REAL-KEY" not in text for text in cache_contents(tmp_path))
 
 

@@ -41,7 +41,7 @@ from app.agent.analysis import (
 from app.agent.brief import FIELD_LABELS, ApplyResult, BriefPatch, apply_patch
 from app.agent.date_savings import compare_date_savings, is_date_savings_question
 from app.agent.destination_info import destination_information, is_destination_information_question
-from app.agent.hidden import NEEDS
+from app.agent.hidden import NEEDS, requests_checkout_cancellation, unrecognized_destination
 from app.agent.hidden import extract as extract_patch
 from app.agent.planner import DEFAULT_NIGHTS, PlanResult, needs_summary, search_train_trip, search_trip, suggest
 from app.agent.prompts import ASK_PROMPT, EXPLAIN_PROMPT, OFF_TOPIC_PROMPT, SUMMARY_PROMPT, context_message
@@ -163,11 +163,73 @@ class TravelAgent:
         for warning in outcome.warnings:
             emit("warning", {"message": warning})
         analysis = outcome.analysis
-        self._select_destination(s, analysis)
+        destination_tool = self._tools.get("suggest_destinations")
+        catalogue = getattr(destination_tool, "catalogue", None)
+        data_dir = getattr(destination_tool, "data_dir", None)
+        unknown_destination = unrecognized_destination(
+            text,
+            analysis.patch.destination,
+            catalogue=catalogue,
+            data_path=data_dir / "destinations.yaml" if data_dir is not None and catalogue is None else None,
+        )
+        if unknown_destination:
+            analysis.patch.destination = None
+            analysis.patch.cleared = list(dict.fromkeys([*analysis.patch.cleared, "destination"]))
+        if not unknown_destination:
+            self._select_destination(s, analysis)
 
         previous_booking = self._current_booking(s)
         applied = apply_patch(s.brief, s.sources, analysis.patch, today=today)
         self._commit_brief(s, applied, emit)
+
+        if unknown_destination:
+            # A failed new destination is not an answer about the old trip. Keep
+            # the other explicit criteria, but retire its active cards/checkout.
+            if not applied.search_changed:
+                s.version += 1
+            s.packages, s.trains, s.destinations = [], [], []
+            s.rebuild_before = None
+            s.selected, s.booking, s.stale = None, None, False
+            s.options_kind = "trains" if s.brief.transport == "train" else "destinations"
+            s.options_assumptions, s.options_notes = [], []
+            s.stage = Stage.COLLECTING
+            emit(
+                "brief",
+                {**s.snapshot(), "search_changed": True, "invalidate_options": True, "changes": [], "rejected": []},
+            )
+            notice = (
+                "Предыдущий демо-заказ и документы сохранены; отмена и возврат не выполнялись. "
+                if previous_booking and previous_booking.get("status") == "paid_demo"
+                else ""
+            )
+            rejected = fmt.rejected_line(applied)
+            question = fmt.unknown_destination(unknown_destination)
+            emit(
+                "question",
+                {"field": "destination", "text": question, "quick_replies": ["Анталья", "Дубай", "Мальдивы"]},
+            )
+            reply = self._say(notice + (rejected + "\n" if rejected else "") + question, emit)
+            s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
+            return
+
+        if (
+            previous_booking
+            and previous_booking.get("status") in {"awaiting_travelers", "ready_for_demo_payment", "payment_declined"}
+            and not applied.search_changed
+            and requests_checkout_cancellation(text)
+        ):
+            # Retire the checkout revision as well as the selection, so a stale
+            # payment tab cannot revive the cancelled cart after another choice.
+            s.version += 1
+            s.selected, s.booking = None, None
+            s.stage = Stage.PACKAGES_SHOWN if s.packages else Stage.COLLECTING
+            emit(
+                "brief",
+                {**s.snapshot(), "search_changed": False, "invalidate_options": False, "changes": [], "rejected": []},
+            )
+            reply = self._say(fmt.checkout_cancelled(), emit)
+            s.history += [Message(role="user", content=text), Message(role="assistant", content=reply)]
+            return
 
         if is_cancellation_topic(text) and not applied.search_changed:
             if not (s.stage is Stage.AWAITING_CONFIRMATION and analysis.intent == "decline"):

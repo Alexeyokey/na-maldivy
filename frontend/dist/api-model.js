@@ -1,11 +1,66 @@
 /** Server-owned trip state. No hotel engine, generated prices or local payment success. */
-import {streamChat,requestCheckout,downloadCheckout,checkAgentHealth,ChatApiError} from './api.js';
+import {streamChat,requestCheckout,downloadCheckout,checkAgentHealth,ChatApiError,CHECKOUT_REQUEST_TIMEOUT_MS,withRequestDeadline} from './api.js';
 
 export const visibleText=value=>String(value??'').replace(/\s*\[review_id:[^\]]*\]/g,'').replace(/\b(?:CART-[a-f0-9]{32}|DEMO-[A-F0-9]{32}|[a-f0-9]{32})\b/g,'[служебный номер скрыт]');
 const copy=value=>structuredClone(value);
 const STORAGE_KEY='na-maldivy-api-session-v1';
 const idempotency=()=>globalThis.crypto?.randomUUID?.()||'web-'+Date.now()+'-'+Math.random().toString(36).slice(2);
-export const createApiModel=()=>({sessionId:null,version:0,stage:'collecting',brief:{},sources:{},needs:[],options:[],optionKind:null,selected:null,cart:null,order:null,currentOrderId:null,orders:[],messages:[],question:null,profile:null,savings:null,statusText:'',busy:false,error:null,stale:false,notes:[],assumptions:[],assumptionsAccepted:false,acceptedAssumptions:null,draft:'',pendingRequest:null,syncNeeded:false,sessionLost:false,connection:'connecting',health:null,storageWarning:null});
+export const createApiModel=()=>({sessionId:null,version:0,stage:'collecting',brief:{},sources:{},needs:[],options:[],optionKind:null,selected:null,cart:null,order:null,currentOrderId:null,orders:[],ordersSyncNeeded:false,messages:[],question:null,profile:null,savings:null,statusText:'',busy:false,error:null,stale:false,notes:[],assumptions:[],assumptionsAccepted:false,acceptedAssumptions:null,draft:'',pendingRequest:null,syncNeeded:false,sessionLost:false,connection:'connecting',health:null,storageWarning:null});
+
+const announcementPhases=new Map([
+ ['Готовим поездку',['prepare','Готовим ответ.']],
+ ['Восстанавливаем ответ',['retry','Восстанавливаем прерванный ответ.']],
+ ['Разбираю запрос',['analyze','Разбираем условия поездки.']],
+ ['Подбираю направления',['suggest','Подбираем направления.']],
+ ['Ищу поезда и считаю стоимость для группы',['trains','Ищем поезда и рассчитываем стоимость за группу.']],
+ ['Собираю поездку: рейсы, отели, трансферы',['search','Ищем рейсы, отели и трансферы.']],
+ ['Готовлю ответ',['prepare','Готовим ответ.']],
+ ['Жду подтверждения',['confirm','Состав поездки готов к проверке.']],
+]);
+
+/** Feed one persistent live region. Never announce transcript text, identifiers or every token. */
+export function createApiAnnouncements(){
+ let initialized=false,wasBusy=false,activeChat=false,attempt=0,active=null,completed=null,lastSignal='',storageUnavailable=false;
+ const announcedPhases=new Set();
+ const emit=(key,text)=>{if(key===lastSignal)return null;lastSignal=key;return text;};
+ const announceState=state=>{
+  if(!state||typeof state!=='object')return null;
+  if(!initialized){initialized=true;if(!state.busy)return null;}
+  if(state.busy){
+   if(!wasBusy){attempt++;announcedPhases.clear();activeChat=!!state.pendingRequest;active=state.pendingRequest?.id||'checkout-'+attempt;}
+   wasBusy=true;
+   const [phase,text]=activeChat?(announcementPhases.get(state.statusText)||['prepare','Готовим ответ.']):['checkout','Проверяем результат демонстрационного оформления.'];
+   if(announcedPhases.has(phase))return null;
+   announcedPhases.add(phase);return emit('busy:'+attempt+':'+phase,text);
+  }
+  wasBusy=false;
+  if(state.sessionLost)return emit('session-lost','Поисковая сессия завершилась. Переписка сохранена; можно начать новый поиск.');
+  if(state.pendingRequest)return emit('interrupted:'+state.pendingRequest.id+':'+(state.connection==='online'?'online':'unavailable'),state.connection==='online'?'Ответ прервался. Можно повторить сообщение; переписка сохранена.':'Ответ прервался. Проверьте связь и повторите сообщение; переписка сохранена.');
+  if(state.syncNeeded)return emit('sync:'+active,'Ответ получен. Обновляем состояние поездки.');
+  if(state.connection==='auth')return emit('auth','Для продолжения требуется вход на сайт. Переписка сохранена.');
+  if(state.connection==='offline')return emit('offline','Нет связи с сервером. Переписка сохранена; можно проверить связь.');
+  if(state.error){completed=active;return emit('error:'+active,'Не удалось завершить действие. Подробности ошибки находятся в чате.');}
+  if(active&&active!==completed){
+   completed=active;
+   let text='Ответ готов. Новое сообщение находится в чате.';
+   if(state.messages?.at(-1)?.error)text='Обработка завершена с ошибкой. Подробности находятся в чате.';
+   else if(!activeChat&&state.order?.status==='paid_demo'&&state.order.is_simulated===true)text='Демонстрационное оформление подтверждено сервером. Реального списания нет; документы доступны.';
+   else if(!activeChat&&state.cart?.status==='payment_declined')text='Получен тестовый отказ оплаты. Можно повторить демонстрационное оформление.';
+   else if(state.question)text='Ответ готов. Для продолжения ответьте на уточняющий вопрос в чате.';
+   else if(state.stage==='awaiting_confirmation')text='Ответ готов. Проверьте состав поездки перед подтверждением.';
+   else if(state.stage==='checkout_pending')text='Ответ готов. Доступно демонстрационное оформление; платёж ещё не выполнен.';
+   else if(!state.stale&&state.options?.length)text='Ответ готов. Доступно вариантов: '+state.options.length+'. Результаты находятся после переписки.';
+   return emit('complete:'+active,text);
+  }
+  return null;
+ };
+ return state=>{
+  if(!state||typeof state!=='object')return null;
+  const text=announceState(state),unavailable=!!state.storageWarning,newFailure=unavailable&&!storageUnavailable;
+  storageUnavailable=unavailable;
+  return newFailure?'Не удалось сохранить переписку в браузере. Пока вкладка открыта, сообщения остаются на странице.'+(text?' '+text:''):text;
+ };
+}
 const safeId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(value);
 const safeCheckoutId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(value);
 const stages=['collecting','destinations_shown','packages_shown','trains_shown','awaiting_confirmation','checkout_pending','booked'];
@@ -120,8 +175,8 @@ export function applyAgentEvent(model,type,data){
 }
 
 export class ApiTripController{
- constructor({fetchImpl=globalThis.fetch,onChange=()=>{},storage=null}={}){
-  this.fetch=fetchImpl.bind(globalThis);this.onChange=onChange;this.storage=storage;this.state=createApiModel();this.abort=null;this.generation=0;this.pendingPayment=null;this.savedTravelers=null;this.orderRefs=[];this.reconnectPromise=null;this.probeEpoch=0;this.restoring=false;
+ constructor({fetchImpl=globalThis.fetch,onChange=()=>{},storage=null,checkoutTimeoutMs=CHECKOUT_REQUEST_TIMEOUT_MS,recoveryTimeoutMs=5000}={}){
+  this.fetch=fetchImpl.bind(globalThis);this.onChange=onChange;this.storage=storage;this.state=createApiModel();this.abort=null;this.generation=0;this.pendingPayment=null;this.savedTravelers=null;this.orderRefs=[];this.reconnectPromise=null;this.probeEpoch=0;this.restoring=false;this.restoreEpoch=0;this.checkoutTimeoutMs=checkoutTimeoutMs;this.recoveryTimeoutMs=recoveryTimeoutMs;
  }
  notify(){this.remember();this.onChange(this.state);}
  remember(){
@@ -141,25 +196,55 @@ export class ApiTripController{
   const entry=this.state.orders.find(row=>row.sessionId===sessionId&&row.order.order_id===order.order_id);
   if(entry)entry.order=order;else this.state.orders[prepend?'unshift':'push']({sessionId,order});
  }
+ async restoreOrders(){
+  const generation=this.generation,started=Date.now();this.orderRecoveryDeferred=false;
+  const missing=()=>this.orderRefs.filter(ref=>!this.state.orders.some(row=>row.sessionId===ref.sessionId&&row.order.order_id===ref.orderId));
+  this.state.ordersSyncNeeded=missing().length>0;
+  const refs=missing().sort((a,b)=>Number(b.orderId===this.state.currentOrderId)-Number(a.orderId===this.state.currentOrderId));
+  for(const row of refs){
+   if(this.generation!==generation)return null;
+   try{
+    const remaining=this.checkoutTimeoutMs-(Date.now()-started);
+    if(remaining<=0)throw new ChatApiError('Не получили сохранённые демо-поездки вовремя. Проверьте связь и повторите попытку.',{code:'timeout'});
+    const order=checkedOrder(await requestCheckout({path:'/api/checkout/orders/'+encodeURIComponent(row.orderId),sessionId:row.sessionId,fetchImpl:this.fetch,timeoutMs:remaining}),row.sessionId);
+    if(this.generation!==generation)return null;
+    if(order.order_id!==row.orderId)throw new ChatApiError('Не удалось проверить сохранённую демо-поездку.',{code:'protocol'});
+    this.keepOrder(order,row.sessionId,false);
+   }catch(error){
+    if(this.generation!==generation)return null;
+    this.state.error=error.code==='timeout'?'Не получили сохранённые демо-поездки вовремя. Переписка сохранена; проверьте связь и повторите попытку.':'Не удалось загрузить часть сохранённых демо-поездок. Проверьте связь и повторите попытку.';
+    if(['timeout','network','aborted'].includes(error.code)){this.orderRecoveryDeferred=true;break;}
+   }
+  }
+  if(this.generation!==generation)return null;
+  this.state.ordersSyncNeeded=missing().length>0;
+  const ownedOrders=this.state.orders.filter(row=>row.sessionId===this.state.sessionId);
+  const paid=this.state.currentOrderId?ownedOrders.find(row=>row.order.order_id===this.state.currentOrderId):this.state.stage==='booked'?(this.state.cart?.cart_id?ownedOrders.find(row=>row.order.cart_id===this.state.cart.cart_id):ownedOrders.length===1?ownedOrders[0]:null):null;
+  if(paid){this.state.order=paid.order;this.state.currentOrderId=paid.order.order_id;}
+  return !this.state.ordersSyncNeeded;
+ }
  async sessionSnapshot({freshOptions=false}={}){
   const generation=this.generation,sessionId=this.state.sessionId;
   const current=()=>this.generation===generation&&this.state.sessionId===sessionId;
   if(!safeId(sessionId))return null;
-  const response=await this.fetch('/api/session/'+encodeURIComponent(sessionId),{headers:{Accept:'application/json'},cache:'no-store',credentials:'same-origin',redirect:'error',signal:AbortSignal.timeout(5000)});
+  const value=await withRequestDeadline(async signal=>{
+   const response=await this.fetch('/api/session/'+encodeURIComponent(sessionId),{headers:{Accept:'application/json'},cache:'no-store',credentials:'same-origin',redirect:'error',signal});
+   if(!current())return null;
+   if(!response.ok)throw new ChatApiError(response.status===404?'Сервер перезапустился. Переписка сохранена; начните новый поиск.':'Не удалось обновить состояние поездки. Проверьте связь.',{code:'session',status:response.status});
+   return response.json();
+  },{timeoutMs:this.recoveryTimeoutMs,timeoutMessage:'Не получили состояние поездки вовремя. Проверьте связь ещё раз.',abortMessage:'Обновление поездки остановлено.'});
   if(!current())return null;
-  if(!response.ok)throw new ChatApiError(response.status===404?'Сервер перезапустился. Переписка сохранена; начните новый поиск.':'Не удалось обновить состояние поездки. Проверьте связь.',{code:'session',status:response.status});
-  const value=await response.json();if(!current())return null;
   if(!record(value)||(value.session_id!==undefined&&value.session_id!==sessionId)||!Number.isInteger(value.version)||value.version<this.state.version||!stages.includes(value.stage)||(value.brief!==undefined&&!record(value.brief))||(value.sources!==undefined&&!record(value.sources))||(value.needs!==undefined&&!validNeeds(value.needs))||(value.options!==undefined&&!validEnvelope(value.options)))throw new ChatApiError('Не удалось проверить состояние поездки на сервере.',{code:'protocol'});
   let cart=null,order=null;
   if(value.booking?.cart_id&&value.stage==='checkout_pending'){
-   cart=await requestCheckout({path:'/api/checkout/carts/'+encodeURIComponent(value.booking.cart_id),sessionId,fetchImpl:this.fetch});
+   cart=await requestCheckout({path:'/api/checkout/carts/'+encodeURIComponent(value.booking.cart_id),sessionId,fetchImpl:this.fetch,timeoutMs:this.checkoutTimeoutMs});
    if(!current())return null;
    if(cart.cart_id!==value.booking.cart_id||(cart.session_id!==undefined&&cart.session_id!==sessionId))throw new ChatApiError('Сервер вернул другую корзину поездки.',{code:'protocol'});
   }else if(value.stage==='booked'&&value.booking?.order_id){
    const orderId=value.booking.order_id;
    if(!safeCheckoutId(orderId))throw new ChatApiError('Сервер не подтвердил демо-заказ.',{code:'protocol'});
    const saved=this.state.orders.find(row=>row.sessionId===sessionId&&row.order.order_id===orderId);
-   order=checkedOrder(saved?.order||await requestCheckout({path:'/api/checkout/orders/'+encodeURIComponent(orderId),sessionId,fetchImpl:this.fetch}),sessionId,value.booking.cart_id);
+   order=checkedOrder(saved?.order||await requestCheckout({path:'/api/checkout/orders/'+encodeURIComponent(orderId),sessionId,fetchImpl:this.fetch,timeoutMs:this.checkoutTimeoutMs}),sessionId,value.booking.cart_id);
    if(!current())return null;
    if(order.order_id!==orderId)throw new ChatApiError('Сервер вернул другой демо-заказ.',{code:'protocol'});
   }
@@ -187,9 +272,11 @@ export class ApiTripController{
   this.state.connection='connecting';this.notify();
   const work=(async()=>{
    try{
-    const health=await checkAgentHealth({fetchImpl:this.fetch,signal:AbortSignal.timeout(5000)});
+    const health=await checkAgentHealth({fetchImpl:this.fetch,timeoutMs:this.recoveryTimeoutMs});
     if(!current())return null;this.state.health=health;this.state.connection='online';
+    if(this.state.ordersSyncNeeded&&!this.state.busy&&!this.restoring){await this.restoreOrders();if(!current())return null;if(this.state.sessionLost)this.markSessionLost();}
     if(this.state.syncNeeded&&!this.state.pendingRequest&&!this.state.busy&&!this.restoring&&this.state.sessionId){
+     if(this.state.stage==='booked'&&!this.state.order&&this.orderRecoveryDeferred){this.state.connection='offline';return health;}
      try{await this.sessionSnapshot();if(!current())return null;this.state.syncNeeded=false;this.state.error=null;}
      catch(error){if(!current())return null;if(error.status===404)this.markSessionLost();else this.state.error='Ответ сохранён. Пока не удалось обновить состояние поездки; проверьте связь ещё раз.';}
     }
@@ -200,7 +287,7 @@ export class ApiTripController{
   this.reconnectPromise=work;return work;
  }
  async restore(){
-  const generation=this.generation;
+  const generation=this.generation,epoch=++this.restoreEpoch;
   this.restoring=true;
   try{
   let saved;try{const raw=this.storage?.getItem(STORAGE_KEY)||'null';if(raw.length>4000000)return;saved=JSON.parse(raw);}catch{return;}
@@ -215,20 +302,15 @@ export class ApiTripController{
   this.orderRefs=Array.isArray(saved.orders)?saved.orders.filter(row=>safeId(row?.sessionId)&&typeof row.orderId==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(row.orderId)).slice(0,1000):[];
   if(this.state.sessionId&&!this.state.pendingRequest&&!this.state.sessionLost)this.state.syncNeeded=true;
   this.notify();
-  for(const row of this.orderRefs){
-   if(this.generation!==generation)return;
-   try{const order=checkedOrder(await requestCheckout({path:'/api/checkout/orders/'+encodeURIComponent(row.orderId),sessionId:row.sessionId,fetchImpl:this.fetch}),row.sessionId);if(this.generation!==generation)return;if(order.order_id!==row.orderId)continue;this.keepOrder(order,row.sessionId,false);}catch{if(this.generation!==generation)return;}
-  }
+  await this.restoreOrders();
   if(this.generation!==generation)return;
-  const ownedOrders=this.state.orders.filter(row=>row.sessionId===this.state.sessionId);
-  const paid=this.state.currentOrderId?ownedOrders.find(row=>row.order.order_id===this.state.currentOrderId):this.state.stage==='booked'?(this.state.cart?.cart_id?ownedOrders.find(row=>row.order.cart_id===this.state.cart.cart_id):ownedOrders.length===1?ownedOrders[0]:null):null;
-  if(paid){this.state.order=paid.order;this.state.currentOrderId=paid.order.order_id;}
   if(this.state.sessionLost)this.markSessionLost();
   if(!this.state.sessionId||this.state.pendingRequest||this.state.sessionLost){this.notify();return;}
+  if(this.state.stage==='booked'&&!this.state.order&&this.orderRecoveryDeferred){this.state.connection='offline';this.notify();return;}
   try{const snapshot=await this.sessionSnapshot();if(this.generation!==generation||!snapshot)return;this.state.syncNeeded=false;if(!this.state.messages.length)this.state.messages.push({role:'assistant',text:'Параметры поездки восстановлены с сервера. Можно продолжить разговор.'});}
   catch(error){if(this.generation!==generation)return;if(error.status===404)this.markSessionLost();else{this.state.syncNeeded=true;this.state.connection='offline';this.state.error='Переписка сохранена. Связь с сервером временно недоступна.';}}
   this.notify();
-  }finally{this.restoring=false;}
+  }finally{if(this.restoreEpoch===epoch){this.restoring=false;if(this.generation===generation)this.notify();}}
  }
  async send(message){
   message=String(message||'').trim();if(!message||this.state.busy)return null;
@@ -278,9 +360,9 @@ export class ApiTripController{
   const path='/api/checkout/carts/'+encodeURIComponent(this.state.cart.cart_id),signature=path+'|'+JSON.stringify(travelers);
   this.state.busy=true;this.state.error=null;this.notify();
   try{
-   if(this.savedTravelers!==signature){const cart=await requestCheckout({path:path+'/travelers',method:'PUT',body:{travelers},sessionId,fetchImpl:this.fetch});if(!current())return null;this.state.cart=cart;this.savedTravelers=signature;}
+   if(this.savedTravelers!==signature){const cart=await requestCheckout({path:path+'/travelers',method:'PUT',body:{travelers},sessionId,fetchImpl:this.fetch,timeoutMs:this.checkoutTimeoutMs});if(!current())return null;this.state.cart=cart;this.savedTravelers=signature;}
    if(!this.pendingPayment||this.pendingPayment.path!==path||this.pendingPayment.outcome!==outcome)this.pendingPayment={path,outcome,key:idempotency()};
-   const result=await requestCheckout({path:path+'/pay',method:'POST',body:{outcome,idempotency_key:this.pendingPayment.key,acknowledge_demo:true,acknowledge_unpriced:true},sessionId,fetchImpl:this.fetch});
+   const result=await requestCheckout({path:path+'/pay',method:'POST',body:{outcome,idempotency_key:this.pendingPayment.key,acknowledge_demo:true,acknowledge_unpriced:true},sessionId,fetchImpl:this.fetch,timeoutMs:this.checkoutTimeoutMs});
    if(!current())return null;
    if(result.status==='paid_demo'&&result.is_simulated===true){
     checkedOrder(result,sessionId,this.state.cart.cart_id);
@@ -297,7 +379,7 @@ export class ApiTripController{
  async download(kind,entry=null){
   const order=entry?.order||this.state.order,sessionId=entry?.sessionId||this.state.sessionId;
   if(!order?.order_id||!['voucher','calendar'].includes(kind))throw new ChatApiError('Демо-документ пока недоступен.',{code:'validation'});
-  return downloadCheckout({path:'/api/checkout/orders/'+encodeURIComponent(order.order_id)+(kind==='voucher'?'/voucher':'/calendar.ics'),sessionId,fetchImpl:this.fetch});
+  return downloadCheckout({path:'/api/checkout/orders/'+encodeURIComponent(order.order_id)+(kind==='voucher'?'/voucher':'/calendar.ics'),sessionId,fetchImpl:this.fetch,timeoutMs:this.checkoutTimeoutMs});
  }
- reset(){this.generation++;this.probeEpoch++;this.reconnectPromise=null;this.abort?.abort();const {orders,health,connection}=this.state;this.state={...createApiModel(),orders,health,connection};this.pendingPayment=null;this.savedTravelers=null;this.remember();this.notify();}
+ reset(){this.generation++;this.probeEpoch++;this.restoreEpoch++;this.restoring=false;this.reconnectPromise=null;this.abort?.abort();const {orders,health,connection}=this.state;this.state={...createApiModel(),orders,health,connection};this.state.ordersSyncNeeded=this.orderRefs.some(ref=>!orders.some(row=>row.sessionId===ref.sessionId&&row.order.order_id===ref.orderId));this.pendingPayment=null;this.savedTravelers=null;this.remember();this.notify();}
 }

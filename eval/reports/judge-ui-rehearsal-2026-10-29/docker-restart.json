@@ -1,0 +1,58 @@
+{
+  "source_commit": "de83c11da512a929381a8a2f9af0a64349db8bf8",
+  "schema_version": 1,
+  "started_at": "2026-10-28T23:32:15.080371+00:00",
+  "scope": "running_gateway_three_destination_mixed_backend_simulated_checkout",
+  "mode": "resume_after_restart",
+  "status": "passed",
+  "integrated_ui_status": "not_run",
+  "completed_stages": [
+    "gateway.load_private_context",
+    "gateway.health",
+    "AYT.restart_order_and_artifacts",
+    "DXB.restart_order_and_artifacts",
+    "MLE.restart_order_and_artifacts"
+  ],
+  "stage_timings_seconds": {
+    "gateway.load_private_context": 0.001,
+    "gateway.health": 0.017,
+    "AYT.restart_order_and_artifacts": 0.03,
+    "DXB.restart_order_and_artifacts": 0.008,
+    "MLE.restart_order_and_artifacts": 0.009
+  },
+  "notice": "Backend HTTP only; simulated payment, no issued tickets or real bookings.",
+  "departure_date": "2026-11-18",
+  "scenario": "recorded_reference_fixture",
+  "runtime_network_isolation": "not_proven_by_http_check",
+  "source_evidence_scope": "server_provenance_metadata_and_reference_fixture_prices",
+  "full_d9_acceptance_status": "not_completed_by_this_report",
+  "destinations": [
+    {
+      "destination": "AYT",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "e56d83e932dfe96a579d9f26dea0beaa119ce71cf2a10cc09bc89aab3af38f3a",
+      "voucher_sha256": "40d2be63d6db6d2d27b2cf7a88f5d2f2620f6b91cbe535917580f1a73db43926",
+      "calendar_sha256": "4e508c8f7b31441078e43a2fa576332ff10165438f1e077cc6ac8ac33d020c89"
+    },
+    {
+      "destination": "DXB",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "465ee303a17427d9d30157115efc0f78b6ad3dd706490d3e52e7bc5b19cab8a3",
+      "voucher_sha256": "a212d03973458b69d9b213bbb96521f1a01d4f8e28e817ace1e53678a1475e88",
+      "calendar_sha256": "7ac8d0a23038c51e5438a8447a2ac86e4015623ff89cb6763c70c45bf283c939"
+    },
+    {
+      "destination": "MLE",
+      "status": "passed",
+      "old_session_absent": true,
+      "order_sha256": "39443696d7c9cd18848b479cf2b097872e673183bd01830d43e7be88d4dc0fc9",
+      "voucher_sha256": "270a99a6d0478cbf50e150ffa91a0759d3f94885dba9b2a0f67584252c6141d5",
+      "calendar_sha256": "6747fa853b8df7fbcf5536ba089ba612187fa8c3d64b3514273aadeeb56e618f"
+    }
+  ],
+  "external_model_used": false,
+  "destinations_passed": 3,
+  "duration_seconds": 0.066
+}
