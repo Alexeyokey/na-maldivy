@@ -6,6 +6,61 @@ const copy=value=>structuredClone(value);
 const STORAGE_KEY='na-maldivy-api-session-v1';
 const idempotency=()=>globalThis.crypto?.randomUUID?.()||'web-'+Date.now()+'-'+Math.random().toString(36).slice(2);
 export const createApiModel=()=>({sessionId:null,version:0,stage:'collecting',brief:{},sources:{},needs:[],options:[],optionKind:null,selected:null,cart:null,order:null,currentOrderId:null,orders:[],ordersSyncNeeded:false,messages:[],question:null,profile:null,savings:null,statusText:'',busy:false,error:null,stale:false,notes:[],assumptions:[],assumptionsAccepted:false,acceptedAssumptions:null,draft:'',pendingRequest:null,syncNeeded:false,sessionLost:false,connection:'connecting',health:null,storageWarning:null});
+
+const announcementPhases=new Map([
+ ['Готовим поездку',['prepare','Готовим ответ.']],
+ ['Восстанавливаем ответ',['retry','Восстанавливаем прерванный ответ.']],
+ ['Разбираю запрос',['analyze','Разбираем условия поездки.']],
+ ['Подбираю направления',['suggest','Подбираем направления.']],
+ ['Ищу поезда и считаю стоимость для группы',['trains','Ищем поезда и рассчитываем стоимость за группу.']],
+ ['Собираю поездку: рейсы, отели, трансферы',['search','Ищем рейсы, отели и трансферы.']],
+ ['Готовлю ответ',['prepare','Готовим ответ.']],
+ ['Жду подтверждения',['confirm','Состав поездки готов к проверке.']],
+]);
+
+/** Feed one persistent live region. Never announce transcript text, identifiers or every token. */
+export function createApiAnnouncements(){
+ let initialized=false,wasBusy=false,activeChat=false,attempt=0,active=null,completed=null,lastSignal='',storageUnavailable=false;
+ const announcedPhases=new Set();
+ const emit=(key,text)=>{if(key===lastSignal)return null;lastSignal=key;return text;};
+ const announceState=state=>{
+  if(!state||typeof state!=='object')return null;
+  if(!initialized){initialized=true;if(!state.busy)return null;}
+  if(state.busy){
+   if(!wasBusy){attempt++;announcedPhases.clear();activeChat=!!state.pendingRequest;active=state.pendingRequest?.id||'checkout-'+attempt;}
+   wasBusy=true;
+   const [phase,text]=activeChat?(announcementPhases.get(state.statusText)||['prepare','Готовим ответ.']):['checkout','Проверяем результат демонстрационного оформления.'];
+   if(announcedPhases.has(phase))return null;
+   announcedPhases.add(phase);return emit('busy:'+attempt+':'+phase,text);
+  }
+  wasBusy=false;
+  if(state.sessionLost)return emit('session-lost','Поисковая сессия завершилась. Переписка сохранена; можно начать новый поиск.');
+  if(state.pendingRequest)return emit('interrupted:'+state.pendingRequest.id+':'+(state.connection==='online'?'online':'unavailable'),state.connection==='online'?'Ответ прервался. Можно повторить сообщение; переписка сохранена.':'Ответ прервался. Проверьте связь и повторите сообщение; переписка сохранена.');
+  if(state.syncNeeded)return emit('sync:'+active,'Ответ получен. Обновляем состояние поездки.');
+  if(state.connection==='auth')return emit('auth','Для продолжения требуется вход на сайт. Переписка сохранена.');
+  if(state.connection==='offline')return emit('offline','Нет связи с сервером. Переписка сохранена; можно проверить связь.');
+  if(state.error){completed=active;return emit('error:'+active,'Не удалось завершить действие. Подробности ошибки находятся в чате.');}
+  if(active&&active!==completed){
+   completed=active;
+   let text='Ответ готов. Новое сообщение находится в чате.';
+   if(state.messages?.at(-1)?.error)text='Обработка завершена с ошибкой. Подробности находятся в чате.';
+   else if(!activeChat&&state.order?.status==='paid_demo'&&state.order.is_simulated===true)text='Демонстрационное оформление подтверждено сервером. Реального списания нет; документы доступны.';
+   else if(!activeChat&&state.cart?.status==='payment_declined')text='Получен тестовый отказ оплаты. Можно повторить демонстрационное оформление.';
+   else if(state.question)text='Ответ готов. Для продолжения ответьте на уточняющий вопрос в чате.';
+   else if(state.stage==='awaiting_confirmation')text='Ответ готов. Проверьте состав поездки перед подтверждением.';
+   else if(state.stage==='checkout_pending')text='Ответ готов. Доступно демонстрационное оформление; платёж ещё не выполнен.';
+   else if(!state.stale&&state.options?.length)text='Ответ готов. Доступно вариантов: '+state.options.length+'. Результаты находятся после переписки.';
+   return emit('complete:'+active,text);
+  }
+  return null;
+ };
+ return state=>{
+  if(!state||typeof state!=='object')return null;
+  const text=announceState(state),unavailable=!!state.storageWarning,newFailure=unavailable&&!storageUnavailable;
+  storageUnavailable=unavailable;
+  return newFailure?'Не удалось сохранить переписку в браузере. Пока вкладка открыта, сообщения остаются на странице.'+(text?' '+text:''):text;
+ };
+}
 const safeId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(value);
 const safeCheckoutId=value=>typeof value==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(value);
 const stages=['collecting','destinations_shown','packages_shown','trains_shown','awaiting_confirmation','checkout_pending','booked'];

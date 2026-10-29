@@ -506,6 +506,12 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
     if re.search(r"без\s+(?:собак\w*|кошк\w*|питомц\w*|животн\w*)|(?:собак\w*|кошк\w*|питомц\w*)\s+не\s+едет", t):
         data["pets"] = 0
         removed.append("pets")
+    elif not filter_question and (pets_count := re.search(r"\bпитомцев\s*:\s*(\d+)\b", t)):
+        data["pets"] = int(pets_count.group(1))
+        if data["pets"] == 0:
+            removed.append("pets")
+        elif "pets" not in needs:
+            needs.append("pets")
     needs = [need for need in needs if need not in removed]
     for rule in RULES:
         if rule.need in needs:

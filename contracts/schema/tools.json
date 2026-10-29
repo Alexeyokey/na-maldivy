@@ -1197,6 +1197,52 @@
           "title": "Price Rub",
           "type": "integer"
         },
+        "schedule_cache_mode": {
+          "anyOf": [
+            {
+              "enum": [
+                "record",
+                "replay",
+                "live"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Schedule Cache Mode"
+        },
+        "schedule_recorded_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Schedule Recorded At"
+        },
+        "schedule_source": {
+          "anyOf": [
+            {
+              "enum": [
+                "synthetic",
+                "yandex"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Schedule Source"
+        },
         "seat_class": {
           "enum": [
             "platzkart",

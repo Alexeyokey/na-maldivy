@@ -71,7 +71,8 @@ def chat(client: TestClient, message: str, session_id: str | None = None):
 )
 def test_age_followup_prices_and_prepares_checkout_for_both_children(client, followup, ages):
     first, events = chat(client, "Из Москвы в Анталью 18 ноября 2026 на неделю, 2 взрослых с двумя детьми")
-    assert any(kind == "question" and value["field"] == "children_ages" for kind, value in events)
+    questions = [value for kind, value in events if kind == "question" and value["field"] == "children_ages"]
+    assert len(questions) == 1 and "возраст каждого ребёнка" in questions[0]["text"]
     assert first["options"]["items"] == []
     state, _ = chat(client, followup, first["session_id"])
     assert state["brief"]["adults"] == 2
@@ -194,3 +195,99 @@ def test_exact_infant_quick_reply_uses_an_age_below_two(client):
     assert after["brief"]["children_ages"] == [1]
     assert after["options"]["items"]
     assert all(option["travelers"]["children_ages"] == [1] for option in after["options"]["items"])
+
+
+def test_explicit_pet_count_form_round_trip_prices_every_pet_and_can_clear_them(client):
+    state, _ = chat(client, "Из Москвы в Анталью 18 ноября 2026 на неделю, 2 взрослых. Питомцев: 2")
+    assert state["brief"]["pets"] == 2 and "pets" in state["brief"]["needs"]
+    assert state["sources"]["pets"] == "explicit"
+    assert state["options"]["items"] and all(row["travelers"]["pets"] == 2 for row in state["options"]["items"])
+    sid = state["session_id"]
+    cleared, _ = chat(client, "Питомцев: 0", sid)
+    assert cleared["brief"]["pets"] == 0 and "pets" not in cleared["brief"]["needs"]
+    assert cleared["sources"]["pets"] == "explicit"
+    assert cleared["options"]["items"] and all(row["travelers"]["pets"] == 0 for row in cleared["options"]["items"])
+    dog, _ = chat(client, "Едем с собакой", sid)
+    assert dog["brief"]["pets"] == 1 and "pets" in dog["brief"]["needs"]
+    no_dog, _ = chat(client, "Без питомцев", sid)
+    assert no_dog["brief"]["pets"] == 0 and "pets" not in no_dog["brief"]["needs"]
+
+
+def test_pet_count_above_the_chat_limit_is_rejected_without_truncating_the_party():
+    patch = extract("Питомцев: 4", TODAY, TripBrief(pets=2, needs=["pets"]))
+    result = apply_patch(TripBrief(pets=2, needs=["pets"]), {}, patch, today=TODAY)
+    assert result.brief.pets == 2 and "pets" in result.brief.needs
+    assert any(rejected.field == "pets" for rejected in result.rejected)
+
+
+def test_train_age_question_asks_for_each_child_without_hotel_claims(client):
+    state, events = chat(client, "Из Москвы в Петербург поездом 18 ноября 2026, 2 взрослых с двумя детьми. Питомцев: 2")
+    question = next(value for kind, value in events if kind == "question" and value["field"] == "children_ages")
+    assert "возраст каждого ребёнка" in question["text"]
+    assert "условия поездки" in question["text"] and "отели" not in question["text"]
+    assert "2 питомца" in question["text"]
+    assert state["options"]["items"] == []
+
+
+@pytest.mark.parametrize("transport", ["flight", "train"])
+def test_preferences_form_phrase_preserves_all_children_and_pets_and_never_confirms_booking(client, transport):
+    initial = (
+        "Из Москвы в Петербург поездом 18 ноября 2026, 2 взрослых"
+        if transport == "train"
+        else "Из Москвы в Анталью 18 ноября 2026 на неделю, 2 взрослых"
+    )
+    state, _ = chat(client, initial)
+    sid = state["session_id"]
+    if transport == "flight":
+        selected = next(row for row in state["options"]["items"] if row["can_confirm"])
+        chat(client, f"Беру вариант {selected['index']}", sid)
+        state, _ = chat(client, "Подтверждаю", sid)
+        assert state["stage"] == "checkout_pending"
+    form = (
+        "Изменить условия поиска: 2 взрослых, дата отправления 03.02.2027. "
+        "Дети: 0 лет, 5 лет, 5 лет. Питомцев: 2. Бюджет 200000 рублей на всю группу в одну сторону. "
+        "Заново подобрать варианты, без оформления."
+        if transport == "train"
+        else "Изменить условия поиска: 2 взрослых, 10 ночей, дата вылета 03.02.2027. "
+        "Дети: 0 лет, 5 лет, 5 лет. Питомцев: 2. Бюджет 200000 рублей на всю поездку за всех. "
+        "Заново подобрать варианты, без оформления."
+    )
+    changed, events = chat(client, form, sid)
+    expected = {
+        "adults": 2,
+        "children_ages": [0, 5, 5],
+        "pets": 2,
+        "budget_rub": 200_000,
+        "start_date": "2027-02-03",
+        "transport": transport,
+        "destination": "LED" if transport == "train" else "AYT",
+    }
+    assert {key: changed["brief"][key] for key in expected} == expected
+    assert {"child", "pets"} <= set(changed["brief"]["needs"])
+    assert changed["brief"]["nights"] == (state["brief"]["nights"] if transport == "train" else 10)
+    assert changed["stage"] == (
+        ("trains_shown" if transport == "train" else "packages_shown") if changed["options"]["items"] else "collecting"
+    )
+    assert changed["options"]["kind"] == ("trains" if transport == "train" else "packages")
+    assert any(
+        kind == "tool_call" and value["name"] == ("search_trains" if transport == "train" else "search_flights")
+        for kind, value in events
+    )
+    assert changed["selected"] is changed["booking"] is None
+    assert not any(kind == "booking" for kind, _ in events)
+    assert all(
+        row.get("travelers", {}).get("children_ages", [0, 5, 5]) == [0, 5, 5] for row in changed["options"]["items"]
+    )
+    cleared, events = chat(
+        client,
+        "Изменить условия поиска: 2 взрослых. Без детей. Питомцев: 0. Без питомцев. "
+        "Сними бюджет. Заново подобрать варианты, без оформления.",
+        sid,
+    )
+    assert cleared["brief"]["children_ages"] == [] and cleared["brief"]["pets"] == 0
+    assert cleared["brief"]["budget_rub"] is None
+    assert not {"child", "pets"} & set(cleared["brief"]["needs"])
+    assert cleared["brief"]["start_date"] == "2027-02-03" and cleared["brief"]["transport"] == transport
+    assert cleared["stage"] == ("trains_shown" if transport == "train" else "packages_shown")
+    assert cleared["selected"] is cleared["booking"] is None
+    assert not any(kind == "booking" for kind, _ in events)

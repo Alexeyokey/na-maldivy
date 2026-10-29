@@ -65,14 +65,43 @@ export function transferLabel(transfer){
 export const isTrainTrip=state=>state.brief?.transport==='train'||state.optionKind==='trains';
 export function trainPresentation(train){
  const classes={platzkart:'Плацкарт',coupe:'Купе',sv:'СВ',seated:'Сидячие места'};
+ const source=train?.schedule_source,mode=train?.schedule_cache_mode;
+ const recorded=train?.schedule_recorded_at,recordedValid=typeof recorded==='string'&&isoDay(recorded)&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(recorded)&&Number.isFinite(Date.parse(recorded));
+ const scheduleLabel=source==='synthetic'?'Демонстрационное расписание':source==='yandex'&&mode==='replay'?'Сохранённое расписание Яндекс Расписаний':source==='yandex'&&['live','record'].includes(mode)?'Ответ API Яндекс Расписаний':source==='yandex'?'Яндекс Расписания · режим источника не указан':'Источник расписания не указан';
  return {
   number:typeof train?.number==='string'&&train.number?train.number:'не указан',
   seatClass:classes[train?.seat_class]||'Класс не уточнён',
   originStation:typeof train?.origin?.name==='string'?train.origin.name:'Вокзал отправления не уточнён',
   destinationStation:typeof train?.destination?.name==='string'?train.destination.name:'Вокзал прибытия не уточнён',
   priceLabel:train?.is_synthetic===true?'Модельная демо-цена':'Источник цены не указан',
-  limitation:'Источник расписания в карточке не указан. Наличие мест и доступность класса не подтверждены. Оформление железнодорожных билетов не подключено.',
+  scheduleLabel,
+  scheduleDetail:source==='yandex'&&mode==='replay'?(recordedValid?'Снимок: '+formatDate(recorded):'Дата снимка не указана'):'',
+  limitation:(['synthetic','yandex'].includes(source)?'':'Источник расписания в карточке не указан. ')+(source==='yandex'&&mode==='replay'?'Актуальность расписания не подтверждена. ':'')+'Наличие мест и доступность класса не подтверждены. Оформление железнодорожных билетов не подключено.',
  };
+}
+
+/** Explicit form values become one validated chat edit, never a booking instruction. */
+export function preferenceRequest(values,{train=false,now=new Date()}={}){
+ const errors={},raw=field=>String(values[field]??'').trim();
+ const integer=(field,min,max,message)=>{const text=raw(field),value=Number(text);if(!/^\d+$/.test(text)||!Number.isSafeInteger(value)||value<min||value>max){errors[field]=message;return null;}return value;};
+ const adults=integer('adults',1,12,'Укажите число взрослых от 1 до 12.'),nights=train?null:integer('nights',1,60,'Укажите число ночей от 1 до 60.');
+ const date=raw('start_date'),minimum=earliestSearchDate(now);
+ if(date&&(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!isoDay(date)))errors.start_date='Укажите существующую дату в календаре.';
+ else if(date&&date<minimum)errors.start_date='Выберите дату не ранее '+formatDate(minimum)+'.';
+ const ageText=raw('children_ages');let ages=[];
+ if(ageText){
+  if(!/^\d{1,2}(?:(?:\s*[,;]\s*|\s+)\d{1,2})*$/.test(ageText))errors.children_ages='Укажите возраст каждого ребёнка целым числом через запятую, например: 0, 5, 5.';
+  else{ages=ageText.split(/[,;\s]+/).map(Number);if(ages.length>8||ages.some(age=>age<0||age>17))errors.children_ages='Допустимо до 8 детей с возрастом от 0 до 17 лет на дату отправления.';}
+ }
+ const pets=integer('pets',0,3,'Укажите количество питомцев от 0 до 3.');
+ const budgetText=raw('budget_rub').replace(/[\s\u00a0\u202f]/g,''),budget=budgetText?Number(budgetText):null;
+ if(budgetText&&(!/^\d+$/.test(budgetText)||!Number.isSafeInteger(budget)||budget<=0))errors.budget_rub='Укажите целую сумму в рублях больше нуля или оставьте поле пустым, чтобы снять лимит.';
+ if(Object.keys(errors).length)return {message:'',errors};
+ const criteria=`Изменить условия поиска: ${adultsLabel(adults)}${train?'':', '+nightsLabel(nights)}${date?', дата '+(train?'отправления':'вылета')+' '+formatDate(date):''}.`;
+ const children=ages.length?'Дети: '+ages.map(age=>counted(age,'год','года','лет')).join(', ')+'.':'Без детей.';
+ const animals=`Питомцев: ${pets}.`+(pets===0?' Без питомцев.':'');
+ const money=budget===null?'Сними бюджет.':`Бюджет ${budget} рублей ${train?'на билеты за всех в одну сторону':'на всю поездку за всех'}.`;
+ return {message:[criteria,children,animals,money,'Заново подобрать варианты, без оформления.'].join(' '),errors:{}};
 }
 
 /** Missing values stay unknown; especially null baggage/transfer is never converted to zero. */

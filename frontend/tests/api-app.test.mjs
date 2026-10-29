@@ -77,6 +77,7 @@ async function mountedSearch(t,options={}){
  const root=Object.assign(new EventTarget(),{innerHTML:'',querySelector:selector=>({'#api-chat-input':input,'.chat-scroll':area,'.sidebar':sidebar}[selector]||null)});
  const modalStatus={textContent:'',scrollIntoView(){}},modalClose={isConnected:true,focus(){document.activeElement=this;}};
  const modal=Object.assign(new EventTarget(),{innerHTML:'',open:false,setAttribute(){},showModal(){this.open=true;},close(){this.open=false;},querySelector:selector=>selector==='#api-modal-status'?modalStatus:selector==='.close-modal'?modalClose:null});
+ const {setupDom,...mountOptions}=options;setupDom?.({root,modal,document});
  const globals={document,window,sessionStorage:storage,fetch:async(path,init={})=>{
   calls.push({path,method:init.method||'GET',body:init.body});
   if(path==='/health')return Response.json({status:'ok',llm_provider:'fake'});
@@ -90,12 +91,35 @@ async function mountedSearch(t,options={}){
   const target={dataset:{apiAction:action,...extra},closest(){return this;}};
   const event=new Event('click');Object.defineProperty(event,'target',{value:target});document.dispatchEvent(event);
  };
- controller=mountApiApp({root,modal,icon:()=>'',config:{},...options});
+ controller=mountApiApp({root,modal,icon:()=>'',config:{},...mountOptions});
  await until(()=>controller.state.connection==='online');
  Object.assign(controller.state,{sessionId:'search-ui-session',stage:'packages_shown',optionKind:'packages',version:1,brief:{origin:'MOW',destination:'MLE',month:1,year:2027,adults:1,nights:null,start_date:null},sources:{month:'explicit'},assumptions:[{field:'nights',text:'беру 7 ночей'},{field:'start_date',text:'минимальная цена календаря в одну сторону; не экономия всей поездки'}],options:[1,2,3].map(packageOption),messages:[{role:'assistant',text:'Подобрали текущие варианты.'}]});
  controller.notify();
  return {root,modal,modalStatus,modalClose,controller,calls,click,document};
 }
+
+test('The accessible status node survives streamed root replacements and is removed when the app is disposed',async t=>{
+ const siblings=[],created=[],writes=[];
+ const {controller}=await mountedSearch(t,{setupDom:({root,document})=>{
+  document.createElement=tag=>{
+   let text='';const node={tag,attributes:{},isConnected:false,setAttribute(name,value){this.attributes[name]=value;},remove(){this.isConnected=false;const index=siblings.indexOf(this);if(index>=0)siblings.splice(index,1);}};
+   Object.defineProperty(node,'textContent',{get:()=>text,set:value=>{text=value;writes.push(value);}});created.push(node);return node;
+  };
+  root.insertAdjacentElement=(position,node)=>{assert.equal(position,'afterend');node.isConnected=true;siblings.push(node);};
+ }});
+ assert.equal(created.length,1);const status=created[0];assert.equal(siblings[0],status);
+ assert.equal(status.attributes.role,'status');assert.equal(status.attributes['aria-live'],'polite');assert.equal(writes.length,0);
+ Object.assign(controller.state,{busy:true,pendingRequest:{id:'status-attempt'},statusText:'Разбираю запрос'});controller.notify();
+ const firstAnnouncement=status.textContent;assert.ok(firstAnnouncement);assert.equal(writes.length,1);
+ for(const fragment of ['Получен ','Получен длинный ','Получен длинный ответ']){
+  controller.state.messages.at(-1).text=fragment;controller.notify();assert.equal(siblings[0],status);
+ }
+ assert.equal(writes.length,1,'Token rendering cannot replace or re-queue the live status');
+ Object.assign(controller.state,{busy:false,pendingRequest:null});controller.notify();
+ assert.equal(writes.length,2);assert.match(status.textContent,/Ответ готов/);assert.doesNotMatch(status.textContent,/Получен длинный ответ/);
+ controller.notify();assert.equal(writes.length,2,'Unrelated state refresh cannot repeat completion');
+ controller.dispose();assert.equal(status.isConnected,false);assert.equal(siblings.length,0);
+});
 
 test('Hotel and rail captions include every child in the server-priced party, including infants',async t=>{
  const {root,controller}=await mountedSearch(t);
@@ -244,15 +268,44 @@ test('Preference dates have a tomorrow constraint and reject past dates without 
  const {modal,modalStatus,controller,click,document}=await mountedSearch(t,{now:()=>new Date('2026-10-29T12:00:00Z')});
  click('edit-preferences');
  assert.match(modal.innerHTML,/name="start_date" type="date" min="2026-10-30"/);
- assert.match(modal.innerHTML,/Детей, питомцев и бюджет можно изменить в чате/);
- assert.match(modal.innerHTML,/ребёнок 5 лет и собака, бюджет 200 тысяч рублей/);
+ assert.match(modal.innerHTML,/name="children_ages"/);assert.match(modal.innerHTML,/name="pets"/);assert.match(modal.innerHTML,/name="budget_rub"/);
+ assert.match(modal.innerHTML,/Пустое поле снимает прежний лимит/);
  const sent=[];controller.send=async text=>{sent.push(text);};let date='2026-10-29';
- const original=globalThis.FormData;globalThis.FormData=class {get(key){return {adults:'1',nights:'7',start_date:date}[key];}};
+ const original=globalThis.FormData;globalThis.FormData=class {get(key){return {adults:'1',nights:'7',start_date:date,children_ages:'',pets:'0',budget_rub:''}[key];}};
  t.after(()=>{globalThis.FormData=original;});
  const submit=()=>{const event=new Event('submit',{cancelable:true});Object.defineProperty(event,'target',{value:{id:'api-preferences-form',dataset:{transport:'flight'},reportValidity:()=>true}});document.dispatchEvent(event);};
  submit();assert.equal(sent.length,0);assert.equal(modal.open,true);assert.equal(modalStatus.textContent,'Выберите дату не ранее 30.10.2026.');
  date='2026-10-28';submit();assert.equal(sent.length,0);
  date='2026-10-30';submit();await until(()=>sent.length===1);assert.match(sent[0],/дата вылета 30\.10\.2026/);
+});
+
+test('The complete preference form edits or removes children, pets and budget with field errors and server-owned state',async t=>{
+ const {modal,modalStatus,controller,click,document}=await mountedSearch(t,{now:()=>new Date('2026-10-29T12:00:00Z')});
+ Object.assign(controller.state.brief,{adults:2,children_ages:[5,5],pets:2,budget_rub:150000});
+ const before=structuredClone(controller.state.brief);click('edit-preferences');
+ assert.match(modal.innerHTML,/<form id="api-preferences-form"[^>]*novalidate/,'Custom inline validation must receive native min/max failures too');
+ assert.match(modal.innerHTML,/Возраст каждого ребёнка на дату отправления/);
+ assert.match(modal.innerHTML,/name="children_ages"[^>]*value="5, 5"/);assert.match(modal.innerHTML,/name="pets"[^>]*value="2"/);
+ assert.match(modal.innerHTML,/name="budget_rub"[^>]*value="150000"/);
+ assert.match(modal.innerHTML,/Пустое поле означает поездку без детей/);assert.match(modal.innerHTML,/0 — без питомцев/);assert.match(modal.innerHTML,/Пустое поле снимает прежний лимит/);
+ const keys=['adults','nights','start_date','children_ages','pets','budget_rub'];
+ const inputs=Object.fromEntries(keys.map(name=>[name,{attributes:{},setAttribute(key,value){this.attributes[key]=value;},removeAttribute(key){delete this.attributes[key];},focus(){document.activeElement=this;}}]));
+ const errors=Object.fromEntries(keys.map(name=>[name,{textContent:''}]));
+ const form={id:'api-preferences-form',dataset:{transport:'flight'},reportValidity:()=>true,querySelector:selector=>{const name=selector.match(/^\[name="([^"]+)"\]$/)?.[1];return name?inputs[name]:errors[selector.replace('#api-preferences-','').replace(/-error$/,'')]||null;}};
+ const values={adults:'2',nights:'10',start_date:'2027-02-03',children_ages:'5, 18',pets:'2',budget_rub:'-200000'},sent=[];
+ controller.send=async text=>{sent.push(text);};
+ const original=globalThis.FormData;globalThis.FormData=class {get(key){return values[key];}};t.after(()=>{globalThis.FormData=original;});
+ const submit=()=>{const event=new Event('submit',{cancelable:true});Object.defineProperty(event,'target',{value:form});document.dispatchEvent(event);};
+ submit();assert.equal(sent.length,0);assert.equal(modal.open,true);
+ assert.equal(inputs.children_ages.attributes['aria-invalid'],'true');assert.match(errors.children_ages.textContent,/от 0 до 17 лет/);
+ assert.equal(inputs.budget_rub.attributes['aria-invalid'],'true');assert.match(errors.budget_rub.textContent,/больше нуля/);
+ assert.equal(document.activeElement,inputs.children_ages);assert.match(modalStatus.textContent,/от 0 до 17 лет/);
+ values.children_ages='0, 5, 5';values.budget_rub='200 000';submit();await until(()=>sent.length===1);
+ assert.equal(sent[0],'Изменить условия поиска: 2 взрослых, 10 ночей, дата вылета 03.02.2027. Дети: 0 лет, 5 лет, 5 лет. Питомцев: 2. Бюджет 200000 рублей на всю поездку за всех. Заново подобрать варианты, без оформления.');
+ assert.equal(inputs.children_ages.attributes['aria-invalid'],undefined);assert.equal(errors.children_ages.textContent,'');
+ assert.deepEqual(controller.state.brief,before,'The form sends a request rather than assigning local traveler counts or prices');
+ click('edit-preferences');values.children_ages='';values.pets='0';values.budget_rub='';submit();await until(()=>sent.length===2);
+ assert.match(sent[1],/Без детей\. Питомцев: 0\. Без питомцев\. Сними бюджет\./);
 });
 
 test('A new judge session renders three usable future-dated quick prompts',async t=>{
@@ -326,11 +379,11 @@ test('Stale search closes its composition dialog and quick correction sends expl
  click('edit-preferences');assert.equal(modal.open,true);assert.match(modal.innerHTML,/api-preferences-form/);
  assert.match(modal.innerHTML,/не начало оформления/);
  const sent=[];controller.send=async text=>{sent.push(text);};
- const original=globalThis.FormData;globalThis.FormData=class {get(key){return {adults:'2',nights:'10',start_date:'2027-02-03'}[key];}};
+ const original=globalThis.FormData;globalThis.FormData=class {get(key){return {adults:'2',nights:'10',start_date:'2027-02-03',children_ages:'',pets:'0',budget_rub:''}[key];}};
  t.after(()=>{globalThis.FormData=original;});
  const event=new Event('submit',{cancelable:true});Object.defineProperty(event,'target',{value:{id:'api-preferences-form',reportValidity:()=>true}});document.dispatchEvent(event);
  await until(()=>sent.length===1);
- assert.equal(sent[0],'Изменить условия поиска: 2 взрослых, 10 ночей, дата вылета 03.02.2027. Заново подобрать варианты, без оформления.');
+ assert.equal(sent[0],'Изменить условия поиска: 2 взрослых, 10 ночей, дата вылета 03.02.2027. Без детей. Питомцев: 0. Без питомцев. Сними бюджет. Заново подобрать варианты, без оформления.');
  assert.doesNotMatch(sent[0],/^Подтверждаю$/);assert.equal(modal.open,false);
  assert.match(root.innerHTML,/Уточняем условия поездки/);
 });
@@ -366,10 +419,21 @@ test('Rail cards show stations, class and local times; rail edits cannot resend 
  click('edit-preferences');assert.match(modal.innerHTML,/data-transport="train"/);assert.match(modal.innerHTML,/Дата отправления/);
  assert.doesNotMatch(modal.innerHTML,/name="nights"|Ночи|Дата вылета/);
  const sent=[],readFields=[];controller.send=async text=>{sent.push(text);};
- const original=globalThis.FormData;globalThis.FormData=class {get(key){readFields.push(key);return {adults:'3',start_date:'2027-02-03'}[key];}};
+ const original=globalThis.FormData;globalThis.FormData=class {get(key){readFields.push(key);return {adults:'3',start_date:'2027-02-03',children_ages:'',pets:'0',budget_rub:''}[key];}};
  t.after(()=>{globalThis.FormData=original;});
  const event=new Event('submit',{cancelable:true});Object.defineProperty(event,'target',{value:{id:'api-preferences-form',dataset:{transport:'train'},reportValidity:()=>true}});document.dispatchEvent(event);
  await until(()=>sent.length===1);
- assert.equal(sent[0],'Изменить условия поиска: 3 взрослых, дата отправления 03.02.2027. Заново подобрать варианты, без оформления.');
+ assert.equal(sent[0],'Изменить условия поиска: 3 взрослых, дата отправления 03.02.2027. Без детей. Питомцев: 0. Без питомцев. Сними бюджет. Заново подобрать варианты, без оформления.');
  assert.equal(readFields.includes('nights'),false);assert.ok(calls.every(call=>call.method==='GET'));
+});
+
+test('Rail cards distinguish synthetic or saved timetables from independently modeled prices',async t=>{
+ const {root,controller}=await mountedSearch(t);
+ const base={kind:'train',number:'DEMO-NIGHT',seat_class:'coupe',origin:{iata:'MOW',name:'Москва'},destination:{iata:'LED',name:'Петербург'},departure_at:'2027-01-29T23:55:00+03:00',arrival_at:'2027-01-30T07:55:00+03:00',price_rub:5044,is_synthetic:true};
+ Object.assign(controller.state,{stage:'trains_shown',optionKind:'trains',brief:{transport:'train',origin:'MOW',destination:'LED',adults:2,children_ages:[]},options:[{...base,index:1,schedule_source:'synthetic'},{...base,index:2,schedule_source:'yandex',schedule_cache_mode:'replay',schedule_recorded_at:'2026-10-29T08:00:00Z'}]});controller.notify();
+ assert.match(root.innerHTML,/Демонстрационное расписание/);assert.match(root.innerHTML,/Сохранённое расписание Яндекс Расписаний/);assert.match(root.innerHTML,/Снимок: 29\.10\.2026/);
+ assert.equal((root.innerHTML.match(/Модельная демо-цена/g)||[]).length,2);
+ assert.match(root.innerHTML,/Наличие мест и доступность класса не подтверждены/);
+ assert.match(root.innerHTML,/Актуальность расписания не подтверждена/);
+ assert.doesNotMatch(root.innerHTML,/Источник расписания в карточке не указан/);
 });

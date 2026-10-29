@@ -41,6 +41,9 @@
 #modal .demo-note,#modal .demo-data-note,#modal .api-flight small,#modal .risk-note,#modal .api-preferences-form small{font-size:12px;line-height:1.7}
 #modal .primary-button,#modal .secondary-button,#modal .action-button{font-size:12px;min-height:44px}
 #modal .close-modal{min-width:44px;min-height:44px}
+#modal .api-preferences-form [aria-invalid="true"]{border-color:#a43131;outline-color:#a43131}
+#modal .api-preferences-form .api-field-error{color:#a43131;font-size:12px;line-height:1.6}
+.api-sr-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 
 /* Keep prices, provenance and actions readable on a narrow screen. */
 @media(max-width:650px){

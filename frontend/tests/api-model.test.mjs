@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ApiTripController,createApiModel,applyAgentEvent,visibleText} from '../dist/api-model.js';
+import {ApiTripController,createApiModel,applyAgentEvent,visibleText,createApiAnnouncements} from '../dist/api-model.js';
 
 const sid='private-session_01';
 const packageOption={index:1,label:'Вариант 1',can_confirm:true,total_rub:83234,known_total_rub:83234,price_scope:'listed_components',hotel:{hotel_id:'osm:way/123',name:'Sky Business Hotel',check_in:'2026-11-18',check_out:'2026-11-25',total_price_rub:23338},outbound:{departure_at:'2026-11-18T10:00:00+03:00'},inbound:{departure_at:'2026-11-25T10:00:00+03:00'},flights:[{price_rub:22502,price_source:{provider:'aviasales_data_api',seat_price_rub:11251,cache_hit:true}}],why:['Запись Aviasales'],risks:['Наличие мест не подтверждено']};
@@ -8,6 +8,79 @@ const cart={cart_id:'CART-private_01',session_id:sid,status:'awaiting_travelers'
 const travelers=[{full_name:'DEMO ONE',birth_date:'1990-01-01'},{full_name:'DEMO TWO',birth_date:'1991-01-01'}];
 const order={order_id:'DEMO-private_01',cart_id:cart.cart_id,session_id:sid,status:'paid_demo',is_simulated:true,package:packageOption,travelers,created_at:'2026-10-28T12:00:00Z',voucher_path:'/api/checkout/orders/DEMO-private_01/voucher',calendar_path:'/api/checkout/orders/DEMO-private_01/calendar.ics'};
 const eventResponse=events=>new Response(events.map(([type,data])=>'event: '+type+'\ndata: '+JSON.stringify(data)+'\n\n').join(''),{headers:{'Content-Type':'text/event-stream'}});
+
+test('Live announcements ignore restored history and streaming tokens; known phases and completion are spoken once',()=>{
+ const announce=createApiAnnouncements(),state=createApiModel();
+ state.messages=[{role:'assistant',text:'A previous answer'}];assert.equal(announce(state),null);
+ Object.assign(state,{busy:true,pendingRequest:{id:'turn-one'},statusText:'Готовим поездку'});
+ assert.equal(announce(state),'Готовим ответ.');
+ for(let index=0;index<20;index++){state.messages.at(-1).text+=' token';assert.equal(announce(state),null);}
+ state.statusText='Собираю поездку: рейсы, отели, трансферы';assert.equal(announce(state),'Ищем рейсы, отели и трансферы.');
+ state.statusText='Готовлю ответ';assert.equal(announce(state),null,'An earlier phase is not spoken twice within one attempt');
+ Object.assign(state,{pendingRequest:null,syncNeeded:true});assert.equal(announce(state),null,'done clears pending while the same chat is still busy; this is not checkout');
+ state.busy=false;assert.equal(announce(state),'Ответ получен. Обновляем состояние поездки.');assert.equal(announce(state),null);
+ Object.assign(state,{syncNeeded:false,options:[{},{},{}],stage:'packages_shown'});
+ assert.equal(announce(state),'Ответ готов. Доступно вариантов: 3. Результаты находятся после переписки.');
+ for(let index=0;index<5;index++)assert.equal(announce(state),null);
+});
+
+test('Interrupted live requests and retries have distinct safe feedback without a duplicate terminal announcement',()=>{
+ const announce=createApiAnnouncements(),state=createApiModel();announce(state);
+ Object.assign(state,{busy:true,pendingRequest:{id:'repeatable-turn'},statusText:'Разбираю запрос'});assert.match(announce(state),/Разбираем/);
+ Object.assign(state,{busy:false,connection:'offline'});assert.match(announce(state),/Проверьте связь/);assert.equal(announce(state),null);
+ state.connection='online';assert.match(announce(state),/Можно повторить/);assert.equal(announce(state),null);
+ Object.assign(state,{busy:true,statusText:'Восстанавливаем ответ'});assert.match(announce(state),/Восстанавливаем/);
+ Object.assign(state,{busy:false,pendingRequest:null,question:{text:'Private question text'}});assert.match(announce(state),/уточняющий вопрос/);
+ assert.equal(announce(state),null);state.version++;assert.equal(announce(state),null);
+});
+
+test('Live announcements never interpolate status, message, error, hotel, session or order data',()=>{
+ const announce=createApiAnnouncements(),state=createApiModel(),secret='sensitive-payload-do-not-announce';announce(state);
+ Object.assign(state,{busy:true,pendingRequest:{id:secret,message:secret},statusText:secret,sessionId:secret,messages:[{role:'assistant',text:secret}]});
+ const output=[announce(state)];state.statusText=secret+' again';output.push(announce(state));
+ Object.assign(state,{busy:false,pendingRequest:null,error:secret});output.push(announce(state));
+ state.error=null;output.push(announce(state));
+ state.sessionLost=true;output.push(announce(state));
+ assert.doesNotMatch(output.filter(Boolean).join(' '),new RegExp(secret));assert.equal(output.at(3),null,'A failed action is not later re-announced as successful');
+});
+
+test('Demo checkout announcements require server confirmation, distinguish decline, and never imply a real payment',()=>{
+ const announce=createApiAnnouncements(),state=createApiModel();announce(state);
+ state.busy=true;assert.match(announce(state),/демонстрационного оформления/);assert.equal(announce(state),null);
+ Object.assign(state,{busy:false,cart:{status:'payment_declined'}});assert.match(announce(state),/тестовый отказ/);assert.equal(announce(state),null);
+ state.busy=true;assert.match(announce(state),/Проверяем/);
+ Object.assign(state,{busy:false,order:{status:'paid_demo',is_simulated:true,order_id:'private-order'}});
+ assert.equal(announce(state),'Демонстрационное оформление подтверждено сервером. Реального списания нет; документы доступны.');assert.equal(announce(state),null);
+});
+
+test('Live recovery messages are deduplicated and an unchanged error cannot cause transcript announcements',()=>{
+ const announce=createApiAnnouncements(),state=createApiModel();announce(state);
+ for(const [patch,pattern] of [[{connection:'auth'},/вход на сайт/],[{connection:'offline'},/Нет связи/],[{connection:'online',sessionLost:true},/сессия завершилась/]]){
+  Object.assign(state,patch);assert.match(announce(state),pattern);for(let count=0;count<3;count++)assert.equal(announce(state),null);
+ }
+});
+
+test('An ordinary chat answer never announces an earlier demo approval or decline as a new payment result',()=>{
+ for(const paymentState of [{order:{status:'paid_demo',is_simulated:true}},{cart:{status:'payment_declined'}}]){
+  const announce=createApiAnnouncements(),state={...createApiModel(),...paymentState};announce(state);
+  Object.assign(state,{busy:true,pendingRequest:{id:'chat-after-checkout'},statusText:'Разбираю запрос'});announce(state);
+  Object.assign(state,{busy:false,pendingRequest:null});const text=announce(state);
+  assert.equal(text,'Ответ готов. Новое сообщение находится в чате.');assert.doesNotMatch(text,/оплат|оформление подтверждено/);
+ }
+});
+
+test('A browser storage failure is announced once per outage without suppressing phases or completion',()=>{
+ const announce=createApiAnnouncements(),state=createApiModel();announce(state);
+ Object.assign(state,{busy:true,pendingRequest:{id:'storage-turn'},statusText:'Готовим поездку',storageWarning:'private storage error'});
+ const first=announce(state);assert.match(first,/Не удалось сохранить переписку/);assert.match(first,/Готовим ответ/);assert.doesNotMatch(first,/private/);
+ for(let count=0;count<20;count++){state.storageWarning='different private error '+count;assert.equal(announce(state),null);}
+ state.statusText='Разбираю запрос';const phase=announce(state);assert.match(phase,/Разбираем/);assert.doesNotMatch(phase,/сохранить переписку/);
+ Object.assign(state,{busy:false,pendingRequest:null});assert.equal(announce(state),'Ответ готов. Новое сообщение находится в чате.');assert.equal(announce(state),null);
+ state.storageWarning=null;assert.equal(announce(state),null);
+ state.storageWarning='a new private storage error';assert.equal(announce(state),'Не удалось сохранить переписку в браузере. Пока вкладка открыта, сообщения остаются на странице.');assert.equal(announce(state),null);
+ const initial=createApiAnnouncements();assert.match(initial({...createApiModel(),storageWarning:'private'}),/Не удалось сохранить переписку/,'A warning on the first idle frame must also be accessible');
+});
+
 function checkoutController(payment,options={}){
  const calls=[];
  const controller=new ApiTripController({...options,onChange:()=>{},fetchImpl:async(path,init={})=>{

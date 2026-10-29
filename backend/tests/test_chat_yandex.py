@@ -5,6 +5,7 @@ The hand-written timetable fixture is not a captured live provider response.
 
 import base64
 import json
+from datetime import datetime
 from pathlib import Path
 
 import httpx
@@ -106,6 +107,9 @@ async def test_http_chat_records_schedule_and_replays_without_key_or_network(tmp
         assert rows[0]["departure_at"] == "2030-11-18T23:55:00+03:00"
         assert rows[0]["arrival_at"] == "2030-11-19T07:55:00+03:00"
         assert rows[0]["seat_class"] == "coupe" and rows[0]["is_synthetic"] is True
+        assert rows[0]["schedule_source"] == "yandex" and rows[0]["schedule_cache_mode"] == "record"
+        assert rows[0]["schedule_recorded_at"] is not None
+        assert state["options"]["items"] == rows
         args = next(event["data"]["arguments"] for event in events if event["type"] == "tool_call")
         from app.contracts.tools import TrainSearch
 
@@ -117,6 +121,8 @@ async def test_http_chat_records_schedule_and_replays_without_key_or_network(tmp
         assert not metadata["class_availability_confirmed"]
         answer = "".join(event["data"]["text"] for event in events if event["type"] == "delta")
         assert "стоимость модельная" in answer and "Наличие мест и бронирование не проверены" in answer
+        assert "Расписание Яндекс Расписаний; актуальность не подтверждена" in answer
+        assert "Сохранённое расписание" not in answer
         await cache.aclose()
 
     recorded = list(tmp_path.glob("*.json"))
@@ -126,6 +132,9 @@ async def test_http_chat_records_schedule_and_replays_without_key_or_network(tmp
         decoded = base64.b64decode(json.loads(raw)["response"]["body_base64"]).decode("utf-8")
         assert CANARY not in raw and CANARY not in decoded
         assert "[REDACTED]" in decoded
+        assert datetime.fromisoformat(rows[0]["schedule_recorded_at"]) == datetime.fromisoformat(
+            json.loads(raw)["recorded_at"]
+        )
     assert CANARY not in text and CANARY not in caplog.text
 
     def forbidden(request):
@@ -133,8 +142,19 @@ async def test_http_chat_records_schedule_and_replays_without_key_or_network(tmp
 
     async with httpx.AsyncClient(transport=httpx.MockTransport(forbidden)) as source:
         cache = CachedHttpClient(mode="replay", cache_dir=tmp_path, client=source)
-        replay_text, replay_events, _ = chat(settings(tmp_path, mode="replay", key=None), monkeypatch, cache=cache)
-        assert trains(replay_events) == rows
+        replay_text, replay_events, replay_state = chat(
+            settings(tmp_path, mode="replay", key=None), monkeypatch, cache=cache
+        )
+        replay_rows = trains(replay_events)
+        assert replay_state["options"]["items"] == replay_rows
+        assert all(row["schedule_cache_mode"] == "replay" for row in replay_rows)
+        # The same recorded schedule/fare/identity and recording time survive;
+        # the retrieval mode alone must honestly change from record to replay.
+        assert [{key: value for key, value in row.items() if key != "schedule_cache_mode"} for row in replay_rows] == [
+            {key: value for key, value in row.items() if key != "schedule_cache_mode"} for row in rows
+        ]
+        replay_answer = "".join(event["data"]["text"] for event in replay_events if event["type"] == "delta")
+        assert "Сохранённое расписание Яндекс Расписаний; актуальность не подтверждена" in replay_answer
         assert result_metadata(replay_events)["cache_mode"] == "replay"
         assert result_metadata(replay_events)["source"] == "yandex_timetable"
         assert CANARY not in replay_text

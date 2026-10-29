@@ -511,6 +511,9 @@
           "timezone": "Europe/Moscow"
         },
         "price_rub": 7000,
+        "schedule_cache_mode": null,
+        "schedule_recorded_at": null,
+        "schedule_source": "synthetic",
         "seat_class": "coupe"
       }
     ]
