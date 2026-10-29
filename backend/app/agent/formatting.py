@@ -27,7 +27,7 @@ def quick_replies(field: str, today: date) -> list[str]:
     if field == "origin":
         return ["Из Москвы", "Из Санкт-Петербурга"]
     if field == "children_ages":
-        return ["До 2 лет", "3 года", "7 лет", "12 лет"]
+        return ["1 год", "3 года", "7 лет", "12 лет"]
     return []
 
 

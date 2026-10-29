@@ -224,7 +224,11 @@ class TravelAgent:
     def _commit_brief(self, s: Session, applied: ApplyResult, emit: Emit, *, search: bool = True) -> None:
         if applied.changes or applied.sources_changed:
             s.brief, s.sources = applied.brief, applied.sources
-            s.version += 1
+            # The revision protects the searched package and checkout snapshot.
+            # Reaffirming an identical value (source default -> explicit), or
+            # changing narrative-only mood, must not expire an unchanged cart.
+            if applied.search_changed:
+                s.version += 1
             if search and applied.search_changed:
                 s.rebuild_before = s.packages[0] if s.packages else s.rebuild_before
                 s.stale = bool(s.packages or s.destinations or s.trains or s.rebuild_before)

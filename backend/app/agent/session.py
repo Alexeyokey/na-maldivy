@@ -43,7 +43,7 @@ class Session:
     stale: bool = False
     selected: int | None = None
     booking: dict[str, Any] | None = None
-    version: int = 0  # растёт при каждом изменении брифа, для диффа «было → стало» (R4)
+    version: int = 0  # ревизия поисковых критериев; источник того же значения её не меняет
     history: list[Message] = field(default_factory=list)
 
     def history_tail(self) -> list[Message]:

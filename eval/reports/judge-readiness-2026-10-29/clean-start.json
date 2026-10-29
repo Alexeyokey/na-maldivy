@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-10-28T22:46:05.238658+00:00",
+  "source_commit": "c4f6b3cc2b545c78e463bb33c0d4c253f052cef8",
+  "source_branch": "codex/judge-review-readiness",
+  "source": "fresh GitHub clone",
+  "scope": "default_docker_package_clean_clone",
+  "status": "passed",
+  "registry_client_has_no_credentials": true,
+  "application_env_copied_from_example": true,
+  "owner_env_artifacts_host_dependencies_absent": true,
+  "host": {
+    "os": "Darwin",
+    "architecture": "arm64",
+    "cpu": "Apple M3",
+    "memory_bytes": 17179869184
+  },
+  "docker": "29.8.2/29.8.2",
+  "compose": "5.5.1",
+  "build": {
+    "no_cache": true,
+    "pull": true,
+    "empty_engine_image_cache": false,
+    "seconds": 6.684
+  },
+  "handoff_certified": false,
+  "submission_tag_created": false,
+  "public_video_provided": false,
+  "external_model_quality_verified": false,
+  "startup_command": "docker compose up --build",
+  "healthy_after_seconds": 8.16,
+  "build_and_start_seconds": 14.844,
+  "separate_runtime_egress_proof": {
+    "status": "passed",
+    "containers_connected_only_to_internal_network": true,
+    "default_compose_has_internal_network": false,
+    "host_published_port_accessible_in_isolated_test": false,
+    "standard_network_restored_after_test": true,
+    "report": "three-destinations-isolated-network.json"
+  },
+  "runtime": {
+    "agent": {
+      "image_id": "sha256:dd1d440434eca00d3ba80382875eaa573cb153c580cb4b2062b6244df5337fd6",
+      "os": "linux",
+      "architecture": "amd64",
+      "user": "1000:1000",
+      "image_size_bytes": 281329119,
+      "health": "healthy",
+      "port_bindings": {}
+    },
+    "app": {
+      "image_id": "sha256:4f36558e3254a90f3720898ac48ec90999d2290fb623a040b925d0087d9ee892",
+      "os": "linux",
+      "architecture": "amd64",
+      "user": "1000:1000",
+      "image_size_bytes": 239562115,
+      "health": "healthy",
+      "port_bindings": {
+        "8080/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "8080"
+          }
+        ]
+      }
+    }
+  },
+  "integrated_browser_status": "passed_for_AYT_checkout_restart_and_transport_changes",
+  "backend_runtime_probe": {
+    "uid": 1000,
+    "provider_keys_present": false,
+    "modes": {
+      "LLM_PROVIDER": "fake",
+      "TOOLS_MODE": "real",
+      "FLIGHTS_MODE": "demo",
+      "CACHE_MODE": "replay",
+      "TRAINS_MODE": "synthetic"
+    },
+    "development_modules_present": false
+  },
+  "data_tree_sha": "a113f6df8fd9c2d49f9f24e06dc985d3c99d069e",
+  "integrated_browser_report": "local-ui.json"
+}

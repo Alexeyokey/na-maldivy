@@ -188,6 +188,54 @@ def relative(text: str, brief: TripBrief) -> dict[str, Any]:
     return data
 
 
+def _child_ages(text: str, brief: TripBrief | None) -> list[int]:
+    """Read each child's age once, preserving siblings with the same age.
+
+    A shared unit in ``5 и 8 лет`` belongs to both numbers.  Longer matches
+    reserve their span so the final ``8 лет`` cannot become a third child.
+    Ages are meaningful in a family request or its age follow-up; years and
+    durations in an unrelated message must not add a child to the trip.
+    """
+    family = "child" in detect_needs(text) or bool(brief and "child" in brief.needs)
+    if not family:
+        return []
+    matches: list[tuple[int, int, list[int]]] = []
+
+    def add(match: re.Match[str], ages: list[int]) -> None:
+        if any(match.start() < end and start < match.end() for start, end, _ in matches):
+            return
+        # ``через 5 лет`` and ``на 5 лет`` describe time, not an exact age.
+        prefix = text[max(0, match.start() - 24) : match.start()]
+        if re.search(
+            r"\b(?:через|спустя|на|до|от|старше|младше|мне|нам|я|взрослому|взрослым|взрослых|взрослые|"
+            r"мужу|жене|маме|папе|родителям)\s*[,:(]?\s*$",
+            prefix,
+        ):
+            # Reserve an adult/duration list too, so its final age cannot be
+            # re-read as an isolated child by the next, shorter pattern.
+            matches.append((match.start(), match.end(), []))
+            return
+        # Keep invalid exact ages together: TripBrief rejects the whole field
+        # rather than silently pricing only the valid siblings in a list.
+        if ages:
+            matches.append((match.start(), match.end(), ages))
+
+    # The count is explicit; do not invent a second age from a lone age.
+    counted = r"\b(\d{1,2}|[а-я]+)\s+(?:дет(?:ей|и|ьми)|ребен(?:ок|ка|ку|ком))\s+по\s+(\d{1,2})\s*(?:лет|года|год)\b"
+    for match in re.finditer(counted, text):
+        count = _number(match.group(1))
+        if count and count > 0:
+            # Nine entries are enough for TripBrief's max-eight validation.
+            add(match, [int(match.group(2))] * min(count, 9))
+    listed = r"(?<!\d)\b(\d{1,2}(?:\s*(?:,|\bи\b)\s*\d{1,2})+)\s*(?:лет|года|год)\b"
+    for match in re.finditer(listed, text):
+        add(match, [int(age) for age in re.findall(r"\d{1,2}", match.group(1))])
+    for pattern in (r"(?<!\d)\b(\d{1,2})\s*(?:лет|года|год)\b", r"(?<!\d)\b(\d{1,2})-?летн"):
+        for match in re.finditer(pattern, text):
+            add(match, [int(match.group(1))])
+    return [age for _, _, ages in sorted(matches) for age in ages]
+
+
 def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatch:
     """Разбирает типовые фразы. Не угадывает: чего нет в тексте, того нет и в патче.
 
@@ -216,6 +264,26 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
     rail = data.get("transport", brief.transport if brief else "flight") == "train"
 
     # Откуда и куда: «из Москвы», «в Анталью», «на Мальдивы».
+    # A bare city answers the outstanding origin question.  Only exact names
+    # qualify: explicit ``в Москву`` / ``хочу в Питер`` still change destination.
+    if brief and brief.origin is None and (brief.transport == "train" or brief.month is not None):
+        bare_origins = {
+            "москва": "MOW",
+            "moscow": "MOW",
+            "mow": "MOW",
+            "санкт-петербург": "LED",
+            "санкт петербург": "LED",
+            "петербург": "LED",
+            "питер": "LED",
+            "спб": "LED",
+            "st petersburg": "LED",
+            "led": "LED",
+            "шереметьево": "SVO",
+            "аэропорт шереметьево": "SVO",
+            "svo": "SVO",
+        }
+        if origin := bare_origins.get(t.strip(" \t\r\n.!?")):
+            data["origin"] = origin
     for match in re.finditer(r"\b(из|с|от)\s+([а-яa-z-]+)", t):
         code = to_iata(match.group(2))
         if code in ORIGINS:
@@ -245,7 +313,8 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
         infer("transport", "flight")
     rail = data.get("transport", brief.transport if brief else "flight") == "train"
     if rail and (data.get("origin") == "SVO" or brief and brief.origin == "SVO" and "origin" not in data):
-        infer("origin", "MOW")
+        data["origin"] = "MOW"
+        inferred.append("origin")
 
     # Когда: «18 ноября», «в ноябре».
     for stem, month in _MONTHS:
@@ -323,14 +392,17 @@ def extract(text: str, today: date, brief: TripBrief | None = None) -> BriefPatc
             data["adults"] = n
     elif re.search(r"втроем", t):
         infer("adults", 3)
-    elif re.search(r"вдвоем|\bдвое\b|на двоих|с женой|с мужем|с девушкой|с парнем|с подругой|с другом|с супруг", t):
+    elif re.search(
+        r"вдвоем|\bдвое\b(?!\s+(?:дет|ребен))|на двоих(?!\s+(?:дет|ребен))|"
+        r"с женой|с мужем|с девушкой|с парнем|с подругой|с другом|с супруг",
+        t,
+    ):
         infer("adults", 2)
     if re.search(r"\b(?:один|одна|сам|сама)\b", t) and re.search(r"еду|поеду|полечу|лечу|теперь|только|хочу", t):
         data["adults"] = 1
-    ages = [int(a) for a in re.findall(r"\b(\d{1,2})\s*(?:лет|года|год)\b", t) if int(a) <= 17]
-    ages += [int(a) for a in re.findall(r"\b(\d{1,2})-?летн", t) if int(a) <= 17]
+    ages = _child_ages(t, brief)
     if ages:
-        data["children_ages"] = sorted(set(ages), key=ages.index)
+        data["children_ages"] = ages
 
     needs = detect_needs(text)
     removed: list[str] = []

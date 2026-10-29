@@ -96,6 +96,16 @@ async function mountedSearch(t){
  return {root,modal,controller,calls,click,document};
 }
 
+test('A new judge session renders three usable future-dated quick prompts',async t=>{
+ const {root,controller,calls}=await mountedSearch(t);
+ controller.reset();
+ const prompts=[...root.innerHTML.matchAll(/data-api-prompt="([^"]+)"/g)].map(row=>row[1]);
+ assert.equal(prompts.length,3);
+ assert.ok(prompts.every(text=>/Из Москвы в .+ \d{2}\.\d{2}\.\d{4} на неделю вдвоём/.test(text)));
+ assert.doesNotMatch(root.innerHTML,/\.jpg|Unsplash/);
+ assert.ok(calls.every(row=>row.method==='GET'),'Rendering quick prompts must not send a chat request');
+});
+
 test('Mounted search shows unconfirmed sources, server-only price rows and accepts assumptions without checkout or POST',async t=>{
  const {root,controller,calls,click}=await mountedSearch(t);
  assert.match(root.innerHTML,/Предположения для расчёта/);assert.match(root.innerHTML,/Взрослые: 1 взрослый/);
@@ -134,6 +144,20 @@ test('Mounted comparison is local, permits up to three current options and disap
  assert.equal(controller.state.options,oldOptions,'Presentation itself does not mutate server options');
  assert.doesNotMatch(root.innerHTML,/Server Hotel|Obsolete evidence|<table>/);assert.match(root.innerHTML,/Предыдущие предложения больше не показываются как актуальные/);
  assert.doesNotMatch(root.innerHTML,/data-api-action="choose"/);
+});
+
+test('The hotel explanation button for one adult requests reviews without inventing a family segment',async t=>{
+ const {root,controller,click}=await mountedSearch(t);
+ Object.assign(controller.state.brief,{adults:1,children_ages:[],pets:0});controller.notify();
+ assert.match(root.innerHTML,/data-api-action="profile" data-index="2"/);
+ const brief=structuredClone(controller.state.brief),sent=[];
+ controller.send=async text=>{sent.push(text);};
+ click('profile',{index:'2'});
+ await until(()=>sent.length===1);
+ assert.equal(sent[0],'Почему вариант 2 подходит? Что говорят отзывы?');
+ assert.doesNotMatch(sent[0],/семь|семе|дет|family/i,'The backend must choose the review segment from the actual brief');
+ assert.deepEqual(controller.state.brief,brief);
+ assert.equal(controller.state.selected,null);assert.equal(controller.state.cart,null);
 });
 
 test('Stale search closes its composition dialog and quick correction sends explicit conditions rather than booking confirmation',async t=>{

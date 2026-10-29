@@ -1,4 +1,8 @@
 .git
+.codex
+.agents
+.aws
+.ssh
 .env
 .env.*
 .runtime

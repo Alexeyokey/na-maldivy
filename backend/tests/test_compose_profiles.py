@@ -1,8 +1,9 @@
-"""Verify legacy launch contracts against the submission app:8080 stack."""
+"""Verify the standard smoke and legacy launch contracts against app:8080."""
 
 import hashlib
 import json
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -108,9 +109,34 @@ def command_stubs(tmp_path: Path) -> tuple[dict[str, str], Path]:
     log = tmp_path / "commands.jsonl"
     runner = tools / "record.py"
     runner.write_text(
-        "import json, os, sys\n"
-        "with open(os.environ['COMPOSE_CONTRACT_LOG'], 'a') as log:\n"
+        "import json, os, sys\nfrom pathlib import Path\n"
+        f"with open({str(log)!r}, 'a') as log:\n"
         "    log.write(json.dumps(sys.argv[1:]) + '\\n')\n"
+        f"with open({str(log) + '.meta'!r}, 'a') as meta:\n"
+        "    here = Path.cwd()\n"
+        "    safe_context = here.name.startswith('na-maldivy-check.') and not (here / '.git').exists()\n"
+        "    example = here / '.env.example'\n"
+        "    env_file = here / '.env'\n"
+        "    record = {'cwd': str(here), 'environment': {key: os.environ.get(key) for key in "
+        "['APP_PORT','TOOLS_MODE','FLIGHTS_MODE','TRAINS_MODE','CACHE_MODE','LLM_PROVIDER']}, "
+        "'credentials_empty': all(not os.environ.get(key) for key in "
+        "['LLM_API_KEY','AVIASALES_API_TOKEN','YANDEX_RASP_API_KEY','CODEX_LOCAL_TOKEN','OPENAI_API_KEY']), "
+        "'compose_file_override_absent': not os.environ.get('COMPOSE_FILE'), "
+        "'git_absent': not (here / '.git').exists(), "
+        "'local_files_absent': not (here / 'local-only.txt').exists() "
+        "and not (here / 'artifacts/private.txt').exists(), "
+        "'example_matches_env': safe_context and example.is_file() and env_file.is_file() "
+        "and example.read_bytes() == env_file.read_bytes(), "
+        "'working_marker': (here / 'working-marker.txt').read_text() "
+        "if (here / 'working-marker.txt').is_file() else None}\n"
+        "    meta.write(json.dumps(record) + '\\n')\n"
+        f"control = Path({str(tools / 'behavior.json')!r})\n"
+        "behavior = json.loads(control.read_text()) if control.exists() else {}\n"
+        "if 'check_running_three_destinations.py' in ' '.join(sys.argv):\n"
+        "    action = 'resume' if '--resume' in sys.argv else 'acceptance'\n"
+        "    if behavior.get('fail') == action: sys.exit(71)\n"
+        "    print(json.dumps({'status':'passed','scope':'synthetic-command-contract'}))\n"
+        "if behavior.get('fail') == 'build' and 'up' in sys.argv and '--build' in sys.argv: sys.exit(72)\n"
         "if sys.argv[1] == 'curl':\n"
         "    print('event: done\\ndata: {}\\n' if any('/api/chat' in v for v in sys.argv) else '{}')\n"
         "if sys.argv[1:4] == ['docker', 'image', 'save'] and os.environ.get('COMPOSE_CONTRACT_STOP_SAVE'):\n"
@@ -118,7 +144,7 @@ def command_stubs(tmp_path: Path) -> tuple[dict[str, str], Path]:
     )
     for name in ["docker", "curl"]:
         executable = tools / name
-        executable.write_text(f'#!/bin/sh\nexec "$COMPOSE_CONTRACT_PYTHON" "$COMPOSE_CONTRACT_RUNNER" {name} "$@"\n')
+        executable.write_text(f'#!/bin/sh\nexec {shlex.quote(sys.executable)} {shlex.quote(str(runner))} {name} "$@"\n')
         executable.chmod(0o755)
     return {
         **os.environ,
@@ -170,17 +196,124 @@ def test_offline_launcher_never_builds_or_downloads_images(tmp_path: Path) -> No
     assert "--wait" in launch
 
 
-def test_smoke_starts_only_agent_and_gateway_without_publishing_the_root_app(tmp_path: Path) -> None:
+def smoke_checkout(tmp_path: Path) -> Path:
+    """A tiny Git index is enough to verify copying working files without secrets."""
+    checkout = tmp_path / "checkout with spaces"
+    (checkout / "scripts").mkdir(parents=True)
+    (checkout / "artifacts").mkdir()
+    shutil.copy(ROOT / "scripts/check.sh", checkout / "scripts/check.sh")
+    shutil.copy(ROOT / "docker-compose.yml", checkout / "docker-compose.yml")
+    (checkout / ".env.example").write_text("TOOLS_MODE=real\nLLM_API_KEY=\nAPP_PORT=8080\n")
+    (checkout / ".gitignore").write_text(".env\nlocal-only.txt\nartifacts/\n")
+    (checkout / "working-marker.txt").write_text("indexed version\n")
+    subprocess.run(["git", "init", "--quiet", str(checkout)], check=True, capture_output=True)
+    subprocess.run(["git", "add", "."], cwd=checkout, check=True, capture_output=True)
+    (checkout / "working-marker.txt").write_text("modified working contents\n")
+    (checkout / ".env").write_text("LLM_API_KEY=PRIVATE-SMOKE-CANARY\nAPP_PORT=7777\n")
+    (checkout / "local-only.txt").write_text("PRIVATE-SMOKE-CANARY\n")
+    (checkout / "artifacts/private.txt").write_text("PRIVATE-SMOKE-CANARY\n")
+    # Even accidentally tracked private paths must not enter the build context.
+    subprocess.run(["git", "add", "-f", ".env", "artifacts/private.txt"], cwd=checkout, check=True, capture_output=True)
+    return checkout
+
+
+@pytest.mark.parametrize("port", [None, "28180"])
+def test_smoke_uses_clean_standard_app_and_agent_then_checks_restart_and_cleans_only_its_project(
+    tmp_path: Path, port: str | None
+) -> None:
     env, log = command_stubs(tmp_path)
-    result = subprocess.run(["bash", "scripts/check.sh", "smoke"], cwd=ROOT, env=env, capture_output=True, timeout=20)
+    checkout = smoke_checkout(tmp_path)
+    env.update(
+        LLM_PROVIDER="openai",
+        TOOLS_MODE="stub",
+        FLIGHTS_MODE="aviasales",
+        CACHE_MODE="live",
+        TRAINS_MODE="yandex",
+        LLM_API_KEY="PRIVATE-SMOKE-CANARY",
+        AVIASALES_API_TOKEN="PRIVATE-SMOKE-CANARY",
+        YANDEX_RASP_API_KEY="PRIVATE-SMOKE-CANARY",
+        CODEX_LOCAL_TOKEN="PRIVATE-SMOKE-CANARY",
+        OPENAI_API_KEY="PRIVATE-SMOKE-CANARY",
+        COMPOSE_FILE="private-compose.yml",
+        APP_PORT="7777",
+    )
+    if port:
+        env["NA_MALDIVY_CHECK_PORT"] = port
+    result = subprocess.run(
+        ["bash", "scripts/check.sh", "smoke"], cwd=checkout, env=env, capture_output=True, timeout=20
+    )
     assert result.returncode == 0
     calls = commands_from(log)
     start = next(call for call in calls if "up" in call)
-    assert start[-2:] == ["agent", "gateway"]
-    assert "app" not in start and "web" not in start
-    assert start[start.index("--env-file") + 1] == "/dev/null"
-    assert start[start.index("-p") + 1] == "na-maldivy-check"
-    assert any("localhost:18000/health" in call for call in calls)
+    project = start[start.index("-p") + 1]
+    clean = Path(start[start.index("-f") + 1]).parent
+    assert start[-2:] == ["app", "agent"] and "--build" in start and "--wait" in start
+    assert project.startswith("na-maldivy-check-") and project.removeprefix("na-maldivy-check-").isdigit()
+    assert clean != checkout and not clean.exists()
+    for call in calls:
+        assert call[:2] == ["docker", "compose"]
+        assert call[call.index("-p") + 1] == project
+        assert call.count("-f") == 1 and call[call.index("-f") + 1] == str(clean / "docker-compose.yml")
+        assert call[call.index("--env-file") + 1] == str(clean / ".env")
+        assert "gateway" not in call and "docker-compose.demo.yml" not in " ".join(call)
+    checks = [call for call in calls if "/app/scripts/check_running_three_destinations.py" in call]
+    assert len(checks) == 2 and "--resume" not in checks[0] and "--resume" in checks[1]
+    assert all(call[call.index("--base-url") + 1] == "http://app:8080" for call in checks)
+    assert all(call[call.index("--context") + 1] == "/state/check-private.json" for call in checks)
+    restart = next(call for call in calls if "restart" in call)
+    assert restart[-1] == "agent" and calls.index(checks[0]) < calls.index(restart) < calls.index(checks[1])
+    wait = next(call for call in calls if "up" in call and "--no-build" in call)
+    assert "--wait" in wait and wait[-2:] == ["app", "agent"]
+    assert calls[-1][-3:] == ["down", "--volumes", "--remove-orphans"]
+    metadata = [json.loads(line) for line in Path(str(log) + ".meta").read_text().splitlines()]
+    for row in metadata:
+        assert row["cwd"] == str(clean)
+        assert row["credentials_empty"] and row["compose_file_override_absent"]
+        assert row["git_absent"] and row["local_files_absent"] and row["example_matches_env"]
+        assert row["working_marker"] == "modified working contents\n"
+        assert row["environment"] == {
+            "APP_PORT": port or "18080",
+            "TOOLS_MODE": "real",
+            "FLIGHTS_MODE": "demo",
+            "TRAINS_MODE": "synthetic",
+            "CACHE_MODE": "replay",
+            "LLM_PROVIDER": "fake",
+        }
+    assert b"PRIVATE-SMOKE-CANARY" not in result.stdout + result.stderr
+    assert (checkout / ".env").read_text() == "LLM_API_KEY=PRIVATE-SMOKE-CANARY\nAPP_PORT=7777\n"
+
+
+@pytest.mark.parametrize("failure", ["build", "acceptance", "resume"])
+def test_smoke_failure_preserves_the_failure_and_shows_safe_diagnostics_then_removes_test_resources(
+    tmp_path: Path, failure: str
+) -> None:
+    env, log = command_stubs(tmp_path)
+    checkout = smoke_checkout(tmp_path)
+    (tmp_path / "tools/behavior.json").write_text(json.dumps({"fail": failure}))
+    result = subprocess.run(
+        ["bash", "scripts/check.sh", "smoke"], cwd=checkout, env=env, capture_output=True, timeout=20
+    )
+    assert result.returncode == (72 if failure == "build" else 71)
+    calls = commands_from(log)
+    assert any("logs" in call for call in calls)
+    assert any(call[-3:] == ["agent", "cat", "/state/check-report.json"] for call in calls)
+    assert calls[-1][-3:] == ["down", "--volumes", "--remove-orphans"]
+    clean = Path(calls[0][calls[0].index("-f") + 1]).parent
+    assert not clean.exists()
+    assert b"PRIVATE-SMOKE-CANARY" not in result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("port", ["invalid", "0", "65536", "99999999999999999999"])
+def test_smoke_rejects_invalid_ports_before_starting_any_container(tmp_path: Path, port: str) -> None:
+    env, log = command_stubs(tmp_path)
+    checkout = smoke_checkout(tmp_path)
+    env["NA_MALDIVY_CHECK_PORT"] = port
+    result = subprocess.run(
+        ["bash", "scripts/check.sh", "smoke"], cwd=checkout, env=env, capture_output=True, timeout=20
+    )
+    assert result.returncode == 2
+    assert not log.exists()
+    assert b"PRIVATE-SMOKE-CANARY" not in result.stdout + result.stderr
 
 
 def test_make_demo_commands_ignore_local_env_interpolation(tmp_path: Path) -> None:
